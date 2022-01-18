@@ -1,83 +1,117 @@
+import 'dart:io';
+import 'package:asset_flutter/common/textfield.dart';
+import 'package:asset_flutter/common/password_textfield.dart';
 import 'package:flutter/material.dart';
+import 'auth/widgets/auth_button.dart';
+import 'common/expanded_divider.dart';
+import 'package:desktop_window/desktop_window.dart';
+import 'auth/widgets/auth_checkbox.dart';
 
 void main() {
+  setWindowForPC();
   runApp(const MyApp());
+}
+
+Future setWindowForPC() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  if (Platform.isWindows || Platform.isMacOS) {
+    const minSize = Size(525, 850);
+    DesktopWindow.setMinWindowSize(minSize);
+    DesktopWindow.setWindowSize(minSize);
+  }
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        scaffoldBackgroundColor: Color(0xFFF4EFF3),
-        primarySwatch: Colors.blue,
-      ),
-      home: const LoginPage()
-    );
+        title: 'Flutter Demo',
+        theme: ThemeData(
+            primarySwatch: Colors.blue, scaffoldBackgroundColor: Colors.white),
+        home: LoginPage());
   }
 }
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  final emailInput = TextEditingController();
+  final passwordInput = TextEditingController();
+
+  void onSigninPressed() {
+    print(
+        "EmailInput: " + emailInput.text + " Password: " + passwordInput.text);
+  }
+
+  void onForgotPasswordPressed() {
+    print("Forgot password");
+  }
+
+  void onRegisterPressed() {
+    print("Register");
+  }
 
   @override
   Widget build(BuildContext context) {
+    AppBar appBar = AppBar(
+      title: const Text('Login'),
+    );
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login'),
-      ),
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 64, bottom: 32),
+      resizeToAvoidBottomInset: false,
+      appBar: appBar,
+      body: CustomScrollView(
+        physics: const ScrollPhysics(),
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        slivers: [
+          SliverFillRemaining(
+            hasScrollBody: false,
+            fillOverscroll: false,
+            child: Center(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text(
-                    'Welcome',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+                children: <Widget>[
+                  Container(
+                      margin: const EdgeInsets.all(32),
+                      child: const FlutterLogo(size: 128)),
+                  CustomTextField('Email', TextInputType.emailAddress,
+                      textfieldController: emailInput),
+                  PasswordTextField(passwordInput),
+                  Container(
+                      margin: EdgeInsets.only(
+                          left: (Platform.isMacOS || Platform.isWindows) ? 26: 18,
+                          top: (Platform.isMacOS || Platform.isWindows) ? 8 : 4),
+                      child: const AuthCheckbox('Remember Password')),
+                  AuthButton(
+                      onSigninPressed, 'Sign In', const Color(0xFF54C4F8)),
+                  Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: Row(
+                      children: const [
+                        ExpandedDivider(10, 20, 24),
+                        Text("OR"),
+                        ExpandedDivider(20, 10, 24),
+                      ],
+                    ),
+                  ),
+                  AuthButton(
+                      onRegisterPressed, 'Register', const Color(0xFF00579B)),
+                  Expanded(
+                    child: Container(
+                      margin:
+                          const EdgeInsetsDirectional.only(bottom: 32, end: 32),
+                      child: Align(
+                        alignment: Alignment.bottomRight,
+                        child: TextButton(
+                            onPressed: onForgotPasswordPressed,
+                            child: const Text('Forgot Password')),
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Padding (
-                  padding: EdgeInsets.symmetric(horizontal:8 , vertical: 16),
-                  child: SizedBox(
-                    width: 250,
-                    child: TextField(
-                      decoration: InputDecoration(
-                        border: UnderlineInputBorder(),
-                        labelText: 'Email',
-                      ),
-                    ),
-                  ),
-                ),
-                Padding (
-                  padding: EdgeInsets.symmetric(horizontal:8 , vertical: 16),
-                  child: SizedBox(
-                    width: 250,
-                    child: TextField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        border: UnderlineInputBorder(),
-                        labelText: 'Password',
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
