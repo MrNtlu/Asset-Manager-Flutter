@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 class CustomTextField extends StatelessWidget {
   final String label;
   final TextInputType keyboardType;
-  TextEditingController? textfieldController;
+  final TextEditingController? textfieldController;
 
-  CustomTextField(this.label, this.keyboardType, {this.textfieldController});
+  const CustomTextField(this.label, this.keyboardType, {this.textfieldController});
 
   @override
   Widget build(BuildContext context) {

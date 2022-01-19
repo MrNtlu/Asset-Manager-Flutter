@@ -29,7 +29,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-            primarySwatch: Colors.blue, scaffoldBackgroundColor: Colors.white),
+          primarySwatch: Colors.blue, 
+          scaffoldBackgroundColor: Colors.white,
+        ),
         home: LoginPage());
   }
 }
@@ -37,10 +39,10 @@ class MyApp extends StatelessWidget {
 class LoginPage extends StatelessWidget {
   final emailInput = TextEditingController();
   final passwordInput = TextEditingController();
+  AuthCheckbox? checkbox;
 
   void onSigninPressed() {
-    print(
-        "EmailInput: " + emailInput.text + " Password: " + passwordInput.text);
+    print("EmailInput: " + emailInput.text + " Password: " + passwordInput.text + " " + (checkbox != null ? checkbox!.getValue().toString() : "null"));
   }
 
   void onForgotPasswordPressed() {
@@ -53,9 +55,11 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AppBar appBar = AppBar(
+    final AppBar appBar = AppBar(
       title: const Text('Login'),
     );
+
+    checkbox = AuthCheckbox('Remember Password');
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -78,9 +82,11 @@ class LoginPage extends StatelessWidget {
                   PasswordTextField(passwordInput),
                   Container(
                       margin: EdgeInsets.only(
-                          left: (Platform.isMacOS || Platform.isWindows) ? 26: 18,
-                          top: (Platform.isMacOS || Platform.isWindows) ? 8 : 4),
-                      child: const AuthCheckbox('Remember Password')),
+                          left: (Platform.isMacOS || Platform.isWindows) ? 26 : 18,
+                          top: (Platform.isMacOS || Platform.isWindows) ? 8 : 4
+                      ),
+                      child: checkbox
+                  ),
                   AuthButton(
                       onSigninPressed, 'Sign In', const Color(0xFF54C4F8)),
                   Padding(
