@@ -1,6 +1,6 @@
 import 'package:asset_flutter/auth/widgets/auth_button.dart';
-import 'package:asset_flutter/common/password_textfield.dart';
-import 'package:asset_flutter/common/textfield.dart';
+import 'package:asset_flutter/common/widgets/password_textfield.dart';
+import 'package:asset_flutter/common/widgets/textfield.dart';
 import 'package:flutter/material.dart';
 
 class RegisterPage extends StatelessWidget {

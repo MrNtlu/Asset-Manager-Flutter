@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:asset_flutter/auth/pages/register_page.dart';
 import 'package:asset_flutter/auth/widgets/auth_bottom_sheet.dart';
-import 'package:asset_flutter/common/expanded_divider.dart';
+import 'package:asset_flutter/common/widgets/expanded_divider.dart';
 import 'package:flutter/material.dart';
-import 'package:asset_flutter/common/textfield.dart';
-import 'package:asset_flutter/common/password_textfield.dart';
+import 'package:asset_flutter/common/widgets/textfield.dart';
+import 'package:asset_flutter/common/widgets/password_textfield.dart';
 import 'package:asset_flutter/auth/widgets/auth_button.dart';
 import 'package:asset_flutter/auth/widgets/auth_checkbox.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'auth_button.dart';
-import 'package:asset_flutter/common/textfield.dart';
+import 'package:asset_flutter/common/widgets/textfield.dart';
 
 class AuthBottomSheet extends StatelessWidget {
   final _emailInput = TextEditingController();
