@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
-  final String label;
-  final TextInputType keyboardType;
+  final String _label;
+  final TextInputType _keyboardType;
   final TextEditingController? textfieldController;
+  final Icon? prefixIcon;
 
-  const CustomTextField(this.label, this.keyboardType, {this.textfieldController});
+  const CustomTextField(this._label, this._keyboardType, {this.textfieldController, this.prefixIcon});
 
   @override
   Widget build(BuildContext context) {
@@ -13,13 +14,14 @@ class CustomTextField extends StatelessWidget {
         width: double.infinity,
         margin: const EdgeInsets.fromLTRB(32, 16, 32, 0),
         child: TextField(
-          keyboardType: keyboardType,
+          keyboardType: _keyboardType,
           controller: textfieldController,
           decoration: InputDecoration(
             filled: true,
             fillColor: Colors.white,
             border: const OutlineInputBorder(),
-            labelText: label,
+            labelText: _label,
+            prefixIcon: prefixIcon!=null ? prefixIcon : null
           ),
         ));
   }

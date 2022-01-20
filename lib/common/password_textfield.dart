@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 class PasswordTextField extends StatefulWidget {
-  final TextEditingController passwordController;
+  final TextEditingController _passwordController;
+  final String label;
+  final Icon? prefixIcon;
 
-  const PasswordTextField(this.passwordController);
+  const PasswordTextField(this._passwordController, {this.label = 'Password', this.prefixIcon});
 
   @override
   _PasswordTextFieldState createState() => _PasswordTextFieldState();
@@ -18,14 +20,15 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
       width: double.infinity,
       margin: const EdgeInsets.fromLTRB(32, 16, 32, 0),
       child: TextField(
-        controller: widget.passwordController,
+        controller: widget._passwordController,
         obscureText: _isHidden,
         keyboardType: TextInputType.visiblePassword,
         decoration: InputDecoration(
           filled: true,
           fillColor: Colors.white,
           border: const OutlineInputBorder(),
-          labelText: 'Password',
+          labelText: widget.label,
+          prefixIcon: widget.prefixIcon!=null ? widget.prefixIcon : null,
           suffixIcon: Padding(
             padding: EdgeInsetsDirectional.zero,
             child: GestureDetector(
