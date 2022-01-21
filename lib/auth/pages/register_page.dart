@@ -1,6 +1,7 @@
 import 'package:asset_flutter/auth/widgets/auth_button.dart';
 import 'package:asset_flutter/common/widgets/password_textfield.dart';
 import 'package:asset_flutter/common/widgets/textfield.dart';
+import 'package:asset_flutter/content/pages/tabs_page.dart';
 import 'package:flutter/material.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -25,6 +26,7 @@ class RegisterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppBar appBar = AppBar(
       title: const Text('Register'),
+      backgroundColor: TabsPage.darkBlueColor,
     );
     
     return Scaffold(

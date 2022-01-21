@@ -3,7 +3,8 @@
 ### Application of Asset Manager (Mac & Windows & Android)
 
 <ul>
-    <li>
+    <li> Settings UI for Flutter
+    <li> FLChart
 </ul>
 
 &nbsp;

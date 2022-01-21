@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:asset_flutter/auth/pages/register_page.dart';
 import 'package:asset_flutter/auth/widgets/auth_bottom_sheet.dart';
 import 'package:asset_flutter/common/widgets/expanded_divider.dart';
+import 'package:asset_flutter/content/pages/tabs_page.dart';
 import 'package:flutter/material.dart';
 import 'package:asset_flutter/common/widgets/textfield.dart';
 import 'package:asset_flutter/common/widgets/password_textfield.dart';
@@ -11,14 +12,14 @@ import 'package:asset_flutter/auth/widgets/auth_checkbox.dart';
 
 class LoginPage extends StatelessWidget {
   static const routeName = "/login";
-
-  String? userID;
+  late String token;
 
   final emailInput = TextEditingController();
   final passwordInput = TextEditingController();
   AuthCheckbox? checkbox;
 
   void onSigninPressed(BuildContext ctx) {
+    token = emailInput.text;
     print("EmailInput: " +
         emailInput.text +
         " Password: " +
@@ -26,11 +27,9 @@ class LoginPage extends StatelessWidget {
         " " +
         (checkbox != null ? checkbox!.getValue().toString() : "null"));
 
-    // Navigator.of(ctx).push(
-    //   MaterialPageRoute(builder: (_){
-    //     return LoginPage(userID);
-    //   })
-    // );
+    Navigator.of(ctx).pushReplacement(MaterialPageRoute(builder: (_) {
+      return TabsPage(token);
+    }),);
   }
 
   void onRegisterPressed(BuildContext ctx) {
@@ -49,6 +48,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppBar appBar = AppBar(
       title: const Text('Login'),
+      backgroundColor: TabsPage.darkBlueColor,
     );
 
     checkbox = AuthCheckbox('Remember Password');
@@ -75,14 +75,14 @@ class LoginPage extends StatelessWidget {
                     textfieldController: emailInput,
                     prefixIcon: const Icon(
                       Icons.email,
-                      color: Color(0xFF00579B),
+                      color: TabsPage.darkBlueColor,
                     ),
                   ),
                   PasswordTextField(
                     passwordInput,
                     prefixIcon: const Icon(
                       Icons.password,
-                      color: Color(0xFF00579B),
+                      color: TabsPage.darkBlueColor,
                     ),
                   ),
                   Container(
