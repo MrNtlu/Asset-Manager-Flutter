@@ -1,5 +1,4 @@
 import 'package:asset_flutter/content/pages/portfolio_page.dart';
-import 'package:asset_flutter/content/pages/tabs_page.dart';
 import 'package:asset_flutter/content/widgets/indicator_widget.dart';
 import 'package:asset_flutter/content/widgets/portfolio_section_title.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -16,7 +15,6 @@ class PortfolioStats extends StatelessWidget {
           print("Stats Pressed");
         },
         child: Column(children: [
-          const Divider(height: 1, color: TabsPage.orangeColor),
           const PortfolioSectionTitle("Statistics", "Details>"),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -36,7 +34,6 @@ class PortfolioStats extends StatelessWidget {
               ),
             ],
           ),
-          const Divider(height: 1, color: TabsPage.orangeColor),
         ]),
       ),
     );

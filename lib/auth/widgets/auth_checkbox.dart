@@ -18,9 +18,7 @@ class _AuthCheckboxState extends State<AuthCheckbox> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          setState(() {
-            widget._value = !widget._value;
-          });
+          widget._value = !widget._value;
         });
       },
       child: Row(
@@ -28,7 +26,11 @@ class _AuthCheckboxState extends State<AuthCheckbox> {
         children: [
           Checkbox(
             value: widget._value,
-            onChanged: (value) {},
+            onChanged: (value) {
+              setState(() {
+                widget._value = !widget._value;
+              });
+            },
           ),
           Text(
             widget.title,

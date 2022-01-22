@@ -7,7 +7,7 @@ class PortfolioMainSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: TabsPage.darkBlueColor,
+      color: TabsPage.primaryColor,
       padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
       child: GestureDetector(
         onTap: () {
@@ -49,14 +49,14 @@ class PortfolioMainSection extends StatelessWidget {
               children: [
                 Icon(
                   true ? Icons.arrow_upward_rounded : Icons.arrow_downward_rounded,
-                  color: true ? Colors.green : Colors.red.shade700,
+                  color: true ? TabsPage.greenColor : Colors.red.shade700,
                   size: 26,
                 ),
                 Text(
                   "456569.23",
                   style: TextStyle(
                     fontSize: 20,
-                    color: true ? Colors.green : Colors.red.shade700
+                    color: true ? TabsPage.greenColor : Colors.red.shade700
                   ),
                 ),
               ],

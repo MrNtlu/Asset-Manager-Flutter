@@ -26,7 +26,7 @@ class RegisterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppBar appBar = AppBar(
       title: const Text('Register'),
-      backgroundColor: TabsPage.darkBlueColor,
+      backgroundColor: TabsPage.primaryColor,
     );
     
     return Scaffold(
@@ -50,7 +50,7 @@ class RegisterPage extends StatelessWidget {
                       textfieldController: usernameInput, 
                       prefixIcon: const Icon(
                         Icons.person,
-                        color: Color(0xFF00579B),
+                        color: TabsPage.primaryColor
                       ),
                     ),
                     CustomTextField(
@@ -59,18 +59,18 @@ class RegisterPage extends StatelessWidget {
                       textfieldController: emailInput,
                       prefixIcon: const Icon(
                         Icons.email,
-                        color: Color(0xFF00579B),
+                        color: TabsPage.primaryColor
                       ),
                     ),
                     PasswordTextField(
                       passwordInput,
                       prefixIcon: const Icon(
                         Icons.password,
-                        color: Color(0xFF00579B),
+                        color: TabsPage.primaryColor
                       ),
                     ),
                     PasswordTextField(rePasswordInput, label: "Password Again"),
-                    AuthButton(onRegisterPressed, "Register", Colors.blue.shade800),
+                    AuthButton(onRegisterPressed, "Register", TabsPage.primaryColor),
                   ]
                 ),
               ),

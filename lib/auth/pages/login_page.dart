@@ -48,7 +48,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppBar appBar = AppBar(
       title: const Text('Login'),
-      backgroundColor: TabsPage.darkBlueColor,
+      backgroundColor: TabsPage.primaryColor,
     );
 
     checkbox = AuthCheckbox('Remember Password');
@@ -75,14 +75,14 @@ class LoginPage extends StatelessWidget {
                     textfieldController: emailInput,
                     prefixIcon: const Icon(
                       Icons.email,
-                      color: TabsPage.darkBlueColor,
+                      color: TabsPage.primaryColor,
                     ),
                   ),
                   PasswordTextField(
                     passwordInput,
                     prefixIcon: const Icon(
                       Icons.password,
-                      color: TabsPage.darkBlueColor,
+                      color: TabsPage.primaryColor,
                     ),
                   ),
                   Container(
@@ -94,7 +94,7 @@ class LoginPage extends StatelessWidget {
                               (Platform.isMacOS || Platform.isWindows) ? 8 : 4),
                       child: checkbox),
                   AuthButton(
-                      onSigninPressed, 'Sign In', const Color(0xFF54C4F8)),
+                      onSigninPressed, 'Sign In', TabsPage.primaryLightColor),
                   Padding(
                     padding: const EdgeInsets.all(6.0),
                     child: Row(
@@ -106,7 +106,7 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
                   AuthButton(
-                      onRegisterPressed, 'Register', const Color(0xFF00579B)),
+                      onRegisterPressed, 'Register', TabsPage.primaryColor),
                   Expanded(
                     child: Container(
                       margin:

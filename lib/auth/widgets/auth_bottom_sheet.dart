@@ -1,3 +1,4 @@
+import 'package:asset_flutter/content/pages/tabs_page.dart';
 import 'package:flutter/material.dart';
 import 'auth_button.dart';
 import 'package:asset_flutter/common/widgets/textfield.dart';
@@ -24,7 +25,7 @@ class AuthBottomSheet extends StatelessWidget {
             textfieldController: null,
             prefixIcon: Icon(
               Icons.email,
-              color: Color(0xFF00579B)
+              color: TabsPage.primaryColor
             )
           ),
           Container(
@@ -39,7 +40,7 @@ class AuthBottomSheet extends StatelessWidget {
               ),
             )
           ),
-          AuthButton(onSendEmailPressed, 'Reset', Colors.blue)
+          AuthButton(onSendEmailPressed, 'Reset', TabsPage.lightBlack)
         ],
       ),
     ); 
