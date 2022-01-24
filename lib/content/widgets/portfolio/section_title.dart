@@ -6,7 +6,7 @@ class PortfolioSectionTitle extends StatelessWidget {
   final double mainFontSize;
   final Color textColor;
 
-  const PortfolioSectionTitle(this._mainTitle, this._subTitle, {this.mainFontSize = 18, this.textColor = Colors.black});
+  const PortfolioSectionTitle(this._mainTitle, this._subTitle, {this.mainFontSize = 20, this.textColor = Colors.black});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class PortfolioSectionTitle extends StatelessWidget {
           child: Align(
             alignment: Alignment.centerLeft,
             child: Padding(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(8),
               child: Text(
                 _mainTitle,
                 style: TextStyle(
@@ -37,7 +37,7 @@ class PortfolioSectionTitle extends StatelessWidget {
               padding: const EdgeInsets.all(12),
               child: Text(
                 _subTitle,
-                style: TextStyle(color: textColor, fontSize: 14),
+                style: TextStyle(color: textColor, fontSize: 14,fontWeight: FontWeight.bold),
               ),
             ),
           ),

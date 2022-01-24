@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 //TODO: Remove hard color codes and put colors in appropriate place
 class TabsPage extends StatefulWidget {
   static const primaryColor = Color(0xFF00579B);
-  static const blueColor = Color(0xFF54C4F8);
   static const primaryDarkestColor = Color(0xFF00355E);
+  static const primaryLightishColor = Color(0xFF0077D3);
   static const primaryLightColor = Color(0xFF54C4F8);
   static const secondaryColor = Color(0xFF83FEEB);
   static const lightBlack = Color(0xFF595B62);
   static const accentColor = Color(0xFFF454Cf);
-  static const greenColor = Color(0xFF43A047);
-  static const redColor = Color(0xFFD32F2F);
+  static const greenColor = Color(0xFF66BB6A);
+  static const redColor = Color(0xFFC62828);
   static const orangeColor = Color(0xFFF57C00);
 
   static const routeName = "/tabs";
@@ -46,7 +46,7 @@ class _TabsPage extends State<TabsPage> {
 
     return Scaffold(
       body: _pages[_selectedPageIndex],
-      backgroundColor: TabsPage.primaryColor,
+      backgroundColor: Colors.white,
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectPage,
         selectedItemColor: Colors.black,
