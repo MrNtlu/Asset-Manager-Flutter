@@ -20,37 +20,55 @@ class InvestmentListCellImage extends StatelessWidget {
         borderRadius: imageBorderRadius,
         child: SizedBox.fromSize(
           size: const Size.fromRadius(24),
-          child: Image.network(
-            _image,
-            width: 48,
-            height: 48,
-            fit: BoxFit.fill,
-            frameBuilder: (BuildContext context, Widget child, int? frame,
-                bool? wasSynchronouslyLoaded) {
-              if (frame == null) {
-                return const CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(TabsPage.primaryLightColor),
-                  backgroundColor: Colors.white,
-                );
-              }
-              return child;
-            },
-            loadingBuilder: ((context, child, loadingProgress) {
-              if (loadingProgress == null) {
-                return child;
-              }
-              return const CircularProgressIndicator();
-            }),
-            errorBuilder: ((context, error, stackTrace) {
-              if ((error as NetworkImageLoadException).statusCode == 404 &&
-                  _type == "crypto") {
-                return Image.network(TestData.cryptoFailImage());
-              }
-              return const Icon(Icons.error);
-            }),
-          ),
+          child: ILNetworkImage(_image, _type)
         ),
       ),
+    );
+  }
+}
+
+class ILNetworkImage extends StatelessWidget {
+  final String _image;
+  final bool didFailBefore;
+  final String _type;
+
+  const ILNetworkImage(this._image, this._type, {this.didFailBefore = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.network(
+      _image,
+      width: 48,
+      height: 48,
+      fit: BoxFit.fill,
+      frameBuilder: (BuildContext context, Widget child, int? frame,
+          bool? wasSynchronouslyLoaded) {
+        if (frame == null) {
+          return const CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(TabsPage.primaryLightColor),
+            backgroundColor: Colors.white,
+          );
+        }
+        return child;
+      },
+      loadingBuilder: ((context, child, loadingProgress) {
+        if (loadingProgress == null) {
+          return child;
+        }
+        return const CircularProgressIndicator();
+      }),
+      errorBuilder: ((context, error, stackTrace) {
+        if(!didFailBefore){
+          switch (_type) {
+            case "crypto":
+              return ILNetworkImage(TestData.cryptoFailImage(), _type, didFailBefore: true);
+            //TODO: Add for stock and exhcange
+            // case "stock":
+            //   return ILNetworkImage(TestData.cryptoFailImage(), _type, didFailBefore: true);
+          }
+        }
+        return const Icon(Icons.error);
+      }),
     );
   }
 }

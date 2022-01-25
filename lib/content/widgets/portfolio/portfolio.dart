@@ -14,7 +14,7 @@ class Portfolio extends StatelessWidget {
           
         },
         child: Column(children: [
-          const PortfolioSectionTitle("Your Portfolio", "", mainFontSize: 22),
+          const SectionTitle("Your Portfolio", "", mainFontSize: 22),
           Container(
             margin: const EdgeInsets.fromLTRB(8, 0, 8, 0),
             child: Card(
@@ -53,7 +53,9 @@ class Portfolio extends StatelessWidget {
                     ),
                     Container(
                       margin: const EdgeInsets.only(top: 16),
-                      child: PortfolioPLText(-456569.23, "USD", 
+                      child: PortfolioPLText(
+                        -456569.23, 
+                        "USD", 
                         fontSize: MediaQuery.of(context).size.width > 350 ? 20 : 16, 
                         iconSize: MediaQuery.of(context).size.width > 350 ? 22 : 18
                       )

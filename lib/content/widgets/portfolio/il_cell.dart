@@ -34,9 +34,10 @@ class PortfolioInvestmentListCell extends StatelessWidget {
             child: Text(
               data.symbol,
               style: const TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold),
+                fontSize: 18,
+                color: Colors.white,
+                fontWeight: FontWeight.bold
+              ),
             ),
           ),
           Expanded(
@@ -49,9 +50,10 @@ class PortfolioInvestmentListCell extends StatelessWidget {
                   child: Text(
                     data.value.toString(),
                     style: const TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
+                      fontSize: 18,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold
+                    ),
                   ),
                 ),
                 Container(

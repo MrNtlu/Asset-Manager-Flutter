@@ -15,7 +15,7 @@ class PortfolioStats extends StatelessWidget {
           print("Stats Pressed");
         },
         child: Column(children: [
-          const PortfolioSectionTitle("Statistics", "Details>"),
+          const SectionTitle("Statistics", "Details>"),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class PortfolioSectionTitle extends StatelessWidget {
+class SectionTitle extends StatelessWidget {
   final String _mainTitle;
   final String _subTitle;
   final double mainFontSize;
   final Color textColor;
 
-  const PortfolioSectionTitle(this._mainTitle, this._subTitle, {this.mainFontSize = 20, this.textColor = Colors.black});
+  const SectionTitle(this._mainTitle, this._subTitle, {this.mainFontSize = 20, this.textColor = Colors.black});
 
   @override
   Widget build(BuildContext context) {

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:asset_flutter/content/pages/tabs_page.dart';
 import 'package:asset_flutter/content/widgets/portfolio/investment_list.dart';
 import 'package:asset_flutter/content/widgets/portfolio/portfolio.dart';
@@ -16,7 +18,7 @@ class PortfolioPage extends StatelessWidget {
           statusBarIconBrightness: Brightness.dark,
           statusBarBrightness: Brightness.light),
       child: SafeArea(
-        child: MediaQuery.of(context).orientation == Orientation.portrait ? 
+        child: MediaQuery.of(context).orientation == Orientation.portrait || Platform.isMacOS || Platform.isWindows ? 
           NestedScrollView(
             floatHeaderSlivers: false,
             headerSliverBuilder: ((context, innerBoxIsScrolled) => [
@@ -114,6 +116,28 @@ class TestData {
     const TestInvestData(45.9, 'AVAX', 'USD', 'crypto', 34.2, 34.7),
   ];
 
+  static List<TestSubscriptionData> testSubscriptionData = [
+    TestSubscriptionData("Netflix", "Netflix Family Plan", DateTime.now(), 30, 40.5, 'TL', subscriptionImage("netflix.com"), 0xFFE53935),
+    TestSubscriptionData("Spotify", null, DateTime.now().subtract(const Duration(days: 5)), 30, 27.5, 'TL', subscriptionImage("spotify.com"), 0xFF4CAF50),
+    TestSubscriptionData("Playstation Plus", "Playstation Plus and this is an example of long text, lets see hot it'll behave.", DateTime.now().subtract(const Duration(days: 15)), 365, 165.2, 'TL', subscriptionImage("playstation.com"), 0xFF1976D2),
+    TestSubscriptionData("Jefit", null, DateTime.now().subtract(const Duration(days: 2)), 7, 10.9, 'USD', subscriptionImage("jefit.com"), 0xFF03A9F4),
+    TestSubscriptionData("WoW", null, DateTime.now().subtract(const Duration(days: 147)), 365, 60.2, 'USD', subscriptionImage("worldofwarcraft.com"), 0xFF4CAF50),
+  ];
+
+  static List<TestSubscriptionStatsData> testSubscriptionStatsData = [
+    const TestSubscriptionStatsData('USD', 380.42),
+    const TestSubscriptionStatsData('EUR', 85.3),
+    const TestSubscriptionStatsData('TRY', 16.5),
+    const TestSubscriptionStatsData('GBP', 30.1),
+  ];
+
+  static List<Color> testSubscriptionStatsColor = [
+    Colors.white,
+    TabsPage.orangeColor,
+    TabsPage.primaryDarkestColor,
+    TabsPage.primaryLightColor
+  ];
+
   static String stockImage(String symbol) {
     return "https://storage.googleapis.com/iex/api/logos/${symbol.toUpperCase()}.png";
   }
@@ -124,6 +148,20 @@ class TestData {
 
   static String cryptoFailImage() {
     return "https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/32@2x/color/generic@2x.png";
+  }
+
+  static String subscriptionImage(String company) {
+    return "https://logo.clearbit.com/$company";
+  }
+
+  static IconData subscriptionFailIcon(){
+    return Icons.payment_rounded;
+  }
+
+  static int subscriptionStatsPercentageCalculator(List<TestSubscriptionStatsData> subsList, TestSubscriptionStatsData data) {
+    double sum = subsList.fold(0, (previousValue, element) => previousValue + element.totalPayment);
+
+    return (data.totalPayment / sum * 100).toInt();
   }
 }
 
@@ -136,4 +174,24 @@ class TestInvestData {
   final double amount;
 
   const TestInvestData(this.value, this.symbol, this.fromAsset, this.type, this.pl, this.amount);
+}
+
+class TestSubscriptionData {
+  final String name;
+  final String? description;
+  final DateTime billDate;
+  final int billCycle;
+  final double price;
+  final String currency;
+  final String? image;
+  final int color; 
+
+  const TestSubscriptionData(this.name, this.description, this.billDate, this.billCycle, this.price, this.currency, this.image, this.color);
+}
+
+class TestSubscriptionStatsData {
+  final String currency;
+  final double totalPayment;
+
+  const TestSubscriptionStatsData(this.currency, this.totalPayment);
 }

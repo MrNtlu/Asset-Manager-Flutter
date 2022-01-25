@@ -13,7 +13,7 @@ class TabsPage extends StatefulWidget {
   static const lightBlack = Color(0xFF595B62);
   static const accentColor = Color(0xFFF454Cf);
   static const greenColor = Color(0xFF66BB6A);
-  static const redColor = Color(0xFFC62828);
+  static const redColor = Color(0xFFEE8582);
   static const orangeColor = Color(0xFFF57C00);
 
   static const routeName = "/tabs";
