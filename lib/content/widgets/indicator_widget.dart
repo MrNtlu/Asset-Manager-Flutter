@@ -1,5 +1,5 @@
 
-import 'package:asset_flutter/content/pages/portfolio_page.dart';
+import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
 import 'package:flutter/material.dart';
 
 class IndicatorsWidget extends StatelessWidget {

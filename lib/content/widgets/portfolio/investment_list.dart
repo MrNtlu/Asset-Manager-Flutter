@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:asset_flutter/content/pages/portfolio_page.dart';
+import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
 import 'package:asset_flutter/content/widgets/portfolio/il_cell.dart';
 import 'package:asset_flutter/content/widgets/portfolio/section_title.dart';
 import 'package:flutter/material.dart';
@@ -13,17 +13,11 @@ class PortfolioInvestment extends StatelessWidget {
       color: Colors.white,
       child: Column(
         children: [
-          InkWell(
-            onTap: (() {
-              print("Investment Details Pressed");
-            }),
-            child:
-                const SectionTitle("Investments", "See All>")
-          ),
+          const SectionTitle("Investments", ""),
           Expanded(
             child: ListView.builder(
               itemBuilder: ((context, index) {
-                var data = TestData.testInvestData[index];
+                final data = TestData.testInvestData[index];
                 return PortfolioInvestmentListCell(data);
               }),
               itemExtent: 75,
@@ -36,13 +30,14 @@ class PortfolioInvestment extends StatelessWidget {
         ],
       ),
     )
-  : Container(
-      color: Colors.white,
-      child: InkWell(
-          onTap: (() {
-            print("Investment Details Pressed");
-          }),
-          child: const SectionTitle("Investments", "See All>")),
+  : 
+  Container(
+    color: Colors.white,
+    child: InkWell(
+      onTap: (() {
+        print("Investment Details Pressed");
+      }),
+      child: const SectionTitle("Investments", "See All>")),
     );
   }
 }

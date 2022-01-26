@@ -2,45 +2,47 @@ import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
 import 'package:asset_flutter/content/pages/tabs_page.dart';
 import 'package:flutter/material.dart';
 
-class InvestmentListCellImage extends StatelessWidget {
-  final imageBorderRadius = BorderRadius.circular(24);
-  final String _image;
-  final String _type;
+class SubscriptionListCellImage extends StatelessWidget {
+  final String? _image;
 
-  InvestmentListCellImage(this._image, this._type);
+  const SubscriptionListCellImage(this._image);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.fromLTRB(8, 8, 0, 8),
-      padding: const EdgeInsets.all(0.2),
-      decoration: BoxDecoration(
-          color: const Color(0x40000000), borderRadius: imageBorderRadius),
+      padding: const EdgeInsets.all(1),
+      decoration: const BoxDecoration(
+        color: Colors.white, 
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(8),
+          bottomRight: Radius.circular(24),
+        )
+      ),
       child: ClipRRect(
-        borderRadius: imageBorderRadius,
+        borderRadius: BorderRadius.circular(24),
         child: SizedBox.fromSize(
           size: const Size.fromRadius(24),
-          child: ILNetworkImage(_image, _type)
+          child: SLNetworkImage(_image)
         ),
       ),
     );
   }
 }
 
-class ILNetworkImage extends StatelessWidget {
-  final String _image;
+class SLNetworkImage extends StatelessWidget {
+  final String? _image;
   final bool didFailBefore;
-  final String _type;
 
-  const ILNetworkImage(this._image, this._type, {this.didFailBefore = false});
+  const SLNetworkImage(this._image, {this.didFailBefore = false});
 
   @override
   Widget build(BuildContext context) {
-    return Image.network(
-      _image,
+    return _image != null ? 
+    Image.network(
+      _image!,
       width: 48,
       height: 48,
-      fit: BoxFit.fill,
+      fit: BoxFit.contain,
       frameBuilder: (context, child, int? frame, bool? wasSynchronouslyLoaded) {
         if (frame == null) {
           return const CircularProgressIndicator(
@@ -58,16 +60,18 @@ class ILNetworkImage extends StatelessWidget {
       }),
       errorBuilder: ((context, error, stackTrace) {
         if(!didFailBefore){
-          switch (_type) {
-            case "crypto":
-              return ILNetworkImage(TestData.cryptoFailImage(), _type, didFailBefore: true);
-            //TODO: Add for stock and exhcange
-            // case "stock":
-            //   return ILNetworkImage(TestData.cryptoFailImage(), _type, didFailBefore: true);
-          }
+          return SLNetworkImage(_image, didFailBefore: true);  
         }
-        return const Icon(Icons.error);
+        return Icon(
+          TestData.subscriptionFailIcon(),
+          size: 36,
+        );
       }),
+    )
+    : 
+    Icon(
+      TestData.subscriptionFailIcon(),
+      size: 36,
     );
   }
 }

@@ -1,6 +1,6 @@
-import 'package:asset_flutter/content/pages/portfolio_page.dart';
+import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
 import 'package:asset_flutter/content/pages/settings_page.dart';
-import 'package:asset_flutter/content/pages/subscription_page.dart';
+import 'package:asset_flutter/content/pages/subscription/subscription_page.dart';
 import 'package:flutter/material.dart';
 
 //TODO: Remove hard color codes and put colors in appropriate place

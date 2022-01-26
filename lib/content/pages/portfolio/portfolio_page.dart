@@ -117,7 +117,7 @@ class TestData {
   ];
 
   static List<TestSubscriptionData> testSubscriptionData = [
-    TestSubscriptionData("Netflix", "Netflix Family Plan", DateTime.now(), 30, 40.5, 'TL', subscriptionImage("netflix.com"), 0xFFE53935),
+    TestSubscriptionData("Netflix 4K Family for Friends and Me", "Netflix Family Plan", DateTime.now(), 30, 40.5, 'TL', subscriptionImage("netflix.com"), 0xFFE53935),
     TestSubscriptionData("Spotify", null, DateTime.now().subtract(const Duration(days: 5)), 30, 27.5, 'TL', subscriptionImage("spotify.com"), 0xFF4CAF50),
     TestSubscriptionData("Playstation Plus", "Playstation Plus and this is an example of long text, lets see hot it'll behave.", DateTime.now().subtract(const Duration(days: 15)), 365, 165.2, 'TL', subscriptionImage("playstation.com"), 0xFF1976D2),
     TestSubscriptionData("Jefit", null, DateTime.now().subtract(const Duration(days: 2)), 7, 10.9, 'USD', subscriptionImage("jefit.com"), 0xFF03A9F4),
@@ -133,9 +133,9 @@ class TestData {
 
   static List<Color> testSubscriptionStatsColor = [
     Colors.white,
-    TabsPage.orangeColor,
     TabsPage.primaryDarkestColor,
-    TabsPage.primaryLightColor
+    TabsPage.orangeColor,
+    Colors.yellow
   ];
 
   static String stockImage(String symbol) {

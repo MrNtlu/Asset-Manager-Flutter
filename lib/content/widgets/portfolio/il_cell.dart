@@ -1,4 +1,4 @@
-import 'package:asset_flutter/content/pages/portfolio_page.dart';
+import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
 import 'package:asset_flutter/content/pages/tabs_page.dart';
 import 'package:asset_flutter/content/widgets/portfolio/il_cell_image.dart';
 import 'package:asset_flutter/content/widgets/portfolio/pl_text.dart';
