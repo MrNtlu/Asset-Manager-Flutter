@@ -15,7 +15,7 @@ class SubscriptionPage extends StatelessWidget {
         floatHeaderSlivers: false,
         headerSliverBuilder: ((context, innerBoxIsScrolled) => [
             SliverAppBar(
-              expandedHeight: 275,
+              expandedHeight: 265,
               floating: true,
               snap: false,
               backgroundColor: Colors.white,

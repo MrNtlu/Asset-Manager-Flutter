@@ -41,7 +41,8 @@ class LoginPage extends StatelessWidget {
         context: context,
         builder: (_) {
           return AuthBottomSheet();
-        });
+        }
+    );
   }
 
   @override

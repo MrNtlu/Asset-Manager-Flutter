@@ -4,12 +4,16 @@ import 'package:asset_flutter/content/widgets/portfolio/section_title.dart';
 import 'package:flutter/material.dart';
 
 class Portfolio extends StatelessWidget {
+  final bool isDetailed;
+
+  const Portfolio({this.isDetailed = false});
+
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(top: 12, bottom: 8),
       child: Column(children: [
-        const SectionTitle("Your Portfolio", "", mainFontSize: 22),
+        if(!isDetailed) const SectionTitle("Your Portfolio", "", mainFontSize: 22),
         Container(
           margin: const EdgeInsets.only(left: 8, right: 8),
           child: Card(

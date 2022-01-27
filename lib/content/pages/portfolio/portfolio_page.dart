@@ -4,6 +4,7 @@ import 'package:asset_flutter/content/pages/tabs_page.dart';
 import 'package:asset_flutter/content/widgets/portfolio/investment_list.dart';
 import 'package:asset_flutter/content/widgets/portfolio/portfolio.dart';
 import 'package:asset_flutter/content/widgets/portfolio/stats.dart';
+import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/services.dart';
@@ -32,9 +33,9 @@ class PortfolioPage extends StatelessWidget {
                     collapseMode: CollapseMode.parallax,
                     background: Center(
                       child: Column(
-                        children: [
+                        children: const [
                           Portfolio(),
-                          const PortfolioStats(),
+                          PortfolioStats(false),
                         ],
                       ),
                     ),
@@ -54,8 +55,8 @@ class PortfolioPage extends StatelessWidget {
                   child: Center(
                     child: Column(
                       children: [
-                        Portfolio(),
-                        const PortfolioStats(),
+                        const Portfolio(),
+                        const PortfolioStats(false),
                         PortfolioInvestment()
                       ],
                     ),
@@ -71,38 +72,6 @@ class PortfolioPage extends StatelessWidget {
 
 
 //TODO: Tests
-
-List<PieChartSectionData> getSections() => PieData.data
-    .asMap()
-    .map<int, PieChartSectionData>((index, data) {
-      final value = PieChartSectionData(
-        color: data.color,
-        value: data.percent,
-        showTitle: false,
-        radius: 45,
-        titleStyle: const TextStyle(
-            fontWeight: FontWeight.bold, color: Colors.white, fontSize: 12),
-      );
-      return MapEntry(index, value);
-    })
-    .values
-    .toList();
-
-class PieData {
-  static List<Data> data = [
-    Data(name: 'Crypto', percent: 40, color: TabsPage.primaryColor),
-    Data(name: 'Exchange', percent: 10, color: TabsPage.orangeColor),
-    Data(name: 'Stock', percent: 50, color: TabsPage.primaryLightColor),
-  ];
-}
-
-class Data {
-  final String name;
-  final double percent;
-  final Color color;
-
-  Data({required this.name, required this.percent, required this.color});
-}
 
 class TestData {
   static List<TestInvestData> testInvestData = [
@@ -129,6 +98,22 @@ class TestData {
     const TestSubscriptionStatsData('EUR', 85.3),
     const TestSubscriptionStatsData('TRY', 16.5),
     const TestSubscriptionStatsData('GBP', 30.1),
+  ];
+
+  static TestAssetStatsData testAssetStatsData = TestAssetStatsData(120, 536.28, 102.4, 756.46, 42202.7, -66542.5, -125324.6, -150684.46, 17.5, 67.66, 14.84);
+
+  static List<Color> testChartStatsColor = [
+    TabsPage.primaryColor,
+    TabsPage.orangeColor,
+    TabsPage.primaryLightColor,
+    Colors.yellow
+  ];
+
+  static List<String> testChartStatsText = [
+    "Stock",
+    "Crypto",
+    "Exchange",
+    "Total"
   ];
 
   static List<Color> testSubscriptionStatsColor = [
@@ -162,6 +147,97 @@ class TestData {
     double sum = subsList.fold(0, (previousValue, element) => previousValue + element.totalPayment);
 
     return (data.totalPayment / sum * 100).toInt();
+  }
+}
+
+class TestAssetStatsData {
+  final double stockAsset;
+  final double cryptoAsset;
+  final double exchangeAsset;
+  final double totalAsset;
+  final double stockPL;
+  final double cryptoPL;
+  final double exchangePL;
+  final double totalPL;
+  final double stockPercentage;
+  final double cryptoPercentage;
+  final double exchangePercentage;
+
+  TestAssetStatsData(
+    this.stockAsset, this.cryptoAsset, this.exchangeAsset, this.totalAsset,
+    this.stockPL, this.cryptoPL, this.exchangePL, this.totalPL,
+    this.stockPercentage, this.cryptoPercentage, this.exchangePercentage
+  );
+
+  List<PieChartSectionData> convertDataToChart() {
+    final list = List<PieChartSectionData>.empty(growable: true);
+    for (var i = 0; i < 3; i++) {
+      list.add(PieChartSectionData(
+        color: TestData.testChartStatsColor[i],
+        value: (i == 0) ?
+          stockAsset :
+          (i == 1) ? 
+          cryptoAsset :
+          exchangeAsset
+        ,
+        showTitle: false,
+        radius: 45,
+        titleStyle: const TextStyle(
+          fontWeight: FontWeight.bold, 
+          color: Colors.white, 
+          fontSize: 12
+        ),
+      ));
+    }
+    return list;
+  }
+
+  List<BarChartGroupData> convertDataToBarChart() {
+    final list = List<BarChartGroupData>.empty(growable: true);
+    for (var i = 0; i < 4; i++) {
+      var value = (i == 0) ?
+        stockPL :
+        (i == 1) ? 
+        cryptoPL :
+        (i == 2) ?
+        exchangePL :
+        totalPL;
+      value = value.revertValue();
+      list.add(BarChartGroupData(
+        x: i,
+        barRods: [
+          BarChartRodData(
+            y: value,
+            width: 25,
+            borderRadius: value > 0 ?
+            const BorderRadius.only(
+              topLeft: Radius.circular(6),
+              topRight: Radius.circular(6)
+            ) 
+            :
+            const BorderRadius.only(
+              bottomLeft: Radius.circular(6),
+              bottomRight: Radius.circular(6)
+            ),
+            colors: [TestData.testChartStatsColor[i]],
+
+          )
+        ]
+      ));
+    }
+    return list;
+  }
+
+  String convertDataToSideTitle(int index) {
+    var titleValue = ((index == 0) ?
+      stockPL :
+      (index == 1) ? 
+      cryptoPL :
+      (index == 2) ?
+      exchangePL :
+      totalPL);
+    titleValue = titleValue.revertValue();
+    return titleValue.toString();
   }
 }
 
