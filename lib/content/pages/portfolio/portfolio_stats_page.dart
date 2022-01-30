@@ -28,7 +28,6 @@ class PortfolioStatsPage extends StatelessWidget {
                 PortfolioStats(true),
                 SectionTitle("Profit/Loss Distribution", ""),
                 PortfolioStatsDistributionChart(),
-                SectionTitle("Detailed Statistics", ""),
                 PortfolioStatsDetailedTable(),
                 SizedBox(height: 50)
               ],

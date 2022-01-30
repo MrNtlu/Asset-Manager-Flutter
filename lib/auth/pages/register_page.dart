@@ -1,4 +1,5 @@
 import 'package:asset_flutter/auth/widgets/auth_button.dart';
+import 'package:asset_flutter/common/widgets/dropdown.dart';
 import 'package:asset_flutter/common/widgets/password_textfield.dart';
 import 'package:asset_flutter/common/widgets/textfield.dart';
 import 'package:asset_flutter/content/pages/tabs_page.dart';
@@ -24,6 +25,8 @@ class RegisterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<String> dropdownList = ["USD", "EUR", "GBP", "KRW", "JPY"];
+
     final AppBar appBar = AppBar(
       title: const Text('Register'),
       backgroundColor: TabsPage.primaryColor,
@@ -45,15 +48,6 @@ class RegisterPage extends StatelessWidget {
                 child: Column(
                   children: [
                     CustomTextField(
-                      "Username", 
-                      TextInputType.name, 
-                      textfieldController: usernameInput, 
-                      prefixIcon: const Icon(
-                        Icons.person,
-                        color: TabsPage.primaryColor
-                      ),
-                    ),
-                    CustomTextField(
                       "Email", 
                       TextInputType.emailAddress, 
                       textfieldController: emailInput,
@@ -70,6 +64,23 @@ class RegisterPage extends StatelessWidget {
                       ),
                     ),
                     PasswordTextField(rePasswordInput, label: "Password Again"),
+                    Container(
+                      width: double.infinity,
+                      margin: const EdgeInsets.fromLTRB(32, 16, 32, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "Default Currency",
+                            style: TextStyle(
+                              fontSize: 16, 
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Dropdown(dropdownList),
+                        ],
+                      ),
+                    ),
                     AuthButton(onRegisterPressed, "Register", TabsPage.primaryColor),
                   ]
                 ),

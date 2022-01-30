@@ -21,7 +21,7 @@ class CustomTextField extends StatelessWidget {
             fillColor: Colors.white,
             border: const OutlineInputBorder(),
             labelText: _label,
-            prefixIcon: prefixIcon!=null ? prefixIcon : null
+            prefixIcon: prefixIcon
           ),
         ));
   }

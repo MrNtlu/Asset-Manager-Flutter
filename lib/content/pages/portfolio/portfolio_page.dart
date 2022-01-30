@@ -81,7 +81,7 @@ class TestData {
     const TestInvestData(217.53, 'AAPL', 'USD', 'stock', 5.78, 35.2),
     const TestInvestData(78.4, 'INTC', 'USD', 'stock', -20.5, 3.6),
     const TestInvestData(59.21, 'OLN', 'USD', 'stock', 3.9, 10.2),
-    const TestInvestData(107.32, 'AUDIO', 'USD', 'crypto', -120.5, 325.6),
+    const TestInvestData(107.32, 'AUDIO', 'GBP', 'crypto', -120.5, 325.6),
     const TestInvestData(45.9, 'AVAX', 'USD', 'crypto', 34.2, 34.7),
   ];
 

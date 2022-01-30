@@ -1,6 +1,6 @@
 import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
+import 'package:asset_flutter/content/pages/tabs_page.dart';
 import 'package:flutter/material.dart';
-import 'package:asset_flutter/utils/extensions.dart';
 
 class PortfolioStatsDetailedTable extends StatelessWidget {
   const PortfolioStatsDetailedTable({
@@ -9,75 +9,69 @@ class PortfolioStatsDetailedTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    final double _textSize = MediaQuery.of(context).size.width > 370 ? 16 : 14;
+
+    return Container(
       width: double.infinity,
-      child: DataTable(
-        columns: const[
-          DataColumn(
-            label: Text(
-              '',
-              style: TextStyle(fontStyle: FontStyle.italic),
+      margin: const EdgeInsets.all(3),
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
+        child: DataTable(
+          border: TableBorder.all(
+            borderRadius: BorderRadius.circular(9),
+            width: 1,
+            color: TabsPage.primaryLightishColor,
+          ),
+          dividerThickness: 1,
+          headingRowColor: MaterialStateColor.resolveWith((states) => TabsPage.primaryLightishColor),
+          columns: [
+            DataColumn(
+              label: Text(
+                'Detailed Stats',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: _textSize
+                ),
+              ),
             ),
-          ),
-          DataColumn(
-            numeric: true,
-            label: Text(
-              'Value (USD)',
-              style: TextStyle(fontStyle: FontStyle.italic),
+            DataColumn(
+              numeric: true,
+              label: FittedBox(
+                child: Text(
+                  'Value (USD)',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: _textSize
+                  ),
+                ),
+              ),
             ),
-          ),
-        ],
-        rows: [
-          DataRow(
-            cells: [
-              const DataCell(Text('Stock')),
-              DataCell(Text(TestData.testAssetStatsData.stockAsset.toString())),
-            ],
-          ),
-          DataRow(
-            cells: [
-              const DataCell(Text('Crypto')),
-              DataCell(Text(TestData.testAssetStatsData.cryptoAsset.toString())),
-            ],
-          ),
-          DataRow(
-            cells: [
-              const DataCell(Text('Exchange')),
-              DataCell(Text(TestData.testAssetStatsData.exchangeAsset.toString())),
-            ],
-          ),
-          DataRow(
-            cells: [
-              const DataCell(Text('Total')),
-              DataCell(Text(TestData.testAssetStatsData.totalAsset.toString())),
-            ],
-          ),
-          DataRow(
-            cells: [
-              const DataCell(Text('Stock Profit/Loss')),
-              DataCell(Text(TestData.testAssetStatsData.stockPL.revertValue().toString())),
-            ],
-          ),
-          DataRow(
-            cells: [
-              const DataCell(Text('Crypto Profit/Loss')),
-              DataCell(Text(TestData.testAssetStatsData.cryptoPL.revertValue().toString())),
-            ],
-          ),
-          DataRow(
-            cells: [
-              const DataCell(Text('Exchange Profit/Loss')),
-              DataCell(Text(TestData.testAssetStatsData.exchangePL.revertValue().toString())),
-            ],
-          ),
-          DataRow(
-            cells: [
-              const DataCell(Text('Total Profit/Loss')),
-              DataCell(Text(TestData.testAssetStatsData.totalPL.revertValue().toString())),
-            ],
-          ),
-        ],
+          ],
+          rows: [
+            _statsDataRow('Stock', TestData.testAssetStatsData.stockAsset, _textSize),
+            _statsDataRow('Crypto', TestData.testAssetStatsData.cryptoAsset, _textSize),
+            _statsDataRow('Exchange', TestData.testAssetStatsData.exchangeAsset, _textSize),
+            _statsDataRow('Total', TestData.testAssetStatsData.totalAsset, _textSize),
+            _statsDataRow('Stock Profit/Loss', TestData.testAssetStatsData.stockPL, _textSize),
+            _statsDataRow('Crypto Profit/Loss', TestData.testAssetStatsData.cryptoPL, _textSize),
+            _statsDataRow('Exchange Profit/Loss', TestData.testAssetStatsData.exchangePL, _textSize),
+            _statsDataRow('Total Profit/Loss', TestData.testAssetStatsData.totalPL, _textSize),
+          ],
+        ),
       ),
+    );
+  }
+
+  DataRow _statsDataRow(String type, double value, textSize) {
+    
+    return DataRow(
+      cells: [
+        DataCell(Text(type, style: TextStyle(fontSize: textSize))),
+        DataCell(Text(value.toString(), style: TextStyle(fontSize: textSize, fontWeight: FontWeight.bold))),
+      ],
     );
   }
 }

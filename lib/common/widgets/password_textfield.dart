@@ -28,7 +28,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
           fillColor: Colors.white,
           border: const OutlineInputBorder(),
           labelText: widget.label,
-          prefixIcon: widget.prefixIcon!=null ? widget.prefixIcon : null,
+          prefixIcon: widget.prefixIcon,
           suffixIcon: Padding(
             padding: EdgeInsetsDirectional.zero,
             child: GestureDetector(

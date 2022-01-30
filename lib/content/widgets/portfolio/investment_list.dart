@@ -9,25 +9,27 @@ class PortfolioInvestment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MediaQuery.of(context).orientation == Orientation.portrait  || Platform.isMacOS || Platform.isWindows ? 
-    Container(
-      color: Colors.white,
-      child: Column(
-        children: [
-          const SectionTitle("Investments", ""),
-          Expanded(
-            child: ListView.builder(
-              itemBuilder: ((context, index) {
-                final data = TestData.testInvestData[index];
-                return PortfolioInvestmentListCell(data);
-              }),
-              itemExtent: 75,
-              itemCount: TestData.testInvestData.length,
-              padding: const EdgeInsets.only(top: 4),
-              physics: const ClampingScrollPhysics(),
-              shrinkWrap: true,
+    GestureDetector(
+      child: Container(
+        color: Colors.white,
+        child: Column(
+          children: [
+            const SectionTitle("Investments", ""),
+            Expanded(
+              child: ListView.builder(
+                itemBuilder: ((context, index) {
+                  final data = TestData.testInvestData[index];
+                  return PortfolioInvestmentListCell(data);
+                }),
+                itemExtent: 75,
+                itemCount: TestData.testInvestData.length,
+                padding: const EdgeInsets.only(top: 4),
+                physics: const ClampingScrollPhysics(),
+                shrinkWrap: true,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     )
   : 
