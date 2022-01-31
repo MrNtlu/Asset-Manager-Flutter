@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:asset_flutter/common/widgets/add_elevated_button.dart';
 import 'package:asset_flutter/content/pages/tabs_page.dart';
 import 'package:asset_flutter/content/widgets/portfolio/investment_list.dart';
 import 'package:asset_flutter/content/widgets/portfolio/portfolio.dart';
@@ -43,7 +44,21 @@ class PortfolioPage extends StatelessWidget {
                 ),
               ]
             ),
-            body: PortfolioInvestment()
+            body: SizedBox(
+              height: MediaQuery.of(context).size.height,
+              child: Stack(
+                children: [
+                  PortfolioInvestment(),
+                  Container(
+                    alignment: Alignment.bottomCenter,
+                    child: AddElevatedButton("Add Investment", (){
+                      print("Add Investment");
+                    },
+                    edgeInsets: const EdgeInsets.only(left: 8, right: 8, bottom: 8)),
+                  ),
+                ],
+              )
+            )
           )
           : 
           CustomScrollView(
@@ -57,7 +72,7 @@ class PortfolioPage extends StatelessWidget {
                       children: [
                         const Portfolio(),
                         const PortfolioStats(false),
-                        PortfolioInvestment()
+                        PortfolioInvestment(),
                       ],
                     ),
                   ),
@@ -83,6 +98,13 @@ class TestData {
     const TestInvestData(59.21, 'OLN', 'USD', 'stock', 3.9, 10.2),
     const TestInvestData(107.32, 'AUDIO', 'GBP', 'crypto', -120.5, 325.6),
     const TestInvestData(45.9, 'AVAX', 'USD', 'crypto', 34.2, 34.7),
+        const TestInvestData(45.9, 'AVAX', 'USD', 'crypto', 34.2, 34.7),
+    const TestInvestData(45.9, 'AVAX', 'USD', 'crypto', 34.2, 34.7),
+    const TestInvestData(45.9, 'AVAX', 'USD', 'crypto', 34.2, 34.7),
+    const TestInvestData(45.9, 'AVAX', 'USD', 'crypto', 34.2, 34.7),
+    const TestInvestData(45.9, 'AVAX', 'USD', 'crypto', 34.2, 34.7),
+    const TestInvestData(45.9, 'AVAX', 'USD', 'crypto', 34.2, 34.7),
+
   ];
 
   static List<TestSubscriptionData> testSubscriptionData = [
