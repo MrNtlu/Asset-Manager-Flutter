@@ -98,13 +98,10 @@ class TestData {
     const TestInvestData(59.21, 'OLN', 'USD', 'stock', 3.9, 10.2),
     const TestInvestData(107.32, 'AUDIO', 'GBP', 'crypto', -120.5, 325.6),
     const TestInvestData(45.9, 'AVAX', 'USD', 'crypto', 34.2, 34.7),
-        const TestInvestData(45.9, 'AVAX', 'USD', 'crypto', 34.2, 34.7),
-    const TestInvestData(45.9, 'AVAX', 'USD', 'crypto', 34.2, 34.7),
-    const TestInvestData(45.9, 'AVAX', 'USD', 'crypto', 34.2, 34.7),
-    const TestInvestData(45.9, 'AVAX', 'USD', 'crypto', 34.2, 34.7),
-    const TestInvestData(45.9, 'AVAX', 'USD', 'crypto', 34.2, 34.7),
-    const TestInvestData(45.9, 'AVAX', 'USD', 'crypto', 34.2, 34.7),
-
+    const TestInvestData(45.9, 'LTC', 'USD', 'crypto', 34.2, 34.7),
+    const TestInvestData(45.9, 'AMZN', 'USD', 'stock', 34.2, 34.7),
+    const TestInvestData(45.9, 'ATVI', 'USD', 'stock', 34.2, 34.7),
+    const TestInvestData(45.9, 'ETC', 'USD', 'crypto', 34.2, 34.7),
   ];
 
   static List<TestSubscriptionData> testSubscriptionData = [
