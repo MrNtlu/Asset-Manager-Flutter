@@ -12,9 +12,9 @@ class PortfolioInvestmentListCell extends StatelessWidget {
 
   PortfolioInvestmentListCell(this.data) {
     if (data.type == "crypto") {
-      image = TestData.cryptoImage(data.symbol);
+      image = TestData.cryptoImage(data.toAsset);
     } else {
-      image = TestData.stockImage(data.symbol);
+      image = TestData.stockImage(data.toAsset);
     }
   }
 
@@ -38,7 +38,7 @@ class PortfolioInvestmentListCell extends StatelessWidget {
             Container(
               margin: const EdgeInsets.only(left: 8),
               child: Text(
-                data.symbol,
+                data.toAsset,
                 style: const TextStyle(
                   fontSize: 18,
                   color: Colors.white,
@@ -54,7 +54,7 @@ class PortfolioInvestmentListCell extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.only(right: 12),
                     child: Text(
-                      data.value.toString() + ' ' + data.fromAsset,
+                      data.currentValue.toString() + ' ' + data.fromAsset,
                       style: const TextStyle(
                         fontSize: 18,
                         color: Colors.white,

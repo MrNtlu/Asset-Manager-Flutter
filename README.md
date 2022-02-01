@@ -7,6 +7,7 @@
     <li> FLChart
     <li> Shared Preferences
     <li> Auto Size Text
+    <li> Flutter Slidable
 </ul>
 
 &nbsp;

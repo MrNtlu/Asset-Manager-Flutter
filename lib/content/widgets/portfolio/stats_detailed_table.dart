@@ -1,5 +1,6 @@
 import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
 import 'package:asset_flutter/content/pages/tabs_page.dart';
+import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
 
 class PortfolioStatsDetailedTable extends StatelessWidget {
@@ -40,7 +41,7 @@ class PortfolioStatsDetailedTable extends StatelessWidget {
               numeric: true,
               label: FittedBox(
                 child: Text(
-                  'Value (USD)',
+                  'Value ('+TestData.testAssetStatsData.currency+')',
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -51,14 +52,16 @@ class PortfolioStatsDetailedTable extends StatelessWidget {
             ),
           ],
           rows: [
+            _statsDataRow('Total Wealth', TestData.testAssetStatsData.totalAsset, _textSize),
             _statsDataRow('Stock', TestData.testAssetStatsData.stockAsset, _textSize),
             _statsDataRow('Crypto', TestData.testAssetStatsData.cryptoAsset, _textSize),
             _statsDataRow('Exchange', TestData.testAssetStatsData.exchangeAsset, _textSize),
-            _statsDataRow('Total', TestData.testAssetStatsData.totalAsset, _textSize),
-            _statsDataRow('Stock Profit/Loss', TestData.testAssetStatsData.stockPL, _textSize),
-            _statsDataRow('Crypto Profit/Loss', TestData.testAssetStatsData.cryptoPL, _textSize),
-            _statsDataRow('Exchange Profit/Loss', TestData.testAssetStatsData.exchangePL, _textSize),
-            _statsDataRow('Total Profit/Loss', TestData.testAssetStatsData.totalPL, _textSize),
+            _statsDataRow('Total Profit/Loss', TestData.testAssetStatsData.totalPL.revertValue(), _textSize),
+            _statsDataRow('Stock Profit/Loss', TestData.testAssetStatsData.stockPL.revertValue(), _textSize),
+            _statsDataRow('Crypto Profit/Loss', TestData.testAssetStatsData.cryptoPL.revertValue(), _textSize),
+            _statsDataRow('Exchange Profit/Loss', TestData.testAssetStatsData.exchangePL.revertValue(), _textSize),
+            _statsDataRow('Total Bought', TestData.testAssetStatsData.totalBought, _textSize),
+            _statsDataRow('Total Sold', TestData.testAssetStatsData.totalSold, _textSize),
           ],
         ),
       ),

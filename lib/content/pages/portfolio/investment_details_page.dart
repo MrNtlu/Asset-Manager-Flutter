@@ -1,78 +1,46 @@
 import 'package:asset_flutter/common/widgets/add_elevated_button.dart';
 import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
 import 'package:asset_flutter/content/pages/tabs_page.dart';
-import 'package:asset_flutter/content/widgets/portfolio/il_cell_image.dart';
-import 'package:asset_flutter/content/widgets/portfolio/pl_text.dart';
-import 'package:asset_flutter/utils/currency_handler.dart';
+import 'package:asset_flutter/content/widgets/portfolio/id_log_list.dart';
+import 'package:asset_flutter/content/widgets/portfolio/id_top_bar.dart';
 import 'package:flutter/material.dart';
 
 class InvestmentDetailsPage extends StatelessWidget {
-  final TestInvestData data;
+  final TestInvestData _data;
+  late final String image;
 
-  const InvestmentDetailsPage(this.data);
+  InvestmentDetailsPage(this._data) {
+    if (_data.type == "crypto") {
+      image = TestData.cryptoImage(_data.toAsset);
+    } else {
+      image = TestData.stockImage(_data.toAsset);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final AppBar appBar = AppBar(
-      title: Text(data.symbol + '/' + data.fromAsset),
+      title: Text(_data.name),
       backgroundColor: TabsPage.primaryLightishColor,
     );
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: appBar,
-      body: Column(
-        children: [
-          Container(
-            height: 300,
-            color: TabsPage.primaryLightishColor,
-            child: Row(
-              children: [
-                //TODO: total_value, sold_value, remaining_amount, p/l
-                InvestmentListCellImage(TestData.cryptoImage(data.symbol), data.type),
-                Container(
-                  margin: const EdgeInsets.only(left: 8),
-                  child: Text(
-                    data.symbol,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.only(right: 12),
-                        child: Text(
-                          data.value.toString() + ' ' + data.fromAsset,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold
-                          ),
-                        ),
-                      ),
-                      Container(
-                          padding: const EdgeInsets.only(right: 12, top: 4),
-                          child: PortfolioPLText(data.pl, null,
-                              fontSize: 13,
-                              iconSize: 15,
-                              plPrefix: convertCurrencyToSymbol(data.fromAsset)))
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-          AddElevatedButton(('Add ' + data.symbol), () {
-            print('Add ' + data.symbol);
-          })
-        ],
+      body: SafeArea(
+        child: Stack(
+          children: [
+            InvestmentDetailsLogList(appBar.preferredSize.height),
+            InvestmentDetailsTopBar(_data, image),
+            Container(
+              alignment: Alignment.bottomCenter,
+              child: AddElevatedButton(('Add ' + _data.toAsset), () {
+                print('Add ' + _data.toAsset);
+              },
+              edgeInsets: const EdgeInsets.only(left: 8, right: 8, bottom: 8)),
+            )
+          ],
+        ),
       ),
     );
   }

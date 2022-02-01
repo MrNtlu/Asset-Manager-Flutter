@@ -90,18 +90,18 @@ class PortfolioPage extends StatelessWidget {
 
 class TestData {
   static List<TestInvestData> testInvestData = [
-    const TestInvestData(300.0, 'BTC', 'USD', 'crypto', -68.28, 0.00062),
-    const TestInvestData(25.0, 'MATIC', 'USD', 'crypto', 40.67, 105.2),
-    const TestInvestData(167.2, 'LRC', 'USD', 'crypto', 140.67, 50.0),
-    const TestInvestData(217.53, 'AAPL', 'USD', 'stock', 5.78, 35.2),
-    const TestInvestData(78.4, 'INTC', 'USD', 'stock', -20.5, 3.6),
-    const TestInvestData(59.21, 'OLN', 'USD', 'stock', 3.9, 10.2),
-    const TestInvestData(107.32, 'AUDIO', 'GBP', 'crypto', -120.5, 325.6),
-    const TestInvestData(45.9, 'AVAX', 'USD', 'crypto', 34.2, 34.7),
-    const TestInvestData(45.9, 'LTC', 'USD', 'crypto', 34.2, 34.7),
-    const TestInvestData(45.9, 'AMZN', 'USD', 'stock', 34.2, 34.7),
-    const TestInvestData(45.9, 'ATVI', 'USD', 'stock', 34.2, 34.7),
-    const TestInvestData(45.9, 'ETC', 'USD', 'crypto', 34.2, 34.7),
+    const TestInvestData(300.0, 'Bitcoin', 'BTC', 'USD', 'crypto', -68.28, 0.00062),
+    const TestInvestData(25.0, 'Polygon', 'MATIC', 'USD', 'crypto', 40.67, 105.2),
+    const TestInvestData(167.2, 'Loopspring', 'LRC', 'USD', 'crypto', 140.67, 50.0),
+    const TestInvestData(217.53, 'Apple Inc.', 'AAPL', 'USD', 'stock', 5.78, 35.2),
+    const TestInvestData(78.4, 'Intel', 'INTC', 'USD', 'stock', -20.5, 3.6),
+    const TestInvestData(59.21, 'Olin Corporation', 'OLN', 'USD', 'stock', 3.9, 10.2),
+    const TestInvestData(107.32, 'Audius', 'AUDIO', 'GBP', 'crypto', -120.5, 325.6),
+    const TestInvestData(45.9, 'Avalanche', 'AVAX', 'USD', 'crypto', 34.2, 34.7),
+    const TestInvestData(45.9, 'Litecoin', 'LTC', 'USD', 'crypto', 34.2, 34.7),
+    const TestInvestData(45.9, 'Amazon.com, Inc.', 'AMZN', 'USD', 'stock', 34.2, 34.7),
+    const TestInvestData(45.9, 'Activision Blizzard, Inc.', 'ATVI', 'USD', 'stock', 34.2, 34.7),
+    const TestInvestData(45.9, 'Ethereum Classic', 'ETC', 'USD', 'crypto', 34.2, 34.7),
   ];
 
   static List<TestSubscriptionData> testSubscriptionData = [
@@ -119,7 +119,20 @@ class TestData {
     const TestSubscriptionStatsData('GBP', 30.1),
   ];
 
-  static TestAssetStatsData testAssetStatsData = TestAssetStatsData(120, 536.28, 102.4, 756.46, 42202.7, -66542.5, -125324.6, -150684.46, 17.5, 67.66, 14.84);
+  static TestAssetStatsData testAssetStatsData = TestAssetStatsData("GBP", 130, 45, 120, 536.28, 102.4, 756.46, 42202.7, -66542.5, -125324.6, -150684.46, 17.5, 67.66, 14.84);
+
+  static List<TestInvestLogData> testInvestLogData = [
+    TestInvestLogData(475.2855, "BTC", "USD", "buy", 0.01, DateTime.now(), boughtPrice: 47528.55),
+    TestInvestLogData(348.062, "BTC", "USD", "buy", 0.006, DateTime.now().subtract(const Duration(days: 3)), boughtPrice: 58001.27),
+    TestInvestLogData(252, "BTC", "USD", "sell", 0.000782, DateTime.now(), soldPrice: 53582.55),
+    TestInvestLogData(93.084, "BTC", "USD", "buy", 0.0015, DateTime.now().subtract(const Duration(days: 33)), boughtPrice: 62056),
+    TestInvestLogData(252, "BTC", "USD", "sell", 0.000782, DateTime.now(), soldPrice: 53582.55),
+    TestInvestLogData(102.3, "BTC", "USD", "sell", 0.00313, DateTime.now(), soldPrice: 35528.55),
+    TestInvestLogData(93.084, "BTC", "USD", "buy", 0.0015, DateTime.now().subtract(const Duration(days: 67)), boughtPrice: 62056),
+    TestInvestLogData(102.3, "BTC", "USD", "sell", 0.00313, DateTime.now(), soldPrice: 35528.55),
+    TestInvestLogData(93.084, "BTC", "USD", "buy", 0.0015, DateTime.now().subtract(const Duration(days: 395)), boughtPrice: 62056),
+    TestInvestLogData(102.3, "BTC", "USD", "sell", 0.00313, DateTime.now().subtract(const Duration(days: 462)), soldPrice: 35528.55),
+  ];
 
   static List<Color> testChartStatsColor = [
     TabsPage.primaryColor,
@@ -170,6 +183,9 @@ class TestData {
 }
 
 class TestAssetStatsData {
+  final String currency;
+  final double totalBought;
+  final double totalSold;
   final double stockAsset;
   final double cryptoAsset;
   final double exchangeAsset;
@@ -183,6 +199,7 @@ class TestAssetStatsData {
   final double exchangePercentage;
 
   TestAssetStatsData(
+    this.currency, this.totalBought, this.totalSold,
     this.stockAsset, this.cryptoAsset, this.exchangeAsset, this.totalAsset,
     this.stockPL, this.cryptoPL, this.exchangePL, this.totalPL,
     this.stockPercentage, this.cryptoPercentage, this.exchangePercentage
@@ -261,14 +278,32 @@ class TestAssetStatsData {
 }
 
 class TestInvestData {
-  final double value;
-  final String symbol;
+  final double currentValue;
+  final String name;
+  final String toAsset;
   final String fromAsset;
   final String type;
   final double pl;
   final double amount;
 
-  const TestInvestData(this.value, this.symbol, this.fromAsset, this.type, this.pl, this.amount);
+  const TestInvestData(this.currentValue, this.name, this.toAsset, this.fromAsset, this.type, this.pl, this.amount);
+}
+
+class TestInvestLogData {
+  final double value;
+  final String toAsset;
+  final String fromAsset;
+  final String type;
+  final double amount;
+  final double? boughtPrice;
+  final double? soldPrice;
+  final DateTime createdAt;
+
+  const TestInvestLogData(
+    this.value, this.toAsset, this.fromAsset, 
+    this.type, this.amount, this.createdAt, 
+    {this.boughtPrice, this.soldPrice}
+  );
 }
 
 class TestSubscriptionData {

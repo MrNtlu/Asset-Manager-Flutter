@@ -1,3 +1,4 @@
+import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
 import 'package:asset_flutter/content/pages/tabs_page.dart';
 import 'package:asset_flutter/content/widgets/portfolio/pl_text.dart';
 import 'package:asset_flutter/content/widgets/portfolio/section_title.dart';
@@ -29,7 +30,7 @@ class Portfolio extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "15535683.49",
+                          TestData.testAssetStatsData.totalAsset.toString(),
                           softWrap: false,
                           style: TextStyle(
                             fontSize: MediaQuery.of(context).size.width > 350 ? 36 : 32,
@@ -37,11 +38,11 @@ class Portfolio extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 6),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 6),
                           child: Text(
-                            "USD",
-                            style: TextStyle(
+                            TestData.testAssetStatsData.currency,
+                            style: const TextStyle(
                               fontSize: 12,
                               color: Colors.white
                             ),
@@ -53,8 +54,8 @@ class Portfolio extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.only(top: 16),
                     child: PortfolioPLText(
-                      -456569.23, 
-                      "USD", 
+                      TestData.testAssetStatsData.totalPL, 
+                      TestData.testAssetStatsData.currency, 
                       fontSize: MediaQuery.of(context).size.width > 350 ? 20 : 16, 
                       iconSize: MediaQuery.of(context).size.width > 350 ? 22 : 18
                     )
