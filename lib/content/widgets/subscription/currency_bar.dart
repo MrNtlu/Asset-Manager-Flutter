@@ -1,15 +1,25 @@
 import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
-import 'package:asset_flutter/content/pages/tabs_page.dart';
-import 'package:asset_flutter/content/widgets/portfolio/section_title.dart';
-import 'package:asset_flutter/content/widgets/subscription/cb_button.dart';
-import 'package:asset_flutter/content/widgets/subscription/cb_container.dart';
-import 'package:asset_flutter/content/widgets/subscription/cb_info_text.dart';
+import 'package:asset_flutter/content/widgets/subscription/cb_info_card.dart';
 import 'package:flutter/material.dart';
 
-class SubscriptionCurrencyBar extends StatelessWidget {
+class SubscriptionCurrencyBar extends StatefulWidget {
   final List<TestSubscriptionStatsData> _currencyList;
 
   const SubscriptionCurrencyBar(this._currencyList);
+
+  @override
+  State<SubscriptionCurrencyBar> createState() => _SubscriptionCurrencyBarState();
+}
+
+class _SubscriptionCurrencyBarState extends State<SubscriptionCurrencyBar> {
+  final List<String> _dropdownList = ["Monthly", "Total"];
+  late String _dropdownValue;
+
+  @override
+  void initState() {
+    super.initState();
+    _dropdownValue = _dropdownList[0];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,63 +27,53 @@ class SubscriptionCurrencyBar extends StatelessWidget {
       margin: const EdgeInsets.only(top: 12, bottom: 8),
       child: Column(
         children: [
-          const SectionTitle("Monthly Payments", "", mainFontSize: 22),
-          Container(
-            margin: const EdgeInsets.only(left: 8, right: 8),
-            child: Card(
-              color: TabsPage.primaryLightishColor,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(12, 12, 12, 6),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        for (var index = 0; index < _currencyList.length; index++)
-                          SubscriptionCurrencyBarContainer(
-                            TestData.subscriptionStatsPercentageCalculator(
-                              _currencyList, 
-                              _currencyList[index]
-                            ), index, TestData.testSubscriptionStatsColor[index%4],
-                            _currencyList.length
-                          )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 35 * (_currencyList.length / 2).ceil().toDouble(),
-                      child: Wrap(
-                        crossAxisAlignment: WrapCrossAlignment.start,
-                        alignment: WrapAlignment.start,
-                        spacing: 1,
-                        direction: Axis.vertical,
-                        children: [
-                          for (var i = 0; i < _currencyList.length; i++)
-                          SubscriptionCurrencyBarInfoText(
-                            TestData.testSubscriptionStatsColor[i], 
-                            _currencyList[i].totalPayment.toString() + ' ' + _currencyList[i].currency
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(left: 8, right: 8, top: 8),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 8, 8, 4),
             child: Row(
               children: [
-                CurrencyBarButton('Stats', (){
-                  print("Stats Pressed");
-                }),
-                CurrencyBarButton('Cards', (){
-                  print("Cards Pressed");
-                }),
+                DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    value: _dropdownValue,
+                    items: _dropdownList.map((value) {
+                      return DropdownMenuItem(
+                        value: value,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Text(
+                            value,
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      if (value != null) {
+                        setState(() {
+                          _dropdownValue = value;
+                        });
+                      }
+                    },
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(left: 4),
+                  child: Text(
+                    "Payments",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               ],
             ),
-          )
+          ),
+          CurrencyBarInfoCard(widget._currencyList, _dropdownValue == _dropdownList[0]),
         ],
       ),
     );

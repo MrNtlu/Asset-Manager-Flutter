@@ -4,13 +4,12 @@ import 'package:asset_flutter/content/widgets/subscription/sl_cell.dart';
 import 'package:flutter/material.dart';
 
 class SubscriptionList extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       child: Column(
         children: [
-          const SectionTitle("Subscriptions", ""),
+          const SectionTitle("Subscriptions", "",),
           Expanded(
             child: ListView.builder(itemBuilder: ((context, index) {
               final data = TestData.testSubscriptionData[index];

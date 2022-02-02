@@ -27,7 +27,6 @@ extension DateTimeExt on DateTime {
     }
     return dayDiff.dateDifferencePluralString('day') + ' ago.';
   }
-  
 }
 
 extension StringExt on int {

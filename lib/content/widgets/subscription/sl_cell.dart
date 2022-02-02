@@ -11,11 +11,11 @@ class SubscriptionListCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: _data.description != null ? 150 : 120,
+      height: 105,
       child: Card(
         elevation: 4,
         color: Color(_data.color),
-        margin: const EdgeInsets.only(left: 8, bottom: 8, right: 8),
+        margin: const EdgeInsets.only(left: 8, bottom: 12, right: 8),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(18),
         ),
@@ -25,27 +25,24 @@ class SubscriptionListCell extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SubscriptionListCellImage(_data.image),
-                SLText(_data.name, 1, 18, Alignment.center, const EdgeInsets.fromLTRB(12, 8, 12, 0))
+                SLText(_data.name, 1, 18, Alignment.center, const EdgeInsets.fromLTRB(8, 8, 8, 0)),
               ],
             ),
-            if(_data.description != null) 
-            SLText(_data.description!, 2, 14, Alignment.centerLeft, 
-              const EdgeInsets.all(12),
-              textAlign: TextAlign.start,
-              textColor: Colors.grey.shade200
-            ),
             Expanded(
-              flex: 1,
               child: Container(
-                alignment: Alignment.bottomRight,
-                margin: const EdgeInsets.only(right: 12, bottom: 12),
-                child: Text(
-                  _data.price.toString() + ' ' + _data.currency,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold
-                  )
+                margin: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+                child: Row(
+                  children: [
+                    if(_data.billCycle != null)
+                    SLSubText(
+                      _data.billCycle!.handleBillCycleString(), 
+                      Alignment.bottomLeft
+                    ),
+                    SLSubText(
+                      _data.price.toString() + ' ' + _data.currency, 
+                      Alignment.bottomRight
+                    )
+                  ],
                 ),
               ),
             ),
@@ -80,9 +77,9 @@ class SLText extends StatelessWidget {
         margin: _edgeInsets,
         child: AutoSizeText(
           _text,
-          maxLines: 2,
+          maxLines: 1,
           softWrap: true,
-          overflow: TextOverflow.fade,
+          overflow: TextOverflow.ellipsis,
           textAlign: textAlign,
           minFontSize: _textSize,
           style: TextStyle(
@@ -92,6 +89,30 @@ class SLText extends StatelessWidget {
           )
         ),
       ),
+    );
+  }
+}
+
+class SLSubText extends StatelessWidget {
+  final String _text;
+  final Alignment _alignment;
+
+  const SLSubText(this._text, this._alignment, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        alignment: _alignment,
+        child: Text(
+          _text,
+          style: const TextStyle(
+            fontSize: 14,
+            color: Colors.white,
+            fontWeight: FontWeight.bold
+          )
+        ),
+      )
     );
   }
 }

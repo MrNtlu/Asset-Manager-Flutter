@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class Dropdown extends StatefulWidget {
-  final List<String> dropdownList;
+  final List<String> _dropdownList;
 
-  const Dropdown(this.dropdownList, {Key? key}) : super(key: key);
+  const Dropdown(this._dropdownList, {Key? key}) : super(key: key);
 
   @override
   State<Dropdown> createState() => _DropdownState();
@@ -15,7 +15,7 @@ class _DropdownState extends State<Dropdown> {
   @override
   void initState() {
     super.initState();
-    dropdownValue = widget.dropdownList[0];
+    dropdownValue = widget._dropdownList[0];
   }
 
   @override
@@ -23,7 +23,7 @@ class _DropdownState extends State<Dropdown> {
     return DropdownButtonHideUnderline(
       child: DropdownButton<String>(
         value: dropdownValue,
-        items: widget.dropdownList.map((value) {
+        items: widget._dropdownList.map((value) {
           return DropdownMenuItem(
             value: value,
             child: Padding(

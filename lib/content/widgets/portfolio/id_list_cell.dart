@@ -13,9 +13,9 @@ class InvestmentDetailsListCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.only(top: 8),
+      margin: const EdgeInsets.only(top: 8, right: 4, left: 4),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(0),
+        borderRadius: BorderRadius.circular(8),
         side: BorderSide(
           color: _data.type == "buy" ? TabsPage.primaryLightColor : Colors.red.shade600,
           width: 1

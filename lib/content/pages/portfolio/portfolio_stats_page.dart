@@ -18,22 +18,23 @@ class PortfolioStatsPage extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: appBar,
-      body: CustomScrollView(
-        physics: const ClampingScrollPhysics(),
-        slivers: [
-          SliverToBoxAdapter(
-            child: Column(
-              children: const [
-                Portfolio(isDetailed: true),
-                PortfolioStats(true),
-                SectionTitle("Profit/Loss Distribution", ""),
-                PortfolioStatsDistributionChart(),
-                PortfolioStatsDetailedTable(),
-                SizedBox(height: 50)
-              ],
+      body: SafeArea(
+        child: CustomScrollView(
+          physics: const ClampingScrollPhysics(),
+          slivers: [
+            SliverToBoxAdapter(
+              child: Column(
+                children: const [
+                  Portfolio(isDetailed: true),
+                  PortfolioStats(true),
+                  SectionTitle("Profit/Loss Distribution", ""),
+                  PortfolioStatsDistributionChart(),
+                  PortfolioStatsDetailedTable(),
+                ],
+              ),
             ),
-          ),
-        ]
+          ]
+        ),
       ),
     );
   }

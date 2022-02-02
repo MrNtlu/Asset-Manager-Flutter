@@ -14,24 +14,22 @@ class InvestmentDetailsLogList extends StatelessWidget {
         _appBarHeight + 
         MediaQuery.of(context).padding.top + 
         MediaQuery.of(context).padding.bottom),
-      child: Expanded(
-        child: ListView.builder(
-          itemBuilder: (context, index) {
-            if (index == 0) {
-              return const SizedBox(height: 100);
-            } else if (index == TestData.testInvestLogData.length + 1){
-              return const SizedBox(height: 65);
-            }
+      child: ListView.builder(
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return const SizedBox(height: 100);
+          } else if (index == TestData.testInvestLogData.length + 1){
+            return const SizedBox(height: 65);
+          }
 
-            final data = TestData.testInvestLogData[index - 1];
+          final data = TestData.testInvestLogData[index - 1];
 
-            return InvestmentDetailsListCell(data);
-          },
-          itemCount: TestData.testInvestLogData.length + 2,
-          padding: const EdgeInsets.only(top: 4),
-          physics: const ClampingScrollPhysics(),
-          shrinkWrap: true,
-        ),
+          return InvestmentDetailsListCell(data);
+        },
+        itemCount: TestData.testInvestLogData.length + 2,
+        padding: const EdgeInsets.only(top: 4),
+        physics: const ClampingScrollPhysics(),
+        shrinkWrap: true,
       ),
     );
   }

@@ -105,18 +105,18 @@ class TestData {
   ];
 
   static List<TestSubscriptionData> testSubscriptionData = [
-    TestSubscriptionData("Netflix 4K Family for Friends and Me", "Netflix Family Plan", DateTime.now(), 30, 40.5, 'TL', subscriptionImage("netflix.com"), 0xFFE53935),
-    TestSubscriptionData("Spotify", null, DateTime.now().subtract(const Duration(days: 5)), 30, 27.5, 'TL', subscriptionImage("spotify.com"), 0xFF4CAF50),
-    TestSubscriptionData("Playstation Plus", "Playstation Plus and this is an example of long text, lets see hot it'll behave.", DateTime.now().subtract(const Duration(days: 15)), 365, 165.2, 'TL', subscriptionImage("playstation.com"), 0xFF1976D2),
-    TestSubscriptionData("Jefit", null, DateTime.now().subtract(const Duration(days: 2)), 7, 10.9, 'USD', subscriptionImage("jefit.com"), 0xFF03A9F4),
-    TestSubscriptionData("WoW", null, DateTime.now().subtract(const Duration(days: 147)), 365, 60.2, 'USD', subscriptionImage("worldofwarcraft.com"), 0xFF4CAF50),
+    TestSubscriptionData("Netflix 4K Family for Friends and Me", "Netflix Family Plan", DateTime.now(), const BillCycle(month: 3), 40.5, 'TL', subscriptionImage("netflix.com"), 0xFFE53935),
+    TestSubscriptionData("Spotify", null, DateTime.now().subtract(const Duration(days: 5)), const BillCycle(month: 1), 27.5, 'TL', subscriptionImage("spotify.com"), 0xFF4CAF50),
+    TestSubscriptionData("Playstation Plus", "Playstation Plus and this is an example of long text, lets see hot it'll behave.", DateTime.now().subtract(const Duration(days: 15)), const BillCycle(year: 1), 165.2, 'TL', subscriptionImage("playstation.com"), 0xFF1976D2),
+    TestSubscriptionData("Jefit", null, DateTime.now().subtract(const Duration(days: 2)), const BillCycle(day: 7), 10.9, 'USD', subscriptionImage("jefit.com"), 0xFF03A9F4),
+    TestSubscriptionData("WoW", null, DateTime.now().subtract(const Duration(days: 147)), const BillCycle(year: 1), 60.2, 'USD', subscriptionImage("worldofwarcraft.com"), 0xFF4CAF50),
   ];
 
   static List<TestSubscriptionStatsData> testSubscriptionStatsData = [
-    const TestSubscriptionStatsData('USD', 380.42),
-    const TestSubscriptionStatsData('EUR', 85.3),
-    const TestSubscriptionStatsData('TRY', 16.5),
-    const TestSubscriptionStatsData('GBP', 30.1),
+    const TestSubscriptionStatsData('USD', 43.8, 60.9),
+    const TestSubscriptionStatsData('EUR', 85.3, 85.3),
+    const TestSubscriptionStatsData('TRY', 380, 989.9),
+    const TestSubscriptionStatsData('GBP', 30.1, 120.6),
   ];
 
   static TestAssetStatsData testAssetStatsData = TestAssetStatsData("GBP", 130, 45, 120, 536.28, 102.4, 756.46, 42202.7, -66542.5, -125324.6, -150684.46, 17.5, 67.66, 14.84);
@@ -175,10 +175,10 @@ class TestData {
     return Icons.payment_rounded;
   }
 
-  static int subscriptionStatsPercentageCalculator(List<TestSubscriptionStatsData> subsList, TestSubscriptionStatsData data) {
+  static int subscriptionStatsPercentageCalculator(List<TestSubscriptionStatsData> subsList, double data) {
     double sum = subsList.fold(0, (previousValue, element) => previousValue + element.totalPayment);
 
-    return (data.totalPayment / sum * 100).toInt();
+    return (data / sum * 100).toInt();
   }
 }
 
@@ -310,18 +310,40 @@ class TestSubscriptionData {
   final String name;
   final String? description;
   final DateTime billDate;
-  final int billCycle;
+  final BillCycle? billCycle;
   final double price;
   final String currency;
   final String? image;
-  final int color; 
+  final int color;
 
-  const TestSubscriptionData(this.name, this.description, this.billDate, this.billCycle, this.price, this.currency, this.image, this.color);
+  TestSubscriptionData(
+    this.name, this.description, this.billDate, this.billCycle, 
+    this.price, this.currency, this.image, this.color
+  );
+}
+
+class BillCycle {
+  final int? day;
+  final int? month;
+  final int? year;
+
+  const BillCycle({this.day, this.month, this.year});
+
+  String handleBillCycleString() {
+    if(day != null){
+      return "Every " + day!.dateDifferencePluralString("day");
+    }else if (month != null) {
+      return "Every " + month!.dateDifferencePluralString("month");
+    }else {
+      return "Every " + year!.dateDifferencePluralString("year") ;
+    }
+  }
 }
 
 class TestSubscriptionStatsData {
   final String currency;
   final double totalPayment;
+  final double monthlyPayment;
 
-  const TestSubscriptionStatsData(this.currency, this.totalPayment);
+  const TestSubscriptionStatsData(this.currency, this.totalPayment, this.monthlyPayment);
 }

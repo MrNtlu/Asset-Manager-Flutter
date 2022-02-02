@@ -30,6 +30,8 @@ class InvestmentDetailsPage extends StatelessWidget {
       body: SafeArea(
         child: Stack(
           children: [
+            //TODO: Pagination
+            // https://www.youtube.com/c/JohannesMilke/search?query=pagination
             InvestmentDetailsLogList(appBar.preferredSize.height),
             InvestmentDetailsTopBar(_data, image),
             Container(
