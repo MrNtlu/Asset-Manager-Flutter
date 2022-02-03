@@ -2,27 +2,35 @@ import 'package:flutter/material.dart';
 
 class Dropdown extends StatefulWidget {
   final List<String> _dropdownList;
+  final TextStyle textStyle;
+  final Color dropdownColor;
 
-  const Dropdown(this._dropdownList, {Key? key}) : super(key: key);
+  late String dropdownValue;
+
+  Dropdown(this._dropdownList, {
+    this.textStyle = const TextStyle(color: Colors.black),
+    this.dropdownColor = Colors.white,
+    Key? key
+  }) : super(key: key);
 
   @override
   State<Dropdown> createState() => _DropdownState();
 }
 
 class _DropdownState extends State<Dropdown> {
-  late String dropdownValue;
-
   @override
   void initState() {
     super.initState();
-    dropdownValue = widget._dropdownList[0];
+    widget.dropdownValue = widget._dropdownList[0];
   }
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonHideUnderline(
       child: DropdownButton<String>(
-        value: dropdownValue,
+        value: widget.dropdownValue,
+        style: widget.textStyle,
+        dropdownColor: widget.dropdownColor,
         items: widget._dropdownList.map((value) {
           return DropdownMenuItem(
             value: value,
@@ -35,7 +43,7 @@ class _DropdownState extends State<Dropdown> {
         onChanged: (value) {
           if (value != null) {
             setState(() {
-              dropdownValue = value;
+              widget.dropdownValue = value;
             });
           }
           print(value);

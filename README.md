@@ -8,6 +8,7 @@
     <li> Shared Preferences
     <li> Auto Size Text
     <li> Flutter Slidable
+    <li> Intl
 </ul>
 
 &nbsp;

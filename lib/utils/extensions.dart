@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 extension DoubleExt on double {
   double revertValue() {
     return this < 0 ? abs() : this * -1;
@@ -26,6 +28,12 @@ extension DateTimeExt on DateTime {
       return (years.dateDifferencePluralString('year') + " ago.");
     }
     return dayDiff.dateDifferencePluralString('day') + ' ago.';
+  }
+
+  String dateToFormatDate() {
+    final DateTime now = DateTime.now();
+    final DateFormat formatter = DateFormat('dd/MM/yyyy');
+    return formatter.format(now);
   }
 }
 

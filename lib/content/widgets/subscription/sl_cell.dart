@@ -1,4 +1,5 @@
 import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
+import 'package:asset_flutter/content/pages/subscription/subscription_details_page.dart';
 import 'package:asset_flutter/content/widgets/subscription/sl_cell_image.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -10,44 +11,50 @@ class SubscriptionListCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 105,
-      child: Card(
-        elevation: 4,
-        color: Color(_data.color),
-        margin: const EdgeInsets.only(left: 8, bottom: 12, right: 8),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18),
-        ),
-        child: Column(
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SubscriptionListCellImage(_data.image),
-                SLText(_data.name, 1, 18, Alignment.center, const EdgeInsets.fromLTRB(8, 8, 8, 0)),
-              ],
-            ),
-            Expanded(
-              child: Container(
-                margin: const EdgeInsets.fromLTRB(12, 0, 12, 8),
-                child: Row(
-                  children: [
-                    if(_data.billCycle != null)
-                    SLSubText(
-                      _data.billCycle!.handleBillCycleString(), 
-                      Alignment.bottomLeft
-                    ),
-                    SLSubText(
-                      _data.price.toString() + ' ' + _data.currency, 
-                      Alignment.bottomRight
-                    )
-                  ],
+    return GestureDetector(
+      onTap: (){
+        Navigator.of(context).push(
+              MaterialPageRoute(builder: ((context) => SubscriptionDetailsPage(_data))));
+      },
+      child: SizedBox(
+        height: 105,
+        child: Card(
+          elevation: 4,
+          color: Color(_data.color),
+          margin: const EdgeInsets.only(left: 8, bottom: 12, right: 8),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18),
+          ),
+          child: Column(
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SubscriptionListCellImage(_data.image),
+                  SLText(_data.name, 1, 18, Alignment.center, const EdgeInsets.fromLTRB(12, 8, 12, 0)),
+                ],
+              ),
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+                  child: Row(
+                    children: [
+                      if(_data.billCycle != null)
+                      SLSubText(
+                        _data.billCycle!.handleBillCycleString(), 
+                        Alignment.bottomLeft
+                      ),
+                      SLSubText(
+                        _data.price.toString() + ' ' + _data.currency, 
+                        Alignment.bottomRight
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        )
+            ],
+          )
+        ),
       ),
     );
   }
