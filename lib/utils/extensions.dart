@@ -31,9 +31,8 @@ extension DateTimeExt on DateTime {
   }
 
   String dateToFormatDate() {
-    final DateTime now = DateTime.now();
     final DateFormat formatter = DateFormat('dd/MM/yyyy');
-    return formatter.format(now);
+    return formatter.format(this);
   }
 }
 

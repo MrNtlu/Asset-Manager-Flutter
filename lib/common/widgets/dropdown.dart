@@ -46,7 +46,6 @@ class _DropdownState extends State<Dropdown> {
               widget.dropdownValue = value;
             });
           }
-          print(value);
         },
       ),
     );

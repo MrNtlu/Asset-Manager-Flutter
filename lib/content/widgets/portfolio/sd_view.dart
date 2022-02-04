@@ -54,8 +54,7 @@ class SubscriptionDetailsView extends StatelessWidget {
         if(_data.description != null)
         SDViewText("Description", _data.description!),
         SDViewText("Initial Bill Date", _data.billDate.dateToFormatDate()),
-        if (_data.billCycle != null)
-        SDViewText("Bill Cycle", _data.billCycle!.handleBillCycleString()),
+        SDViewText("Bill Cycle", _data.billCycle.handleBillCycleString()),
         const SDViewText("Paid in Total", "1506.34"),
         Padding(
           padding: const EdgeInsets.all(12),

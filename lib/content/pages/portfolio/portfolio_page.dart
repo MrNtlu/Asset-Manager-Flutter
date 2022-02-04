@@ -105,11 +105,11 @@ class TestData {
   ];
 
   static List<TestSubscriptionData> testSubscriptionData = [
-    TestSubscriptionData("Netflix 4K Family for Friends and Me", "Netflix Family Plan", DateTime.now(), const BillCycle(month: 3), 40.5, 'TL', subscriptionImage("netflix.com"), 0xFFE53935),
-    TestSubscriptionData("Spotify", null, DateTime.now().subtract(const Duration(days: 5)), const BillCycle(month: 1), 27.5, 'TL', subscriptionImage("spotify.com"), 0xFF4CAF50),
-    TestSubscriptionData("Playstation Plus", "Playstation Plus and this is an example of long text, lets see hot it'll behave.", DateTime.now().subtract(const Duration(days: 15)), const BillCycle(year: 1), 165.2, 'TL', subscriptionImage("playstation.com"), 0xFF1976D2),
-    TestSubscriptionData("Jefit", null, DateTime.now().subtract(const Duration(days: 2)), const BillCycle(day: 7), 10.9, 'USD', subscriptionImage("jefit.com"), 0xFF03A9F4),
-    TestSubscriptionData("WoW", null, DateTime.now().subtract(const Duration(days: 147)), const BillCycle(year: 1), 60.2, 'USD', subscriptionImage("worldofwarcraft.com"), 0xFF4CAF50),
+    TestSubscriptionData("Netflix 4K Family for Friends and Me", "Netflix Family Plan", DateTime.now(), BillCycle(month: 3), 40.5, 'TL', subscriptionImage("netflix.com"), 0xFFE53935),
+    TestSubscriptionData("Spotify", null, DateTime.now().subtract(const Duration(days: 5)), BillCycle(month: 1), 27.5, 'TL', subscriptionImage("spotify.com"), 0xFF4CAF50),
+    TestSubscriptionData("Playstation Plus", "Playstation Plus and this is an example of long text, lets see hot it'll behave.", DateTime.now().subtract(const Duration(days: 15)), BillCycle(year: 1), 165.2, 'TL', subscriptionImage("playstation.com"), 0xFF1976D2),
+    TestSubscriptionData("Jefit", null, DateTime.now().subtract(const Duration(days: 2)), BillCycle(day: 7), 10.9, 'USD', subscriptionImage("jefit.com"), 0xFF03A9F4),
+    TestSubscriptionData("WoW", null, DateTime.now().subtract(const Duration(days: 147)), BillCycle(year: 1), 60.2, 'USD', subscriptionImage("worldofwarcraft.com"), 0xFF4CAF50),
   ];
 
   static List<TestSubscriptionStatsData> testSubscriptionStatsData = [
@@ -307,14 +307,14 @@ class TestInvestLogData {
 }
 
 class TestSubscriptionData {
-  final String name;
-  final String? description;
-  final DateTime billDate;
-  final BillCycle? billCycle;
-  final double price;
-  final String currency;
+  String name;
+  String? description;
+  DateTime billDate;
+  BillCycle billCycle;
+  double price;
+  String currency;
   final String? image;
-  final int color;
+  int color;
 
   TestSubscriptionData(
     this.name, this.description, this.billDate, this.billCycle, 
@@ -323,19 +323,76 @@ class TestSubscriptionData {
 }
 
 class BillCycle {
-  final int? day;
-  final int? month;
-  final int? year;
+  int day;
+  int month;
+  int year;
 
-  const BillCycle({this.day, this.month, this.year});
+  BillCycle({this.day = 0, this.month = 0, this.year = 0});
+
+  Map<int, String> getBillCycle() {
+    if (day != 0) {
+      return {day: "Day"};
+    }else if (month != 0) {
+      return {month: "Month"};
+    }else if (year != 0) { 
+      return {year: "Year"};
+    }
+    return {1: "Month"};
+  }
 
   String handleBillCycleString() {
-    if(day != null){
-      return "Every " + day!.dateDifferencePluralString("day");
-    }else if (month != null) {
-      return "Every " + month!.dateDifferencePluralString("month");
+    if(day != 0){
+      return "Every " + day.dateDifferencePluralString("day");
+    }else if (month != 0) {
+      return "Every " + month.dateDifferencePluralString("month");
     }else {
-      return "Every " + year!.dateDifferencePluralString("year") ;
+      return "Every " + year.dateDifferencePluralString("year") ;
+    }
+  }
+
+  int getBillCycleFrequency() {
+    if (day != 0) {
+      return day;
+    }else if (month != 0) {
+      return month;
+    }else if (year != 0) { 
+      return year;
+    }
+
+    return -1;
+  }
+
+  setBillCycleFrequency(int cycle) {
+    if (day != 0) {
+      day = cycle;
+    }else if (month != 0) {
+      month = cycle;
+    }else if (year != 0) { 
+      year = cycle;
+    }
+  }
+
+  setBillCycleType(String type) {
+    if (type == "Day") {
+      day = getBillCycleFrequency();
+    }else if (type == "Month") {
+      month = getBillCycleFrequency();
+    }else if (type == "Year") { 
+      year = getBillCycleFrequency();
+    }
+    _setOthersNull(type);
+  }
+
+  _setOthersNull(String type){
+    if (type == "Day") {
+      month = 0;
+      year = 0;
+    }else if (type == "Month") {
+      day = 0;
+      year = 0;
+    }else if (type == "Year") { 
+      month = 0;
+      day = 0;
     }
   }
 }

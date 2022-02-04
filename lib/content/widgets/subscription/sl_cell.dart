@@ -41,7 +41,7 @@ class SubscriptionListCell extends StatelessWidget {
                     children: [
                       if(_data.billCycle != null)
                       SLSubText(
-                        _data.billCycle!.handleBillCycleString(), 
+                        _data.billCycle.handleBillCycleString(), 
                         Alignment.bottomLeft
                       ),
                       SLSubText(
