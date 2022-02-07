@@ -1,3 +1,4 @@
+import 'package:asset_flutter/content/models/subscription.dart';
 import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
 import 'package:asset_flutter/content/pages/tabs_page.dart';
 import 'package:asset_flutter/content/widgets/subscription/cb_container.dart';
@@ -5,7 +6,7 @@ import 'package:asset_flutter/content/widgets/subscription/cb_info_text.dart';
 import 'package:flutter/material.dart';
 
 class CurrencyBarInfoCard extends StatelessWidget {
-  final List<TestSubscriptionStatsData> _currencyList;
+  final List<SubscriptionStats> _currencyList;
   final bool _isFirstDropdownSelected;
 
   const CurrencyBarInfoCard(this._currencyList, this._isFirstDropdownSelected, {Key? key}) : super(key: key);

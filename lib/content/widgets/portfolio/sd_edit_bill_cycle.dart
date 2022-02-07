@@ -1,9 +1,9 @@
-import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
+import 'package:asset_flutter/content/models/subscription.dart';
 import 'package:flutter/material.dart';
 
 class SDEditBillCycle extends StatefulWidget {
   final List<String> billCycleList = ["Day", "Month", "Year"];
-  final TestSubscriptionData _data;
+  final Subscription _data;
   
   SDEditBillCycle(this._data, {Key? key}) : super(key: key);
 

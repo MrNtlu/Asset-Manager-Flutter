@@ -1,3 +1,4 @@
+import 'package:asset_flutter/content/models/asset.dart';
 import 'package:asset_flutter/content/pages/portfolio/investment_details_page.dart';
 import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
 import 'package:asset_flutter/content/pages/tabs_page.dart';
@@ -7,7 +8,7 @@ import 'package:asset_flutter/utils/currency_handler.dart';
 import 'package:flutter/material.dart';
 
 class PortfolioInvestmentListCell extends StatelessWidget {
-  final TestInvestData data;
+  final AssetDetails data;
   late final String image;
 
   PortfolioInvestmentListCell(this.data) {

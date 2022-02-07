@@ -1,11 +1,11 @@
-import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
+import 'package:asset_flutter/content/models/subscription.dart';
 import 'package:asset_flutter/content/widgets/portfolio/sd_view_text.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class SubscriptionDetailsView extends StatelessWidget {
-  final TestSubscriptionData _data;
+  final Subscription _data;
 
   const SubscriptionDetailsView(this._data, {Key? key}) : super(key: key);
 

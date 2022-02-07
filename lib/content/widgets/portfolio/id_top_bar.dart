@@ -1,4 +1,4 @@
-import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
+import 'package:asset_flutter/content/models/asset.dart';
 import 'package:asset_flutter/content/pages/tabs_page.dart';
 import 'package:asset_flutter/content/widgets/portfolio/il_cell_image.dart';
 import 'package:asset_flutter/content/widgets/portfolio/pl_text.dart';
@@ -6,7 +6,7 @@ import 'package:asset_flutter/utils/currency_handler.dart';
 import 'package:flutter/material.dart';
 
 class InvestmentDetailsTopBar extends StatelessWidget {
-  final TestInvestData _data;
+  final AssetDetails _data;
   final String image;
 
   const InvestmentDetailsTopBar(this._data, this.image, {Key? key}) : super(key: key);

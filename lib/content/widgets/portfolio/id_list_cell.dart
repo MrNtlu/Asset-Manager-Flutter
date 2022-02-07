@@ -1,4 +1,4 @@
-import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
+import 'package:asset_flutter/content/models/asset.dart';
 import 'package:asset_flutter/content/pages/tabs_page.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +6,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:asset_flutter/content/widgets/portfolio/id_list_cell_text.dart';
 
 class InvestmentDetailsListCell extends StatelessWidget {
-  final TestInvestLogData _data;
+  final AssetLog _data;
 
   const InvestmentDetailsListCell(this._data, {Key? key}) : super(key: key);
 

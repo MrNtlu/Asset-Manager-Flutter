@@ -12,10 +12,13 @@ class SubscriptionList extends StatelessWidget {
           const SectionTitle("Subscriptions", "",),
           Expanded(
             child: ListView.builder(itemBuilder: ((context, index) {
+              if(index == TestData.testSubscriptionData.length) {
+                return const SizedBox(height: 75);
+              }
               final data = TestData.testSubscriptionData[index];
               return SubscriptionListCell(data);
             }),
-            itemCount: TestData.testSubscriptionData.length,
+            itemCount: TestData.testSubscriptionData.length + 1,
             physics: const ClampingScrollPhysics(),
             shrinkWrap: true,
             ),

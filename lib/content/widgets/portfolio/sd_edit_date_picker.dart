@@ -1,9 +1,9 @@
-import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
+import 'package:asset_flutter/content/models/subscription.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
 
 class SDEditDatePicker extends StatefulWidget {
-  final TestSubscriptionData _data;
+  final Subscription _data;
   const SDEditDatePicker(this._data, {Key? key}) : super(key: key);
 
   @override

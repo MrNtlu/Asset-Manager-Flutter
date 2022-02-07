@@ -1,4 +1,4 @@
-import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
+import 'package:asset_flutter/content/models/subscription.dart';
 import 'package:asset_flutter/content/widgets/portfolio/sd_edit_bill_cycle.dart';
 import 'package:asset_flutter/content/widgets/portfolio/sd_edit_color_picker.dart';
 import 'package:asset_flutter/content/widgets/portfolio/sd_edit_date_picker.dart';
@@ -6,7 +6,7 @@ import 'package:asset_flutter/content/widgets/portfolio/sd_edit_header.dart';
 import 'package:flutter/material.dart';
 
 class SubscriptionDetailsEdit extends StatefulWidget {
-  final TestSubscriptionData _data;
+  final Subscription _data;
   late final SDEditColorPicker colorPicker;
 
   SubscriptionDetailsEdit(this._data, {Key? key}) : super(key: key){

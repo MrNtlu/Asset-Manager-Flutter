@@ -1,9 +1,9 @@
-import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
+import 'package:asset_flutter/content/models/subscription.dart';
 import 'package:asset_flutter/content/widgets/subscription/cb_info_card.dart';
 import 'package:flutter/material.dart';
 
 class SubscriptionCurrencyBar extends StatefulWidget {
-  final List<TestSubscriptionStatsData> _currencyList;
+  final List<SubscriptionStats> _currencyList;
 
   const SubscriptionCurrencyBar(this._currencyList);
 

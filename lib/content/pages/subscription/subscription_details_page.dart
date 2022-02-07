@@ -1,12 +1,11 @@
-import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
+import 'package:asset_flutter/content/models/subscription.dart';
 import 'package:asset_flutter/content/pages/tabs_page.dart';
 import 'package:asset_flutter/content/widgets/portfolio/sd_edit.dart';
 import 'package:asset_flutter/content/widgets/portfolio/sd_view.dart';
-import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
 
 class SubscriptionDetailsPage extends StatefulWidget {
-  final TestSubscriptionData _data;
+  final Subscription _data;
 
   const SubscriptionDetailsPage(this._data, {Key? key}) : super(key: key);
 
@@ -53,14 +52,14 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
         )
       ],
     ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: !_isEditing ?
-          SubscriptionDetailsView(widget._data)
-          :
-          SubscriptionDetailsEdit(widget._data)
-        ),
+    body: SafeArea(
+      child: SingleChildScrollView(
+        child: !_isEditing ?
+        SubscriptionDetailsView(widget._data)
+        :
+        SubscriptionDetailsEdit(widget._data)
       ),
+    ),
     );
   }
 }

@@ -9,6 +9,7 @@
     <li> Auto Size Text
     <li> Flutter Slidable
     <li> Intl
+    <li> Provider
 </ul>
 
 &nbsp;

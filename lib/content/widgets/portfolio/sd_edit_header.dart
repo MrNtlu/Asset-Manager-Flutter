@@ -1,9 +1,9 @@
 import 'package:asset_flutter/common/widgets/dropdown.dart';
-import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
+import 'package:asset_flutter/content/models/subscription.dart';
 import 'package:flutter/material.dart';
 
 class SDEditHeader extends StatelessWidget {
-  final TestSubscriptionData _data;
+  final Subscription _data;
   late final Dropdown dropdown;
   
   SDEditHeader(this._data, {Key? key}) : super(key: key);
@@ -26,7 +26,7 @@ class SDEditHeader extends StatelessWidget {
               Expanded(
                 flex: 3,
                 child: SDEditTextFieldForm(
-                  _data.price.toString(), 
+                  _data.price > 0 ? _data.price.toString() : "", 
                   "Price", 
                   textInputType: TextInputType.number
                 )

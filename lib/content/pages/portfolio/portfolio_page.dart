@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:asset_flutter/common/widgets/add_elevated_button.dart';
+import 'package:asset_flutter/content/models/asset.dart';
+import 'package:asset_flutter/content/models/subscription.dart';
 import 'package:asset_flutter/content/pages/tabs_page.dart';
 import 'package:asset_flutter/content/widgets/portfolio/investment_list.dart';
 import 'package:asset_flutter/content/widgets/portfolio/portfolio.dart';
@@ -89,49 +91,49 @@ class PortfolioPage extends StatelessWidget {
 //TODO: Tests
 
 class TestData {
-  static List<TestInvestData> testInvestData = [
-    const TestInvestData(300.0, 'Bitcoin', 'BTC', 'USD', 'crypto', -68.28, 0.00062),
-    const TestInvestData(25.0, 'Polygon', 'MATIC', 'USD', 'crypto', 40.67, 105.2),
-    const TestInvestData(167.2, 'Loopspring', 'LRC', 'USD', 'crypto', 140.67, 50.0),
-    const TestInvestData(217.53, 'Apple Inc.', 'AAPL', 'USD', 'stock', 5.78, 35.2),
-    const TestInvestData(78.4, 'Intel', 'INTC', 'USD', 'stock', -20.5, 3.6),
-    const TestInvestData(59.21, 'Olin Corporation', 'OLN', 'USD', 'stock', 3.9, 10.2),
-    const TestInvestData(107.32, 'Audius', 'AUDIO', 'GBP', 'crypto', -120.5, 325.6),
-    const TestInvestData(45.9, 'Avalanche', 'AVAX', 'USD', 'crypto', 34.2, 34.7),
-    const TestInvestData(45.9, 'Litecoin', 'LTC', 'USD', 'crypto', 34.2, 34.7),
-    const TestInvestData(45.9, 'Amazon.com, Inc.', 'AMZN', 'USD', 'stock', 34.2, 34.7),
-    const TestInvestData(45.9, 'Activision Blizzard, Inc.', 'ATVI', 'USD', 'stock', 34.2, 34.7),
-    const TestInvestData(45.9, 'Ethereum Classic', 'ETC', 'USD', 'crypto', 34.2, 34.7),
+  static List<AssetDetails> testInvestData = [
+    const AssetDetails(300.0, 'Bitcoin', 'BTC', 'USD', 'crypto', -68.28, 0.00062),
+    const AssetDetails(25.0, 'Polygon', 'MATIC', 'USD', 'crypto', 40.67, 105.2),
+    const AssetDetails(167.2, 'Loopspring', 'LRC', 'USD', 'crypto', 140.67, 50.0),
+    const AssetDetails(217.53, 'Apple Inc.', 'AAPL', 'USD', 'stock', 5.78, 35.2),
+    const AssetDetails(78.4, 'Intel', 'INTC', 'USD', 'stock', -20.5, 3.6),
+    const AssetDetails(59.21, 'Olin Corporation', 'OLN', 'USD', 'stock', 3.9, 10.2),
+    const AssetDetails(107.32, 'Audius', 'AUDIO', 'GBP', 'crypto', -120.5, 325.6),
+    const AssetDetails(45.9, 'Avalanche', 'AVAX', 'USD', 'crypto', 34.2, 34.7),
+    const AssetDetails(45.9, 'Litecoin', 'LTC', 'USD', 'crypto', 34.2, 34.7),
+    const AssetDetails(45.9, 'Amazon.com, Inc.', 'AMZN', 'USD', 'stock', 34.2, 34.7),
+    const AssetDetails(45.9, 'Activision Blizzard, Inc.', 'ATVI', 'USD', 'stock', 34.2, 34.7),
+    const AssetDetails(45.9, 'Ethereum Classic', 'ETC', 'USD', 'crypto', 34.2, 34.7),
   ];
 
-  static List<TestSubscriptionData> testSubscriptionData = [
-    TestSubscriptionData("Netflix 4K Family for Friends and Me", "Netflix Family Plan", DateTime.now(), BillCycle(month: 3), 40.5, 'TL', subscriptionImage("netflix.com"), 0xFFE53935),
-    TestSubscriptionData("Spotify", null, DateTime.now().subtract(const Duration(days: 5)), BillCycle(month: 1), 27.5, 'TL', subscriptionImage("spotify.com"), 0xFF4CAF50),
-    TestSubscriptionData("Playstation Plus", "Playstation Plus and this is an example of long text, lets see hot it'll behave.", DateTime.now().subtract(const Duration(days: 15)), BillCycle(year: 1), 165.2, 'TL', subscriptionImage("playstation.com"), 0xFF1976D2),
-    TestSubscriptionData("Jefit", null, DateTime.now().subtract(const Duration(days: 2)), BillCycle(day: 7), 10.9, 'USD', subscriptionImage("jefit.com"), 0xFF03A9F4),
-    TestSubscriptionData("WoW", null, DateTime.now().subtract(const Duration(days: 147)), BillCycle(year: 1), 60.2, 'USD', subscriptionImage("worldofwarcraft.com"), 0xFF4CAF50),
+  static List<Subscription> testSubscriptionData = [
+    Subscription("Netflix 4K Family for Friends and Me", "Netflix Family Plan", DateTime.now(), BillCycle(month: 3), 40.5, 'TL', subscriptionImage("netflix.com"), 0xFFE53935),
+    Subscription("Spotify", null, DateTime.now().subtract(const Duration(days: 5)), BillCycle(month: 1), 27.5, 'TL', subscriptionImage("spotify.com"), 0xFF4CAF50),
+    Subscription("Playstation Plus", "Playstation Plus and this is an example of long text, lets see hot it'll behave.", DateTime.now().subtract(const Duration(days: 15)), BillCycle(year: 1), 165.2, 'TL', subscriptionImage("playstation.com"), 0xFF1976D2),
+    Subscription("Jefit", null, DateTime.now().subtract(const Duration(days: 2)), BillCycle(day: 7), 10.9, 'USD', subscriptionImage("jefit.com"), 0xFF03A9F4),
+    Subscription("WoW", null, DateTime.now().subtract(const Duration(days: 147)), BillCycle(year: 1), 60.2, 'USD', subscriptionImage("worldofwarcraft.com"), 0xFF4CAF50),
   ];
 
-  static List<TestSubscriptionStatsData> testSubscriptionStatsData = [
-    const TestSubscriptionStatsData('USD', 43.8, 60.9),
-    const TestSubscriptionStatsData('EUR', 85.3, 85.3),
-    const TestSubscriptionStatsData('TRY', 380, 989.9),
-    const TestSubscriptionStatsData('GBP', 30.1, 120.6),
+  static List<SubscriptionStats> testSubscriptionStatsData = [
+    const SubscriptionStats('USD', 43.8, 60.9),
+    const SubscriptionStats('EUR', 85.3, 85.3),
+    const SubscriptionStats('TRY', 380, 989.9),
+    const SubscriptionStats('GBP', 30.1, 120.6),
   ];
 
-  static TestAssetStatsData testAssetStatsData = TestAssetStatsData("GBP", 130, 45, 120, 536.28, 102.4, 756.46, 42202.7, -66542.5, -125324.6, -150684.46, 17.5, 67.66, 14.84);
+  static AssetStats testAssetStatsData = AssetStats("GBP", 130, 45, 120, 536.28, 102.4, 756.46, 42202.7, -66542.5, -125324.6, -150684.46, 17.5, 67.66, 14.84);
 
-  static List<TestInvestLogData> testInvestLogData = [
-    TestInvestLogData(475.2855, "BTC", "USD", "buy", 0.01, DateTime.now(), boughtPrice: 47528.55),
-    TestInvestLogData(348.062, "BTC", "USD", "buy", 0.006, DateTime.now().subtract(const Duration(days: 3)), boughtPrice: 58001.27),
-    TestInvestLogData(252, "BTC", "USD", "sell", 0.000782, DateTime.now(), soldPrice: 53582.55),
-    TestInvestLogData(93.084, "BTC", "USD", "buy", 0.0015, DateTime.now().subtract(const Duration(days: 33)), boughtPrice: 62056),
-    TestInvestLogData(252, "BTC", "USD", "sell", 0.000782, DateTime.now(), soldPrice: 53582.55),
-    TestInvestLogData(102.3, "BTC", "USD", "sell", 0.00313, DateTime.now(), soldPrice: 35528.55),
-    TestInvestLogData(93.084, "BTC", "USD", "buy", 0.0015, DateTime.now().subtract(const Duration(days: 67)), boughtPrice: 62056),
-    TestInvestLogData(102.3, "BTC", "USD", "sell", 0.00313, DateTime.now(), soldPrice: 35528.55),
-    TestInvestLogData(93.084, "BTC", "USD", "buy", 0.0015, DateTime.now().subtract(const Duration(days: 395)), boughtPrice: 62056),
-    TestInvestLogData(102.3, "BTC", "USD", "sell", 0.00313, DateTime.now().subtract(const Duration(days: 462)), soldPrice: 35528.55),
+  static List<AssetLog> testInvestLogData = [
+    AssetLog(475.2855, "BTC", "USD", "buy", 0.01, DateTime.now(), boughtPrice: 47528.55),
+    AssetLog(348.062, "BTC", "USD", "buy", 0.006, DateTime.now().subtract(const Duration(days: 3)), boughtPrice: 58001.27),
+    AssetLog(252, "BTC", "USD", "sell", 0.000782, DateTime.now(), soldPrice: 53582.55),
+    AssetLog(93.084, "BTC", "USD", "buy", 0.0015, DateTime.now().subtract(const Duration(days: 33)), boughtPrice: 62056),
+    AssetLog(252, "BTC", "USD", "sell", 0.000782, DateTime.now(), soldPrice: 53582.55),
+    AssetLog(102.3, "BTC", "USD", "sell", 0.00313, DateTime.now(), soldPrice: 35528.55),
+    AssetLog(93.084, "BTC", "USD", "buy", 0.0015, DateTime.now().subtract(const Duration(days: 67)), boughtPrice: 62056),
+    AssetLog(102.3, "BTC", "USD", "sell", 0.00313, DateTime.now(), soldPrice: 35528.55),
+    AssetLog(93.084, "BTC", "USD", "buy", 0.0015, DateTime.now().subtract(const Duration(days: 395)), boughtPrice: 62056),
+    AssetLog(102.3, "BTC", "USD", "sell", 0.00313, DateTime.now().subtract(const Duration(days: 462)), soldPrice: 35528.55),
   ];
 
   static List<Color> testChartStatsColor = [
@@ -175,232 +177,9 @@ class TestData {
     return Icons.payment_rounded;
   }
 
-  static int subscriptionStatsPercentageCalculator(List<TestSubscriptionStatsData> subsList, double data) {
+  static int subscriptionStatsPercentageCalculator(List<SubscriptionStats> subsList, double data) {
     double sum = subsList.fold(0, (previousValue, element) => previousValue + element.totalPayment);
 
     return (data / sum * 100).toInt();
   }
-}
-
-class TestAssetStatsData {
-  final String currency;
-  final double totalBought;
-  final double totalSold;
-  final double stockAsset;
-  final double cryptoAsset;
-  final double exchangeAsset;
-  final double totalAsset;
-  final double stockPL;
-  final double cryptoPL;
-  final double exchangePL;
-  final double totalPL;
-  final double stockPercentage;
-  final double cryptoPercentage;
-  final double exchangePercentage;
-
-  TestAssetStatsData(
-    this.currency, this.totalBought, this.totalSold,
-    this.stockAsset, this.cryptoAsset, this.exchangeAsset, this.totalAsset,
-    this.stockPL, this.cryptoPL, this.exchangePL, this.totalPL,
-    this.stockPercentage, this.cryptoPercentage, this.exchangePercentage
-  );
-
-  List<PieChartSectionData> convertDataToChart() {
-    final list = List<PieChartSectionData>.empty(growable: true);
-    for (var i = 0; i < 3; i++) {
-      list.add(PieChartSectionData(
-        color: TestData.testChartStatsColor[i],
-        value: (i == 0) ?
-          stockAsset :
-          (i == 1) ? 
-          cryptoAsset :
-          exchangeAsset
-        ,
-        showTitle: false,
-        radius: 45,
-        titleStyle: const TextStyle(
-          fontWeight: FontWeight.bold, 
-          color: Colors.white, 
-          fontSize: 12
-        ),
-      ));
-    }
-    return list;
-  }
-
-  List<BarChartGroupData> convertDataToBarChart() {
-    final list = List<BarChartGroupData>.empty(growable: true);
-    for (var i = 0; i < 4; i++) {
-      var value = (i == 0) ?
-        stockPL :
-        (i == 1) ? 
-        cryptoPL :
-        (i == 2) ?
-        exchangePL :
-        totalPL;
-      value = value.revertValue();
-      list.add(BarChartGroupData(
-        x: i,
-        barRods: [
-          BarChartRodData(
-            y: value,
-            width: 25,
-            borderRadius: value > 0 ?
-            const BorderRadius.only(
-              topLeft: Radius.circular(6),
-              topRight: Radius.circular(6)
-            ) 
-            :
-            const BorderRadius.only(
-              bottomLeft: Radius.circular(6),
-              bottomRight: Radius.circular(6)
-            ),
-            colors: [TestData.testChartStatsColor[i]],
-
-          )
-        ]
-      ));
-    }
-    return list;
-  }
-
-  String convertDataToSideTitle(int index) {
-    var titleValue = ((index == 0) ?
-      stockPL :
-      (index == 1) ? 
-      cryptoPL :
-      (index == 2) ?
-      exchangePL :
-      totalPL);
-    titleValue = titleValue.revertValue();
-    return titleValue.toString();
-  }
-}
-
-class TestInvestData {
-  final double currentValue;
-  final String name;
-  final String toAsset;
-  final String fromAsset;
-  final String type;
-  final double pl;
-  final double amount;
-
-  const TestInvestData(this.currentValue, this.name, this.toAsset, this.fromAsset, this.type, this.pl, this.amount);
-}
-
-class TestInvestLogData {
-  final double value;
-  final String toAsset;
-  final String fromAsset;
-  final String type;
-  final double amount;
-  final double? boughtPrice;
-  final double? soldPrice;
-  final DateTime createdAt;
-
-  const TestInvestLogData(
-    this.value, this.toAsset, this.fromAsset, 
-    this.type, this.amount, this.createdAt, 
-    {this.boughtPrice, this.soldPrice}
-  );
-}
-
-class TestSubscriptionData {
-  String name;
-  String? description;
-  DateTime billDate;
-  BillCycle billCycle;
-  double price;
-  String currency;
-  final String? image;
-  int color;
-
-  TestSubscriptionData(
-    this.name, this.description, this.billDate, this.billCycle, 
-    this.price, this.currency, this.image, this.color
-  );
-}
-
-class BillCycle {
-  int day;
-  int month;
-  int year;
-
-  BillCycle({this.day = 0, this.month = 0, this.year = 0});
-
-  Map<int, String> getBillCycle() {
-    if (day != 0) {
-      return {day: "Day"};
-    }else if (month != 0) {
-      return {month: "Month"};
-    }else if (year != 0) { 
-      return {year: "Year"};
-    }
-    return {1: "Month"};
-  }
-
-  String handleBillCycleString() {
-    if(day != 0){
-      return "Every " + day.dateDifferencePluralString("day");
-    }else if (month != 0) {
-      return "Every " + month.dateDifferencePluralString("month");
-    }else {
-      return "Every " + year.dateDifferencePluralString("year") ;
-    }
-  }
-
-  int getBillCycleFrequency() {
-    if (day != 0) {
-      return day;
-    }else if (month != 0) {
-      return month;
-    }else if (year != 0) { 
-      return year;
-    }
-
-    return -1;
-  }
-
-  setBillCycleFrequency(int cycle) {
-    if (day != 0) {
-      day = cycle;
-    }else if (month != 0) {
-      month = cycle;
-    }else if (year != 0) { 
-      year = cycle;
-    }
-  }
-
-  setBillCycleType(String type) {
-    if (type == "Day") {
-      day = getBillCycleFrequency();
-    }else if (type == "Month") {
-      month = getBillCycleFrequency();
-    }else if (type == "Year") { 
-      year = getBillCycleFrequency();
-    }
-    _setOthersNull(type);
-  }
-
-  _setOthersNull(String type){
-    if (type == "Day") {
-      month = 0;
-      year = 0;
-    }else if (type == "Month") {
-      day = 0;
-      year = 0;
-    }else if (type == "Year") { 
-      month = 0;
-      day = 0;
-    }
-  }
-}
-
-class TestSubscriptionStatsData {
-  final String currency;
-  final double totalPayment;
-  final double monthlyPayment;
-
-  const TestSubscriptionStatsData(this.currency, this.totalPayment, this.monthlyPayment);
 }

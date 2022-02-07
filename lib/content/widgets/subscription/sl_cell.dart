@@ -1,11 +1,11 @@
-import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
+import 'package:asset_flutter/content/models/subscription.dart';
 import 'package:asset_flutter/content/pages/subscription/subscription_details_page.dart';
 import 'package:asset_flutter/content/widgets/subscription/sl_cell_image.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class SubscriptionListCell extends StatelessWidget {
-  final TestSubscriptionData _data;
+  final Subscription _data;
 
   const SubscriptionListCell(this._data);
 
