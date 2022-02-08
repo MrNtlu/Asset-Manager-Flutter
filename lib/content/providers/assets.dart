@@ -1,4 +1,4 @@
-import 'package:asset_flutter/content/models/asset.dart';
+import 'package:asset_flutter/content/models/responses/asset.dart';
 import 'package:flutter/material.dart';
 
 class AssetLogs with ChangeNotifier {

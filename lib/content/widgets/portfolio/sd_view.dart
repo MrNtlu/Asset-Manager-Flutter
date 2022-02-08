@@ -1,4 +1,4 @@
-import 'package:asset_flutter/content/models/subscription.dart';
+import 'package:asset_flutter/content/providers/subscription.dart';
 import 'package:asset_flutter/content/widgets/portfolio/sd_view_text.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:auto_size_text/auto_size_text.dart';

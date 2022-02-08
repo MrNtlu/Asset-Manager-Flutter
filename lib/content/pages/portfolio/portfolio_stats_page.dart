@@ -1,9 +1,9 @@
-import 'package:asset_flutter/content/pages/tabs_page.dart';
 import 'package:asset_flutter/content/widgets/portfolio/portfolio.dart';
 import 'package:asset_flutter/content/widgets/portfolio/section_title.dart';
 import 'package:asset_flutter/content/widgets/portfolio/stats.dart';
 import 'package:asset_flutter/content/widgets/portfolio/stats_detailed_table.dart';
 import 'package:asset_flutter/content/widgets/portfolio/stats_distribution_chart.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/material.dart';
 
 class PortfolioStatsPage extends StatelessWidget {
@@ -12,7 +12,7 @@ class PortfolioStatsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppBar appBar = AppBar(
       title: const Text('Statistics'),
-      backgroundColor: TabsPage.primaryLightishColor,
+      backgroundColor: AppColors().primaryLightishColor,
     );
 
     return Scaffold(

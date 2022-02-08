@@ -1,4 +1,5 @@
 import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
+import 'package:asset_flutter/static/chart.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -30,8 +31,8 @@ class PortfolioStatsDistributionChart extends StatelessWidget {
           titlesData: FlTitlesData(
             topTitles: SideTitles(
               showTitles: true,
-              getTextStyles: (context, value) => TextStyle(color: TestData.testChartStatsColor[value.toInt()], fontSize: 12),
-              getTitles: (id) => TestData.testChartStatsText[id.toInt()],
+              getTextStyles: (context, value) => TextStyle(color: ChartAttributes().chartStatsColor[value.toInt()], fontSize: 12),
+              getTitles: (id) => ChartAttributes().chartStatsText[id.toInt()],
             ),
             bottomTitles: SideTitles(
               showTitles: true,

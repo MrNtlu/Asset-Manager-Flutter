@@ -1,4 +1,4 @@
-import 'package:asset_flutter/content/pages/tabs_page.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/material.dart';
 
 class PortfolioPLText extends StatelessWidget {
@@ -18,14 +18,14 @@ class PortfolioPLText extends StatelessWidget {
       children: [
         Icon(
           _pl < 0 ? Icons.arrow_upward_rounded : Icons.arrow_downward_rounded,
-          color: _pl < 0 ? TabsPage.greenColor : TabsPage.redColor,
+          color: _pl < 0 ? AppColors().greenColor : AppColors().redColor,
           size: iconSize,
         ),
         Text(
           plPrefix != null ? plPrefix! + _pl.abs().toString() : _pl.abs().toString(),
           style: TextStyle(
             fontSize: fontSize,
-            color: _pl < 0 ? TabsPage.greenColor : TabsPage.redColor,
+            color: _pl < 0 ? AppColors().greenColor : AppColors().redColor,
             fontWeight: FontWeight.bold
 
           ),
@@ -37,7 +37,7 @@ class PortfolioPLText extends StatelessWidget {
             child: Text(
               _subText!, 
               style: TextStyle(
-                color: _pl < 0 ? TabsPage.greenColor : TabsPage.redColor,
+                color: _pl < 0 ? AppColors().greenColor : AppColors().redColor,
                 fontSize: fontSize - 6,
               )
             ),

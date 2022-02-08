@@ -1,13 +1,11 @@
-import 'package:asset_flutter/content/models/subscription.dart';
-import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
+import 'package:asset_flutter/static/chart.dart';
 import 'package:flutter/material.dart';
 
 class SDEditColorPicker extends StatefulWidget {
-  final Subscription _data;
   late Color selectedColor;
 
-  SDEditColorPicker(this._data, {Key? key}) : super(key: key) {
-    selectedColor = Color(_data.color);
+  SDEditColorPicker({color, Key? key}) : super(key: key) {
+    selectedColor = color ?? ChartAttributes().chartStatsColor[0];
   }
 
   @override
@@ -19,12 +17,11 @@ class _SDEditColorPickerState extends State<SDEditColorPicker> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        for (var color in TestData.testChartStatsColor)
+        for (var color in ChartAttributes().chartStatsColor)
           GestureDetector(
             onTap: () {
               setState(() {
                 widget.selectedColor = color;
-                widget._data.color = color.value;
               });
             },
             child: Container(

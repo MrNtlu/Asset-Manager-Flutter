@@ -1,8 +1,8 @@
-import 'package:asset_flutter/content/models/subscription.dart';
+import 'package:asset_flutter/content/models/responses/subscription.dart';
 import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
-import 'package:asset_flutter/content/pages/tabs_page.dart';
 import 'package:asset_flutter/content/widgets/subscription/cb_container.dart';
 import 'package:asset_flutter/content/widgets/subscription/cb_info_text.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/material.dart';
 
 class CurrencyBarInfoCard extends StatelessWidget {
@@ -16,7 +16,7 @@ class CurrencyBarInfoCard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(left: 8, right: 8),
       child: Card(
-        color: TabsPage.primaryLightishColor,
+        color: AppColors().primaryLightishColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(12, 12, 12, 6),

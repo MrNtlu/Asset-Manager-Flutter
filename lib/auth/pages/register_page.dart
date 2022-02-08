@@ -2,7 +2,7 @@ import 'package:asset_flutter/auth/widgets/auth_button.dart';
 import 'package:asset_flutter/common/widgets/dropdown.dart';
 import 'package:asset_flutter/common/widgets/password_textfield.dart';
 import 'package:asset_flutter/common/widgets/textfield.dart';
-import 'package:asset_flutter/content/pages/tabs_page.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/material.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -12,8 +12,8 @@ class RegisterPage extends StatelessWidget {
   final emailInput = TextEditingController();
   final passwordInput = TextEditingController();
   final rePasswordInput = TextEditingController();
-  Checkbox? termsConditionsCheck;
-  Checkbox? privacyPolicyCheck;
+  late final Checkbox? termsConditionsCheck;
+  late final Checkbox? privacyPolicyCheck;
 
   void onRegisterPressed(BuildContext ctx) {
     print(
@@ -29,7 +29,7 @@ class RegisterPage extends StatelessWidget {
 
     final AppBar appBar = AppBar(
       title: const Text('Register'),
-      backgroundColor: TabsPage.primaryColor,
+      backgroundColor: AppColors().primaryColor,
     );
     
     return Scaffold(
@@ -51,16 +51,16 @@ class RegisterPage extends StatelessWidget {
                       "Email", 
                       TextInputType.emailAddress, 
                       textfieldController: emailInput,
-                      prefixIcon: const Icon(
+                      prefixIcon: Icon(
                         Icons.email,
-                        color: TabsPage.primaryColor
+                        color: AppColors().primaryColor
                       ),
                     ),
                     PasswordTextField(
                       passwordInput,
-                      prefixIcon: const Icon(
+                      prefixIcon: Icon(
                         Icons.password,
-                        color: TabsPage.primaryColor
+                        color: AppColors().primaryColor
                       ),
                     ),
                     PasswordTextField(rePasswordInput, label: "Password Again"),
@@ -81,7 +81,7 @@ class RegisterPage extends StatelessWidget {
                         ],
                       ),
                     ),
-                    AuthButton(onRegisterPressed, "Register", TabsPage.primaryColor),
+                    AuthButton(onRegisterPressed, "Register", AppColors().primaryColor),
                   ]
                 ),
               ),

@@ -1,4 +1,4 @@
-import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
+import 'package:asset_flutter/static/chart.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -59,7 +59,7 @@ class AssetStats {
     final list = List<PieChartSectionData>.empty(growable: true);
     for (var i = 0; i < 3; i++) {
       list.add(PieChartSectionData(
-        color: TestData.testChartStatsColor[i],
+        color: ChartAttributes().chartStatsColor[i],
         value: (i == 0) ?
           stockAsset :
           (i == 1) ? 
@@ -105,7 +105,7 @@ class AssetStats {
               bottomLeft: Radius.circular(6),
               bottomRight: Radius.circular(6)
             ),
-            colors: [TestData.testChartStatsColor[i]],
+            colors: [ChartAttributes().chartStatsColor[i]],
 
           )
         ]

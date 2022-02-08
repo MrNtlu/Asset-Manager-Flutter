@@ -10,6 +10,7 @@
     <li> Flutter Slidable
     <li> Intl
     <li> Provider
+    <li> Http
 </ul>
 
 &nbsp;

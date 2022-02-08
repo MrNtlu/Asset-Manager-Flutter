@@ -1,4 +1,4 @@
-import 'package:asset_flutter/content/models/subscription.dart';
+import 'package:asset_flutter/content/models/responses/subscription.dart';
 import 'package:asset_flutter/content/widgets/subscription/cb_info_card.dart';
 import 'package:flutter/material.dart';
 

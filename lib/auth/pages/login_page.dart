@@ -4,6 +4,7 @@ import 'package:asset_flutter/auth/pages/register_page.dart';
 import 'package:asset_flutter/auth/widgets/auth_bottom_sheet.dart';
 import 'package:asset_flutter/common/widgets/expanded_divider.dart';
 import 'package:asset_flutter/content/pages/tabs_page.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:asset_flutter/common/widgets/textfield.dart';
 import 'package:asset_flutter/common/widgets/password_textfield.dart';
@@ -49,7 +50,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppBar appBar = AppBar(
       title: const Text('Login'),
-      backgroundColor: TabsPage.primaryColor,
+      backgroundColor: AppColors().primaryColor,
     );
 
     checkbox = AuthCheckbox('Remember Password');
@@ -74,16 +75,16 @@ class LoginPage extends StatelessWidget {
                     'Email',
                     TextInputType.emailAddress,
                     textfieldController: emailInput,
-                    prefixIcon: const Icon(
+                    prefixIcon: Icon(
                       Icons.email,
-                      color: TabsPage.primaryColor,
+                      color: AppColors().primaryColor,
                     ),
                   ),
                   PasswordTextField(
                     passwordInput,
-                    prefixIcon: const Icon(
+                    prefixIcon: Icon(
                       Icons.password,
-                      color: TabsPage.primaryColor,
+                      color: AppColors().primaryColor,
                     ),
                   ),
                   Container(
@@ -95,7 +96,7 @@ class LoginPage extends StatelessWidget {
                               (Platform.isMacOS || Platform.isWindows) ? 8 : 4),
                       child: checkbox),
                   AuthButton(
-                      onSigninPressed, 'Sign In', TabsPage.primaryLightColor),
+                      onSigninPressed, 'Sign In', AppColors().primaryLightColor),
                   Padding(
                     padding: const EdgeInsets.all(6.0),
                     child: Row(
@@ -107,7 +108,7 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
                   AuthButton(
-                      onRegisterPressed, 'Register', TabsPage.primaryColor),
+                      onRegisterPressed, 'Register', AppColors().primaryColor),
                   Expanded(
                     child: Container(
                       margin:

@@ -1,11 +1,11 @@
-import 'package:asset_flutter/content/models/subscription.dart';
+import 'package:asset_flutter/content/models/responses/subscription.dart';
 import 'package:flutter/material.dart';
 
 class SDEditBillCycle extends StatefulWidget {
   final List<String> billCycleList = ["Day", "Month", "Year"];
-  final Subscription _data;
+  BillCycle billCycle;
   
-  SDEditBillCycle(this._data, {Key? key}) : super(key: key);
+  SDEditBillCycle({required this.billCycle, Key? key}) : super(key: key);
 
   @override
   State<SDEditBillCycle> createState() => _SDEditBillCycleState();
@@ -18,7 +18,7 @@ class _SDEditBillCycleState extends State<SDEditBillCycle> {
   @override
   void initState() {
     super.initState();
-    selectedBillCycle = widget._data.billCycle;
+    selectedBillCycle = widget.billCycle;
   }
 
   @override
@@ -46,7 +46,7 @@ class _SDEditBillCycleState extends State<SDEditBillCycle> {
                   if (value != null) {
                     setState(() {
                       selectedBillCycle.setBillCycleFrequency(int.parse(value));
-                      widget._data.billCycle = selectedBillCycle;
+                      widget.billCycle = selectedBillCycle;
                     });
                   }
                 },
@@ -84,7 +84,7 @@ class _SDEditBillCycleState extends State<SDEditBillCycle> {
                       }
                       selectedBillCycle.setBillCycleType(value);
                       selectedBillCycle.setBillCycleFrequency(1);
-                      widget._data.billCycle = selectedBillCycle;
+                      widget.billCycle = selectedBillCycle;
                     });
                   }
                 },

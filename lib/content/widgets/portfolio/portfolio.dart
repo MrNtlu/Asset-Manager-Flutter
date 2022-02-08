@@ -1,7 +1,7 @@
 import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
-import 'package:asset_flutter/content/pages/tabs_page.dart';
 import 'package:asset_flutter/content/widgets/portfolio/pl_text.dart';
 import 'package:asset_flutter/content/widgets/portfolio/section_title.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/material.dart';
 
 class Portfolio extends StatelessWidget {
@@ -18,7 +18,7 @@ class Portfolio extends StatelessWidget {
         Container(
           margin: const EdgeInsets.only(left: 8, right: 8),
           child: Card(
-            color: TabsPage.primaryLightishColor,
+            color: AppColors().primaryLightishColor,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
             child: Padding(
               padding: const EdgeInsets.all(8),

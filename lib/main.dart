@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:asset_flutter/auth/pages/login_page.dart';
 import 'package:asset_flutter/auth/pages/register_page.dart';
+import 'package:asset_flutter/content/providers/subscriptions.dart';
 import 'package:flutter/material.dart';
 import 'package:desktop_window/desktop_window.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   setWindowForPC();
@@ -26,16 +28,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final routeArgs = ModalRoute.of(context)?.settings.arguments as Map<String, String>?;
 
-    return MaterialApp(
-      title: 'Wealth Manager',
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
+    return ChangeNotifierProvider(
+      create: ((context) => Subscriptions()),
+      child: MaterialApp(
+        title: 'Wealth Manager',
+        theme: ThemeData(
+          scaffoldBackgroundColor: Colors.white,
+        ),
+        home: LoginPage(),
+        routes: {
+          LoginPage.routeName: (ctx) => LoginPage(),
+          RegisterPage.routeName: (ctx) => RegisterPage(),
+        },
       ),
-      home: LoginPage(),
-      routes: {
-        LoginPage.routeName: (ctx) => LoginPage(),
-        RegisterPage.routeName: (ctx) => RegisterPage(),
-      },
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
+import 'package:asset_flutter/static/chart.dart';
 import 'package:flutter/material.dart';
 
 class PortfolioStatsIndicator extends StatelessWidget {
@@ -18,16 +19,16 @@ class PortfolioStatsIndicator extends StatelessWidget {
                 height: 14,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: TestData.testChartStatsColor[i],
+                  color: ChartAttributes().chartStatsColor[i],
                 ),
               ),
               const SizedBox(width: 8),
               Text(
-                TestData.testChartStatsText[i],
+                ChartAttributes().chartStatsText[i],
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
-                  color: TestData.testChartStatsColor[i],
+                  color: ChartAttributes().chartStatsColor[i],
                 ),
               )
             ],

@@ -1,5 +1,5 @@
 import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
-import 'package:asset_flutter/content/pages/tabs_page.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
 
@@ -22,10 +22,10 @@ class PortfolioStatsDetailedTable extends StatelessWidget {
           border: TableBorder.all(
             borderRadius: BorderRadius.circular(9),
             width: 1,
-            color: TabsPage.primaryLightishColor,
+            color: AppColors().primaryLightishColor,
           ),
           dividerThickness: 1,
-          headingRowColor: MaterialStateColor.resolveWith((states) => TabsPage.primaryLightishColor),
+          headingRowColor: MaterialStateColor.resolveWith((states) => AppColors().primaryLightishColor),
           columns: [
             DataColumn(
               label: Text(

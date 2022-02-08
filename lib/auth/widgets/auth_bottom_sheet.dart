@@ -1,4 +1,5 @@
 import 'package:asset_flutter/content/pages/tabs_page.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/material.dart';
 import 'auth_button.dart';
 import 'package:asset_flutter/common/widgets/textfield.dart';
@@ -19,13 +20,13 @@ class AuthBottomSheet extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
-          const CustomTextField(
+          CustomTextField(
             'Email', 
             TextInputType.emailAddress, 
             textfieldController: null,
             prefixIcon: Icon(
               Icons.email,
-              color: TabsPage.primaryColor
+              color: AppColors().primaryColor
             )
           ),
           Container(
@@ -40,7 +41,7 @@ class AuthBottomSheet extends StatelessWidget {
               ),
             )
           ),
-          AuthButton(onSendEmailPressed, 'Reset', TabsPage.lightBlack)
+          AuthButton(onSendEmailPressed, 'Reset', AppColors().lightBlack)
         ],
       ),
     ); 

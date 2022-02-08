@@ -1,5 +1,5 @@
-import 'package:asset_flutter/content/models/asset.dart';
-import 'package:asset_flutter/content/pages/tabs_page.dart';
+import 'package:asset_flutter/content/models/responses/asset.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -17,7 +17,7 @@ class InvestmentDetailsListCell extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
         side: BorderSide(
-          color: _data.type == "buy" ? TabsPage.primaryLightColor : Colors.red.shade600,
+          color: _data.type == "buy" ? AppColors().primaryLightColor : Colors.red.shade600,
           width: 1
         )
       ),

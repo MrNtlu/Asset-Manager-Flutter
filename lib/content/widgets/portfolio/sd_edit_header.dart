@@ -1,12 +1,18 @@
 import 'package:asset_flutter/common/widgets/dropdown.dart';
-import 'package:asset_flutter/content/models/subscription.dart';
 import 'package:flutter/material.dart';
 
 class SDEditHeader extends StatelessWidget {
-  final Subscription _data;
+  late String name;
+  late double price;
+  late String? description;
   late final Dropdown dropdown;
   
-  SDEditHeader(this._data, {Key? key}) : super(key: key);
+  SDEditHeader({
+    this.name = '',
+    this.price = -1,
+    this.description,
+    Key? key
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +23,7 @@ class SDEditHeader extends StatelessWidget {
       children: [
         Container(
           margin: const EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 8),
-          child: SDEditTextFieldForm(_data.name, "Name")
+          child: SDEditTextFieldForm(name, "Name")
         ),
         Container(
           margin: const EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 8),
@@ -26,7 +32,7 @@ class SDEditHeader extends StatelessWidget {
               Expanded(
                 flex: 3,
                 child: SDEditTextFieldForm(
-                  _data.price > 0 ? _data.price.toString() : "", 
+                  price > 0 ? price.toString() : "", 
                   "Price", 
                   textInputType: TextInputType.number
                 )
@@ -41,7 +47,7 @@ class SDEditHeader extends StatelessWidget {
         ),
         Container(
           margin: const EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 8),
-          child: SDEditTextFieldForm(_data.description ?? '', "Description")
+          child: SDEditTextFieldForm(description ?? '', "Description")
         ),
       ],
     );

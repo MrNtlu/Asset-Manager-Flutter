@@ -1,4 +1,4 @@
-import 'package:asset_flutter/content/pages/tabs_page.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/material.dart';
 
 class CurrencyBarButton extends StatelessWidget {
@@ -21,7 +21,7 @@ class CurrencyBarButton extends StatelessWidget {
             ),
           ),
           style: OutlinedButton.styleFrom(
-            side: const BorderSide(color: TabsPage.primaryLightishColor, width: 1),
+            side: BorderSide(color: AppColors().primaryLightishColor, width: 1),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12)
             ),

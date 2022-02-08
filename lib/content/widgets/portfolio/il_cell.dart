@@ -1,9 +1,9 @@
-import 'package:asset_flutter/content/models/asset.dart';
+import 'package:asset_flutter/content/models/responses/asset.dart';
 import 'package:asset_flutter/content/pages/portfolio/investment_details_page.dart';
 import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
-import 'package:asset_flutter/content/pages/tabs_page.dart';
 import 'package:asset_flutter/content/widgets/portfolio/il_cell_image.dart';
 import 'package:asset_flutter/content/widgets/portfolio/pl_text.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/utils/currency_handler.dart';
 import 'package:flutter/material.dart';
 
@@ -28,7 +28,7 @@ class PortfolioInvestmentListCell extends StatelessWidget {
       },
       child: Card(
         elevation: 4,
-        color: TabsPage.primaryLightishColor,
+        color: AppColors().primaryLightishColor,
         margin: const EdgeInsets.only(left: 8, bottom: 8, right: 8),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(18),

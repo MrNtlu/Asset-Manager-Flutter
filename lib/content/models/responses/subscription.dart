@@ -1,29 +1,24 @@
-import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 
-class Subscription {
-  late String name;
-  String? description;
-  late DateTime billDate;
-  late BillCycle billCycle;
-  late double price;
-  late String currency;
-  String? image;
-  late int color;
+class SubscriptionDetails {
+  final String? cardID;
+  final String name;
+  final String? description;
+  final DateTime billDate;
+  final BillCycle billCycle;
+  final double price;
+  final String currency;
+  final double monthlyPayment;
+  final double totalpayment;
+  final String? image;
+  final int color;
 
-  Subscription(
-    this.name, this.description, this.billDate, this.billCycle, 
-    this.price, this.currency, this.image, this.color
+  SubscriptionDetails(
+    this.name, this.billDate, this.billCycle, 
+    this.price, this.currency, this.monthlyPayment, 
+    this.totalpayment, this.image, this.color,
+    {this.cardID, this.description}
   );
-
-  Subscription.empty(){
-    name = "";
-    billDate = DateTime.now();
-    billCycle = BillCycle(month: 1);
-    price = 0;
-    currency = "USD";
-    color = TestData.testChartStatsColor[0].value;
-  }
 }
 
 class BillCycle {

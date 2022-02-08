@@ -1,7 +1,7 @@
-import 'package:asset_flutter/content/models/asset.dart';
-import 'package:asset_flutter/content/pages/tabs_page.dart';
+import 'package:asset_flutter/content/models/responses/asset.dart';
 import 'package:asset_flutter/content/widgets/portfolio/il_cell_image.dart';
 import 'package:asset_flutter/content/widgets/portfolio/pl_text.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/utils/currency_handler.dart';
 import 'package:flutter/material.dart';
 
@@ -14,9 +14,9 @@ class InvestmentDetailsTopBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: TabsPage.primaryLightishColor,
-        borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+        color: AppColors().primaryLightishColor,
+        borderRadius: const BorderRadius.only(
             bottomRight: Radius.circular(36),
             bottomLeft: Radius.circular(36)),
       ),

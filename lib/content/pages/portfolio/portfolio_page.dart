@@ -1,15 +1,13 @@
 import 'dart:io';
 
 import 'package:asset_flutter/common/widgets/add_elevated_button.dart';
-import 'package:asset_flutter/content/models/asset.dart';
-import 'package:asset_flutter/content/models/subscription.dart';
-import 'package:asset_flutter/content/pages/tabs_page.dart';
+import 'package:asset_flutter/content/models/responses/asset.dart';
+import 'package:asset_flutter/content/models/responses/subscription.dart';
 import 'package:asset_flutter/content/widgets/portfolio/investment_list.dart';
 import 'package:asset_flutter/content/widgets/portfolio/portfolio.dart';
 import 'package:asset_flutter/content/widgets/portfolio/stats.dart';
-import 'package:asset_flutter/utils/extensions.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/services.dart';
 
 class PortfolioPage extends StatelessWidget {
@@ -106,14 +104,6 @@ class TestData {
     const AssetDetails(45.9, 'Ethereum Classic', 'ETC', 'USD', 'crypto', 34.2, 34.7),
   ];
 
-  static List<Subscription> testSubscriptionData = [
-    Subscription("Netflix 4K Family for Friends and Me", "Netflix Family Plan", DateTime.now(), BillCycle(month: 3), 40.5, 'TL', subscriptionImage("netflix.com"), 0xFFE53935),
-    Subscription("Spotify", null, DateTime.now().subtract(const Duration(days: 5)), BillCycle(month: 1), 27.5, 'TL', subscriptionImage("spotify.com"), 0xFF4CAF50),
-    Subscription("Playstation Plus", "Playstation Plus and this is an example of long text, lets see hot it'll behave.", DateTime.now().subtract(const Duration(days: 15)), BillCycle(year: 1), 165.2, 'TL', subscriptionImage("playstation.com"), 0xFF1976D2),
-    Subscription("Jefit", null, DateTime.now().subtract(const Duration(days: 2)), BillCycle(day: 7), 10.9, 'USD', subscriptionImage("jefit.com"), 0xFF03A9F4),
-    Subscription("WoW", null, DateTime.now().subtract(const Duration(days: 147)), BillCycle(year: 1), 60.2, 'USD', subscriptionImage("worldofwarcraft.com"), 0xFF4CAF50),
-  ];
-
   static List<SubscriptionStats> testSubscriptionStatsData = [
     const SubscriptionStats('USD', 43.8, 60.9),
     const SubscriptionStats('EUR', 85.3, 85.3),
@@ -136,24 +126,10 @@ class TestData {
     AssetLog(102.3, "BTC", "USD", "sell", 0.00313, DateTime.now().subtract(const Duration(days: 462)), soldPrice: 35528.55),
   ];
 
-  static List<Color> testChartStatsColor = [
-    TabsPage.primaryColor,
-    TabsPage.orangeColor,
-    TabsPage.primaryLightColor,
-    Colors.yellow
-  ];
-
-  static List<String> testChartStatsText = [
-    "Stock",
-    "Crypto",
-    "Exchange",
-    "Total"
-  ];
-
   static List<Color> testSubscriptionStatsColor = [
     Colors.white,
-    TabsPage.primaryDarkestColor,
-    TabsPage.orangeColor,
+    AppColors().primaryDarkestColor,
+    AppColors().orangeColor,
     Colors.yellow
   ];
 
@@ -167,10 +143,6 @@ class TestData {
 
   static String cryptoFailImage() {
     return "https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/32@2x/color/generic@2x.png";
-  }
-
-  static String subscriptionImage(String company) {
-    return "https://logo.clearbit.com/$company";
   }
 
   static IconData subscriptionFailIcon(){

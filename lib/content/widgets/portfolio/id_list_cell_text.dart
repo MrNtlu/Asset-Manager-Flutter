@@ -1,4 +1,4 @@
-import 'package:asset_flutter/content/pages/tabs_page.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/material.dart';
 
 class InvestmentDetailsLogListCellText extends StatelessWidget {
@@ -19,8 +19,8 @@ class InvestmentDetailsLogListCellText extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: Text(
                 _firstText,
-                style: const TextStyle(
-                    color: TabsPage.lightBlack,
+                style: TextStyle(
+                    color: AppColors().lightBlack,
                     fontSize: 16,
                     fontWeight: FontWeight.bold),
               ),
@@ -31,8 +31,8 @@ class InvestmentDetailsLogListCellText extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: Text(
                 _secondText,
-                style: const TextStyle(
-                    color: TabsPage.lightBlack,
+                style: TextStyle(
+                    color: AppColors().lightBlack,
                     fontSize: 16,),
               ),
             ),

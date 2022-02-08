@@ -1,10 +1,9 @@
-import 'package:asset_flutter/content/models/subscription.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
 
 class SDEditDatePicker extends StatefulWidget {
-  final Subscription _data;
-  const SDEditDatePicker(this._data, {Key? key}) : super(key: key);
+  DateTime billDate;
+  SDEditDatePicker({required this.billDate, Key? key}) : super(key: key);
 
   @override
   State<SDEditDatePicker> createState() => SDEditDatePickerState();
@@ -20,7 +19,7 @@ class SDEditDatePickerState extends State<SDEditDatePicker> {
           Expanded(
             flex: 2,
             child: Text(
-              widget._data.billDate.dateToFormatDate(),
+              widget.billDate.dateToFormatDate(),
               style: const TextStyle(
                 color: Colors.black,
                 fontSize: 18,
@@ -33,13 +32,13 @@ class SDEditDatePickerState extends State<SDEditDatePicker> {
               onPressed: () async {
                 DateTime? selectedDate = await showDatePicker(
                   context: context,
-                  initialDate: widget._data.billDate,
+                  initialDate: widget.billDate,
                   firstDate: DateTime(2015),
                   lastDate: DateTime(DateTime.now().year + 3)
                 );
                 if(selectedDate != null) {
                   setState(() {
-                    widget._data.billDate = selectedDate;
+                    widget.billDate = selectedDate;
                   });
                 }
                 return;

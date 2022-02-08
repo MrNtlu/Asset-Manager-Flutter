@@ -1,5 +1,5 @@
 import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
-import 'package:asset_flutter/content/pages/tabs_page.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/material.dart';
 
 class SubscriptionListCellImage extends StatelessWidget {
@@ -45,8 +45,8 @@ class SLNetworkImage extends StatelessWidget {
       fit: BoxFit.contain,
       frameBuilder: (context, child, int? frame, bool? wasSynchronouslyLoaded) {
         if (frame == null) {
-          return const CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(TabsPage.primaryLightColor),
+          return CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(AppColors().primaryLightColor),
             backgroundColor: Colors.white,
           );
         }

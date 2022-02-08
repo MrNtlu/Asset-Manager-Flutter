@@ -1,25 +1,15 @@
 import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
 import 'package:asset_flutter/content/pages/settings_page.dart';
 import 'package:asset_flutter/content/pages/subscription/subscription_page.dart';
+import 'package:asset_flutter/static/token.dart';
 import 'package:flutter/material.dart';
 
-//TODO: Remove hard color codes and put colors in appropriate place
 class TabsPage extends StatefulWidget {
-  static const primaryColor = Color(0xFF00579B);
-  static const primaryDarkestColor = Color(0xFF00355E);
-  static const primaryLightishColor = Color(0xFF0077D3);
-  static const primaryLightColor = Color(0xFF54C4F8);
-  static const secondaryColor = Color(0xFF83FEEB);
-  static const lightBlack = Color(0xFF595B62);
-  static const accentColor = Color(0xFFF454Cf);
-  static const greenColor = Color(0xFF66BB6A);
-  static const redColor = Color(0xFFEE8582);
-  static const orangeColor = Color(0xFFF57C00);
-
   static const routeName = "/tabs";
-  final String token;
 
-  const TabsPage(this.token);
+  TabsPage(token){
+    UserToken().setToken = token;
+  }
 
   @override
   _TabsPage createState() => _TabsPage();
@@ -42,7 +32,7 @@ class _TabsPage extends State<TabsPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("Token is " + widget.token);
+    print("Token is " + UserToken().token);
 
     return Scaffold(
       body: _pages[_selectedPageIndex],
