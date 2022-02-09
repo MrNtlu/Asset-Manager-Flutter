@@ -85,9 +85,6 @@ class PortfolioPage extends StatelessWidget {
   }
 }
 
-
-//TODO: Tests
-
 class TestData {
   static List<AssetDetails> testInvestData = [
     const AssetDetails(300.0, 'Bitcoin', 'BTC', 'USD', 'crypto', -68.28, 0.00062),
@@ -126,13 +123,6 @@ class TestData {
     AssetLog(102.3, "BTC", "USD", "sell", 0.00313, DateTime.now().subtract(const Duration(days: 462)), soldPrice: 35528.55),
   ];
 
-  static List<Color> testSubscriptionStatsColor = [
-    Colors.white,
-    AppColors().primaryDarkestColor,
-    AppColors().orangeColor,
-    Colors.yellow
-  ];
-
   static String stockImage(String symbol) {
     return "https://storage.googleapis.com/iex/api/logos/${symbol.toUpperCase()}.png";
   }
@@ -147,11 +137,5 @@ class TestData {
 
   static IconData subscriptionFailIcon(){
     return Icons.payment_rounded;
-  }
-
-  static int subscriptionStatsPercentageCalculator(List<SubscriptionStats> subsList, double data) {
-    double sum = subsList.fold(0, (previousValue, element) => previousValue + element.totalPayment);
-
-    return (data / sum * 100).toInt();
   }
 }

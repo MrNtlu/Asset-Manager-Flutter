@@ -1,7 +1,3 @@
-import 'dart:ffi';
-
-import 'package:asset_flutter/content/providers/assets.dart';
-
 class AssetCreate {
   final String toAsset;
   final String fromAsset;

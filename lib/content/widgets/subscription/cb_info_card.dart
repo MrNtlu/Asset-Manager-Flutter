@@ -3,6 +3,7 @@ import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
 import 'package:asset_flutter/content/widgets/subscription/cb_container.dart';
 import 'package:asset_flutter/content/widgets/subscription/cb_info_text.dart';
 import 'package:asset_flutter/static/colors.dart';
+import 'package:asset_flutter/static/stats_bar.dart';
 import 'package:flutter/material.dart';
 
 class CurrencyBarInfoCard extends StatelessWidget {
@@ -26,14 +27,14 @@ class CurrencyBarInfoCard extends StatelessWidget {
                 children: [
                   for (var index = 0; index < _currencyList.length; index++)
                     SubscriptionCurrencyBarContainer(
-                      TestData.subscriptionStatsPercentageCalculator(
+                      StatsBar().subscriptionStatsPercentageCalculator(
                         _currencyList, 
                         _isFirstDropdownSelected ? 
                         _currencyList[index].monthlyPayment : 
                         _currencyList[index].totalPayment
                       ), 
                       index, 
-                      TestData.testSubscriptionStatsColor[index%4],
+                      StatsBar().statsColor[index%4],
                       _currencyList.length
                     )
                 ],
@@ -48,7 +49,7 @@ class CurrencyBarInfoCard extends StatelessWidget {
                   children: [
                     for (var i = 0; i < _currencyList.length; i++)
                     SubscriptionCurrencyBarInfoText(
-                      TestData.testSubscriptionStatsColor[i],
+                      StatsBar().statsColor[i],
                       (_isFirstDropdownSelected ? 
                       _currencyList[i].monthlyPayment.toString() 
                       :
