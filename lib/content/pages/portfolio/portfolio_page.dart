@@ -6,7 +6,6 @@ import 'package:asset_flutter/content/models/responses/subscription.dart';
 import 'package:asset_flutter/content/widgets/portfolio/investment_list.dart';
 import 'package:asset_flutter/content/widgets/portfolio/portfolio.dart';
 import 'package:asset_flutter/content/widgets/portfolio/stats.dart';
-import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -109,19 +108,6 @@ class TestData {
   ];
 
   static AssetStats testAssetStatsData = AssetStats("GBP", 130, 45, 120, 536.28, 102.4, 756.46, 42202.7, -66542.5, -125324.6, -150684.46, 17.5, 67.66, 14.84);
-
-  static List<AssetLog> testInvestLogData = [
-    AssetLog(475.2855, "BTC", "USD", "buy", 0.01, DateTime.now(), boughtPrice: 47528.55),
-    AssetLog(348.062, "BTC", "USD", "buy", 0.006, DateTime.now().subtract(const Duration(days: 3)), boughtPrice: 58001.27),
-    AssetLog(252, "BTC", "USD", "sell", 0.000782, DateTime.now(), soldPrice: 53582.55),
-    AssetLog(93.084, "BTC", "USD", "buy", 0.0015, DateTime.now().subtract(const Duration(days: 33)), boughtPrice: 62056),
-    AssetLog(252, "BTC", "USD", "sell", 0.000782, DateTime.now(), soldPrice: 53582.55),
-    AssetLog(102.3, "BTC", "USD", "sell", 0.00313, DateTime.now(), soldPrice: 35528.55),
-    AssetLog(93.084, "BTC", "USD", "buy", 0.0015, DateTime.now().subtract(const Duration(days: 67)), boughtPrice: 62056),
-    AssetLog(102.3, "BTC", "USD", "sell", 0.00313, DateTime.now(), soldPrice: 35528.55),
-    AssetLog(93.084, "BTC", "USD", "buy", 0.0015, DateTime.now().subtract(const Duration(days: 395)), boughtPrice: 62056),
-    AssetLog(102.3, "BTC", "USD", "sell", 0.00313, DateTime.now().subtract(const Duration(days: 462)), soldPrice: 35528.55),
-  ];
 
   static String stockImage(String symbol) {
     return "https://storage.googleapis.com/iex/api/logos/${symbol.toUpperCase()}.png";

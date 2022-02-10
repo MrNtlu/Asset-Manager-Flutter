@@ -1,5 +1,4 @@
 import 'package:asset_flutter/content/models/responses/subscription.dart';
-import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
 import 'package:asset_flutter/content/widgets/subscription/cb_container.dart';
 import 'package:asset_flutter/content/widgets/subscription/cb_info_text.dart';
 import 'package:asset_flutter/static/colors.dart';

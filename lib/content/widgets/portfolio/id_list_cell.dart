@@ -1,9 +1,11 @@
 import 'package:asset_flutter/content/models/responses/asset.dart';
+import 'package:asset_flutter/content/providers/assets.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:asset_flutter/content/widgets/portfolio/id_list_cell_text.dart';
+import 'package:provider/provider.dart';
 
 class InvestmentDetailsListCell extends StatelessWidget {
   final AssetLog _data;
@@ -28,7 +30,8 @@ class InvestmentDetailsListCell extends StatelessWidget {
           children: [
             SlidableAction(
               onPressed: (context) {
-
+                _data.value = 1200;
+                Provider.of<AssetLogs>(context, listen: false).editAssetLog(_data);
               },
               backgroundColor: Colors.orange,
               foregroundColor: Colors.white,
@@ -37,7 +40,30 @@ class InvestmentDetailsListCell extends StatelessWidget {
             ),
             SlidableAction(
               onPressed: (context) {
-                
+                showDialog(
+                  context: context,
+                  builder: (ctx) {
+                    return AlertDialog(
+                      title: const Text('Are you sure?'),
+                      content: const Text('Do you want to delete?'),
+                      actions: [
+                        TextButton(
+                          onPressed: (){
+                            Navigator.pop(ctx);
+                          },
+                          child: const Text('NO')
+                        ),
+                        TextButton(
+                          onPressed: (){
+                            Provider.of<AssetLogs>(ctx, listen: false).deleteAssetLog(_data.id);
+                            Navigator.pop(ctx);
+                          },
+                          child: const Text('Yes')
+                        )
+                      ],
+                    );
+                  }
+                );
               },
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,

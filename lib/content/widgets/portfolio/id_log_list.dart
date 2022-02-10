@@ -1,12 +1,12 @@
-import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
+import 'package:asset_flutter/content/models/responses/asset.dart';
 import 'package:asset_flutter/content/widgets/portfolio/id_list_cell.dart';
 import 'package:flutter/material.dart';
 
 class InvestmentDetailsLogList extends StatelessWidget {
   final double _appBarHeight;
+  final List<AssetLog> assetLogs;
 
-  const InvestmentDetailsLogList(this._appBarHeight, {Key? key}) : super(key: key);
-  //TODO: https://www.udemy.com/course/learn-flutter-dart-to-build-ios-android-apps/learn/lecture/15100258#questions
+  const InvestmentDetailsLogList(this._appBarHeight, this.assetLogs, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -18,15 +18,15 @@ class InvestmentDetailsLogList extends StatelessWidget {
         itemBuilder: (context, index) {
           if (index == 0) {
             return const SizedBox(height: 100);
-          } else if (index == TestData.testInvestLogData.length + 1){
+          } else if (index == assetLogs.length + 1){
             return const SizedBox(height: 65);
           }
 
-          final data = TestData.testInvestLogData[index - 1];
+          final data = assetLogs[index - 1];
 
           return InvestmentDetailsListCell(data);
         },
-        itemCount: TestData.testInvestLogData.length + 2,
+        itemCount: assetLogs.length + 2,
         padding: const EdgeInsets.only(top: 4),
         physics: const ClampingScrollPhysics(),
         shrinkWrap: true,

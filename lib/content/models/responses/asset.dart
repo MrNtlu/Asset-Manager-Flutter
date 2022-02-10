@@ -4,7 +4,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class AssetLog {
-  final double value;
+  final String id;
+  double value;
   final String toAsset;
   final String fromAsset;
   final String type;
@@ -13,8 +14,8 @@ class AssetLog {
   final double? soldPrice;
   final DateTime createdAt;
 
-  const AssetLog(
-    this.value, this.toAsset, this.fromAsset, 
+  AssetLog(
+    this.id, this.value, this.toAsset, this.fromAsset, 
     this.type, this.amount, this.createdAt, 
     {this.boughtPrice, this.soldPrice}
   );
