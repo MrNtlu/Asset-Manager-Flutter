@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 
 class SubscriptionDetailsEdit extends StatefulWidget {
   final Subscription? _data;
+
+  final form = GlobalKey<FormState>();
   late final SubscriptionUpdate? updateData;
   late final SubscriptionCreate? createData;
 
@@ -20,12 +22,13 @@ class SubscriptionDetailsEdit extends StatefulWidget {
     colorPicker = SDEditColorPicker();
     if (isEditing) {
       updateData = SubscriptionUpdate(_data!.id);
+    } else {
+      createData = SubscriptionCreate('', BillCycle(), 0.0, '', null, 0);
     }
   }
 
   @override
-  State<SubscriptionDetailsEdit> createState() =>
-      _SubscriptionDetailsEditState();
+  State<SubscriptionDetailsEdit> createState() => _SubscriptionDetailsEditState();
 }
 
 class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
@@ -33,14 +36,17 @@ class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        widget._data != null ? 
-        SDEditHeader(
-          name: widget._data!.name,
-          price: widget._data!.price,
-          description: widget._data!.description,
-        )
-        : 
-        SDEditHeader(),
+        Form(
+          key: widget.form,
+          child: widget._data != null ? 
+          SDEditHeader(
+            name: widget._data!.name,
+            price: widget._data!.price,
+            description: widget._data!.description,
+          )
+          : 
+          SDEditHeader()
+        ),
         const Divider(thickness: 1),
         SDEditDatePicker(billDate: widget._data?.billDate ?? DateTime.now()),
         const Divider(thickness: 1),

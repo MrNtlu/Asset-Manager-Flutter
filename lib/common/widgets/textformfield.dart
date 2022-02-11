@@ -4,8 +4,10 @@ class CustomTextFormField extends StatelessWidget {
   final String _label;
   final TextInputType _keyboardType;
   final TextEditingController? textfieldController;
-  final TextInputAction textInputAction;
   final Icon? prefixIcon;
+  final TextInputAction textInputAction;
+  final String? initialText;
+  final EdgeInsets? edgeInsets;
 
   final Function(String?)? onSaved;
   final String? Function(String?)? validator;
@@ -14,6 +16,8 @@ class CustomTextFormField extends StatelessWidget {
       {this.textfieldController,
       this.prefixIcon,
       this.textInputAction = TextInputAction.next,
+      this.initialText,
+      this.edgeInsets = const EdgeInsets.fromLTRB(32, 16, 32, 0),
       this.onSaved,
       this.validator});
 
@@ -21,7 +25,7 @@ class CustomTextFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         width: double.infinity,
-        margin: const EdgeInsets.fromLTRB(32, 16, 32, 0),
+        margin: edgeInsets,
         child: TextFormField(
           keyboardType: _keyboardType,
           controller: textfieldController,

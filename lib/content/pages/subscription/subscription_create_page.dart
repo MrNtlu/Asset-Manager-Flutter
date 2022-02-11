@@ -1,16 +1,27 @@
+import 'package:asset_flutter/content/providers/subscriptions.dart';
 import 'package:asset_flutter/content/widgets/portfolio/sd_edit.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SubscriptionCreatePage extends StatelessWidget {
-  const SubscriptionCreatePage({Key? key}) : super(key: key);
+  late final SubscriptionDetailsEdit _subscriptionDetailsEdit;
+  late final Subscriptions _subscriptionsProvider;
 
   void _createSubscription() {
-
+    final isValid = _subscriptionDetailsEdit.form.currentState?.validate();
+    if (isValid != null && !isValid) {
+      return;
+    }
+    _subscriptionDetailsEdit.form.currentState?.save();
+    _subscriptionsProvider.addSubscription(_subscriptionDetailsEdit.createData!);
   }
 
   @override
   Widget build(BuildContext context) {
+    _subscriptionsProvider = Provider.of<Subscriptions>(context);
+    _subscriptionDetailsEdit = SubscriptionDetailsEdit(null);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -26,7 +37,7 @@ class SubscriptionCreatePage extends StatelessWidget {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: SubscriptionDetailsEdit(null),
+          child: _subscriptionDetailsEdit,
         ),
       ),
     );

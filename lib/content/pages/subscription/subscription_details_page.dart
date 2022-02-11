@@ -25,6 +25,7 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
     final data = subscriptionsProvider.findById(widget._subscriptionID);
 
     SubscriptionDetailsEdit updateView = SubscriptionDetailsEdit(data);
+    
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(

@@ -4,7 +4,6 @@ class SubscriptionCreate {
   final String? cardID;
   final String name;
   final String? description;
-  final DateTime billDate;
   final BillCycle billCycle;
   final double price;
   final String currency;
@@ -12,7 +11,7 @@ class SubscriptionCreate {
   final int color;
 
   SubscriptionCreate(
-    this.name, this.billDate, this.billCycle, 
+    this.name, this.billCycle, 
     this.price, this.currency, this.image, this.color,
     {this.cardID, this.description}
   );

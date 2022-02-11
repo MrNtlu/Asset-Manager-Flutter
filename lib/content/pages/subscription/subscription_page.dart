@@ -39,7 +39,7 @@ class SubscriptionPage extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 child: AddElevatedButton("Add Subscription", (){
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: ((context) => const SubscriptionCreatePage()))
+                    MaterialPageRoute(builder: ((context) => SubscriptionCreatePage()))
                   );
                 },
                 edgeInsets: const EdgeInsets.only(left: 8, right: 8, bottom: 8)),

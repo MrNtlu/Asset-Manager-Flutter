@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:asset_flutter/content/models/requests/subscription.dart';
 import 'package:asset_flutter/content/models/responses/subscription.dart';
 import 'package:asset_flutter/content/providers/subscription.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +22,11 @@ class Subscriptions with ChangeNotifier {
     return _items.firstWhere((element) => element.id == id);
   }
 
-  void addSubscription(Subscription value) {
-    _items.add(value);
+  void addSubscription(SubscriptionCreate value) {
+    _items.add(Subscription(
+      Random().toString(), value.name, value.description, 
+      DateTime.now(), value.billCycle, value.price, 
+      value.currency, value.image, value.color));
     notifyListeners();
   }
 }

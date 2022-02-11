@@ -1,4 +1,5 @@
 import 'package:asset_flutter/common/widgets/dropdown.dart';
+import 'package:asset_flutter/common/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
 
 class SDEditHeader extends StatelessWidget {
@@ -21,20 +22,22 @@ class SDEditHeader extends StatelessWidget {
     );
     return Column(
       children: [
-        Container(
-          margin: const EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 8),
-          child: SDEditTextFieldForm(name, "Name")
+        CustomTextFormField(
+          "Name",
+          TextInputType.name,
+          initialText: name,
+          edgeInsets: const EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 8),
         ),
-        Container(
-          margin: const EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 8),
+        SizedBox(
           child: Row(
             children: [
               Expanded(
                 flex: 3,
-                child: SDEditTextFieldForm(
-                  price > 0 ? price.toString() : "", 
+                child: CustomTextFormField(
                   "Price", 
-                  textInputType: TextInputType.number
+                  TextInputType.number,
+                  initialText: price > 0 ? price.toString() : "", 
+                  edgeInsets: const EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 8),
                 )
               ),
               const SizedBox(width: 8),
@@ -45,35 +48,13 @@ class SDEditHeader extends StatelessWidget {
             ],
           )
         ),
-        Container(
-          margin: const EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 8),
-          child: SDEditTextFieldForm(description ?? '', "Description")
+        CustomTextFormField(
+          "Description",
+          TextInputType.name,
+          initialText: description ?? '',
+          edgeInsets: const EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 8),
         ),
       ],
-    );
-  }
-}
-
-class SDEditTextFieldForm extends StatelessWidget {
-  final String _text;
-  final String _label;
-  final TextInputType textInputType;
-
-  const SDEditTextFieldForm(this._text, this._label, {this.textInputType = TextInputType.name,Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      keyboardType: textInputType,
-      maxLines: 1,
-      initialValue: _text,
-      style: const TextStyle(color: Colors.black),
-      decoration: InputDecoration(
-        filled: true,
-        fillColor: Colors.white,
-        border: const OutlineInputBorder(),
-        labelText: _label,
-      ),
     );
   }
 }
