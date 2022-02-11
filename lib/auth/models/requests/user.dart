@@ -1,16 +1,16 @@
 class Login {
-  final String emailAddress;
-  final String password;
+  String emailAddress;
+  String password;
 
-  const Login(this.emailAddress, this.password);
+  Login(this.emailAddress, this.password);
 }
 
 class Register {
-  final String emailAddress;
-  final String currency;
-  final String password;
+  String emailAddress;
+  String currency;
+  String password;
 
-  const Register(this.emailAddress, this.currency, this.password);
+  Register(this.emailAddress, this.currency, this.password);
 }
 
 class ChangePassword {

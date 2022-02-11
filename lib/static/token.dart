@@ -10,7 +10,7 @@ class UserToken {
   }
 
   set setToken(String token) {
-    _token ??= token;
+    _token = token;
   }
 
   get token => _token!;

@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 
 class PasswordTextField extends StatefulWidget {
-  final TextEditingController _passwordController;
+  final TextEditingController? passwordController;
   final String label;
+  final TextInputAction textInputAction;
+  final Function(String?)? onSaved;
+  final String? Function(String?)? validator;
   final Icon? prefixIcon;
 
-  const PasswordTextField(this._passwordController, {this.label = 'Password', this.prefixIcon});
+  const PasswordTextField(
+      {this.passwordController,
+      this.label = 'Password',
+      this.onSaved,
+      this.validator,
+      this.prefixIcon,
+      this.textInputAction = TextInputAction.next});
 
   @override
   _PasswordTextFieldState createState() => _PasswordTextFieldState();
@@ -15,14 +24,23 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
   bool _isHidden = true;
 
   @override
+  void dispose() {
+    widget.passwordController?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.fromLTRB(32, 16, 32, 0),
-      child: TextField(
-        controller: widget._passwordController,
+      child: TextFormField(
+        controller: widget.passwordController,
         obscureText: _isHidden,
         keyboardType: TextInputType.visiblePassword,
+        textInputAction: widget.textInputAction,
+        onSaved: widget.onSaved,
+        validator: widget.validator,
         decoration: InputDecoration(
           filled: true,
           fillColor: Colors.white,

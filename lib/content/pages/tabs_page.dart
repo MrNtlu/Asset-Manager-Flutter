@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class TabsPage extends StatefulWidget {
   static const routeName = "/tabs";
 
-  TabsPage(token){
+  TabsPage(token) {
     UserToken().setToken = token;
   }
 

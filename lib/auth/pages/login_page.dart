@@ -1,13 +1,15 @@
 import 'dart:io';
 
+import 'package:asset_flutter/auth/models/requests/user.dart';
 import 'package:asset_flutter/auth/pages/register_page.dart';
 import 'package:asset_flutter/auth/widgets/auth_bottom_sheet.dart';
 import 'package:asset_flutter/common/widgets/expanded_divider.dart';
 import 'package:asset_flutter/content/pages/tabs_page.dart';
 import 'package:asset_flutter/static/colors.dart';
+import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:asset_flutter/common/widgets/textfield.dart';
-import 'package:asset_flutter/common/widgets/password_textfield.dart';
+import 'package:asset_flutter/common/widgets/textformfield.dart';
+import 'package:asset_flutter/common/widgets/password_textformfield.dart';
 import 'package:asset_flutter/auth/widgets/auth_button.dart';
 import 'package:asset_flutter/auth/widgets/auth_checkbox.dart';
 
@@ -15,22 +17,22 @@ class LoginPage extends StatelessWidget {
   static const routeName = "/login";
   late String token;
 
-  final emailInput = TextEditingController();
-  final passwordInput = TextEditingController();
   AuthCheckbox? checkbox;
+  final _form = GlobalKey<FormState>();
+  final _loginModel = Login('', '');
 
   void onSigninPressed(BuildContext ctx) {
-    token = emailInput.text;
-    print("EmailInput: " +
-        emailInput.text +
-        " Password: " +
-        passwordInput.text +
-        " " +
-        (checkbox != null ? checkbox!.getValue().toString() : "null"));
+    final isValid = _form.currentState?.validate();
+    if (isValid != null && !isValid) {
+      return;
+    }
+    _form.currentState?.save();
+    token = _loginModel.emailAddress;
+
 
     Navigator.of(ctx).pushReplacement(MaterialPageRoute(builder: (_) {
       return TabsPage(token);
-    }),);
+    }));
   }
 
   void onRegisterPressed(BuildContext ctx) {
@@ -58,75 +60,106 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: appBar,
-      body: CustomScrollView(
-        physics: const ScrollPhysics(),
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        slivers: [
-          SliverFillRemaining(
-            hasScrollBody: false,
-            fillOverscroll: false,
-            child: Center(
-              child: Column(
-                children: <Widget>[
-                  Container(
-                      margin: const EdgeInsets.all(32),
-                      child: const FlutterLogo(size: 128)),
-                  CustomTextField(
-                    'Email',
-                    TextInputType.emailAddress,
-                    textfieldController: emailInput,
-                    prefixIcon: Icon(
-                      Icons.email,
-                      color: AppColors().primaryColor,
-                    ),
-                  ),
-                  PasswordTextField(
-                    passwordInput,
-                    prefixIcon: Icon(
-                      Icons.password,
-                      color: AppColors().primaryColor,
-                    ),
-                  ),
-                  Container(
-                      margin: EdgeInsets.only(
-                          left: (Platform.isMacOS || Platform.isWindows)
-                              ? 26
-                              : 18,
-                          top:
-                              (Platform.isMacOS || Platform.isWindows) ? 8 : 4),
-                      child: checkbox),
-                  AuthButton(
-                      onSigninPressed, 'Sign In', AppColors().primaryLightColor),
-                  Padding(
-                    padding: const EdgeInsets.all(6.0),
-                    child: Row(
-                      children: const [
-                        ExpandedDivider(10, 20, 24),
-                        Text("OR"),
-                        ExpandedDivider(20, 10, 24),
-                      ],
-                    ),
-                  ),
-                  AuthButton(
-                      onRegisterPressed, 'Register', AppColors().primaryColor),
-                  Expanded(
-                    child: Container(
-                      margin:
-                          const EdgeInsetsDirectional.only(bottom: 32, end: 32),
-                      child: Align(
-                        alignment: Alignment.bottomRight,
-                        child: TextButton(
-                            onPressed: () =>
-                                openForgotPasswordBottomSheet(context),
-                            child: const Text('Forgot Password')),
+      body: SafeArea(
+        child: CustomScrollView(
+          physics: const ScrollPhysics(),
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          slivers: [
+            SliverFillRemaining(
+              hasScrollBody: false,
+              fillOverscroll: false,
+              child: Center(
+                child: Form(
+                  key: _form,
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                          margin: const EdgeInsets.all(32),
+                          child: const FlutterLogo(size: 128)),
+                      CustomTextFormField(
+                        'Email',
+                        TextInputType.emailAddress,
+                        prefixIcon: Icon(
+                          Icons.email,
+                          color: AppColors().primaryColor,
+                        ),
+                        onSaved: (value){
+                          if (value != null) {
+                            _loginModel.emailAddress = value;
+                          }
+                        },
+                        validator: (value) {
+                          if (value != null) {
+                            if (value.isEmpty) {
+                              return "Please don't leave this empty.";
+                            } else if (!value.isEmailValid()) {
+                              return "Email is not valid.";
+                            }
+                          }
+
+                          return null;
+                        },
                       ),
-                    ),
+                      PasswordTextField(
+                        prefixIcon: Icon(
+                          Icons.password,
+                          color: AppColors().primaryColor,
+                        ),
+                        textInputAction: TextInputAction.done,
+                        onSaved: (value){
+                          if (value != null) {
+                            _loginModel.password = value;
+                          }
+                        },
+                        validator: (value) {
+                        if (value != null) {
+                          if (value.isEmpty) {
+                            return "Please don't leave this empty.";
+                          }
+                        }
+
+                        return null;
+                      },
+                      ),
+                      Container(
+                          margin: EdgeInsets.only(
+                              left: (Platform.isMacOS || Platform.isWindows) ? 26 : 18,
+                              top: (Platform.isMacOS || Platform.isWindows) ? 8 : 4),
+                          child: checkbox),
+                      AuthButton(
+                          onSigninPressed, 'Sign In', AppColors().primaryLightColor),
+                      Padding(
+                        padding: const EdgeInsets.all(6.0),
+                        child: Row(
+                          children: const [
+                            ExpandedDivider(10, 20, 24),
+                            Text("OR"),
+                            ExpandedDivider(20, 10, 24),
+                          ],
+                        ),
+                      ),
+                      AuthButton(
+                          onRegisterPressed, 'Register', AppColors().primaryColor),
+                      Expanded(
+                        child: Container(
+                          margin:
+                              const EdgeInsetsDirectional.only(bottom: 32, end: 32),
+                          child: Align(
+                            alignment: Alignment.bottomRight,
+                            child: TextButton(
+                                onPressed: () =>
+                                    openForgotPasswordBottomSheet(context),
+                                child: const Text('Forgot Password')),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
