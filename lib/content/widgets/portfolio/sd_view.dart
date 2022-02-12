@@ -1,8 +1,11 @@
+import 'package:asset_flutter/common/widgets/check_dialog.dart';
 import 'package:asset_flutter/content/providers/subscription.dart';
+import 'package:asset_flutter/content/providers/subscriptions.dart';
 import 'package:asset_flutter/content/widgets/portfolio/sd_view_text.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SubscriptionDetailsView extends StatelessWidget {
   final Subscription _data;
@@ -60,7 +63,15 @@ class SubscriptionDetailsView extends StatelessWidget {
           padding: const EdgeInsets.all(12),
           child: OutlinedButton(
             onPressed: () {
-              print("Delete Subscription");
+              showDialog(
+                context: context, 
+                builder: (ctx) => AreYouSureDialog('delete', (){
+                    Provider.of<Subscriptions>(context, listen: false).deleteSubscription(_data.id);
+                    Navigator.pop(ctx);
+                    Navigator.pop(context);
+                  }
+                )
+              );
             },
             child: const Text("Delete Subscription")
           ),

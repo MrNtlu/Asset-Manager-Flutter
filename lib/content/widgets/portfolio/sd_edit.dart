@@ -9,21 +9,28 @@ import 'package:flutter/material.dart';
 
 class SubscriptionDetailsEdit extends StatefulWidget {
   final Subscription? _data;
+  late final bool isEditing;
 
   final form = GlobalKey<FormState>();
   late final SubscriptionUpdate? updateData;
   late final SubscriptionCreate? createData;
 
+  late final SDEditDatePicker datePicker;
+  late final SDEditBillCycle billCyclePicker;
   late final SDEditColorPicker colorPicker;
-  late final bool isEditing;
 
   SubscriptionDetailsEdit(this._data, {Key? key}) : super(key: key) {
     isEditing = _data != null;
-    colorPicker = SDEditColorPicker();
+    colorPicker = SDEditColorPicker(
+      color: _data!= null ? Color(_data!.color) : null,
+    );
+    datePicker = SDEditDatePicker(billDate: _data?.billDate ?? DateTime.now());
+    billCyclePicker = SDEditBillCycle(billCycle: _data?.billCycle ?? BillCycle(month: 1));
+
     if (isEditing) {
       updateData = SubscriptionUpdate(_data!.id);
     } else {
-      createData = SubscriptionCreate('', BillCycle(), 0.0, '', null, 0);
+      createData = SubscriptionCreate('', BillCycle(), DateTime.now(), 0.0, '',  null, 0);
     }
   }
 
@@ -38,17 +45,22 @@ class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
       children: [
         Form(
           key: widget.form,
-          child: widget._data != null ? 
+          child: widget.isEditing ? 
           SDEditHeader(
             name: widget._data!.name,
             price: widget._data!.price,
             description: widget._data!.description,
+            currency: widget._data!.currency,
+            updateData: widget.updateData,
+            isEditing: true,
           )
           : 
-          SDEditHeader()
+          SDEditHeader(
+            createData: widget.createData,
+          )
         ),
         const Divider(thickness: 1),
-        SDEditDatePicker(billDate: widget._data?.billDate ?? DateTime.now()),
+        widget.datePicker,
         const Divider(thickness: 1),
         Container(
           margin: const EdgeInsets.fromLTRB(12, 8, 8, 4),
@@ -59,8 +71,7 @@ class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
                 color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
           ),
         ),
-        SDEditBillCycle(
-            billCycle: widget._data?.billCycle ?? BillCycle(month: 1)),
+        widget.billCyclePicker,
         const Divider(thickness: 1),
         Container(
           margin: const EdgeInsets.fromLTRB(12, 8, 8, 4),
@@ -68,12 +79,16 @@ class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
           child: const Text(
             "Pick Color",
             style: TextStyle(
-                color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+              color: Colors.black, 
+              fontSize: 16, 
+              fontWeight: FontWeight.bold
+            ),
           ),
         ),
         Container(
-            margin: const EdgeInsets.fromLTRB(12, 8, 8, 4),
-            child: widget.colorPicker),
+          margin: const EdgeInsets.fromLTRB(12, 8, 8, 4),
+          child: widget.colorPicker
+        ),
         const Divider(thickness: 1),
       ],
     );

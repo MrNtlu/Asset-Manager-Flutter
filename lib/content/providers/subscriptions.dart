@@ -24,9 +24,16 @@ class Subscriptions with ChangeNotifier {
 
   void addSubscription(SubscriptionCreate value) {
     _items.add(Subscription(
-      Random().toString(), value.name, value.description, 
+      Random().nextInt(9999).toString(), value.name, value.description, 
       DateTime.now(), value.billCycle, value.price, 
-      value.currency, value.image, value.color));
+      value.currency, value.image, value.color)
+    );
+    notifyListeners();
+  }
+
+  void deleteSubscription(String id) {
+    final deleteItem = findById(id);
+    _items.remove(deleteItem);
     notifyListeners();
   }
 }

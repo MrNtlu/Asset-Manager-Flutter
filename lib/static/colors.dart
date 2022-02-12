@@ -20,3 +20,42 @@ class AppColors {
     return _instance;
   }
 }
+
+class SubscriptionColors {
+  List<Color> subscriptionColors = [
+    Colors.black,
+    const Color(0xFF595B62),
+    Colors.blue.shade900,
+    Colors.blue,
+    Colors.blue.shade300,
+    Colors.orange.shade900,
+    Colors.orange,
+    Colors.orange.shade300,
+    Colors.yellow,
+    Colors.pink.shade900,
+    Colors.pink,
+    Colors.pink.shade300,
+    Colors.purple.shade900,
+    Colors.purple,
+    Colors.purple.shade300,
+    Colors.red.shade900,
+    Colors.red,
+    Colors.red.shade300,
+    Colors.green.shade900,
+    Colors.green,
+    Colors.green.shade300,
+    Colors.grey,
+    Colors.grey.shade700,
+    Colors.brown.shade900,
+    Colors.brown,
+    Colors.brown.shade300,
+  ];
+
+  SubscriptionColors._privateConstructor();
+
+  static final SubscriptionColors _instance = SubscriptionColors._privateConstructor();
+
+  factory SubscriptionColors() {
+    return _instance;
+  }
+}

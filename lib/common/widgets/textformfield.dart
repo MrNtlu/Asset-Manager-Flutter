@@ -32,6 +32,7 @@ class CustomTextFormField extends StatelessWidget {
           textInputAction: textInputAction,
           onSaved: onSaved,
           validator: validator,
+          initialValue: initialText,
           decoration: InputDecoration(
               filled: true,
               fillColor: Colors.white,

@@ -1,3 +1,4 @@
+import 'package:asset_flutter/common/widgets/check_dialog.dart';
 import 'package:asset_flutter/content/models/responses/asset.dart';
 import 'package:asset_flutter/content/providers/assets.dart';
 import 'package:asset_flutter/static/colors.dart';
@@ -42,27 +43,11 @@ class InvestmentDetailsListCell extends StatelessWidget {
               onPressed: (context) {
                 showDialog(
                   context: context,
-                  builder: (ctx) {
-                    return AlertDialog(
-                      title: const Text('Are you sure?'),
-                      content: const Text('Do you want to delete?'),
-                      actions: [
-                        TextButton(
-                          onPressed: (){
-                            Navigator.pop(ctx);
-                          },
-                          child: const Text('NO')
-                        ),
-                        TextButton(
-                          onPressed: (){
-                            Provider.of<AssetLogs>(ctx, listen: false).deleteAssetLog(_data.id);
-                            Navigator.pop(ctx);
-                          },
-                          child: const Text('Yes')
-                        )
-                      ],
-                    );
-                  }
+                  builder: (ctx) => AreYouSureDialog('delete', (){
+                      Provider.of<AssetLogs>(ctx, listen: false).deleteAssetLog(_data.id);
+                      Navigator.pop(ctx);
+                    }
+                  )
                 );
               },
               backgroundColor: Colors.red,

@@ -8,12 +8,12 @@ import 'package:provider/provider.dart';
 class SubscriptionDetailsPage extends StatefulWidget {
   final String _subscriptionID;
 
-  const SubscriptionDetailsPage(this._subscriptionID, {Key? key})
-      : super(key: key);
+  const SubscriptionDetailsPage(
+    this._subscriptionID, {Key? key}
+  ): super(key: key);
 
   @override
-  State<SubscriptionDetailsPage> createState() =>
-      _SubscriptionDetailsPageState();
+  State<SubscriptionDetailsPage> createState() => _SubscriptionDetailsPageState();
 }
 
 class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
@@ -47,6 +47,21 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
                   tooltip: 'Exit Edit State',
                   onPressed: () {
                     setState(() {
+                      final isValid = updateView.form.currentState?.validate();
+                      if (isValid != null && !isValid) {
+                        return;
+                      }
+                      updateView.form.currentState?.save();
+                      if (data.billDate.compareTo(updateView.datePicker.billDate) != 0) {
+                        updateView.updateData!.billDate = updateView.datePicker.billDate;
+                      }
+                      if (data.billCycle != updateView.billCyclePicker.billCycle) {
+                        updateView.updateData!.billCycle = updateView.billCyclePicker.billCycle;
+                      }
+                      if (data.color != updateView.colorPicker.selectedColor.value) {
+                        updateView.updateData!.color = updateView.colorPicker.selectedColor.value;
+                      }
+
                       data.updateSubscription(updateView.updateData!);
                       _isEditing = false;
                     });

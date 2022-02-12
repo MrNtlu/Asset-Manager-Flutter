@@ -27,6 +27,14 @@ class BillCycle {
   int year;
 
   BillCycle({this.day = 0, this.month = 0, this.year = 0});
+  
+  @override
+  bool operator ==(Object other) =>
+    other is BillCycle &&
+    runtimeType == other.runtimeType &&
+    day == other.day &&
+    month == other.month && 
+    year == other.year;
 
   Map<int, String> getBillCycle() {
     if (day != 0) {
