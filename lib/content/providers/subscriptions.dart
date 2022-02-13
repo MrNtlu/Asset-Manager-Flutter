@@ -1,9 +1,15 @@
 import 'dart:math';
 
+import 'package:asset_flutter/common/models/response.dart';
 import 'package:asset_flutter/content/models/requests/subscription.dart';
 import 'package:asset_flutter/content/models/responses/subscription.dart';
 import 'package:asset_flutter/content/providers/subscription.dart';
+import 'package:asset_flutter/static/routes.dart';
+import 'package:asset_flutter/static/token.dart';
+import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class Subscriptions with ChangeNotifier {
   final List<Subscription> _items = [
@@ -22,13 +28,27 @@ class Subscriptions with ChangeNotifier {
     return _items.firstWhere((element) => element.id == id);
   }
 
-  void addSubscription(SubscriptionCreate value) {
-    _items.add(Subscription(
-      Random().nextInt(9999).toString(), value.name, value.description, 
-      DateTime.now(), value.billCycle, value.price, 
-      value.currency, value.image, value.color)
-    );
-    notifyListeners();
+  Future<BaseAPIResponse> addSubscription(SubscriptionCreate subsCreate) async {
+    try {
+      final response = await http.post(
+        Uri.parse(APIRoutes().subscriptionRoutes.createSubscription),
+        body: json.encode(subsCreate.convertToJson()),
+        headers: UserToken().getBearerToken(),
+      );
+
+      if (response.getBaseResponse().error == null) {  
+        _items.add(Subscription(
+          Random().nextInt(9999).toString(), subsCreate.name, subsCreate.description, 
+          DateTime.now(), subsCreate.billCycle, subsCreate.price, 
+          subsCreate.currency, subsCreate.image, subsCreate.color)
+        );
+        notifyListeners();
+      }
+
+      return response.getBaseResponse();
+    }catch(error){
+      return BaseAPIResponse(error.toString());
+    }
   }
 
   void deleteSubscription(String id) {

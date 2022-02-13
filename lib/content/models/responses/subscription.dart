@@ -1,3 +1,4 @@
+import 'package:asset_flutter/common/models/json_convert.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 
 class SubscriptionDetails {
@@ -21,7 +22,7 @@ class SubscriptionDetails {
   );
 }
 
-class BillCycle {
+class BillCycle implements JSONConverter{
   int day;
   int month;
   int year;
@@ -35,6 +36,13 @@ class BillCycle {
     day == other.day &&
     month == other.month && 
     year == other.year;
+
+  @override
+  Map<String, Object> convertToJson()=> {
+    "day": day,
+    "month": month,
+    "year": year
+  };
 
   Map<int, String> getBillCycle() {
     if (day != 0) {

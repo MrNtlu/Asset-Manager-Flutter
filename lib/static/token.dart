@@ -14,4 +14,9 @@ class UserToken {
   }
 
   get token => _token!;
+
+  Map<String, String> getBearerToken() => {
+    "Authorization": 'Bearer $_token'
+    // "Authorization": 'Bearer token'
+  };
 }

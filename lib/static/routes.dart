@@ -1,10 +1,14 @@
 class APIRoutes {
-  final baseURL = 'assetmanager-go.oa.r.appspot.com';
+  final baseTestURL = 'http://localhost:8080'; 
+  final baseURL = 'https://assetmanager-go.oa.r.appspot.com';
 
-  final AssetRoutes assetRoutes =
-      AssetRoutes(baseURL: 'assetmanager-go.oa.r.appspot.com');
+  late final AssetRoutes assetRoutes;
+  late final SubscriptionRoutes subscriptionRoutes;
 
-  APIRoutes._privateConstructor();
+  APIRoutes._privateConstructor() {
+    assetRoutes = AssetRoutes(baseURL: baseTestURL);
+    subscriptionRoutes = SubscriptionRoutes(baseURL: baseTestURL);
+  }
 
   static final APIRoutes _instance = APIRoutes._privateConstructor();
 
@@ -13,58 +17,76 @@ class APIRoutes {
   }
 }
 
-class AssetRoutes {
-  late String baseAssetURL;
+class AuthRoutes {
+  late String _baseAuthURL;
 
-  late String assetsByUserID;
-  late String assetLogsByUserID;
-  late String assetStatsByUserID;
-  late String assetStatsByAssetAndUserID;
-  late String createAsset;
-  late String updateAssetLogByAssetID;
-  late String deleteAllAssetsByUserID;
-  late String deleteAssetLogsByUserID;
-  late String deleteAssetLogsByAssetID;
+  late String login;
+  late String register;
+  late String logout;
+  late String confirmPasswordReset;
+
+  AuthRoutes({baseURL}) {
+    _baseAuthURL = baseURL + '/auth';
+
+    login = _baseAuthURL + '/login';
+    register = _baseAuthURL + '/register';
+    logout = _baseAuthURL + '/logout';
+    confirmPasswordReset = _baseAuthURL + '/confirm-password-reset';
+  }
+}
+
+class AssetRoutes {
+  late final String _baseAssetURL;
+
+  late final String assetsByUserID;
+  late final String assetLogsByUserID;
+  late final String assetStatsByUserID;
+  late final String assetStatsByAssetAndUserID;
+  late final String createAsset;
+  late final String updateAssetLogByAssetID;
+  late final String deleteAllAssetsByUserID;
+  late final String deleteAssetLogsByUserID;
+  late final String deleteAssetLogsByAssetID;
 
   AssetRoutes({baseURL}) {
-    baseAssetURL = baseURL + '/asset';
+    _baseAssetURL = baseURL + '/asset';
 
-    assetsByUserID = baseAssetURL;
-    assetLogsByUserID = baseAssetURL + '/logs';
-    assetStatsByUserID = baseAssetURL + '/stats';
-    assetStatsByAssetAndUserID = baseAssetURL + '/details';
+    assetsByUserID = _baseAssetURL;
+    assetLogsByUserID = _baseAssetURL + '/logs';
+    assetStatsByUserID = _baseAssetURL + '/stats';
+    assetStatsByAssetAndUserID = _baseAssetURL + '/details';
 
-    createAsset = baseAssetURL;
-    updateAssetLogByAssetID = baseAssetURL;
-    deleteAllAssetsByUserID = baseAssetURL;
-    deleteAssetLogsByUserID = baseAssetURL + '/logs';
-    deleteAssetLogsByAssetID = baseAssetURL + '/log';
+    createAsset = _baseAssetURL;
+    updateAssetLogByAssetID = _baseAssetURL;
+    deleteAllAssetsByUserID = _baseAssetURL;
+    deleteAssetLogsByUserID = _baseAssetURL + '/logs';
+    deleteAssetLogsByAssetID = _baseAssetURL + '/log';
   }
 }
 
 class SubscriptionRoutes {
-  late String baseSubscriptionURL;
+  late final String _baseSubscriptionURL;
 
-  late String subscriptionStatsByUserID;
-  late String subscriptionDetails;
-  late String subscriptionsByUserID;
-  late String subscriptionByCardID;
-  late String createSubscription;
-  late String updateSubscription;
-  late String deleteSubscriptionBySubscriptionID;
-  late String deleteSubscriptionsByUserID;
+  late final String subscriptionStatsByUserID;
+  late final String subscriptionDetails;
+  late final String subscriptionsByUserID;
+  late final String subscriptionByCardID;
+  late final String createSubscription;
+  late final String updateSubscription;
+  late final String deleteSubscriptionBySubscriptionID;
+  late final String deleteSubscriptionsByUserID;
 
   SubscriptionRoutes({baseURL}) {
-    baseSubscriptionURL = baseURL + '/subscription';
+    _baseSubscriptionURL = baseURL + '/subscription';
 
-    subscriptionStatsByUserID = baseSubscriptionURL + '/stats';
-    subscriptionDetails = baseSubscriptionURL + '/details';
-    subscriptionStatsByUserID = baseSubscriptionURL;
-    subscriptionByCardID = baseSubscriptionURL + '/card';
+    subscriptionStatsByUserID = _baseSubscriptionURL + '/stats';
+    subscriptionDetails = _baseSubscriptionURL + '/details';
+    subscriptionsByUserID = _baseSubscriptionURL;
+    subscriptionByCardID = _baseSubscriptionURL + '/card';
 
-    createSubscription = baseSubscriptionURL;
-    updateSubscription = baseSubscriptionURL;
-    deleteSubscriptionBySubscriptionID = baseSubscriptionURL;
-    deleteSubscriptionsByUserID = baseSubscriptionURL + '/all';
+    createSubscription = _baseSubscriptionURL;
+    updateSubscription = _baseSubscriptionURL;
+    deleteSubscriptionBySubscriptionID = _baseSubscriptionURL;
+    deleteSubscriptionsByUserID = _baseSubscriptionURL + '/all';
   }
 }

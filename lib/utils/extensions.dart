@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:asset_flutter/common/models/response.dart';
+import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 
 extension DoubleExt on double {
@@ -34,6 +38,11 @@ extension DateTimeExt on DateTime {
     final DateFormat formatter = DateFormat('dd/MM/yyyy');
     return formatter.format(this);
   }
+
+  String dateToJSONFormat(){
+    final DateFormat formatter = DateFormat("yyyy-MM-dd'T'hh:mm:ss'Z'");
+    return formatter.format(this);
+  }
 }
 
 extension IntExt on int {
@@ -46,4 +55,11 @@ extension StringExt on String {
   bool isEmailValid() {
     return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(this);
   }
+}
+
+extension ResponseExt on Response {
+  BaseAPIResponse getBaseResponse() => BaseAPIResponse(
+    json.decode(body)["error"], 
+    //json.decode(body)["message"]
+    );
 }

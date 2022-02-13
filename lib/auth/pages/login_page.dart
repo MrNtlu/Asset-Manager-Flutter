@@ -22,6 +22,24 @@ class LoginPage extends StatelessWidget {
   final _loginModel = Login('', '');
 
   void onSigninPressed(BuildContext ctx) {
+    /* TODO:
+    if >>> no sharedpref saved
+      Send login request
+      if >>> no error
+        Check if remember password checked.
+        If >>> checked 
+          save password
+        login, save token & redirect
+      else >>>
+        show error dialog
+    else >>>
+      try to login via savedpref
+      if >>> no error
+        line 32
+      else >>>
+        line 32
+    */
+
     final isValid = _form.currentState?.validate();
     if (isValid != null && !isValid) {
       return;
@@ -112,20 +130,21 @@ class LoginPage extends StatelessWidget {
                           }
                         },
                         validator: (value) {
-                        if (value != null) {
-                          if (value.isEmpty) {
-                            return "Please don't leave this empty.";
+                          if (value != null) {
+                            if (value.isEmpty) {
+                              return "Please don't leave this empty.";
+                            }
                           }
-                        }
 
-                        return null;
-                      },
+                          return null;
+                        },
                       ),
                       Container(
-                          margin: EdgeInsets.only(
-                              left: (Platform.isMacOS || Platform.isWindows) ? 26 : 18,
-                              top: (Platform.isMacOS || Platform.isWindows) ? 8 : 4),
-                          child: checkbox),
+                        margin: EdgeInsets.only(
+                            left: (Platform.isMacOS || Platform.isWindows) ? 26 : 18,
+                            top: (Platform.isMacOS || Platform.isWindows) ? 8 : 4),
+                        child: checkbox
+                      ),
                       AuthButton(
                           onSigninPressed, 'Sign In', AppColors().primaryLightColor),
                       Padding(
