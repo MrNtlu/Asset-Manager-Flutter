@@ -9,10 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SubscriptionDetailsPage extends StatefulWidget {
-  late final Subscription _data;
   final String _subscriptionID;
 
-  SubscriptionDetailsPage(
+  const SubscriptionDetailsPage(
     this._subscriptionID, {Key? key}
   ): super(key: key);
 
@@ -23,17 +22,18 @@ class SubscriptionDetailsPage extends StatefulWidget {
 class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
   bool _isEditing = false;
   bool _isLoading = false;
-  bool _isInit = true;
+  bool _isInit = false;
+  late final Subscription _data;
   late final SubscriptionDetailsEdit _updateView;
 
   void _setUpdateData(){
-    if (widget._data.billDate.compareTo(_updateView.datePicker.billDate) != 0) {
+    if (_data.billDate.compareTo(_updateView.datePicker.billDate) != 0) {
       _updateView.updateData!.billDate = _updateView.datePicker.billDate;
     }
-    if (widget._data.billCycle != _updateView.billCyclePicker.billCycle) {
+    if (_data.billCycle != _updateView.billCyclePicker.billCycle) {
       _updateView.updateData!.billCycle = _updateView.billCyclePicker.billCycle;
     }
-    if (widget._data.color != _updateView.colorPicker.selectedColor.value) {
+    if (_data.color != _updateView.colorPicker.selectedColor.value) {
       _updateView.updateData!.color = _updateView.colorPicker.selectedColor.value;
     }
   }
@@ -50,7 +50,7 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
     _updateView.form.currentState?.save();
     _setUpdateData();
 
-    widget._data.updateSubscription(_updateView.updateData!).then((value){
+    _data.updateSubscription(_updateView.updateData!).then((value){
       setState(() {
         _isLoading = false;
       });
@@ -79,10 +79,10 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if(_isInit){
-      widget._data = Provider.of<Subscriptions>(context, listen: false).findById(widget._subscriptionID);
-      _updateView = SubscriptionDetailsEdit(widget._data);
-      _isInit = false;
+    if(!_isInit){
+      _data = Provider.of<Subscriptions>(context, listen: false).findById(widget._subscriptionID);
+      _updateView = SubscriptionDetailsEdit(_data);
+      _isInit = true;
     }
   }
 
@@ -117,7 +117,7 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
         :
         SingleChildScrollView(
           child: !_isEditing ? 
-          SubscriptionDetailsView(widget._data)
+          SubscriptionDetailsView(_data)
           :
           _updateView
         ),

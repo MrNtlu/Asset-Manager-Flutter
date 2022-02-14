@@ -5,10 +5,12 @@ class RegisterCurrencyDropdown extends StatelessWidget {
   final List<String> dropdownList = ["USD", "EUR", "GBP", "KRW", "JPY"];
   late final Dropdown dropdown;
   
+  RegisterCurrencyDropdown(){
+    dropdown = Dropdown(dropdownList);
+  }
+
   @override
   Widget build(BuildContext context) {
-    dropdown = Dropdown(dropdownList);
-
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.fromLTRB(32, 16, 32, 0),

@@ -1,53 +1,110 @@
 import 'package:asset_flutter/auth/models/requests/user.dart';
 import 'package:asset_flutter/auth/widgets/auth_button.dart';
+import 'package:asset_flutter/auth/widgets/auth_checkbox.dart';
 import 'package:asset_flutter/auth/widgets/auth_currency_dropdown.dart';
+import 'package:asset_flutter/common/widgets/error_dialog.dart';
+import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/password_textformfield.dart';
 import 'package:asset_flutter/common/widgets/textformfield.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
   static const routeName = "/register";
-
-  final rePasswordInput = TextEditingController();
-  late final Checkbox? termsConditionsCheck;
-  late final Checkbox? privacyPolicyCheck;
-
-  late final RegisterCurrencyDropdown currencyDropdown;
   final _form = GlobalKey<FormState>();
   final _registerModel = Register('', '', '');
+  bool _isInit = false;
 
-  void onRegisterPressed(BuildContext ctx) {
-    _registerModel.currency = currencyDropdown.dropdown.dropdownValue;
-    final isValid = _form.currentState?.validate();
-    if (isValid != null && !isValid) {
-      return;
+  @override
+  State<RegisterPage> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
+  bool _isLoading = false;
+
+  late final AuthCheckbox _termsConditionsCheck;
+  late final AuthCheckbox _privacyPolicyCheck;
+  late final RegisterCurrencyDropdown _currencyDropdown;
+  String _rePassword = '';
+
+  void _onRegisterPressed(BuildContext context) {
+    if (_termsConditionsCheck.getValue() && _privacyPolicyCheck.getValue()) {
+      widget._registerModel.currency = _currencyDropdown.dropdown.dropdownValue;
+      final isValid = widget._form.currentState?.validate();
+      if (isValid != null && !isValid) {
+        return;
+      }
+      widget._form.currentState?.save();
+
+      if (widget._registerModel.password != _rePassword) {
+        showDialog(
+          context: context, 
+          builder: (ctx) => const ErrorDialog("Passwords don't match.")
+        );
+      }else {
+        setState(() {
+          _isLoading = true;
+        });
+
+        widget._registerModel.register().then((value){
+          setState(() {
+            _isLoading = false;
+          });
+          if (value.error != null) {
+            showDialog(
+              context: context, 
+              builder: (ctx) => ErrorDialog(value.error!)
+            );
+          }else {
+            //TODO: Show dialog and on ok pop
+            Navigator.of(context).pop();
+          }
+        }).catchError((error){
+          setState(() {
+            _isLoading = false;
+          });
+        });
+      }
+    }else {
+      showDialog(
+        context: context, 
+        builder: (ctx) => const ErrorDialog("Please accept Terms & Conditions and Privacy Policy")
+      );
     }
-    _form.currentState?.save();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!widget._isInit) {
+      _currencyDropdown = RegisterCurrencyDropdown();
+      _termsConditionsCheck = AuthCheckbox("Terms & Conditions");
+      _privacyPolicyCheck = AuthCheckbox("Privacy & Policy");
+
+      widget._isInit = true;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final AppBar appBar = AppBar(
-      title: const Text('Register'),
-      backgroundColor: AppColors().primaryColor,
-    );
-
-    currencyDropdown = RegisterCurrencyDropdown();
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: appBar,
+      appBar: AppBar(
+        title: const Text('Register'),
+        backgroundColor: AppColors().primaryColor,
+      ),
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: _isLoading
+        ? const LoadingView("Please wait while registering...") 
+        : SingleChildScrollView(
             physics: const ScrollPhysics(),
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             child: Center(
               child: Container(
                 margin: const EdgeInsets.only(top: 36),
                 child: Form(
-                  key: _form,
+                  key: widget._form,
                   child: Column(children: [
                     CustomTextFormField(
                       "Email",
@@ -56,7 +113,7 @@ class RegisterPage extends StatelessWidget {
                           Icon(Icons.email, color: AppColors().primaryColor),
                       onSaved: (value) {
                         if (value != null) {
-                          _registerModel.emailAddress = value;
+                          widget._registerModel.emailAddress = value;
                         }
                       },
                       validator: (value) {
@@ -76,15 +133,13 @@ class RegisterPage extends StatelessWidget {
                           Icon(Icons.password, color: AppColors().primaryColor),
                       onSaved: (value) {
                         if (value != null) {
-                          _registerModel.password = value;
+                          widget._registerModel.password = value;
                         }
                       },
                       validator: (value) {
                         if (value != null) {
                           if (value.isEmpty) {
                             return "Please don't leave this empty.";
-                          } else if (value != rePasswordInput.text) {
-                            return "Passwords don't match.";
                           }
                         }
 
@@ -92,22 +147,36 @@ class RegisterPage extends StatelessWidget {
                       },
                     ),
                     PasswordTextField(
-                      passwordController: rePasswordInput,
                       label: "Password Again",
                       textInputAction: TextInputAction.done,
+                      onSaved: (value){
+                        if (value != null) {
+                          _rePassword = value;
+                        }
+                      },
                       validator: (value) {
                         if (value != null) {
                           if (value.isEmpty) {
                             return "Please don't leave this empty.";
                           }
                         }
-
                         return null;
                       },
                     ),
-                    currencyDropdown,
-                    AuthButton(onRegisterPressed, "Register",
-                        AppColors().primaryColor),
+                    _currencyDropdown,
+                    Container(
+                      width: double.infinity,
+                      margin: const EdgeInsets.fromLTRB(32, 4, 32, 0),
+                      child: _termsConditionsCheck,
+                    ),
+                    Container(
+                      width: double.infinity,
+                      margin: const EdgeInsets.fromLTRB(32, 4, 32, 0),
+                      child: _privacyPolicyCheck,
+                    ),
+                    AuthButton((BuildContext ctx){
+                      _onRegisterPressed(context);
+                    }, "Register",AppColors().primaryColor),
                   ]),
                 ),
               ),

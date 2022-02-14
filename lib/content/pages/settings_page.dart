@@ -1,4 +1,5 @@
 import 'package:asset_flutter/auth/pages/login_page.dart';
+import 'package:asset_flutter/static/shared_pref.dart';
 import 'package:flutter/material.dart';
 import 'package:settings_ui/settings_ui.dart';
 
@@ -36,6 +37,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 leading: const Icon(Icons.logout_rounded),
                 title: const Text('Sign out'),
                 onPressed: (ctx) {
+                  SharedPref().deleteLoginCredentials();
                   Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (_) => LoginPage()));
                 },

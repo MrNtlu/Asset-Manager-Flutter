@@ -1,13 +1,15 @@
 class APIRoutes {
-  final baseTestURL = 'http://localhost:8080'; 
+  final baseTestURL = 'http://localhost:8080';
   final baseURL = 'https://assetmanager-go.oa.r.appspot.com';
 
   late final AssetRoutes assetRoutes;
   late final SubscriptionRoutes subscriptionRoutes;
+  late final AuthRoutes authRoutes;
 
   APIRoutes._privateConstructor() {
     assetRoutes = AssetRoutes(baseURL: baseTestURL);
     subscriptionRoutes = SubscriptionRoutes(baseURL: baseTestURL);
+    authRoutes = AuthRoutes(baseURL: baseTestURL);
   }
 
   static final APIRoutes _instance = APIRoutes._privateConstructor();

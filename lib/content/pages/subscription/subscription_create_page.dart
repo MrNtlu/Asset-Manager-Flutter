@@ -15,7 +15,7 @@ class SubscriptionCreatePage extends StatefulWidget {
 }
 
 class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
-  bool _isInit = true;
+  bool _isInit = false;
   bool _isLoading = false;
 
   void _setCreateData(){
@@ -61,12 +61,12 @@ class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
 
   @override
   void didChangeDependencies() {
-    if (_isInit) {
+    super.didChangeDependencies();
+    if (!_isInit) {
       widget._subscriptionsProvider = Provider.of<Subscriptions>(context, listen: false);
       widget._subscriptionDetailsEdit = SubscriptionDetailsEdit(null);
-      _isInit = false;
+      _isInit = true;
     }
-    super.didChangeDependencies();
   }
 
   @override
