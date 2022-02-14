@@ -71,10 +71,6 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  void _onRegisterPressed(BuildContext ctx) {
-    Navigator.of(ctx).pushNamed(RegisterPage.routeName);
-  }
-
   void _openForgotPasswordBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -129,6 +125,9 @@ class _LoginPageState extends State<LoginPage> {
                             CustomTextFormField(
                               'Email',
                               TextInputType.emailAddress,
+                              initialText: widget._loginModel.emailAddress.trim() != '' 
+                                ? widget._loginModel.emailAddress 
+                                : null,
                               prefixIcon: Icon(
                                 Icons.email,
                                 color: AppColors().primaryColor,
@@ -150,7 +149,10 @@ class _LoginPageState extends State<LoginPage> {
                                 return null;
                               },
                             ),
-                            PasswordTextField(
+                            PasswordTextFormField(
+                              initialText: widget._loginModel.password.trim() != '' 
+                                ? widget._loginModel.password 
+                                : null,
                               prefixIcon: Icon(
                                 Icons.password,
                                 color: AppColors().primaryColor,
@@ -190,7 +192,9 @@ class _LoginPageState extends State<LoginPage> {
                                 ],
                               ),
                             ),
-                            AuthButton(_onRegisterPressed, 'Register', AppColors().primaryColor),
+                            AuthButton((BuildContext ctx){
+                              Navigator.of(ctx).pushNamed(RegisterPage.routeName);
+                            }, 'Register', AppColors().primaryColor),
                             Expanded(
                               child: Container(
                                 margin: const EdgeInsetsDirectional.only(

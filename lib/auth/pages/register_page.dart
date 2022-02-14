@@ -109,6 +109,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     CustomTextFormField(
                       "Email",
                       TextInputType.emailAddress,
+                      initialText: widget._registerModel.emailAddress.trim() != '' 
+                        ? widget._registerModel.emailAddress 
+                        : null,
                       prefixIcon:
                           Icon(Icons.email, color: AppColors().primaryColor),
                       onSaved: (value) {
@@ -128,7 +131,10 @@ class _RegisterPageState extends State<RegisterPage> {
                         return null;
                       },
                     ),
-                    PasswordTextField(
+                    PasswordTextFormField(
+                      initialText: widget._registerModel.password.trim() != '' 
+                        ? widget._registerModel.password 
+                        : null,
                       prefixIcon:
                           Icon(Icons.password, color: AppColors().primaryColor),
                       onSaved: (value) {
@@ -146,7 +152,10 @@ class _RegisterPageState extends State<RegisterPage> {
                         return null;
                       },
                     ),
-                    PasswordTextField(
+                    PasswordTextFormField(
+                      initialText: _rePassword.trim() != '' 
+                        ? _rePassword 
+                        : null,
                       label: "Password Again",
                       textInputAction: TextInputAction.done,
                       onSaved: (value){
