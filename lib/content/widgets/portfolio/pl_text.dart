@@ -22,7 +22,7 @@ class PortfolioPLText extends StatelessWidget {
           size: iconSize,
         ),
         Text(
-          plPrefix != null ? plPrefix! + _pl.abs().toString() : _pl.abs().toString(),
+          plPrefix != null ? plPrefix! + _pl.abs().toStringAsFixed(2) : _pl.abs().toStringAsFixed(2),
           style: TextStyle(
             fontSize: fontSize,
             color: _pl < 0 ? AppColors().greenColor : AppColors().redColor,

@@ -35,19 +35,19 @@ class AssetDetails {
 
 class AssetStats {
   final String currency;
-  final double totalBought;
-  final double totalSold;
-  final double stockAsset;
-  final double cryptoAsset;
-  final double exchangeAsset;
-  final double totalAsset;
-  final double stockPL;
-  final double cryptoPL;
-  final double exchangePL;
-  final double totalPL;
-  final double stockPercentage;
-  final double cryptoPercentage;
-  final double exchangePercentage;
+  final num totalBought;
+  final num totalSold;
+  final num stockAsset;
+  final num cryptoAsset;
+  final num exchangeAsset;
+  final num totalAsset;
+  final num stockPL;
+  final num cryptoPL;
+  final num exchangePL;
+  final num totalPL;
+  final num stockPercentage;
+  final num cryptoPercentage;
+  final num exchangePercentage;
 
   AssetStats(
     this.currency, this.totalBought, this.totalSold,
@@ -61,11 +61,11 @@ class AssetStats {
     for (var i = 0; i < 3; i++) {
       list.add(PieChartSectionData(
         color: ChartAttributes().chartStatsColor[i],
-        value: (i == 0) ?
+        value: ((i == 0) ?
           stockAsset :
           (i == 1) ? 
           cryptoAsset :
-          exchangeAsset
+          exchangeAsset).toDouble()
         ,
         showTitle: false,
         radius: 45,
@@ -89,12 +89,12 @@ class AssetStats {
         (i == 2) ?
         exchangePL :
         totalPL;
-      value = value.revertValue();
+      value = (value.toDouble()).revertValue();
       list.add(BarChartGroupData(
         x: i,
         barRods: [
           BarChartRodData(
-            y: value,
+            y: value.toDouble(),
             width: 25,
             borderRadius: value > 0 ?
             const BorderRadius.only(
@@ -123,7 +123,7 @@ class AssetStats {
       (index == 2) ?
       exchangePL :
       totalPL);
-    titleValue = titleValue.revertValue();
+    titleValue = (titleValue.toDouble()).revertValue();
     return titleValue.toString();
   }
 }

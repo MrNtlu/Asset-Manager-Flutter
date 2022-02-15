@@ -6,7 +6,13 @@ import 'package:intl/intl.dart';
 
 extension DoubleExt on double {
   double revertValue() {
-    return this < 0 ? abs() : this * -1;
+    return this == 0 ? 0 : (this < 0 ? abs() : this * -1);
+  }
+}
+
+extension NumExt on num {
+  String numToString(){
+    return toDouble().toStringAsFixed(2);
   }
 }
 
@@ -61,5 +67,10 @@ extension ResponseExt on Response {
   BaseAPIResponse getBaseResponse() => BaseAPIResponse(
     json.decode(body)["error"], 
     //json.decode(body)["message"]
-    );
+  );
+
+  BaseItemResponse<T> getBaseItemResponse<T>() => BaseItemResponse<T>(
+    message: json.decode(body)["message"],
+    response: json.decode(body)["data"],
+  );
 }

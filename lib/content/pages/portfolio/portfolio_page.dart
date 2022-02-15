@@ -5,6 +5,7 @@ import 'package:asset_flutter/content/models/responses/asset.dart';
 import 'package:asset_flutter/content/models/responses/subscription.dart';
 import 'package:asset_flutter/content/widgets/portfolio/investment_list.dart';
 import 'package:asset_flutter/content/widgets/portfolio/portfolio.dart';
+import 'package:asset_flutter/content/widgets/portfolio/portfolio_stats_header.dart';
 import 'package:asset_flutter/content/widgets/portfolio/stats.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -29,15 +30,10 @@ class PortfolioPage extends StatelessWidget {
                   snap: false,
                   backgroundColor: Colors.white,
                   elevation: 5,
-                  flexibleSpace: FlexibleSpaceBar(
+                  flexibleSpace: const FlexibleSpaceBar(
                     collapseMode: CollapseMode.parallax,
                     background: Center(
-                      child: Column(
-                        children: const [
-                          Portfolio(),
-                          PortfolioStats(false),
-                        ],
-                      ),
+                      child: PortfolioStatsHeader(),
                     ),
                   ),
                 ),
@@ -69,8 +65,7 @@ class PortfolioPage extends StatelessWidget {
                   child: Center(
                     child: Column(
                       children: [
-                        const Portfolio(),
-                        const PortfolioStats(false),
+                        const PortfolioStatsHeader(),
                         PortfolioInvestment(),
                       ],
                     ),
@@ -106,8 +101,6 @@ class TestData {
     const SubscriptionStats('TRY', 380, 989.9),
     const SubscriptionStats('GBP', 30.1, 120.6),
   ];
-
-  static AssetStats testAssetStatsData = AssetStats("GBP", 130, 45, 120, 536.28, 102.4, 756.46, 42202.7, -66542.5, -125324.6, -150684.46, 17.5, 67.66, 14.84);
 
   static String stockImage(String symbol) {
     return "https://storage.googleapis.com/iex/api/logos/${symbol.toUpperCase()}.png";

@@ -1,7 +1,7 @@
 import 'package:asset_flutter/content/models/responses/asset.dart';
 import 'package:flutter/material.dart';
 
-class AssetLogs with ChangeNotifier {
+class AssetLogProvider with ChangeNotifier {
   final List<AssetLog> _items = [
     AssetLog('1', 475.2855, "BTC", "USD", "buy", 0.01, DateTime.now(), boughtPrice: 47528.55),
     AssetLog('2', 348.062, "BTC", "USD", "buy", 0.006, DateTime.now().subtract(const Duration(days: 3)), boughtPrice: 58001.27),

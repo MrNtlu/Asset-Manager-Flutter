@@ -1,8 +1,11 @@
-import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
+import 'package:asset_flutter/content/providers/asset_stats.dart';
 import 'package:asset_flutter/content/widgets/portfolio/pl_text.dart';
 import 'package:asset_flutter/content/widgets/portfolio/section_title.dart';
 import 'package:asset_flutter/static/colors.dart';
+import 'package:asset_flutter/utils/extensions.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Portfolio extends StatelessWidget {
   final bool isDetailed;
@@ -11,6 +14,9 @@ class Portfolio extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final assetStatsProvider = Provider.of<AssetStatsProvider>(context);
+    final assetStats = assetStatsProvider.assetStats;
+
     return Container(
       padding: const EdgeInsets.only(top: 12, bottom: 8),
       child: Column(children: [
@@ -29,8 +35,8 @@ class Portfolio extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          TestData.testAssetStatsData.totalAsset.toString(),
+                        AutoSizeText(
+                          assetStats!.totalAsset.numToString(),
                           softWrap: false,
                           style: TextStyle(
                             fontSize: MediaQuery.of(context).size.width > 350 ? 36 : 32,
@@ -41,7 +47,7 @@ class Portfolio extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(left: 6),
                           child: Text(
-                            TestData.testAssetStatsData.currency,
+                            assetStats.currency,
                             style: const TextStyle(
                               fontSize: 12,
                               color: Colors.white
@@ -54,8 +60,8 @@ class Portfolio extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.only(top: 16),
                     child: PortfolioPLText(
-                      TestData.testAssetStatsData.totalPL, 
-                      TestData.testAssetStatsData.currency, 
+                      assetStats.totalPL.toDouble(), 
+                      assetStats.currency, 
                       fontSize: MediaQuery.of(context).size.width > 350 ? 20 : 16, 
                       iconSize: MediaQuery.of(context).size.width > 350 ? 22 : 18
                     )

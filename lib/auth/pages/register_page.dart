@@ -14,7 +14,6 @@ class RegisterPage extends StatefulWidget {
   static const routeName = "/register";
   final _form = GlobalKey<FormState>();
   final _registerModel = Register('', '', '');
-  bool _isInit = false;
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -22,13 +21,14 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   bool _isLoading = false;
+  bool _isInit = false;
 
   late final AuthCheckbox _termsConditionsCheck;
   late final AuthCheckbox _privacyPolicyCheck;
   late final RegisterCurrencyDropdown _currencyDropdown;
   String _rePassword = '';
 
-  void _onRegisterPressed(BuildContext context) {
+  void _onRegisterPressed(BuildContext context) {  
     if (_termsConditionsCheck.getValue() && _privacyPolicyCheck.getValue()) {
       widget._registerModel.currency = _currencyDropdown.dropdown.dropdownValue;
       final isValid = widget._form.currentState?.validate();
@@ -57,8 +57,24 @@ class _RegisterPageState extends State<RegisterPage> {
               builder: (ctx) => ErrorDialog(value.error!)
             );
           }else {
-            //TODO: Show dialog and on ok pop
-            Navigator.of(context).pop();
+            showDialog(
+              context: context, 
+              builder: (ctx) => AlertDialog(
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(12))),
+                title: const Text('Success!'),
+                content: const Text("Successfully registered."),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    },
+                    child: const Text('OK!')
+                  )
+                ],
+              )
+            );
           }
         }).catchError((error){
           setState(() {
@@ -77,12 +93,12 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (!widget._isInit) {
+    if (!_isInit) {
       _currencyDropdown = RegisterCurrencyDropdown();
       _termsConditionsCheck = AuthCheckbox("Terms & Conditions");
       _privacyPolicyCheck = AuthCheckbox("Privacy & Policy");
 
-      widget._isInit = true;
+      _isInit = true;
     }
   }
 

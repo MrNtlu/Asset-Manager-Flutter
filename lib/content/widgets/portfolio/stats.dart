@@ -1,9 +1,11 @@
 import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
 import 'package:asset_flutter/content/pages/portfolio/portfolio_stats_page.dart';
+import 'package:asset_flutter/content/providers/asset_stats.dart';
 import 'package:asset_flutter/content/widgets/portfolio/section_title.dart';
 import 'package:asset_flutter/content/widgets/portfolio/stats_indicator.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PortfolioStats extends StatelessWidget {
   final bool _isDetails;
@@ -27,6 +29,9 @@ class PortfolioStats extends StatelessWidget {
 }
 
 Widget statsBodyWidget(BuildContext context, bool isDetails) {
+  final assetStatsProvider = Provider.of<AssetStatsProvider>(context);
+  final assetStats = assetStatsProvider.assetStats;
+
   return Column(children: [
     SectionTitle(isDetails ? "Wealth Distribution" : "Statistics", isDetails ? "" : "Details>"),
     Row(
@@ -41,7 +46,7 @@ Widget statsBodyWidget(BuildContext context, bool isDetails) {
               borderData: FlBorderData(show: false),
               sectionsSpace: 0,
               centerSpaceRadius: 30,
-              sections: TestData.testAssetStatsData.convertDataToChart(),
+              sections: assetStats!.convertDataToChart(),
             ),
           ),
         ),

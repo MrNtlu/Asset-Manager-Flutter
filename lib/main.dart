@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:asset_flutter/auth/pages/login_page.dart';
 import 'package:asset_flutter/auth/pages/register_page.dart';
-import 'package:asset_flutter/content/providers/assets.dart';
+import 'package:asset_flutter/content/providers/asset_logs.dart';
+import 'package:asset_flutter/content/providers/asset_stats.dart';
 import 'package:asset_flutter/content/providers/subscriptions.dart';
 import 'package:flutter/material.dart';
 import 'package:desktop_window/desktop_window.dart';
@@ -35,7 +36,10 @@ class MyApp extends StatelessWidget {
           value: Subscriptions()
         ),
         ChangeNotifierProvider.value(
-          value: AssetLogs()
+          value: AssetLogProvider()
+        ),
+        ChangeNotifierProvider.value(
+          value: AssetStatsProvider()
         )
       ],
       child: MaterialApp(

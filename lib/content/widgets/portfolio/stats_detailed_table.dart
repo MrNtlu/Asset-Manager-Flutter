@@ -1,7 +1,8 @@
-import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
+import 'package:asset_flutter/content/providers/asset_stats.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PortfolioStatsDetailedTable extends StatelessWidget {
   const PortfolioStatsDetailedTable({
@@ -11,6 +12,8 @@ class PortfolioStatsDetailedTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double _textSize = MediaQuery.of(context).size.width > 370 ? 16 : 14;
+    final assetStatsProvider = Provider.of<AssetStatsProvider>(context, listen: false);
+    final assetStats = assetStatsProvider.assetStats;
 
     return Container(
       width: double.infinity,
@@ -41,7 +44,7 @@ class PortfolioStatsDetailedTable extends StatelessWidget {
               numeric: true,
               label: FittedBox(
                 child: Text(
-                  'Value ('+TestData.testAssetStatsData.currency+')',
+                  'Value ('+assetStats!.currency+')',
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -52,28 +55,28 @@ class PortfolioStatsDetailedTable extends StatelessWidget {
             ),
           ],
           rows: [
-            _statsDataRow('Total Wealth', TestData.testAssetStatsData.totalAsset, _textSize),
-            _statsDataRow('Stock', TestData.testAssetStatsData.stockAsset, _textSize),
-            _statsDataRow('Crypto', TestData.testAssetStatsData.cryptoAsset, _textSize),
-            _statsDataRow('Exchange', TestData.testAssetStatsData.exchangeAsset, _textSize),
-            _statsDataRow('Total Profit/Loss', TestData.testAssetStatsData.totalPL.revertValue(), _textSize),
-            _statsDataRow('Stock Profit/Loss', TestData.testAssetStatsData.stockPL.revertValue(), _textSize),
-            _statsDataRow('Crypto Profit/Loss', TestData.testAssetStatsData.cryptoPL.revertValue(), _textSize),
-            _statsDataRow('Exchange Profit/Loss', TestData.testAssetStatsData.exchangePL.revertValue(), _textSize),
-            _statsDataRow('Total Bought', TestData.testAssetStatsData.totalBought, _textSize),
-            _statsDataRow('Total Sold', TestData.testAssetStatsData.totalSold, _textSize),
+            _statsDataRow('Total Wealth', assetStats.totalAsset, _textSize),
+            _statsDataRow('Stock', assetStats.stockAsset, _textSize),
+            _statsDataRow('Crypto', assetStats.cryptoAsset, _textSize),
+            _statsDataRow('Exchange', assetStats.exchangeAsset, _textSize),
+            _statsDataRow('Total Profit/Loss', assetStats.totalPL.toDouble().revertValue(), _textSize),
+            _statsDataRow('Stock Profit/Loss', assetStats.stockPL.toDouble().revertValue(), _textSize),
+            _statsDataRow('Crypto Profit/Loss', assetStats.cryptoPL.toDouble().revertValue(), _textSize),
+            _statsDataRow('Exchange Profit/Loss', assetStats.exchangePL.toDouble().revertValue(), _textSize),
+            _statsDataRow('Total Bought', assetStats.totalBought, _textSize),
+            _statsDataRow('Total Sold', assetStats.totalSold, _textSize),
           ],
         ),
       ),
     );
   }
 
-  DataRow _statsDataRow(String type, double value, textSize) {
+  DataRow _statsDataRow(String type, num value, textSize) {
     
     return DataRow(
       cells: [
         DataCell(Text(type, style: TextStyle(fontSize: textSize))),
-        DataCell(Text(value.toString(), style: TextStyle(fontSize: textSize, fontWeight: FontWeight.bold))),
+        DataCell(Text(value.numToString(), style: TextStyle(fontSize: textSize, fontWeight: FontWeight.bold))),
       ],
     );
   }
