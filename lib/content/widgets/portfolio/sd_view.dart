@@ -66,7 +66,7 @@ class SubscriptionDetailsView extends StatelessWidget {
               showDialog(
                 context: context, 
                 builder: (ctx) => AreYouSureDialog('delete', (){
-                    Provider.of<Subscriptions>(context, listen: false).deleteSubscription(_data.id);
+                    Provider.of<SubscriptionsProvider>(context, listen: false).deleteSubscription(_data.id);
                     Navigator.pop(ctx);
                     Navigator.pop(context);
                   }

@@ -66,11 +66,17 @@ extension StringExt on String {
 extension ResponseExt on Response {
   BaseAPIResponse getBaseResponse() => BaseAPIResponse(
     json.decode(body)["error"], 
-    //json.decode(body)["message"]
   );
 
   BaseItemResponse<T> getBaseItemResponse<T>() => BaseItemResponse<T>(
     message: json.decode(body)["message"],
     response: json.decode(body)["data"],
+  );
+
+  BaseListResponse<T> getBaseListResponse<T>() => BaseListResponse<T>(
+    message: json.decode(body)["message"],
+    response: json.decode(body)["data"],
+    code: json.decode(body)["code"],
+    error: json.decode(body)["error"]
   );
 }

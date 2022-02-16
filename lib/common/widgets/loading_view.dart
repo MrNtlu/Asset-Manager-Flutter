@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//TODO: Better loading view
 class LoadingView extends StatelessWidget {
   final String _text;
 

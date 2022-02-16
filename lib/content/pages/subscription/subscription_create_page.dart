@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 
 class SubscriptionCreatePage extends StatefulWidget {
   late final SubscriptionDetailsEdit _subscriptionDetailsEdit;
-  late final Subscriptions _subscriptionsProvider;
+  late final SubscriptionsProvider _subscriptionsProvider;
 
   @override
   State<SubscriptionCreatePage> createState() => _SubscriptionCreatePageState();
@@ -61,12 +61,12 @@ class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
 
   @override
   void didChangeDependencies() {
-    super.didChangeDependencies();
     if (!_isInit) {
-      widget._subscriptionsProvider = Provider.of<Subscriptions>(context, listen: false);
+      widget._subscriptionsProvider = Provider.of<SubscriptionsProvider>(context, listen: false);
       widget._subscriptionDetailsEdit = SubscriptionDetailsEdit(null);
-      _isInit = true;
     }
+    _isInit = true;
+    super.didChangeDependencies();
   }
 
   @override
@@ -79,16 +79,15 @@ class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.save_rounded),
-            tooltip: 'Exit Edit State',
+            tooltip: 'Save Subscription',
             onPressed: () => _createSubscription(context),
           )
         ],
       ),
       body: SafeArea(
-        child: _isLoading ? 
-        const LoadingView("Creating Subscription...")
-        : 
-        SingleChildScrollView(
+        child: _isLoading 
+        ? const LoadingView("Creating Subscription...")
+        : SingleChildScrollView(
           child: widget._subscriptionDetailsEdit,
         ),
       ),

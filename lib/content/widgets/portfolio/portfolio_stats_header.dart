@@ -23,6 +23,7 @@ class _PortfolioStatsHeaderState extends State<PortfolioStatsHeader> {
         _isLoading = true;
       });
       Provider.of<AssetStatsProvider>(context, listen: false).getAssetStats().then((response){
+        //TODO: error handling etc.
         setState(() {
           _isLoading = false;
         });

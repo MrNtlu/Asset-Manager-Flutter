@@ -1,12 +1,12 @@
 import 'package:asset_flutter/common/widgets/dropdown.dart';
+import 'package:asset_flutter/static/currencies.dart';
 import 'package:flutter/material.dart';
 
 class RegisterCurrencyDropdown extends StatelessWidget {
-  final List<String> dropdownList = ["USD", "EUR", "GBP", "KRW", "JPY"];
   late final Dropdown dropdown;
   
   RegisterCurrencyDropdown(){
-    dropdown = Dropdown(dropdownList);
+    dropdown = Dropdown(SupportedCurrencies().currencies);
   }
 
   @override

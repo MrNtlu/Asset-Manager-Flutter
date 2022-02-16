@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class InvestmentDetailsPage extends StatelessWidget {
-  final AssetDetails _data;
+  final Asset _data;
   late final String image;
 
   InvestmentDetailsPage(this._data) {

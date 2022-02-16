@@ -4,6 +4,7 @@ class Dropdown extends StatefulWidget {
   final List<String> _dropdownList;
   final TextStyle textStyle;
   final Color dropdownColor;
+  final bool isExpanded;
 
   late String dropdownValue;
 
@@ -11,6 +12,7 @@ class Dropdown extends StatefulWidget {
       {this.textStyle = const TextStyle(color: Colors.black),
       this.dropdownColor = Colors.white,
       this.dropdownValue = "USD",
+      this.isExpanded = false,
       Key? key})
       : super(key: key);
 
@@ -23,6 +25,7 @@ class _DropdownState extends State<Dropdown> {
   Widget build(BuildContext context) {
     return DropdownButtonHideUnderline(
       child: DropdownButton<String>(
+        isExpanded: widget.isExpanded,
         value: widget.dropdownValue,
         style: widget.textStyle,
         dropdownColor: widget.dropdownColor,

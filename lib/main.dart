@@ -4,6 +4,7 @@ import 'package:asset_flutter/auth/pages/login_page.dart';
 import 'package:asset_flutter/auth/pages/register_page.dart';
 import 'package:asset_flutter/content/providers/asset_logs.dart';
 import 'package:asset_flutter/content/providers/asset_stats.dart';
+import 'package:asset_flutter/content/providers/assets.dart';
 import 'package:asset_flutter/content/providers/subscriptions.dart';
 import 'package:flutter/material.dart';
 import 'package:desktop_window/desktop_window.dart';
@@ -33,13 +34,16 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
-          value: Subscriptions()
+          value: SubscriptionsProvider()
         ),
         ChangeNotifierProvider.value(
           value: AssetLogProvider()
         ),
         ChangeNotifierProvider.value(
           value: AssetStatsProvider()
+        ),
+        ChangeNotifierProvider.value(
+          value: AssetsProvider()
         )
       ],
       child: MaterialApp(

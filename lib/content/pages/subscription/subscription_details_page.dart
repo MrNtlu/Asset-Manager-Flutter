@@ -80,7 +80,7 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     if(!_isInit){
-      _data = Provider.of<Subscriptions>(context, listen: false).findById(widget._subscriptionID);
+      _data = Provider.of<SubscriptionsProvider>(context, listen: false).findById(widget._subscriptionID);
       _updateView = SubscriptionDetailsEdit(_data);
       _isInit = true;
     }

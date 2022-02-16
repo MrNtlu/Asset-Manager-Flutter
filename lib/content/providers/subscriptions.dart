@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-class Subscriptions with ChangeNotifier {
+class SubscriptionsProvider with ChangeNotifier {
   final List<Subscription> _items = [
     Subscription('1', "Netflix 4K Family for Friends and Me", "Netflix Family Plan", DateTime.now(), BillCycle(month: 3), 40.5, 'TL', "netflix.com", 0xFFE53935),
     Subscription('2', "Spotify", null, DateTime.now().subtract(const Duration(days: 5)), BillCycle(month: 1), 27.5, 'TL', "spotify.com", 0xFF4CAF50),

@@ -3,16 +3,13 @@ import 'dart:io';
 import 'package:asset_flutter/common/widgets/add_elevated_button.dart';
 import 'package:asset_flutter/content/models/responses/asset.dart';
 import 'package:asset_flutter/content/models/responses/subscription.dart';
+import 'package:asset_flutter/content/pages/portfolio/investment_create_page.dart';
 import 'package:asset_flutter/content/widgets/portfolio/investment_list.dart';
-import 'package:asset_flutter/content/widgets/portfolio/portfolio.dart';
 import 'package:asset_flutter/content/widgets/portfolio/portfolio_stats_header.dart';
-import 'package:asset_flutter/content/widgets/portfolio/stats.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class PortfolioPage extends StatelessWidget {
-  int touchedIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -47,7 +44,9 @@ class PortfolioPage extends StatelessWidget {
                   Container(
                     alignment: Alignment.bottomCenter,
                     child: AddElevatedButton("Add Investment", (){
-                      print("Add Investment");
+                       Navigator.of(context).push(
+                        MaterialPageRoute(builder: ((context) => const InvestmentCreatePage()))
+                      );
                     },
                     edgeInsets: const EdgeInsets.only(left: 8, right: 8, bottom: 8)),
                   ),
@@ -80,19 +79,19 @@ class PortfolioPage extends StatelessWidget {
 }
 
 class TestData {
-  static List<AssetDetails> testInvestData = [
-    const AssetDetails(300.0, 'Bitcoin', 'BTC', 'USD', 'crypto', -68.28, 0.00062),
-    const AssetDetails(25.0, 'Polygon', 'MATIC', 'USD', 'crypto', 40.67, 105.2),
-    const AssetDetails(167.2, 'Loopspring', 'LRC', 'USD', 'crypto', 140.67, 50.0),
-    const AssetDetails(217.53, 'Apple Inc.', 'AAPL', 'USD', 'stock', 5.78, 35.2),
-    const AssetDetails(78.4, 'Intel', 'INTC', 'USD', 'stock', -20.5, 3.6),
-    const AssetDetails(59.21, 'Olin Corporation', 'OLN', 'USD', 'stock', 3.9, 10.2),
-    const AssetDetails(107.32, 'Audius', 'AUDIO', 'GBP', 'crypto', -120.5, 325.6),
-    const AssetDetails(45.9, 'Avalanche', 'AVAX', 'USD', 'crypto', 34.2, 34.7),
-    const AssetDetails(45.9, 'Litecoin', 'LTC', 'USD', 'crypto', 34.2, 34.7),
-    const AssetDetails(45.9, 'Amazon.com, Inc.', 'AMZN', 'USD', 'stock', 34.2, 34.7),
-    const AssetDetails(45.9, 'Activision Blizzard, Inc.', 'ATVI', 'USD', 'stock', 34.2, 34.7),
-    const AssetDetails(45.9, 'Ethereum Classic', 'ETC', 'USD', 'crypto', 34.2, 34.7),
+  static List<Asset> testAssetData = [
+    const Asset(300.0, 'Bitcoin', 'BTC', 'USD', 'crypto', -68.28, 0.00062),
+    const Asset(25.0, 'Polygon', 'MATIC', 'USD', 'crypto', 40.67, 105.2),
+    const Asset(167.2, 'Loopspring', 'LRC', 'USD', 'crypto', 140.67, 50.0),
+    const Asset(217.53, 'Apple Inc.', 'AAPL', 'USD', 'stock', 5.78, 35.2),
+    const Asset(78.4, 'Intel', 'INTC', 'USD', 'stock', -20.5, 3.6),
+    const Asset(59.21, 'Olin Corporation', 'OLN', 'USD', 'stock', 3.9, 10.2),
+    const Asset(107.32, 'Audius', 'AUDIO', 'GBP', 'crypto', -120.5, 325.6),
+    const Asset(45.9, 'Avalanche', 'AVAX', 'USD', 'crypto', 34.2, 34.7),
+    const Asset(45.9, 'Litecoin', 'LTC', 'USD', 'crypto', 34.2, 34.7),
+    const Asset(45.9, 'Amazon.com, Inc.', 'AMZN', 'USD', 'stock', 34.2, 34.7),
+    const Asset(45.9, 'Activision Blizzard, Inc.', 'ATVI', 'USD', 'stock', 34.2, 34.7),
+    const Asset(45.9, 'Ethereum Classic', 'ETC', 'USD', 'crypto', 34.2, 34.7),
   ];
 
   static List<SubscriptionStats> testSubscriptionStatsData = [

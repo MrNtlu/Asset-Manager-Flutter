@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 class SubscriptionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final subscriptionsProvider = Provider.of<Subscriptions>(context);
+    final subscriptionsProvider = Provider.of<SubscriptionsProvider>(context);
     final subscriptions = subscriptionsProvider.items;
 
     return SizedBox(

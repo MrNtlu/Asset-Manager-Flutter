@@ -1,8 +1,8 @@
 import 'package:asset_flutter/content/models/responses/asset.dart';
+import 'package:asset_flutter/content/models/responses/investings.dart';
 
 class BaseAPIResponse {
   final String? error;
-  //final String? message;
 
   const BaseAPIResponse(this.error);
 }
@@ -16,26 +16,71 @@ class BaseItemResponse<T> {
     required this.message
   }){
     if (response != null) {
-      if (T == AssetStats) {
-        data = AssetStats(
-          response["currency"],
-          response["total_bought"],
-          response["total_sold"],
-          response["stock_assets"],
-          response["crypto_assets"],
-          response["exchange_assets"],
-          response["total_assets"],
-          response["stock_p/l"],
-          response["crypto_p/l"],
-          response["exchange_p/l"],
-          response["total_p/l"],
-          response["stock_percentage"],
-          response["crypto_percentage"],
-          response["exchange_percentage"],
-        ) as T;
-      }else{
-        
-      }
+      var _typeConverter = _TypeConverter<T>();
+      data = _typeConverter.convertToObject(response);
+    }
+  }
+}
+
+class BaseListResponse<T> {
+  late List<T> data = [];
+  final String? message;
+  final int? code;
+  final String? error;
+
+  BaseListResponse({
+    List<dynamic>? response,
+    this.message,
+    this.code,
+    this.error
+  }){
+    if (response != null) {
+      var _typeConverter = _TypeConverter<T>();
+      response.map((e) {
+        return e as Map<String, dynamic>; 
+      }).forEach((element) { 
+        data.add(_typeConverter.convertToObject(element));
+      });
+    }
+  }
+}
+
+class _TypeConverter<T> {
+  T convertToObject(Map<String, dynamic> response){
+    if (T == Asset) {
+      return Asset(
+        response["current_total_value"],
+        response["name"],
+        response["to_asset"],
+        response["from_asset"],
+        response["asset_type"],
+        response["p/l"],
+        response["remaining_amount"],
+      ) as T;
+    }else if (T == AssetStats) {
+      return AssetStats(
+        response["currency"],
+        response["total_bought"],
+        response["total_sold"],
+        response["stock_assets"],
+        response["crypto_assets"],
+        response["exchange_assets"],
+        response["total_assets"],
+        response["stock_p/l"],
+        response["crypto_p/l"],
+        response["exchange_p/l"],
+        response["total_p/l"],
+        response["stock_percentage"],
+        response["crypto_percentage"],
+        response["exchange_percentage"],
+      ) as T;
+    } else if (T == Investings) {
+      return Investings(
+        response["name"],
+        response["symbol"]
+      ) as T;
+    } else{
+      return response as T;
     }
   }
 }

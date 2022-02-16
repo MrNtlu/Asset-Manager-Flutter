@@ -21,16 +21,16 @@ class AssetLog {
   );
 }
 
-class AssetDetails {
-  final double currentValue;
+class Asset {
+  final num currentValue;
   final String name;
   final String toAsset;
   final String fromAsset;
   final String type;
-  final double pl;
-  final double amount;
+  final num pl;
+  final num amount;
 
-  const AssetDetails(this.currentValue, this.name, this.toAsset, this.fromAsset, this.type, this.pl, this.amount);
+  const Asset(this.currentValue, this.name, this.toAsset, this.fromAsset, this.type, this.pl, this.amount);
 }
 
 class AssetStats {

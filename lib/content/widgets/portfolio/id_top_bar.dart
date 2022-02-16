@@ -3,10 +3,11 @@ import 'package:asset_flutter/content/widgets/portfolio/il_cell_image.dart';
 import 'package:asset_flutter/content/widgets/portfolio/pl_text.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/utils/currency_handler.dart';
+import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
 
 class InvestmentDetailsTopBar extends StatelessWidget {
-  final AssetDetails _data;
+  final Asset _data;
   final String image;
 
   const InvestmentDetailsTopBar(this._data, this.image, {Key? key}) : super(key: key);
@@ -45,7 +46,7 @@ class InvestmentDetailsTopBar extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.only(right: 12),
                       child: Text(
-                        _data.currentValue.toString() + ' ' + _data.fromAsset,
+                        _data.currentValue.numToString() + ' ' + _data.fromAsset,
                         style: const TextStyle(
                             fontSize: 18,
                             color: Colors.white,
@@ -55,7 +56,7 @@ class InvestmentDetailsTopBar extends StatelessWidget {
                     Container(
                         padding:
                             const EdgeInsets.only(right: 12, top: 4),
-                        child: PortfolioPLText(_data.pl, null,
+                        child: PortfolioPLText(_data.pl.toDouble(), null,
                             fontSize: 15,
                             iconSize: 17,
                             plPrefix: convertCurrencyToSymbol(_data.fromAsset)))

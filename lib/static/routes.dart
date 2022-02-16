@@ -40,6 +40,7 @@ class AuthRoutes {
 class AssetRoutes {
   late final String _baseAssetURL;
 
+  late final String investingsByType;
   late final String assetsByUserID;
   late final String assetLogsByUserID;
   late final String assetStatsByUserID;
@@ -52,6 +53,8 @@ class AssetRoutes {
 
   AssetRoutes({baseURL}) {
     _baseAssetURL = baseURL + '/asset';
+
+    investingsByType = baseURL + "/investings";
 
     assetsByUserID = _baseAssetURL;
     assetLogsByUserID = _baseAssetURL + '/logs';

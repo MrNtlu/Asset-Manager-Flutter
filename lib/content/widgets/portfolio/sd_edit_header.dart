@@ -1,6 +1,7 @@
 import 'package:asset_flutter/common/widgets/dropdown.dart';
 import 'package:asset_flutter/common/widgets/textformfield.dart';
 import 'package:asset_flutter/content/models/requests/subscription.dart';
+import 'package:asset_flutter/static/currencies.dart';
 import 'package:flutter/material.dart';
 
 class SDEditHeader extends StatelessWidget {
@@ -29,7 +30,7 @@ class SDEditHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     dropdown = Dropdown(
-      const ["USD", "EUR", "GBP", "KRW", "JPY", "TL"],
+      SupportedCurrencies().subCurrencies,
       dropdownValue: currency,
     );
 

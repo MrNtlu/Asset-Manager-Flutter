@@ -5,10 +5,11 @@ import 'package:asset_flutter/content/widgets/portfolio/il_cell_image.dart';
 import 'package:asset_flutter/content/widgets/portfolio/pl_text.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/utils/currency_handler.dart';
+import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
 
 class PortfolioInvestmentListCell extends StatelessWidget {
-  final AssetDetails data;
+  final Asset data;
   late final String image;
 
   PortfolioInvestmentListCell(this.data) {
@@ -55,7 +56,7 @@ class PortfolioInvestmentListCell extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.only(right: 12),
                     child: Text(
-                      data.currentValue.toString() + ' ' + data.fromAsset,
+                      data.currentValue.numToString() + ' ' + data.fromAsset,
                       style: const TextStyle(
                         fontSize: 18,
                         color: Colors.white,
@@ -65,7 +66,7 @@ class PortfolioInvestmentListCell extends StatelessWidget {
                   ),
                   Container(
                       padding: const EdgeInsets.only(right: 12, top: 4),
-                      child: PortfolioPLText(data.pl, null,
+                      child: PortfolioPLText(data.pl.toDouble(), null,
                           fontSize: 13,
                           iconSize: 15,
                           plPrefix: convertCurrencyToSymbol(data.fromAsset)))
