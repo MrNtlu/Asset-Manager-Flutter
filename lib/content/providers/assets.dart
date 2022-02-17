@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:asset_flutter/common/models/response.dart';
+import 'package:asset_flutter/content/models/requests/asset.dart';
 import 'package:asset_flutter/content/models/responses/asset.dart';
 import 'package:asset_flutter/static/routes.dart';
 import 'package:asset_flutter/static/token.dart';
@@ -29,6 +32,20 @@ class AssetsProvider with ChangeNotifier {
       return response.getBaseListResponse<Asset>();
     } catch (error) {
       return BaseListResponse(error: error.toString());
+    }
+  }
+
+  Future<BaseAPIResponse> createAsset(AssetCreate assetCreate) async {
+    try {
+      final response = await http.post(
+        Uri.parse(APIRoutes().assetRoutes.createAsset),
+        body: json.encode(assetCreate.convertToJson()),
+        headers: UserToken().getBearerToken()
+      );
+
+      return response.getBaseResponse();
+    } catch (error) {
+      return BaseAPIResponse(error.toString());
     }
   }
 }

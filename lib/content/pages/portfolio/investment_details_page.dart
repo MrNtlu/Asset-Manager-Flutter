@@ -2,11 +2,11 @@ import 'dart:math';
 
 import 'package:asset_flutter/common/widgets/add_elevated_button.dart';
 import 'package:asset_flutter/content/models/responses/asset.dart';
-import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
 import 'package:asset_flutter/content/providers/asset_logs.dart';
 import 'package:asset_flutter/content/widgets/portfolio/id_log_list.dart';
 import 'package:asset_flutter/content/widgets/portfolio/id_top_bar.dart';
 import 'package:asset_flutter/static/colors.dart';
+import 'package:asset_flutter/static/images.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,9 +16,11 @@ class InvestmentDetailsPage extends StatelessWidget {
 
   InvestmentDetailsPage(this._data) {
     if (_data.type == "crypto") {
-      image = TestData.cryptoImage(_data.toAsset);
+      image = PlaceholderImages().cryptoImage(_data.toAsset);
+    } else if (_data.type == "exchange") {
+      image = PlaceholderImages().exchangeImage(_data.toAsset);
     } else {
-      image = TestData.stockImage(_data.toAsset);
+      image = PlaceholderImages().stockImage(_data.toAsset);
     }
   }
 

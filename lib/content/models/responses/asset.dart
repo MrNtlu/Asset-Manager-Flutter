@@ -89,7 +89,7 @@ class AssetStats {
         (i == 2) ?
         exchangePL :
         totalPL;
-      value = (value.toDouble()).revertValue();
+      value = double.parse((value.toDouble()).revertValue().toStringAsFixed(2));
       list.add(BarChartGroupData(
         x: i,
         barRods: [

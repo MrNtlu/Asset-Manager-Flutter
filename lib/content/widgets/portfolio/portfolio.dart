@@ -47,7 +47,9 @@ class Portfolio extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(left: 6),
                           child: Text(
-                            assetStats.currency,
+                            assetStats.currency == ''
+                              ? 'USD'
+                              : assetStats.currency,
                             style: const TextStyle(
                               fontSize: 12,
                               color: Colors.white
@@ -61,7 +63,9 @@ class Portfolio extends StatelessWidget {
                     margin: const EdgeInsets.only(top: 16),
                     child: PortfolioPLText(
                       assetStats.totalPL.toDouble(), 
-                      assetStats.currency, 
+                      assetStats.currency == ''
+                        ? 'USD'
+                        : assetStats.currency, 
                       fontSize: MediaQuery.of(context).size.width > 350 ? 20 : 16, 
                       iconSize: MediaQuery.of(context).size.width > 350 ? 22 : 18
                     )

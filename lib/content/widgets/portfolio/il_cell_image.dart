@@ -1,5 +1,5 @@
-import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
 import 'package:asset_flutter/static/colors.dart';
+import 'package:asset_flutter/static/images.dart';
 import 'package:flutter/material.dart';
 
 class InvestmentListCellImage extends StatelessWidget {
@@ -60,10 +60,11 @@ class ILNetworkImage extends StatelessWidget {
         if(!didFailBefore){
           switch (_type) {
             case "crypto":
-              return ILNetworkImage(TestData.cryptoFailImage(), _type, didFailBefore: true);
-            //TODO: Add for stock and exhcange
-            // case "stock":
-            //   return ILNetworkImage(TestData.cryptoFailImage(), _type, didFailBefore: true);
+              return ILNetworkImage(PlaceholderImages().cryptoFailImage(), _type, didFailBefore: true);
+            case "stock":
+              return Icon(PlaceholderImages().stockFailIcon());
+            case "exchange":
+              return Icon(PlaceholderImages().exchangeFailIcon());
           }
         }
         return const Icon(Icons.error);

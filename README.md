@@ -12,6 +12,7 @@
     <li> Provider
     <li> Http
     <li> Dropdown Search
+    <li> Lottie
 </ul>
 
 &nbsp;

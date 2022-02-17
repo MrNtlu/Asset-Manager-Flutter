@@ -113,7 +113,7 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
       ),
       body: SafeArea(
         child: _isLoading ?
-        const LoadingView("Updating Subscription...")
+        const LoadingView("Updating Subscription")
         :
         SingleChildScrollView(
           child: !_isEditing ? 

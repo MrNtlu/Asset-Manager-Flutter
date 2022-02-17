@@ -1,5 +1,5 @@
-import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
 import 'package:asset_flutter/static/colors.dart';
+import 'package:asset_flutter/static/images.dart';
 import 'package:flutter/material.dart';
 
 class SubscriptionListCellImage extends StatelessWidget {
@@ -63,14 +63,14 @@ class SLNetworkImage extends StatelessWidget {
           return SLNetworkImage(_image, didFailBefore: true);  
         }
         return Icon(
-          TestData.subscriptionFailIcon(),
+          PlaceholderImages().subscriptionFailIcon(),
           size: 36,
         );
       }),
     )
     : 
     Icon(
-      TestData.subscriptionFailIcon(),
+      PlaceholderImages().subscriptionFailIcon(),
       size: 36,
     );
   }

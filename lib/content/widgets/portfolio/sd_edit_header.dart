@@ -68,7 +68,7 @@ class SDEditHeader extends StatelessWidget {
                 flex: 3,
                 child: CustomTextFormField(
                   "Price", 
-                  TextInputType.number,
+                  const TextInputType.numberWithOptions(decimal: true),
                   initialText: price > 0 ? price.toString() : "", 
                   edgeInsets: const EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 8),
                   textInputAction: TextInputAction.next,

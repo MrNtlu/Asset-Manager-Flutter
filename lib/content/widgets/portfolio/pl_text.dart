@@ -17,15 +17,21 @@ class PortfolioPLText extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Icon(
-          _pl < 0 ? Icons.arrow_upward_rounded : Icons.arrow_downward_rounded,
-          color: _pl < 0 ? AppColors().greenColor : AppColors().redColor,
+          _pl == 0 
+          ? Icons.remove_rounded
+          : (_pl < 0 ? Icons.arrow_upward_rounded : Icons.arrow_downward_rounded),
+          color: _pl == 0 
+          ? Colors.grey
+          : (_pl < 0 ? AppColors().greenColor : AppColors().redColor),
           size: iconSize,
         ),
         Text(
           plPrefix != null ? plPrefix! + _pl.abs().toStringAsFixed(2) : _pl.abs().toStringAsFixed(2),
           style: TextStyle(
             fontSize: fontSize,
-            color: _pl < 0 ? AppColors().greenColor : AppColors().redColor,
+            color:_pl == 0 
+            ? Colors.grey
+            : (_pl < 0 ? AppColors().greenColor : AppColors().redColor),
             fontWeight: FontWeight.bold
 
           ),
@@ -37,7 +43,9 @@ class PortfolioPLText extends StatelessWidget {
             child: Text(
               _subText!, 
               style: TextStyle(
-                color: _pl < 0 ? AppColors().greenColor : AppColors().redColor,
+                color: _pl == 0 
+                ? Colors.grey
+                : (_pl < 0 ? AppColors().greenColor : AppColors().redColor),
                 fontSize: fontSize - 6,
               )
             ),

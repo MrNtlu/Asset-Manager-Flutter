@@ -32,8 +32,6 @@ class _TabsPage extends State<TabsPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("Token is " + UserToken().token);
-
     return Scaffold(
       body: _pages[_selectedPageIndex],
       backgroundColor: Colors.white,

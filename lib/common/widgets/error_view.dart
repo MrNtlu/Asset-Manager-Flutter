@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 //TODO: Implement Error view
+// Lottie
 class ErrorView extends StatelessWidget {
   final String _text;
 

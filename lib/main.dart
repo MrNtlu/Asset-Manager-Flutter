@@ -2,10 +2,12 @@ import 'dart:io';
 
 import 'package:asset_flutter/auth/pages/login_page.dart';
 import 'package:asset_flutter/auth/pages/register_page.dart';
+import 'package:asset_flutter/content/pages/tabs_page.dart';
 import 'package:asset_flutter/content/providers/asset_logs.dart';
 import 'package:asset_flutter/content/providers/asset_stats.dart';
 import 'package:asset_flutter/content/providers/assets.dart';
 import 'package:asset_flutter/content/providers/subscriptions.dart';
+import 'package:asset_flutter/static/token.dart';
 import 'package:flutter/material.dart';
 import 'package:desktop_window/desktop_window.dart';
 import 'package:provider/provider.dart';
@@ -29,8 +31,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final routeArgs = ModalRoute.of(context)?.settings.arguments as Map<String, String>?;
-
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
@@ -55,6 +55,7 @@ class MyApp extends StatelessWidget {
         routes: {
           LoginPage.routeName: (ctx) => LoginPage(),
           RegisterPage.routeName: (ctx) => RegisterPage(),
+          TabsPage.routeName: (ctx) => TabsPage(UserToken().token)
         },
       ),
     );

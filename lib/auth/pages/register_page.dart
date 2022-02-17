@@ -5,6 +5,7 @@ import 'package:asset_flutter/auth/widgets/auth_currency_dropdown.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/password_textformfield.dart';
+import 'package:asset_flutter/common/widgets/success_view.dart';
 import 'package:asset_flutter/common/widgets/textformfield.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/utils/extensions.dart';
@@ -58,22 +59,9 @@ class _RegisterPageState extends State<RegisterPage> {
             );
           }else {
             showDialog(
+              barrierColor: Colors.black87,
               context: context, 
-              builder: (ctx) => AlertDialog(
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(12))),
-                title: const Text('Success!'),
-                content: const Text("Successfully registered."),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                    },
-                    child: const Text('OK!')
-                  )
-                ],
-              )
+              builder: (ctx) => const SuccessView("registered", isNonTabView: true)
             );
           }
         }).catchError((error){
@@ -112,7 +100,7 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
       body: SafeArea(
         child: _isLoading
-        ? const LoadingView("Please wait while registering...") 
+        ? const LoadingView("Please wait while registering") 
         : SingleChildScrollView(
             physics: const ScrollPhysics(),
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,

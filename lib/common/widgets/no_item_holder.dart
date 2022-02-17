@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
-//TODO: Better No Item View
 class NoItemHolder extends StatelessWidget {
   final String _text;
   final double height;
@@ -9,22 +9,30 @@ class NoItemHolder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 250,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            _text,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold
-            ),
-          ),
-          const SizedBox(height: 12),
-        ],
-      ),
-    );
+    return MediaQuery.of(context).orientation == Orientation.portrait 
+      ? Expanded(child: _body())
+      : SizedBox(
+          height: 250,
+          child: _body(),
+        );
   }
+
+  Widget _body() => Column(
+    crossAxisAlignment: CrossAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Lottie.asset(
+        "assets/lottie/no_item.json",
+        height: 200,
+        width: 200
+      ),
+      Text(
+        _text,
+        style: const TextStyle(
+          color: Colors.black,
+          fontSize: 18,
+        ),
+      )
+    ],
+  );
 }

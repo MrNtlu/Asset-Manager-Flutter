@@ -1,15 +1,32 @@
-class AssetCreate {
-  final String toAsset;
-  final String fromAsset;
-  final double? boughtPrice;
-  final double? soldPrice;
-  final double amount;
-  final String assetType; //crypto stock exchange
-  final String type; //sell buy
+import 'package:asset_flutter/common/models/json_convert.dart';
 
-  const AssetCreate(
-      this.toAsset, this.fromAsset, this.type, this.amount, this.assetType,
+class AssetCreate implements JSONConverter {
+  String toAsset;
+  String fromAsset;
+  double? boughtPrice;
+  double? soldPrice;
+  double amount;
+  String assetType; //crypto stock exchange
+  String type; //sell buy
+  String name;
+
+  AssetCreate(
+      this.toAsset, this.fromAsset, this.type, 
+      this.amount, this.assetType, this.name,
       {this.boughtPrice, this.soldPrice});
+
+  @override
+  Map<String, Object> convertToJson() => {
+    "to_asset": toAsset,
+    "from_asset": fromAsset,
+    if(boughtPrice != null)
+    "bought_price": boughtPrice!,
+    if(soldPrice != null)
+    "sold_price": soldPrice!,
+    "amount": amount,
+    "asset_type": assetType,
+    "type": type
+  };
 }
 
 class AssetSort {

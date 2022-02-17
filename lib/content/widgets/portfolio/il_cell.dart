@@ -1,9 +1,9 @@
 import 'package:asset_flutter/content/models/responses/asset.dart';
 import 'package:asset_flutter/content/pages/portfolio/investment_details_page.dart';
-import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
 import 'package:asset_flutter/content/widgets/portfolio/il_cell_image.dart';
 import 'package:asset_flutter/content/widgets/portfolio/pl_text.dart';
 import 'package:asset_flutter/static/colors.dart';
+import 'package:asset_flutter/static/images.dart';
 import 'package:asset_flutter/utils/currency_handler.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +14,11 @@ class PortfolioInvestmentListCell extends StatelessWidget {
 
   PortfolioInvestmentListCell(this.data) {
     if (data.type == "crypto") {
-      image = TestData.cryptoImage(data.toAsset);
+      image = PlaceholderImages().cryptoImage(data.toAsset);
+    } else if (data.type == "exchange") {
+      image = PlaceholderImages().exchangeImage(data.toAsset);
     } else {
-      image = TestData.stockImage(data.toAsset);
+      image = PlaceholderImages().stockImage(data.toAsset);
     }
   }
 

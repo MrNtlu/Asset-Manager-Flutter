@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
-//TODO: Better loading view
 class LoadingView extends StatelessWidget {
   final String _text;
 
@@ -8,21 +8,27 @@ class LoadingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: SizedBox(
-      height: 75,
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const CircularProgressIndicator(),
-            Text(
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          Align(
+            alignment: Alignment.center,
+            child: Lottie.asset(
+              "assets/lottie/loading.json",
+            ),
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: Text(
               _text,
               style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold),
-            )
-          ]),
-    ));
+                  color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          )
+        ]
+      ),
+    );
   }
 }

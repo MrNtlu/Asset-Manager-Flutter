@@ -4,6 +4,7 @@ import 'package:asset_flutter/common/widgets/add_elevated_button.dart';
 import 'package:asset_flutter/content/models/responses/asset.dart';
 import 'package:asset_flutter/content/models/responses/subscription.dart';
 import 'package:asset_flutter/content/pages/portfolio/investment_create_page.dart';
+import 'package:asset_flutter/content/widgets/portfolio/add_investment_button.dart';
 import 'package:asset_flutter/content/widgets/portfolio/investment_list.dart';
 import 'package:asset_flutter/content/widgets/portfolio/portfolio_stats_header.dart';
 import 'package:flutter/material.dart';
@@ -43,12 +44,7 @@ class PortfolioPage extends StatelessWidget {
                   PortfolioInvestment(),
                   Container(
                     alignment: Alignment.bottomCenter,
-                    child: AddElevatedButton("Add Investment", (){
-                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: ((context) => const InvestmentCreatePage()))
-                      );
-                    },
-                    edgeInsets: const EdgeInsets.only(left: 8, right: 8, bottom: 8)),
+                    child: const AddInvestmentButton(edgeInsets: EdgeInsets.only(left: 8, right: 8, bottom: 8))
                   ),
                 ],
               )
@@ -100,20 +96,4 @@ class TestData {
     const SubscriptionStats('TRY', 380, 989.9),
     const SubscriptionStats('GBP', 30.1, 120.6),
   ];
-
-  static String stockImage(String symbol) {
-    return "https://storage.googleapis.com/iex/api/logos/${symbol.toUpperCase()}.png";
-  }
-
-  static String cryptoImage(String symbol) {
-    return "https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/32@2x/color/${symbol.toLowerCase()}@2x.png";
-  }
-
-  static String cryptoFailImage() {
-    return "https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/32@2x/color/generic@2x.png";
-  }
-
-  static IconData subscriptionFailIcon(){
-    return Icons.payment_rounded;
-  }
 }

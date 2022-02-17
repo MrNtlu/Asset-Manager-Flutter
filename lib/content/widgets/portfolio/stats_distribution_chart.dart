@@ -22,11 +22,10 @@ class PortfolioStatsDistributionChart extends StatelessWidget {
           barTouchData: BarTouchData(enabled: true),
           borderData: FlBorderData(show: false),
           gridData: FlGridData(
-            horizontalInterval: 1,
             drawVerticalLine: false,
             getDrawingHorizontalLine: (value){
               return FlLine(
-                strokeWidth: value == -1 ? 0.4 : 0,
+                strokeWidth: value == 0 ? 0.4 : 0,
                 color: Colors.black
               );
             }

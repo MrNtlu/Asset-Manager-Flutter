@@ -1,5 +1,6 @@
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
+import 'package:asset_flutter/common/widgets/success_view.dart';
 import 'package:asset_flutter/content/providers/subscriptions.dart';
 import 'package:asset_flutter/content/widgets/portfolio/sd_edit.dart';
 import 'package:asset_flutter/static/colors.dart';
@@ -7,9 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SubscriptionCreatePage extends StatefulWidget {
-  late final SubscriptionDetailsEdit _subscriptionDetailsEdit;
-  late final SubscriptionsProvider _subscriptionsProvider;
-
   @override
   State<SubscriptionCreatePage> createState() => _SubscriptionCreatePageState();
 }
@@ -17,15 +15,17 @@ class SubscriptionCreatePage extends StatefulWidget {
 class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
   bool _isInit = false;
   bool _isLoading = false;
+  late final SubscriptionDetailsEdit _subscriptionDetailsEdit;
+  late final SubscriptionsProvider _subscriptionsProvider;
 
   void _setCreateData(){
-    widget._subscriptionDetailsEdit.createData!.billDate = widget._subscriptionDetailsEdit.datePicker.billDate;
-    widget._subscriptionDetailsEdit.createData!.billCycle = widget._subscriptionDetailsEdit.billCyclePicker.billCycle;
-    widget._subscriptionDetailsEdit.createData!.color = widget._subscriptionDetailsEdit.colorPicker.selectedColor.value;
+    _subscriptionDetailsEdit.createData!.billDate = _subscriptionDetailsEdit.datePicker.billDate;
+    _subscriptionDetailsEdit.createData!.billCycle = _subscriptionDetailsEdit.billCyclePicker.billCycle;
+    _subscriptionDetailsEdit.createData!.color = _subscriptionDetailsEdit.colorPicker.selectedColor.value;
   }
 
   void _createSubscription(BuildContext context) {
-    final isValid = widget._subscriptionDetailsEdit.form.currentState?.validate();
+    final isValid = _subscriptionDetailsEdit.form.currentState?.validate();
     if (isValid != null && !isValid) {
       return;
     }
@@ -33,15 +33,20 @@ class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
       _isLoading = true;
     });
 
-    widget._subscriptionDetailsEdit.form.currentState?.save();
+    _subscriptionDetailsEdit.form.currentState?.save();
     _setCreateData();
 
-    widget._subscriptionsProvider.addSubscription(widget._subscriptionDetailsEdit.createData!).then((value){
+    _subscriptionsProvider.addSubscription(_subscriptionDetailsEdit.createData!).then((value){
       setState(() {
         _isLoading = false;
       });
       if (value.error == null) {
-        Navigator.pop(context);
+        showDialog(
+          barrierColor: Colors.black87,
+          context: context,
+          barrierDismissible: false,
+          builder: (ctx) => const SuccessView("created")
+        );
       } else {
         showDialog(
           context: context, 
@@ -62,8 +67,8 @@ class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
   @override
   void didChangeDependencies() {
     if (!_isInit) {
-      widget._subscriptionsProvider = Provider.of<SubscriptionsProvider>(context, listen: false);
-      widget._subscriptionDetailsEdit = SubscriptionDetailsEdit(null);
+      _subscriptionsProvider = Provider.of<SubscriptionsProvider>(context, listen: false);
+      _subscriptionDetailsEdit = SubscriptionDetailsEdit(null);
     }
     _isInit = true;
     super.didChangeDependencies();
@@ -86,9 +91,9 @@ class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
       ),
       body: SafeArea(
         child: _isLoading 
-        ? const LoadingView("Creating Subscription...")
+        ? const LoadingView("Creating Subscription")
         : SingleChildScrollView(
-          child: widget._subscriptionDetailsEdit,
+          child: _subscriptionDetailsEdit,
         ),
       ),
     );
