@@ -1,7 +1,5 @@
 import 'dart:io';
-
 import 'package:asset_flutter/common/widgets/add_elevated_button.dart';
-import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
 import 'package:asset_flutter/content/pages/subscription/subscription_create_page.dart';
 import 'package:asset_flutter/content/widgets/subscription/currency_bar.dart';
 import 'package:asset_flutter/content/widgets/subscription/subscription_list.dart';
@@ -15,7 +13,7 @@ class SubscriptionPage extends StatelessWidget {
       NestedScrollView(
         floatHeaderSlivers: false,
         headerSliverBuilder: ((context, innerBoxIsScrolled) => [
-            SliverAppBar(
+            const SliverAppBar(
               expandedHeight: 210,
               floating: true,
               snap: false,
@@ -24,7 +22,7 @@ class SubscriptionPage extends StatelessWidget {
               flexibleSpace: FlexibleSpaceBar(
                 collapseMode: CollapseMode.parallax,
                 background: Center(
-                  child: SubscriptionCurrencyBar(TestData.testSubscriptionStatsData),
+                  child: SubscriptionCurrencyBar(),
                 ),
               ),
             ),
@@ -54,8 +52,8 @@ class SubscriptionPage extends StatelessWidget {
           SliverToBoxAdapter(
             child: Center(
               child: Column(
-                children: [
-                  SubscriptionCurrencyBar(TestData.testSubscriptionStatsData),
+                children: const [
+                  SubscriptionCurrencyBar(),
                 ],
               ),
             ),

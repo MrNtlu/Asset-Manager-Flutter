@@ -14,3 +14,9 @@ enum ViewState {
   empty,
   error,
 }
+
+enum CreateState {
+  editing,
+  loading,
+  success,
+}

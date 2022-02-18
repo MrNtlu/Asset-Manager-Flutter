@@ -1,5 +1,6 @@
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
+import 'package:asset_flutter/common/widgets/sub_error_view.dart';
 import 'package:asset_flutter/content/providers/asset_stats.dart';
 import 'package:asset_flutter/content/widgets/portfolio/portfolio.dart';
 import 'package:asset_flutter/content/widgets/portfolio/stats.dart';
@@ -15,16 +16,18 @@ class PortfolioStatsHeader extends StatefulWidget {
 
 class _PortfolioStatsHeaderState extends State<PortfolioStatsHeader> {
   bool _isInit = false;
+  bool _isDisposed = false;
   ViewState _state = ViewState.init;
+  String? _error;
 
-  @override
-  void didChangeDependencies() {
-    if (!_isInit) {
-      setState(() {
-        _state = ViewState.loading;
-      });
-      Provider.of<AssetStatsProvider>(context, listen: false).getAssetStats().then((response){
-        //TODO: error handling etc.
+  void _getAssetStats() {
+    setState(() {
+      _state = ViewState.loading;
+    });
+
+    Provider.of<AssetStatsProvider>(context, listen: false).getAssetStats().then((response){
+      _error = response.message;
+      if (!_isDisposed) {
         setState(() {
           if (response.data == null) {
             _state = ViewState.error;
@@ -34,7 +37,20 @@ class _PortfolioStatsHeaderState extends State<PortfolioStatsHeader> {
               : ViewState.empty;
           }
         });
-      });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _isDisposed = true;
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (!_isInit) {
+      _getAssetStats();
     }
     _isInit = true;
     super.didChangeDependencies();
@@ -55,7 +71,7 @@ class _PortfolioStatsHeaderState extends State<PortfolioStatsHeader> {
           ],
         );
       case ViewState.error:
-      //TODO: Handle error
+        return SubErrorView(_error ?? "Unknown error.", _getAssetStats);
       default:
         return const LoadingView("Loading");
     }

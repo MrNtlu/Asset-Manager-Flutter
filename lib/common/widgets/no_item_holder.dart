@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-class NoItemHolder extends StatelessWidget {
+class NoItemView extends StatelessWidget {
   final String _text;
   final double height;
 
-  const NoItemHolder(this._text, {Key? key, this.height = 250}) : super(key: key);
+  const NoItemView(this._text, {Key? key, this.height = 250}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

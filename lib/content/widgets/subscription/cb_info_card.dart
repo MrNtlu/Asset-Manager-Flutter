@@ -1,18 +1,22 @@
-import 'package:asset_flutter/content/models/responses/subscription.dart';
+import 'package:asset_flutter/content/providers/subscription_stats.dart';
 import 'package:asset_flutter/content/widgets/subscription/cb_container.dart';
 import 'package:asset_flutter/content/widgets/subscription/cb_info_text.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/stats_bar.dart';
+import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CurrencyBarInfoCard extends StatelessWidget {
-  final List<SubscriptionStats> _currencyList;
   final bool _isFirstDropdownSelected;
 
-  const CurrencyBarInfoCard(this._currencyList, this._isFirstDropdownSelected, {Key? key}) : super(key: key);
+  const CurrencyBarInfoCard(this._isFirstDropdownSelected, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final subscriptionStatsProvider = Provider.of<SubscriptionStatsProvider>(context);
+    final subscriptionStats = subscriptionStatsProvider.items;
+
     return Container(
       margin: const EdgeInsets.only(left: 8, right: 8),
       child: Card(
@@ -24,36 +28,37 @@ class CurrencyBarInfoCard extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  for (var index = 0; index < _currencyList.length; index++)
+                  for (var index = 0; index < subscriptionStats.length; index++)
                     SubscriptionCurrencyBarContainer(
                       StatsBar().subscriptionStatsPercentageCalculator(
-                        _currencyList, 
+                        subscriptionStats, 
                         _isFirstDropdownSelected ? 
-                        _currencyList[index].monthlyPayment : 
-                        _currencyList[index].totalPayment
+                        subscriptionStats[index].monthlyPayment : 
+                        subscriptionStats[index].totalPayment
                       ), 
                       index, 
                       StatsBar().statsColor[index%4],
-                      _currencyList.length
+                      subscriptionStats.length
                     )
                 ],
               ),
               SizedBox(
-                height: 35 * (_currencyList.length / 2).ceil().toDouble(),
+                height: 70,
                 child: Wrap(
                   crossAxisAlignment: WrapCrossAlignment.start,
                   alignment: WrapAlignment.start,
                   spacing: 1,
                   direction: Axis.vertical,
                   children: [
-                    for (var i = 0; i < _currencyList.length; i++)
+                    for (var i = 0; i < subscriptionStats.length; i++)
                     SubscriptionCurrencyBarInfoText(
                       StatsBar().statsColor[i],
                       (_isFirstDropdownSelected ? 
-                      _currencyList[i].monthlyPayment.toString() 
+                      subscriptionStats[i].monthlyPayment.numToString() 
                       :
-                      _currencyList[i].totalPayment.toString())
-                      + ' ' + _currencyList[i].currency
+                      subscriptionStats[i].totalPayment.numToString())
+                      + ' ' 
+                      + subscriptionStats[i].currency
                     )
                   ],
                 ),

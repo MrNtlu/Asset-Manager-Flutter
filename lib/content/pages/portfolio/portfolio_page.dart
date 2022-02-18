@@ -1,9 +1,5 @@
 import 'dart:io';
-
-import 'package:asset_flutter/common/widgets/add_elevated_button.dart';
 import 'package:asset_flutter/content/models/responses/asset.dart';
-import 'package:asset_flutter/content/models/responses/subscription.dart';
-import 'package:asset_flutter/content/pages/portfolio/investment_create_page.dart';
 import 'package:asset_flutter/content/widgets/portfolio/add_investment_button.dart';
 import 'package:asset_flutter/content/widgets/portfolio/investment_list.dart';
 import 'package:asset_flutter/content/widgets/portfolio/portfolio_stats_header.dart';
@@ -88,12 +84,5 @@ class TestData {
     const Asset(45.9, 'Amazon.com, Inc.', 'AMZN', 'USD', 'stock', 34.2, 34.7),
     const Asset(45.9, 'Activision Blizzard, Inc.', 'ATVI', 'USD', 'stock', 34.2, 34.7),
     const Asset(45.9, 'Ethereum Classic', 'ETC', 'USD', 'crypto', 34.2, 34.7),
-  ];
-
-  static List<SubscriptionStats> testSubscriptionStatsData = [
-    const SubscriptionStats('USD', 43.8, 60.9),
-    const SubscriptionStats('EUR', 85.3, 85.3),
-    const SubscriptionStats('TRY', 380, 989.9),
-    const SubscriptionStats('GBP', 30.1, 120.6),
   ];
 }

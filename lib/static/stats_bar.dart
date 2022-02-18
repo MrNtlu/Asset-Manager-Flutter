@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 class StatsBar {
   List<Color> statsColor = [
     Colors.white,
+    Colors.black,
+    Colors.orange,
     AppColors().primaryDarkestColor,
-    AppColors().orangeColor,
-    Colors.yellow
   ];
 
   StatsBar._privateConstructor();
@@ -18,7 +18,7 @@ class StatsBar {
     return _instance;
   }
 
-  int subscriptionStatsPercentageCalculator(List<SubscriptionStats> subsList, double data) {
+  int subscriptionStatsPercentageCalculator(List<SubscriptionStats> subsList, num data) {
     double sum = subsList.fold(0, (previousValue, element) => previousValue + element.totalPayment);
 
     return (data / sum * 100).toInt();

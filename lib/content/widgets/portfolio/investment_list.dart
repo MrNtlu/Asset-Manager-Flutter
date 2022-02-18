@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:asset_flutter/common/models/state.dart';
-import 'package:asset_flutter/common/widgets/error_dialog.dart';
+import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
 import 'package:asset_flutter/content/models/responses/asset.dart';
@@ -18,33 +18,43 @@ class PortfolioInvestment extends StatefulWidget {
 
 class _PortfolioInvestmentState extends State<PortfolioInvestment> {
   bool _isInit = false;
+  bool _isDisposed = false;
   ListState _state = ListState.init;
   late final AssetsProvider _assetsProvider;
+  String? _error;
+
+  void _getAssets() {
+    setState(() {
+      _state = ListState.loading;
+    });
+
+    _assetsProvider.getAssets().then((response){
+      _error = response.error;
+      if (!_isDisposed) {
+        setState(() {
+          _state = (response.code != null || response.error != null)
+            ? ListState.error
+            : (
+              response.data.isEmpty
+                ? ListState.empty
+                : ListState.done
+            );
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _isDisposed = true;
+    super.dispose();
+  }
 
   @override
   void didChangeDependencies() {
     if (!_isInit) {
       _assetsProvider = Provider.of<AssetsProvider>(context);
-      setState(() {
-        _state = ListState.loading;
-      });
-      _assetsProvider.getAssets().then((response){
-        if (response.code != null || response.error != null) {
-          showDialog(
-            context: context, 
-            builder: (ctx) => ErrorDialog(response.error ?? response.message ?? "Unknown error")
-          );
-        }
-        setState(() {
-          _state = (response.code != null || response.error != null)
-            ? _state = ListState.error
-            : (
-              response.data.isEmpty
-                ? _state = ListState.empty
-                : _state = ListState.done
-            );
-        });
-      });
+      _getAssets();
     }
     _isInit = true;
     super.didChangeDependencies();
@@ -70,12 +80,13 @@ class _PortfolioInvestmentState extends State<PortfolioInvestment> {
         return Column(
           children: const[
             SectionTitle("Investments", ""),
-            NoItemHolder("Couldn't find investment.")
+            NoItemView("Couldn't find investment.")
           ],
         );
       case ListState.done:
         return Column(
           children: [
+            const SectionTitle("Investments", ""),
             Expanded(
               child: ListView.builder(
                 itemBuilder: ((context, index) {
@@ -95,7 +106,7 @@ class _PortfolioInvestmentState extends State<PortfolioInvestment> {
           ],
         );
       case ListState.error:
-      //TODO Error implement
+        return ErrorView(_error ?? "Unknown error!", _getAssets);
       default:
         return const LoadingView("Fetching investments");
     }
@@ -108,7 +119,7 @@ class _PortfolioInvestmentState extends State<PortfolioInvestment> {
       case ListState.empty:
         return Column(
           children: const[
-            NoItemHolder("Couldn't find investment."),
+            NoItemView("Couldn't find investment."),
             AddInvestmentButton()
           ],
         );

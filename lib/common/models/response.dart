@@ -1,5 +1,6 @@
 import 'package:asset_flutter/content/models/responses/asset.dart';
 import 'package:asset_flutter/content/models/responses/investings.dart';
+import 'package:asset_flutter/content/models/responses/subscription.dart';
 
 class BaseAPIResponse {
   final String? error;
@@ -78,6 +79,12 @@ class _TypeConverter<T> {
       return Investings(
         response["name"],
         response["symbol"]
+      ) as T;
+    } else if (T == SubscriptionStats) {
+      return SubscriptionStats(
+        response["currency"], 
+        response["total_monthly_payment"],
+        response["total_payment"]
       ) as T;
     } else{
       return response as T;

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:asset_flutter/common/models/response.dart';
 import 'package:asset_flutter/content/models/requests/asset.dart';
 import 'package:asset_flutter/content/models/responses/asset.dart';
@@ -16,7 +15,7 @@ class AssetsProvider with ChangeNotifier {
 
   Future<BaseListResponse<Asset>> getAssets({
     String sort = "name", //name value amount profit
-    int type = -1
+    int type = 1
   }) async {
     _items.clear();
     try {
@@ -29,7 +28,7 @@ class AssetsProvider with ChangeNotifier {
       _items.addAll(baseListResponse.data);
       notifyListeners();
 
-      return response.getBaseListResponse<Asset>();
+      return baseListResponse;
     } catch (error) {
       return BaseListResponse(error: error.toString());
     }

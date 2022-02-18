@@ -45,7 +45,6 @@ class _LoginPageState extends State<LoginPage> {
 
     var _login = login ?? widget._loginModel;
     _login.login().then((value) {
-      print("Login state called");
       setState(() {
         _isLoading = false;
       });
