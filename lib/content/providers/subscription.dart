@@ -15,13 +15,15 @@ class Subscription with ChangeNotifier {
   late String? description;
   late DateTime billDate;
   late BillCycle billCycle;
-  late double price;
+  late num price;
   late String currency;
   late String? image;
-  late int color;
+  late String _color;
+
+  int get color => int.parse(_color);
 
   Subscription(this.id, this.name, this.description, this.billDate,
-      this.billCycle, this.price, this.currency, this.image, this.color) {
+      this.billCycle, this.price, this.currency, this.image, this._color) {
     if (image != null) {
       image = _subscriptionImage(image!);
     }
@@ -46,7 +48,7 @@ class Subscription with ChangeNotifier {
         price = update.price ?? price;
         currency = update.currency ?? currency;
         image = update.image ?? image;
-        color = update.color ?? color;
+        _color = (update.color ?? _color).toString();
 
         notifyListeners();
       }

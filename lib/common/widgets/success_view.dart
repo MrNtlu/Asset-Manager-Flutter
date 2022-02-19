@@ -5,8 +5,9 @@ import 'package:lottie/lottie.dart';
 class SuccessView extends StatelessWidget {
   final String _text;
   final bool isNonTabView;
+  final bool shouldJustPop;
 
-  const SuccessView(this._text, {this.isNonTabView = false, Key? key}) : super(key: key);
+  const SuccessView(this._text, {this.isNonTabView = false, this.shouldJustPop = false, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +42,8 @@ class SuccessView extends StatelessWidget {
               onPressed: (){
                 if (isNonTabView) {
                   Navigator.pop(context);
+                  Navigator.pop(context);
+                } else if (shouldJustPop) {
                   Navigator.pop(context);
                 } else {
                   Navigator.pushNamedAndRemoveUntil(context, "/tabs", (route) => false);

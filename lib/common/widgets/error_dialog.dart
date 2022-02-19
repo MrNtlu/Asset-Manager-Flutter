@@ -29,6 +29,7 @@ class ErrorDialog extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 24, top: 8),
               child: Text(
                 _error,
+                textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: Colors.black,
                   fontSize: 16,

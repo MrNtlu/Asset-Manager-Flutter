@@ -18,7 +18,7 @@ class SubscriptionCurrencyBarContainer extends StatelessWidget {
         ),
         color: _color,
       );
-    }else if(_index == 0){
+    } else if(_index == 0){
       _decoration = BoxDecoration(
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(8),

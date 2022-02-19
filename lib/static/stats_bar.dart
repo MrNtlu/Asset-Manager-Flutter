@@ -21,6 +21,6 @@ class StatsBar {
   int subscriptionStatsPercentageCalculator(List<SubscriptionStats> subsList, num data) {
     double sum = subsList.fold(0, (previousValue, element) => previousValue + element.totalPayment);
 
-    return (data / sum * 100).toInt();
+    return (data / sum * 100).ceil();
   }
 }

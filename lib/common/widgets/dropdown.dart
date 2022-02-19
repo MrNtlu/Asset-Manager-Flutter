@@ -11,10 +11,16 @@ class Dropdown extends StatefulWidget {
   Dropdown(this._dropdownList,
       {this.textStyle = const TextStyle(color: Colors.black),
       this.dropdownColor = Colors.white,
-      this.dropdownValue = "USD",
+      dropdownValue,
       this.isExpanded = false,
       Key? key})
-      : super(key: key);
+      : super(key: key) {
+    if (dropdownValue == null) {
+      this.dropdownValue = _dropdownList[0];
+    } else {
+      this.dropdownValue = dropdownValue;
+    }
+  }
 
   @override
   State<Dropdown> createState() => _DropdownState();

@@ -40,6 +40,7 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
   late final DropdownSearch _investingsDropdown;
 
   bool _isInit = false;
+  bool _isDisposed = false;
   int _currentStep = 0;
   CreateState _state = CreateState.editing;
   String? _prevInvestmentType;
@@ -84,15 +85,25 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
     _createAssetData();
 
     _assetsProvider.createAsset(_assetCreate).then((value) {
-      setState(() {
-        if (value.error == null) {
-          _state = CreateState.success;
-        } else {
-          showDialog(context: context, builder: (ctx) => ErrorDialog(value.error!.toString()));
-          _state = CreateState.editing;
-        }
-      });
+      if (!_isDisposed) {
+        setState(() {
+          if (value.error == null) {
+            _state = CreateState.success;
+          } else {
+            showDialog(
+                context: context,
+                builder: (ctx) => ErrorDialog(value.error!.toString()));
+            _state = CreateState.editing;
+          }
+        });
+      }
     });
+  }
+
+  @override
+  void dispose() {
+    _isDisposed = true;
+    super.dispose();
   }
 
   @override
@@ -110,29 +121,26 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: const Text("Create"),
-        backgroundColor: AppColors().primaryLightishColor,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.save_rounded),
-            tooltip: 'Save Investment',
-            onPressed: () => _createInvestment(context),
-          )
-        ],
-      ),
-      body: SafeArea(
-        child: _body()
-      )
-    );
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          title: const Text("Create"),
+          backgroundColor: AppColors().primaryLightishColor,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.save_rounded),
+              tooltip: 'Save Investment',
+              onPressed: () => _createInvestment(context),
+            )
+          ],
+        ),
+        body: SafeArea(child: _body()));
   }
 
   Widget _body() {
     switch (_state) {
       case CreateState.success:
-       return Container(
-          color: Colors.black54,
+        return Container(
+          color: Colors.black54, 
           child: const SuccessView("created")
         );
       case CreateState.loading:
@@ -147,36 +155,37 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
             ),
             Expanded(
               child: Stepper(
-                type: MediaQuery.of(context).orientation == Orientation.portrait 
-                  ? StepperType.vertical
-                  : StepperType.horizontal,
+                type: MediaQuery.of(context).orientation == Orientation.portrait
+                    ? StepperType.vertical
+                    : StepperType.horizontal,
                 elevation: 0,
-                controlsBuilder: (BuildContext context,ControlsDetails details) {
+                controlsBuilder:
+                    (BuildContext context, ControlsDetails details) {
                   return Padding(
                     padding: const EdgeInsets.only(top: 16),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        if(_currentStep != 2)
-                        ElevatedButton(
-                          onPressed: details.onStepContinue, 
-                          child: const Text("Continue")
-                        ),
-                        if (_currentStep != 0) 
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8),
-                          child: OutlinedButton(
-                            onPressed: details.onStepCancel, 
-                            child: const Text("Cancel")
-                          ),
-                        )
+                        if (_currentStep != 2)
+                          ElevatedButton(
+                              onPressed: details.onStepContinue,
+                              child: const Text("Continue")),
+                        if (_currentStep != 0)
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8),
+                            child: OutlinedButton(
+                                onPressed: details.onStepCancel,
+                                child: const Text("Cancel")),
+                          )
                       ],
                     ),
-                  );   
+                  );
                 },
                 onStepTapped: (index) {
                   if (_currentStep == 0) {
-                    if ((_prevInvestmentType != null && _prevInvestmentType != _investmentDropdown.dropdownValue)) {
+                    if ((_prevInvestmentType != null &&
+                        _prevInvestmentType !=
+                            _investmentDropdown.dropdownValue)) {
                       _investingList.clear();
                     }
                     _prevInvestmentType = _investmentDropdown.dropdownValue;
@@ -187,8 +196,8 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
                       index != 0) {
                     showDialog(
                         context: context,
-                        builder: (ctx) => const ErrorDialog(
-                            "Please select investment."));
+                        builder: (ctx) =>
+                            const ErrorDialog("Please select investment."));
                   } else {
                     setState(() {
                       _currentStep = index;
@@ -199,7 +208,9 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
                 currentStep: _currentStep,
                 onStepContinue: () {
                   if (_currentStep == 0) {
-                    if ((_prevInvestmentType != null && _prevInvestmentType != _investmentDropdown.dropdownValue)) {
+                    if ((_prevInvestmentType != null &&
+                        _prevInvestmentType !=
+                            _investmentDropdown.dropdownValue)) {
                       _investingList.clear();
                     }
                     _prevInvestmentType = _investmentDropdown.dropdownValue;
@@ -208,9 +219,9 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
                   if (_currentStep == 1 && _selectedItem == null) {
                     showDialog(
                         context: context,
-                        builder: (ctx) => const ErrorDialog(
-                            "Please select investment."));
-                  }else if (!(getSteps().length - 1 == _currentStep)) {
+                        builder: (ctx) =>
+                            const ErrorDialog("Please select investment."));
+                  } else if (!(getSteps().length - 1 == _currentStep)) {
                     setState(() {
                       _currentStep += 1;
                     });
@@ -232,98 +243,95 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
 
   List<Step> getSteps() => [
         Step(
-          state: _currentStep == 0 ? StepState.editing : StepState.indexed,
-          isActive: _currentStep >= 0,
-          title: const Text("Type", style: TextStyle(fontSize: 16)),
-          content: _investmentDropdown
-        ),
+            state: _currentStep == 0 ? StepState.editing : StepState.indexed,
+            isActive: _currentStep >= 0,
+            title: const Text("Type", style: TextStyle(fontSize: 16)),
+            content: _investmentDropdown),
         Step(
-          state: _currentStep == 1 ? StepState.editing : StepState.indexed,
-          isActive: _currentStep >= 1,
-          title: const Text("Pick", style: TextStyle(fontSize: 16)),
-          content: Padding(
-            padding: const EdgeInsets.all(8),
-            child: Column(
-              children: [
-                _investingsDropdown,
-                Padding(
-                  padding: const EdgeInsets.only(top: 12),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Currency",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+            state: _currentStep == 1 ? StepState.editing : StepState.indexed,
+            isActive: _currentStep >= 1,
+            title: const Text("Pick", style: TextStyle(fontSize: 16)),
+            content: Padding(
+              padding: const EdgeInsets.all(8),
+              child: Column(
+                children: [
+                  _investingsDropdown,
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Currency",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      _currencyDropdown
-                    ],
-                  ),
-                )
-              ],
-            ),
-          )
-        ),
+                        _currencyDropdown
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            )),
         Step(
-          state: _currentStep == 2 ? StepState.editing : StepState.indexed,
-          isActive: _currentStep >= 2,
-          title: const Text("Details", style: TextStyle(fontSize: 16)),
-          content: Form(
-            key: _form,
-            child: Column(
-              children: [
-                CustomTextFormField(
-                  "Buy/Sell Price",
-                  const TextInputType.numberWithOptions(decimal: true),
-                  initialText: _price != null ? _price.toString() : null,
-                  textInputAction: TextInputAction.next,
-                  onSaved: (value) {
-                    if (value != null) {
-                      _price = double.parse(value);
-                    }
-                  },
-                  validator: (value) {
-                    if (value != null) {
-                      if (value.isEmpty) {
-                        return "Please don't leave this empty.";
-                      } else if (double.tryParse(value) == null) {
-                        return "Price is not valid.";
+            state: _currentStep == 2 ? StepState.editing : StepState.indexed,
+            isActive: _currentStep >= 2,
+            title: const Text("Details", style: TextStyle(fontSize: 16)),
+            content: Form(
+              key: _form,
+              child: Column(
+                children: [
+                  CustomTextFormField(
+                    "Buy/Sell Price",
+                    const TextInputType.numberWithOptions(decimal: true),
+                    initialText: _price != null ? _price.toString() : null,
+                    textInputAction: TextInputAction.next,
+                    onSaved: (value) {
+                      if (value != null) {
+                        _price = double.parse(value);
                       }
-                    }
-
-                    return null;
-                  },
-                ),
-                CustomTextFormField(
-                  "Amount",
-                  const TextInputType.numberWithOptions(decimal: true),
-                  initialText: _assetCreate.amount != -1
-                      ? _assetCreate.amount.toString()
-                      : null,
-                  textInputAction: TextInputAction.done,
-                  onSaved: (value) {
-                    if (value != null) {
-                      _assetCreate.amount = double.parse(value);
-                    }
-                  },
-                  validator: (value) {
-                    if (value != null) {
-                      if (value.isEmpty) {
-                        return "Please don't leave this empty.";
-                      } else if (double.tryParse(value) == null) {
-                        return "Amount is not valid.";
+                    },
+                    validator: (value) {
+                      if (value != null) {
+                        if (value.isEmpty) {
+                          return "Please don't leave this empty.";
+                        } else if (double.tryParse(value) == null) {
+                          return "Price is not valid.";
+                        }
                       }
-                    }
 
-                    return null;
-                  },
-                )
-              ],
-            ),
-          )
-        )
+                      return null;
+                    },
+                  ),
+                  CustomTextFormField(
+                    "Amount",
+                    const TextInputType.numberWithOptions(decimal: true),
+                    initialText: _assetCreate.amount != -1
+                        ? _assetCreate.amount.toString()
+                        : null,
+                    textInputAction: TextInputAction.done,
+                    onSaved: (value) {
+                      if (value != null) {
+                        _assetCreate.amount = double.parse(value);
+                      }
+                    },
+                    validator: (value) {
+                      if (value != null) {
+                        if (value.isEmpty) {
+                          return "Please don't leave this empty.";
+                        } else if (double.tryParse(value) == null) {
+                          return "Amount is not valid.";
+                        }
+                      }
+
+                      return null;
+                    },
+                  )
+                ],
+              ),
+            ))
       ];
 
   ToggleButtons _createToggleButtons() => ToggleButtons(
@@ -372,15 +380,19 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
         ),
         showClearButton: true,
         onFind: (String? _) async {
-          if (_investingList.isEmpty && _investmentDropdown.dropdownValue.toLowerCase() != "exchange") {
+          if (_investingList.isEmpty &&
+              _investmentDropdown.dropdownValue.toLowerCase() != "exchange") {
             var response = await http.get(
-              Uri.parse(APIRoutes().assetRoutes.investingsByType 
-                + "?type=${_investmentDropdown.dropdownValue.toLowerCase()}"
-              ),
+              Uri.parse(APIRoutes().assetRoutes.investingsByType +
+                  "?type=${_investmentDropdown.dropdownValue.toLowerCase()}"),
             );
-            _investingList.addAll(response.getBaseListResponse<Investings>().data);
-          }else {
-            return SupportedCurrencies().currencies.map((e) => Investings(convertCurrencyToSymbol(e), e)).toList();
+            _investingList
+                .addAll(response.getBaseListResponse<Investings>().data);
+          } else {
+            return SupportedCurrencies()
+                .currencies
+                .map((e) => Investings(convertCurrencyToSymbol(e), e))
+                .toList();
           }
           return _investingList;
         },

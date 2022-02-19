@@ -114,8 +114,8 @@ class BillCycle implements JSONConverter{
 
 class SubscriptionStats {
   final String currency;
-  final num totalPayment;
   final num monthlyPayment;
+  final num totalPayment;
 
-  const SubscriptionStats(this.currency, this.totalPayment, this.monthlyPayment);
+  const SubscriptionStats(this.currency, this.monthlyPayment, this.totalPayment,);
 }

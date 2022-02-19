@@ -58,7 +58,6 @@ class _PortfolioStatsHeaderState extends State<PortfolioStatsHeader> {
 
   @override
   Widget build(BuildContext context) {
-    //TODO: If data null show something else
     switch (_state) {
       case ViewState.loading:
         return const LoadingView("Loading");

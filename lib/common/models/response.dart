@@ -1,6 +1,7 @@
 import 'package:asset_flutter/content/models/responses/asset.dart';
 import 'package:asset_flutter/content/models/responses/investings.dart';
 import 'package:asset_flutter/content/models/responses/subscription.dart';
+import 'package:asset_flutter/content/providers/subscription.dart';
 
 class BaseAPIResponse {
   final String? error;
@@ -79,6 +80,28 @@ class _TypeConverter<T> {
       return Investings(
         response["name"],
         response["symbol"]
+      ) as T;
+    } else if (T == Subscription) {
+      return Subscription(
+        response["_id"], 
+        response["name"],
+        response["description"],
+        DateTime.parse(response["bill_date"]),
+        BillCycle(
+          day: response["bill_cycle"]["day"],
+          month: response["bill_cycle"]["month"],
+          year: response["bill_cycle"]["year"]
+        ),
+        response["price"],
+        response["currency"],
+        response["image"],
+        response["color"]
+      ) as T;
+    } else if (T == BillCycle) {
+      return BillCycle(
+        day: response["day"],
+        month: response["month"],
+        year: response["year"]
       ) as T;
     } else if (T == SubscriptionStats) {
       return SubscriptionStats(

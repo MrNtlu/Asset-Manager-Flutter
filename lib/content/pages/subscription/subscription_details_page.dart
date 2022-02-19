@@ -1,5 +1,7 @@
+import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
+import 'package:asset_flutter/common/widgets/success_view.dart';
 import 'package:asset_flutter/content/providers/subscription.dart';
 import 'package:asset_flutter/content/providers/subscriptions.dart';
 import 'package:asset_flutter/content/widgets/portfolio/sd_edit.dart';
@@ -19,12 +21,15 @@ class SubscriptionDetailsPage extends StatefulWidget {
   State<SubscriptionDetailsPage> createState() => _SubscriptionDetailsPageState();
 }
 
+//TODO: subscription/details?id=62113ecda3a8075b2321a6fc
+// Get subscription details.
 class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
-  bool _isEditing = false;
-  bool _isLoading = false;
+  EditState _state = EditState.view;
   bool _isInit = false;
+  bool _isDisposed = false;
   late final Subscription _data;
   late final SubscriptionDetailsEdit _updateView;
+  late final SubscriptionDetailsView _detailsView;
 
   void _setUpdateData(){
     if (_data.billDate.compareTo(_updateView.datePicker.billDate) != 0) {
@@ -44,46 +49,48 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
       return;
     }
     setState(() {
-      _isLoading = true;
+      _state = EditState.loading;
     });
 
     _updateView.form.currentState?.save();
     _setUpdateData();
 
-    _data.updateSubscription(_updateView.updateData!).then((value){
-      setState(() {
-        _isLoading = false;
-      });
-      if (value.error == null) {
-        setState(() {
-          _isEditing = false;
-          _isLoading = false;
-        });
-      }else {
-        showDialog(
-          context: context, 
-          builder: (ctx) => ErrorDialog(value.error!)
-        );
+    _data.updateSubscription(_updateView.updateData!).then((value) {
+      if (!_isDisposed) {
+        if (value.error == null) {
+          setState(() {
+            _state = EditState.view;
+          });
+          showDialog(
+            barrierColor: Colors.black54,
+            context: context, 
+            builder: (ctx) => const SuccessView("updated", shouldJustPop: true)
+          );
+        }else {
+          showDialog(context: context, builder: (ctx) => ErrorDialog(value.error!));
+          setState(() {
+            _state = EditState.editing;
+          });
+        }
       }
-    }).catchError((error){
-      setState(() {
-        _isLoading = false;
-      });
-      showDialog(
-        context: context, 
-        builder: (ctx) => ErrorDialog(error.toString())
-      );
     });
   }
 
   @override
+  void dispose() {
+    _isDisposed = true;
+    super.dispose();
+  }
+
+  @override
   void didChangeDependencies() {
-    super.didChangeDependencies();
     if(!_isInit){
       _data = Provider.of<SubscriptionsProvider>(context, listen: false).findById(widget._subscriptionID);
       _updateView = SubscriptionDetailsEdit(_data);
-      _isInit = true;
+      _detailsView = SubscriptionDetailsView(_data);
     }
+    _isInit = true;
+    super.didChangeDependencies();
   }
 
   @override
@@ -91,37 +98,58 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text(_isEditing ? "Edit" : ''),
+        title: Text((_state == EditState.editing) ? "Edit" : ''),
         backgroundColor: AppColors().primaryLightishColor,
-        actions: [
-          !_isEditing
-              ? IconButton(
-                  icon: const Icon(Icons.edit_rounded),
-                  tooltip: 'Enter Edit State',
-                  onPressed: () {
-                    setState(() {
-                      _isEditing = true;
-                    });
-                  },
-                )
-              : IconButton(
-                  icon: const Icon(Icons.save_rounded),
-                  tooltip: 'Exit Edit State',
-                  onPressed: () => _updateSubscription(context),
-                )
-        ],
+        actions: _iconButtons(),
       ),
       body: SafeArea(
-        child: _isLoading ?
-        const LoadingView("Updating Subscription")
-        :
-        SingleChildScrollView(
-          child: !_isEditing ? 
-          SubscriptionDetailsView(_data)
-          :
-          _updateView
-        ),
+        child: _body()
       ),
     );
+  }
+
+  List<Widget> _iconButtons() {
+    if (_state == EditState.editing) {
+      return [
+        IconButton(
+          onPressed: () => setState(() {
+            _state = EditState.view;
+          }),
+          icon: const Icon(Icons.cancel_rounded),
+          tooltip: 'Discard Changes',
+        ),
+        IconButton(
+          icon: const Icon(Icons.save_rounded),
+          tooltip: 'Save Changes',
+          onPressed: () => _updateSubscription(context),
+        )
+      ];
+    } else {
+      return [
+        IconButton(
+          icon: const Icon(Icons.edit_rounded),
+          tooltip: 'Enter Edit State',
+          onPressed: () {
+            if (_detailsView.canEnterEditMode) {
+              setState(() {
+                _state = EditState.editing;
+              });
+            }
+          },
+        )
+      ];
+    }
+  }
+
+  Widget _body() {
+    switch (_state) {
+      case EditState.editing:
+        return SingleChildScrollView(child: _updateView);
+      case EditState.view:
+        return SingleChildScrollView(child: _detailsView);
+      case EditState.loading:
+      default:
+        return const LoadingView("Updating Subscription");
+    }
   }
 }

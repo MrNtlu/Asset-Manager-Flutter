@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 class SDEditHeader extends StatelessWidget {
   late String name;
-  late double price;
+  late num price;
   late String? description;
   late String currency;
   late final Dropdown dropdown;

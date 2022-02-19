@@ -16,9 +16,9 @@ class PortfolioInvestment extends StatefulWidget {
   State<PortfolioInvestment> createState() => _PortfolioInvestmentState();
 }
 
+/*TODO: Implement .init .disposed on every state*/
+
 class _PortfolioInvestmentState extends State<PortfolioInvestment> {
-  bool _isInit = false;
-  bool _isDisposed = false;
   ListState _state = ListState.init;
   late final AssetsProvider _assetsProvider;
   String? _error;
@@ -30,7 +30,7 @@ class _PortfolioInvestmentState extends State<PortfolioInvestment> {
 
     _assetsProvider.getAssets().then((response){
       _error = response.error;
-      if (!_isDisposed) {
+      if (_state != ListState.disposed) {
         setState(() {
           _state = (response.code != null || response.error != null)
             ? ListState.error
@@ -46,17 +46,16 @@ class _PortfolioInvestmentState extends State<PortfolioInvestment> {
 
   @override
   void dispose() {
-    _isDisposed = true;
+    _state = ListState.disposed;
     super.dispose();
   }
 
   @override
   void didChangeDependencies() {
-    if (!_isInit) {
+    if (_state == ListState.init) {
       _assetsProvider = Provider.of<AssetsProvider>(context);
       _getAssets();
     }
-    _isInit = true;
     super.didChangeDependencies();
   }
 

@@ -5,6 +5,7 @@ enum ListState {
   empty,
   error,
   paginating,
+  disposed
 }
 
 enum ViewState {
@@ -15,8 +16,20 @@ enum ViewState {
   error,
 }
 
+enum DetailState {
+  view,
+  loading,
+  disposed,
+}
+
 enum CreateState {
   editing,
   loading,
   success,
+}
+
+enum EditState {
+  view,
+  editing,
+  loading
 }

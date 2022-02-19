@@ -1,3 +1,4 @@
+import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/success_view.dart';
@@ -14,7 +15,8 @@ class SubscriptionCreatePage extends StatefulWidget {
 
 class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
   bool _isInit = false;
-  bool _isLoading = false;
+  bool _isDisposed = false;
+  CreateState _state = CreateState.editing;
   late final SubscriptionDetailsEdit _subscriptionDetailsEdit;
   late final SubscriptionsProvider _subscriptionsProvider;
 
@@ -22,6 +24,7 @@ class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
     _subscriptionDetailsEdit.createData!.billDate = _subscriptionDetailsEdit.datePicker.billDate;
     _subscriptionDetailsEdit.createData!.billCycle = _subscriptionDetailsEdit.billCyclePicker.billCycle;
     _subscriptionDetailsEdit.createData!.color = _subscriptionDetailsEdit.colorPicker.selectedColor.value;
+    _subscriptionDetailsEdit.createData!.image = _subscriptionDetailsEdit.selectedDomain;
   }
 
   void _createSubscription(BuildContext context) {
@@ -30,38 +33,35 @@ class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
       return;
     }
     setState(() {
-      _isLoading = true;
+      _state = CreateState.loading;
     });
 
     _subscriptionDetailsEdit.form.currentState?.save();
     _setCreateData();
 
     _subscriptionsProvider.addSubscription(_subscriptionDetailsEdit.createData!).then((value){
-      setState(() {
-        _isLoading = false;
-      });
-      if (value.error == null) {
-        showDialog(
-          barrierColor: Colors.black87,
-          context: context,
-          barrierDismissible: false,
-          builder: (ctx) => const SuccessView("created")
-        );
-      } else {
-        showDialog(
-          context: context, 
-          builder: (ctx) => ErrorDialog(value.error!)
-        );
+      if (!_isDisposed) {
+        if (value.error == null) {
+          setState(() {
+            _state = CreateState.success;
+          });
+        } else {
+          showDialog(
+            context: context, 
+            builder: (ctx) => ErrorDialog(value.error!)
+          );
+          setState(() {
+            _state = CreateState.editing;
+          });
+        } 
       }
-    }).catchError((error){
-      setState(() {
-        _isLoading = false;
-      });
-      showDialog(
-        context: context, 
-        builder: (ctx) => ErrorDialog(error.toString())
-      );
     });
+  }
+
+  @override
+  void dispose() {
+    _isDisposed = true;
+    super.dispose();
   }
 
   @override
@@ -90,12 +90,24 @@ class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
         ],
       ),
       body: SafeArea(
-        child: _isLoading 
-        ? const LoadingView("Creating Subscription")
-        : SingleChildScrollView(
-          child: _subscriptionDetailsEdit,
-        ),
+        child: _body(),
       ),
     );
+  }
+
+  Widget _body() {
+    switch (_state) {
+      case CreateState.success:
+        return Container(
+          color: Colors.black54, 
+          child: const SuccessView("created")
+        );
+      case CreateState.editing:
+        return SingleChildScrollView(
+          child: _subscriptionDetailsEdit,
+        );
+      case CreateState.loading:
+        return const LoadingView("Creating Subscription");
+    }
   }
 }

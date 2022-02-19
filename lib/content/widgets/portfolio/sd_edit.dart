@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:asset_flutter/content/models/requests/subscription.dart';
 import 'package:asset_flutter/content/models/responses/subscription.dart';
 import 'package:asset_flutter/content/providers/subscription.dart';
@@ -5,7 +7,9 @@ import 'package:asset_flutter/content/widgets/portfolio/sd_edit_bill_cycle.dart'
 import 'package:asset_flutter/content/widgets/portfolio/sd_edit_color_picker.dart';
 import 'package:asset_flutter/content/widgets/portfolio/sd_edit_date_picker.dart';
 import 'package:asset_flutter/content/widgets/portfolio/sd_edit_header.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class SubscriptionDetailsEdit extends StatefulWidget {
   final Subscription? _data;
@@ -18,6 +22,8 @@ class SubscriptionDetailsEdit extends StatefulWidget {
   late final SDEditDatePicker datePicker;
   late final SDEditBillCycle billCyclePicker;
   late final SDEditColorPicker colorPicker;
+  String? selectedDomain;
+
 
   SubscriptionDetailsEdit(this._data, {Key? key}) : super(key: key) {
     isEditing = _data != null;
@@ -43,6 +49,8 @@ class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        _createSubscriptionDropdown(),
+        const Divider(thickness: 1),
         Form(
           key: widget.form,
           child: widget.isEditing ? 
@@ -93,4 +101,35 @@ class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
       ],
     );
   }
+
+  Widget _createSubscriptionDropdown() => Container(
+    margin:const EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 8),
+    child: DropdownSearch<String>(
+      showSearchBox: true,
+      dropdownSearchDecoration: const InputDecoration(
+        label: Text('Subscription Service'),
+        contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
+        border: OutlineInputBorder(),
+      ),
+      showClearButton: true,
+      isFilteredOnline: true,
+      searchDelay: const Duration(seconds: 2),
+      onFind: (String? filter) async {
+        List<String> _itemList = [];
+        if (filter == null || (filter.trim() == '')) {
+          filter = "netflix";
+        }
+        var response = await http.get(
+          Uri.parse("https://autocomplete.clearbit.com/v1/companies/suggest?query=$filter"),
+        );
+        (json.decode(response.body) as List).map((e) => e as Map<String, dynamic>).forEach((element) {
+            _itemList.add(element["domain"] as String);
+        }); 
+
+        return _itemList;
+      },
+      onChanged: (String? item) => widget.selectedDomain = item,
+      itemAsString: (String? item) => item ?? '',
+    ),
+  );
 }
