@@ -6,6 +6,7 @@ import 'package:asset_flutter/content/pages/tabs_page.dart';
 import 'package:asset_flutter/content/providers/asset_logs.dart';
 import 'package:asset_flutter/content/providers/asset_stats.dart';
 import 'package:asset_flutter/content/providers/assets.dart';
+import 'package:asset_flutter/content/providers/subscription_details.dart';
 import 'package:asset_flutter/content/providers/subscription_stats.dart';
 import 'package:asset_flutter/content/providers/subscriptions.dart';
 import 'package:asset_flutter/static/token.dart';
@@ -48,6 +49,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider.value(
           value: SubscriptionStatsProvider()
+        ),
+        ChangeNotifierProvider.value(
+          value: SubscriptionDetailsProvider()
         )
       ],
       child: MaterialApp(

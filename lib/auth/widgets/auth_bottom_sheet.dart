@@ -7,7 +7,7 @@ class AuthBottomSheet extends StatelessWidget {
   final _emailInput = TextEditingController();
 
   void onSendEmailPressed(BuildContext ctx) {
-    print(_emailInput.text);
+    //TODO: Implement
     Navigator.of(ctx).pop();
   }
 

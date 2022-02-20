@@ -74,9 +74,12 @@ class SDEditHeader extends StatelessWidget {
                   textInputAction: TextInputAction.next,
                   onSaved: (value) {
                     if (value != null) {
+                      if (isEditing && currency != dropdown.dropdownValue) {
+                        updateData!.currency = dropdown.dropdownValue;
+                      }
+
                       if(isEditing && price != double.parse(value)){
                         updateData!.price = double.parse(value);
-                        updateData!.currency = dropdown.dropdownValue;
                       } else if(!isEditing) {
                         createData!.price = double.parse(value);
                         createData!.currency = dropdown.dropdownValue;

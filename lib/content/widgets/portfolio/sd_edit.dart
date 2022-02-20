@@ -31,7 +31,7 @@ class SubscriptionDetailsEdit extends StatefulWidget {
       color: _data!= null ? Color(_data!.color) : null,
     );
     datePicker = SDEditDatePicker(billDate: _data?.billDate ?? DateTime.now());
-    billCyclePicker = SDEditBillCycle(billCycle: _data?.billCycle ?? BillCycle(month: 1));
+    billCyclePicker = SDEditBillCycle(billCycle: _data?.billCycle.copyWith() ?? BillCycle(month: 1));
 
     if (isEditing) {
       updateData = SubscriptionUpdate(_data!.id);
@@ -50,7 +50,6 @@ class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
     return Column(
       children: [
         _createSubscriptionDropdown(),
-        const Divider(thickness: 1),
         Form(
           key: widget.form,
           child: widget.isEditing ? 
@@ -106,6 +105,7 @@ class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
     margin:const EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 8),
     child: DropdownSearch<String>(
       showSearchBox: true,
+      selectedItem: widget._data?.rawImage,
       dropdownSearchDecoration: const InputDecoration(
         label: Text('Subscription Service'),
         contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),

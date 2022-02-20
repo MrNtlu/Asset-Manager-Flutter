@@ -15,8 +15,6 @@ class PortfolioStatsHeader extends StatefulWidget {
 }
 
 class _PortfolioStatsHeaderState extends State<PortfolioStatsHeader> {
-  bool _isInit = false;
-  bool _isDisposed = false;
   ViewState _state = ViewState.init;
   String? _error;
 
@@ -27,7 +25,7 @@ class _PortfolioStatsHeaderState extends State<PortfolioStatsHeader> {
 
     Provider.of<AssetStatsProvider>(context, listen: false).getAssetStats().then((response){
       _error = response.message;
-      if (!_isDisposed) {
+      if (_state != ViewState.disposed) {
         setState(() {
           if (response.data == null) {
             _state = ViewState.error;
@@ -43,16 +41,16 @@ class _PortfolioStatsHeaderState extends State<PortfolioStatsHeader> {
 
   @override
   void dispose() {
-    _isDisposed = true;
+    _state = ViewState.disposed;
     super.dispose();
   }
 
   @override
   void didChangeDependencies() {
-    if (!_isInit) {
+    if (_state == ViewState.init) {
       _getAssetStats();
     }
-    _isInit = true;
+    _state = ViewState.loading;
     super.didChangeDependencies();
   }
 

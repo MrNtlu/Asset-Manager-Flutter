@@ -31,7 +31,7 @@ class SubscriptionColors {
     Colors.orange.shade900,
     Colors.orange,
     Colors.orange.shade300,
-    Colors.yellow,
+    Colors.yellow.shade600,
     Colors.pink.shade900,
     Colors.pink,
     Colors.pink.shade300,

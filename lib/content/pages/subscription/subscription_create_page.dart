@@ -14,9 +14,7 @@ class SubscriptionCreatePage extends StatefulWidget {
 }
 
 class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
-  bool _isInit = false;
-  bool _isDisposed = false;
-  CreateState _state = CreateState.editing;
+  CreateState _state = CreateState.init;
   late final SubscriptionDetailsEdit _subscriptionDetailsEdit;
   late final SubscriptionsProvider _subscriptionsProvider;
 
@@ -40,7 +38,7 @@ class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
     _setCreateData();
 
     _subscriptionsProvider.addSubscription(_subscriptionDetailsEdit.createData!).then((value){
-      if (!_isDisposed) {
+      if (_state != CreateState.disposed) {
         if (value.error == null) {
           setState(() {
             _state = CreateState.success;
@@ -60,17 +58,17 @@ class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
 
   @override
   void dispose() {
-    _isDisposed = true;
+    _state = CreateState.disposed;
     super.dispose();
   }
 
   @override
   void didChangeDependencies() {
-    if (!_isInit) {
+    if (_state == CreateState.init) {
       _subscriptionsProvider = Provider.of<SubscriptionsProvider>(context, listen: false);
       _subscriptionDetailsEdit = SubscriptionDetailsEdit(null);
     }
-    _isInit = true;
+    _state = CreateState.editing;
     super.didChangeDependencies();
   }
 
@@ -108,6 +106,8 @@ class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
         );
       case CreateState.loading:
         return const LoadingView("Creating Subscription");
+      default:
+        return const LoadingView("Loading");
     }
   }
 }

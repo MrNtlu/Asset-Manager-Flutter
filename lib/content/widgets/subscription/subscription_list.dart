@@ -15,8 +15,6 @@ class SubscriptionList extends StatefulWidget {
 }
 
 class _SubscriptionListState extends State<SubscriptionList> {
-  bool _isInit = false;
-  bool _isDisposed = false;
   ListState _state = ListState.init;
   late final SubscriptionsProvider _subscriptionsProvider;
   String? _error;
@@ -28,7 +26,7 @@ class _SubscriptionListState extends State<SubscriptionList> {
     
     _subscriptionsProvider.getSubscriptions().then((response){
       _error = response.error;
-      if (!_isDisposed) {
+      if (_state != ListState.disposed) {
         setState(() {
           _state = (response.code != null || response.error != null)
             ? ListState.error
@@ -40,22 +38,20 @@ class _SubscriptionListState extends State<SubscriptionList> {
         });
       }
     });
-
   }
 
   @override
   void dispose() {
-    _isDisposed = true;
+    _state = ListState.disposed;
     super.dispose();
   }
 
   @override
   void didChangeDependencies() {
-    if (!_isInit) {
+    if (_state == ListState.init) {
       _subscriptionsProvider = Provider.of<SubscriptionsProvider>(context);
       _getSubscriptions();
     }
-    _isInit = true;
     super.didChangeDependencies();
   }
 
@@ -104,7 +100,7 @@ class _SubscriptionListState extends State<SubscriptionList> {
       case ListState.error:
         return ErrorView(_error ?? "Unknown error!", _getSubscriptions);
       default:
-        return const LoadingView("Fetching subscriptions");
+        return const LoadingView("Loading");
     }
   }
 }

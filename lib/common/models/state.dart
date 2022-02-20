@@ -14,6 +14,7 @@ enum ViewState {
   done,
   empty,
   error,
+  disposed
 }
 
 enum DetailState {
@@ -23,13 +24,17 @@ enum DetailState {
 }
 
 enum CreateState {
+  init,
   editing,
   loading,
   success,
+  disposed
 }
 
 enum EditState {
+  init,
   view,
   editing,
-  loading
+  loading,
+  disposed
 }

@@ -16,8 +16,6 @@ class PortfolioInvestment extends StatefulWidget {
   State<PortfolioInvestment> createState() => _PortfolioInvestmentState();
 }
 
-/*TODO: Implement .init .disposed on every state*/
-
 class _PortfolioInvestmentState extends State<PortfolioInvestment> {
   ListState _state = ListState.init;
   late final AssetsProvider _assetsProvider;
@@ -127,6 +125,7 @@ class _PortfolioInvestmentState extends State<PortfolioInvestment> {
           color: Colors.white,
           child: InkWell(
             onTap: (() {
+              //TODO: Implement
               print("Investment Details Pressed");
             }),
             child: Column(

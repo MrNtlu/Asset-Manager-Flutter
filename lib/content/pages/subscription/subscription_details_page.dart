@@ -21,12 +21,8 @@ class SubscriptionDetailsPage extends StatefulWidget {
   State<SubscriptionDetailsPage> createState() => _SubscriptionDetailsPageState();
 }
 
-//TODO: subscription/details?id=62113ecda3a8075b2321a6fc
-// Get subscription details.
 class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
-  EditState _state = EditState.view;
-  bool _isInit = false;
-  bool _isDisposed = false;
+  EditState _state = EditState.init;
   late final Subscription _data;
   late final SubscriptionDetailsEdit _updateView;
   late final SubscriptionDetailsView _detailsView;
@@ -35,6 +31,7 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
     if (_data.billDate.compareTo(_updateView.datePicker.billDate) != 0) {
       _updateView.updateData!.billDate = _updateView.datePicker.billDate;
     }
+
     if (_data.billCycle != _updateView.billCyclePicker.billCycle) {
       _updateView.updateData!.billCycle = _updateView.billCyclePicker.billCycle;
     }
@@ -56,7 +53,7 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
     _setUpdateData();
 
     _data.updateSubscription(_updateView.updateData!).then((value) {
-      if (!_isDisposed) {
+      if (_state != EditState.disposed) {
         if (value.error == null) {
           setState(() {
             _state = EditState.view;
@@ -78,18 +75,18 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
 
   @override
   void dispose() {
-    _isDisposed = true;
+    _state = EditState.disposed;
     super.dispose();
   }
 
   @override
   void didChangeDependencies() {
-    if(!_isInit){
+    if(_state == EditState.init){
       _data = Provider.of<SubscriptionsProvider>(context, listen: false).findById(widget._subscriptionID);
       _updateView = SubscriptionDetailsEdit(_data);
       _detailsView = SubscriptionDetailsView(_data);
     }
-    _isInit = true;
+    _state = EditState.view;
     super.didChangeDependencies();
   }
 
@@ -148,8 +145,9 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
       case EditState.view:
         return SingleChildScrollView(child: _detailsView);
       case EditState.loading:
-      default:
         return const LoadingView("Updating Subscription");
+      default:
+        return const LoadingView("Loading");
     }
   }
 }

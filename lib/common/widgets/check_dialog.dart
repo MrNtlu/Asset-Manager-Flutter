@@ -9,6 +9,9 @@ class AreYouSureDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12)
+      ),
       title: const Text('Are you sure?'),
       content: Text('Do you want to $_content?'),
       actions: [

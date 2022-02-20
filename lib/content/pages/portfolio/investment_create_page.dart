@@ -39,10 +39,8 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
   late final Dropdown _currencyDropdown;
   late final DropdownSearch _investingsDropdown;
 
-  bool _isInit = false;
-  bool _isDisposed = false;
+  CreateState _state = CreateState.init;
   int _currentStep = 0;
-  CreateState _state = CreateState.editing;
   String? _prevInvestmentType;
 
   void _createAssetData() {
@@ -85,7 +83,7 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
     _createAssetData();
 
     _assetsProvider.createAsset(_assetCreate).then((value) {
-      if (!_isDisposed) {
+      if (_state != CreateState.disposed) {
         setState(() {
           if (value.error == null) {
             _state = CreateState.success;
@@ -102,19 +100,19 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
 
   @override
   void dispose() {
-    _isDisposed = true;
+    _state = CreateState.disposed;
     super.dispose();
   }
 
   @override
   void didChangeDependencies() {
-    if (!_isInit) {
+    if (_state == CreateState.init) {
       _investmentDropdown = _createInvestmentDropdown();
       _investingsDropdown = _createInvestingsDropdown();
       _currencyDropdown = _createCurrencyDropdown();
       _assetsProvider = Provider.of<AssetsProvider>(context, listen: false);
     }
-    _isInit = true;
+    _state = CreateState.editing;
     super.didChangeDependencies();
   }
 
@@ -238,6 +236,8 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
             ),
           ],
         );
+      default:
+        return const LoadingView("Loading");
     }
   }
 

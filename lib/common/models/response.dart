@@ -97,6 +97,11 @@ class _TypeConverter<T> {
         response["image"],
         response["color"]
       ) as T;
+    } else if (T == SubscriptionDetails) {
+      return SubscriptionDetails(
+        response["monthly_payment"], 
+        response["total_payment"]
+      ) as T;
     } else if (T == BillCycle) {
       return BillCycle(
         day: response["day"],

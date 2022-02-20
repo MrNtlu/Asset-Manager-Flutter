@@ -65,6 +65,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       child: TextButton(
                         child: const Text('Delete Account', style: TextStyle(color: Color(0xFF777777))),
                         onPressed: (){
+                          //TODO: Implement
                           print("Delete pressed");
                         },
                       ),

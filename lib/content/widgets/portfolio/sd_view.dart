@@ -3,7 +3,9 @@ import 'package:asset_flutter/common/widgets/check_dialog.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/success_view.dart';
+import 'package:asset_flutter/content/models/responses/subscription.dart';
 import 'package:asset_flutter/content/providers/subscription.dart';
+import 'package:asset_flutter/content/providers/subscription_details.dart';
 import 'package:asset_flutter/content/providers/subscriptions.dart';
 import 'package:asset_flutter/content/widgets/portfolio/sd_view_text.dart';
 import 'package:asset_flutter/utils/extensions.dart';
@@ -23,6 +25,7 @@ class SubscriptionDetailsView extends StatefulWidget {
 
 class _SubscriptionDetailsViewState extends State<SubscriptionDetailsView> {
   DetailState _state = DetailState.view;
+  SubscriptionDetails? _subscriptionDetails;
 
   void _deleteSubscription() {
     widget.canEnterEditMode = false;
@@ -57,11 +60,32 @@ class _SubscriptionDetailsViewState extends State<SubscriptionDetailsView> {
     });
   }
 
+  void _getSubscriptionDetails() {
+    setState(() {
+      _state = DetailState.loading;
+    });
+
+    Provider.of<SubscriptionDetailsProvider>(context, listen: false).getSubscriptionDetails(widget._data.id).then((response){
+      if (_state != DetailState.disposed) {
+        _subscriptionDetails = response.data;
+        setState(() {
+          _state = DetailState.view;
+        });
+      }
+    });
+  }
+
   @override
   void dispose() {
     _state = DetailState.disposed;
     widget.canEnterEditMode = true;
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    _getSubscriptionDetails();
+    super.didChangeDependencies();
   }
 
   @override
@@ -116,7 +140,16 @@ class _SubscriptionDetailsViewState extends State<SubscriptionDetailsView> {
             SDViewText("Description", widget._data.description!),
             SDViewText("Initial Bill Date", widget._data.billDate.dateToFormatDate()),
             SDViewText("Bill Cycle", widget._data.billCycle.handleBillCycleString()),
-            const SDViewText("Paid in Total", "1506.34"),
+            if(_subscriptionDetails != null)
+            SDViewText(
+              "Monthly Payment",
+              _subscriptionDetails!.monthlyPayment.numToString() + ' ' + widget._data.currency
+            ),
+            if(_subscriptionDetails != null)
+            SDViewText(
+              "Paid in Total",
+              _subscriptionDetails!.totalpayment.numToString() + ' ' + widget._data.currency
+            ),
             Padding(
               padding: const EdgeInsets.all(12),
               child: OutlinedButton(

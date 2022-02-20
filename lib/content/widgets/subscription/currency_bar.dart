@@ -16,8 +16,6 @@ class SubscriptionCurrencyBar extends StatefulWidget {
 class _SubscriptionCurrencyBarState extends State<SubscriptionCurrencyBar> {
   final List<String> _dropdownList = ["Monthly", "Total"];
   late String _dropdownValue;
-  bool _isInit = false;
-  bool _isDisposed = false;
   ViewState _state = ViewState.init;
   String? _error;
 
@@ -35,7 +33,7 @@ class _SubscriptionCurrencyBarState extends State<SubscriptionCurrencyBar> {
     Provider.of<SubscriptionStatsProvider>(context, listen: false).getSubscriptionStats().then((response){
       _error = response.error;
 
-      if (!_isDisposed) {
+      if (_state != ViewState.disposed) {
         setState(() {
           if (response.code != null || response.error != null) {
             _state = ViewState.error;
@@ -51,16 +49,16 @@ class _SubscriptionCurrencyBarState extends State<SubscriptionCurrencyBar> {
   
   @override
   void dispose() {
-    _isDisposed = true;
+    _state = ViewState.disposed;
     super.dispose();
   }
 
   @override
   void didChangeDependencies() {
-    if (!_isInit) {
+    if (_state == ViewState.init) {
       _getSubscriptionStats();
     }
-    _isInit = true;
+    _state = ViewState.loading;
     super.didChangeDependencies();
   }
 

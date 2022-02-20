@@ -2,24 +2,26 @@ import 'package:asset_flutter/common/models/json_convert.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 
 class SubscriptionDetails {
-  final String? cardID;
-  final String name;
-  final String? description;
-  final DateTime billDate;
-  final BillCycle billCycle;
-  final double price;
-  final String currency;
-  final double monthlyPayment;
-  final double totalpayment;
-  final String? image;
-  final int color;
+  // final String? cardID;
+  // final String name;
+  // final String? description;
+  // final DateTime billDate;
+  // final BillCycle billCycle;
+  // final double price;
+  // final String currency;
+  final num monthlyPayment;
+  final num totalpayment;
+  // final String? image;
+  // final int color;
 
-  SubscriptionDetails(
-    this.name, this.billDate, this.billCycle, 
-    this.price, this.currency, this.monthlyPayment, 
-    this.totalpayment, this.image, this.color,
-    {this.cardID, this.description}
-  );
+  SubscriptionDetails(this.monthlyPayment, this.totalpayment);
+
+  // SubscriptionDetails(
+  //   this.name, this.billDate, this.billCycle, 
+  //   this.price, this.currency, this.monthlyPayment, 
+  //   this.totalpayment, this.image, this.color,
+  //   {this.cardID, this.description}
+  // );
 }
 
 class BillCycle implements JSONConverter{
@@ -36,6 +38,13 @@ class BillCycle implements JSONConverter{
     day == other.day &&
     month == other.month && 
     year == other.year;
+
+  @override
+  BillCycle copyWith({
+    int? day,
+    int? month,
+    int? year
+  }) => BillCycle(day: day ?? this.day, month: month ?? this.month, year: year ?? this.year);
 
   @override
   Map<String, Object> convertToJson()=> {
