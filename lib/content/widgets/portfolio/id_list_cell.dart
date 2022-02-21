@@ -75,17 +75,17 @@ class InvestmentDetailsListCell extends StatelessWidget {
               ),
               InvestmentDetailsLogListCellText(
                 _data.type == "buy" ? "Bought Price" : "Sold Price",
-                _data.type == "buy" ? _data.boughtPrice.toString() : _data.soldPrice.toString(),
+                _data.type == "buy" ? _data.boughtPrice!.numToString() : _data.soldPrice!.numToString(),
               ),
               InvestmentDetailsLogListCellText(
                 "Amount in "+_data.fromAsset,
-                _data.amount.toString(),
+                _data.amount.numToString(),
               ),
               Container(
                 margin: const EdgeInsets.only(top: 8),
                 alignment: Alignment.center,
                 child: Text(
-                  _data.value.toString() + ' ' + _data.fromAsset,
+                  _data.value.numToString() + ' ' + _data.fromAsset,
                   style: const TextStyle(
                     color: Colors.black,
                     fontSize: 18,

@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 
 class AssetLog {
   final String id;
-  double value;
+  num value;
   final String toAsset;
   final String fromAsset;
   final String type;
-  final double amount;
-  final double? boughtPrice;
-  final double? soldPrice;
+  final num amount;
+  final num? boughtPrice;
+  final num? soldPrice;
   final DateTime createdAt;
 
   AssetLog(

@@ -24,6 +24,27 @@ class BaseItemResponse<T> {
   }
 }
 
+class BasePaginationResponse<T> {
+  late List<T> data = [];
+  late bool canNextPage;
+  final String? error;
+
+  BasePaginationResponse({
+    List<dynamic>? response,
+    required this.canNextPage,
+    this.error
+  }){
+    if (response != null) {
+      var _typeConverter = _TypeConverter<T>();
+      response.map((e){
+        return e as Map<String, dynamic>;
+      }).forEach((element) {
+        data.add(_typeConverter.convertToObject(element));
+      });
+    }
+  }
+}
+
 class BaseListResponse<T> {
   late List<T> data = [];
   final String? message;
@@ -59,7 +80,19 @@ class _TypeConverter<T> {
         response["p/l"],
         response["remaining_amount"],
       ) as T;
-    }else if (T == AssetStats) {
+    } else if (T == AssetLog) {
+      return AssetLog(
+        response["_id"],
+        response["value"],
+        response["to_asset"],
+        response["from_asset"],
+        response["type"],
+        response["amount"], 
+        DateTime.parse(response["created_at"]),
+        boughtPrice: response["bought_price"],
+        soldPrice: response["sold_price"]
+      ) as T;
+    } else if (T == AssetStats) {
       return AssetStats(
         response["currency"],
         response["total_bought"],

@@ -1,36 +1,155 @@
+import 'package:asset_flutter/common/models/state.dart';
+import 'package:asset_flutter/common/widgets/error_view.dart';
+import 'package:asset_flutter/common/widgets/loading_view.dart';
+import 'package:asset_flutter/common/widgets/no_item_holder.dart';
 import 'package:asset_flutter/content/models/responses/asset.dart';
+import 'package:asset_flutter/content/providers/asset_logs.dart';
 import 'package:asset_flutter/content/widgets/portfolio/id_list_cell.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class InvestmentDetailsLogList extends StatelessWidget {
+class InvestmentDetailsLogList extends StatefulWidget {
   final double _appBarHeight;
-  final List<AssetLog> assetLogs;
+  final Asset _asset;
 
-  const InvestmentDetailsLogList(this._appBarHeight, this.assetLogs, {Key? key}) : super(key: key);
+  const InvestmentDetailsLogList(this._appBarHeight, this._asset, {Key? key}) : super(key: key);
+
+  @override
+  State<InvestmentDetailsLogList> createState() => _InvestmentDetailsLogListState();
+}
+
+class _InvestmentDetailsLogListState extends State<InvestmentDetailsLogList> {
+  ListState _state = ListState.init;
+  late final AssetLogProvider _provider;
+  late final ScrollController _scrollController;
+  int _page = 1;
+  bool _canPaginate = false;
+  String? _error;
+
+  void _getAssetLogs() {
+    if (_page == 1) {
+      setState(() {
+        _state = ListState.loading;  
+      });
+    }
+
+    Provider.of<AssetLogProvider>(context, listen: false).getAssetLogs(
+      toAsset: widget._asset.toAsset, 
+      fromAsset: widget._asset.fromAsset,
+      page: _page,
+      // sort: 
+    ).then((response){
+      _error = response.error;
+      _canPaginate = response.canNextPage;
+      if (_state != ListState.disposed) {
+        setState(() {
+          _state = response.error != null
+            ? ListState.error
+            : (
+              response.data.isEmpty
+                ? ListState.empty
+                : ListState.done
+            );
+        });
+      }
+    });
+  }
+
+  void _scrollHandler() {
+    if (
+      _canPaginate 
+      && _scrollController.offset >= _scrollController.position.maxScrollExtent
+      && !_scrollController.position.outOfRange
+    ) {
+      _page ++;
+      _getAssetLogs();
+    }
+  }
+
+  @override
+  void dispose() {
+    _state = ListState.disposed;
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_state == ListState.init) {
+       _provider = Provider.of<AssetLogProvider>(context);
+       _scrollController = ScrollController();
+       //_scrollController.addListener(_scrollHandler);
+      _getAssetLogs();
+    }
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
+    var _data = _provider.items;
+
     return SizedBox(
       height: MediaQuery.of(context).size.height - ( 
-        _appBarHeight + 
-        MediaQuery.of(context).padding.top + 
-        MediaQuery.of(context).padding.bottom),
-      child: ListView.builder(
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            return const SizedBox(height: 100);
-          } else if (index == assetLogs.length + 1){
-            return const SizedBox(height: 65);
-          }
-
-          final data = assetLogs[index - 1];
-
-          return InvestmentDetailsListCell(data);
-        },
-        itemCount: assetLogs.length + 2,
-        padding: const EdgeInsets.only(top: 4),
-        physics: const ClampingScrollPhysics(),
-        shrinkWrap: true,
-      ),
+            widget._appBarHeight + 
+            MediaQuery.of(context).padding.top + 
+            MediaQuery.of(context).padding.bottom),
+      child: _body(_data)
     );
+  }
+
+  Widget _body(List<AssetLog> _data) {
+    switch (_state) {
+      case ListState.done:
+        return ListView.builder(
+          controller: _scrollController,
+          itemBuilder: (context, index) {
+            if (index == 0) {
+              return const SizedBox(height: 100);
+            } else if (_canPaginate && index == _data.length + 1) {
+              return Center(
+                child: GestureDetector(
+                  onTap: _scrollHandler,
+                  child: Container(
+                    margin: const EdgeInsets.all(8),
+                    height: 75,
+                    width: 75,
+                    child: const CircularProgressIndicator(),
+                  ),
+                ),
+              );
+            } else if (index == _data.length + (_canPaginate ? 2 : 1)){
+              return const SizedBox(height: 65);
+            }
+
+            final data = _data[index - 1];
+
+            return InvestmentDetailsListCell(data);
+          },
+          itemCount: _data.length + (_canPaginate ? 3 : 2),
+          padding: const EdgeInsets.only(top: 4),
+          physics: const ClampingScrollPhysics(),
+          shrinkWrap: true,
+        );
+      case ListState.empty:
+        return Padding(
+          padding: EdgeInsets.only(top: 
+            widget._appBarHeight
+            + MediaQuery.of(context).padding.top
+            + MediaQuery.of(context).padding.bottom),
+          child:const NoItemView("Couldn't find investment."),
+        );
+      case ListState.error:
+        return Padding(
+          padding: EdgeInsets.only(top: 
+          widget._appBarHeight 
+          + MediaQuery.of(context).padding.top
+          + MediaQuery.of(context).padding.bottom),
+          child: ErrorView(_error ?? "Unknown error!", _getAssetLogs)
+        );
+      case ListState.loading:
+        return const LoadingView("Fetching investments");
+      default:
+        return const LoadingView("Loading");
+    }
   }
 }

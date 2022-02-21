@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:asset_flutter/common/widgets/add_elevated_button.dart';
+import 'package:asset_flutter/content/models/requests/asset.dart';
 import 'package:asset_flutter/content/models/responses/asset.dart';
 import 'package:asset_flutter/content/providers/asset_logs.dart';
 import 'package:asset_flutter/content/widgets/portfolio/id_log_list.dart';
@@ -39,13 +40,15 @@ class InvestmentDetailsPage extends StatelessWidget {
           children: [
             //TODO: Pagination
             //TODO: https://www.youtube.com/c/JohannesMilke/search?query=pagination
-            InvestmentDetailsLogList(appBar.preferredSize.height, Provider.of<AssetLogProvider>(context).items),
+            InvestmentDetailsLogList(appBar.preferredSize.height, _data),
             InvestmentDetailsTopBar(_data, image),
             Container(
               alignment: Alignment.bottomCenter,
               child: AddElevatedButton(('Add ' + _data.toAsset), () {
-                Provider.of<AssetLogProvider>(context, listen: false).addAssetLog(AssetLog(Random().toString(), 100, "BTC", "USD", "buy", 0.1, DateTime.now(), boughtPrice: 44105.21));
-                print('Add ' + _data.toAsset);
+                Provider.of<AssetLogProvider>(context, listen: false).addAssetLog(
+                  AssetCreate(_data.toAsset, _data.fromAsset, "buy", 0.1, _data.type, _data.name, boughtPrice: 44105.21)
+                );
+                print('Add ' + _data.toAsset + ' ' + _data.type);
               },
               edgeInsets: const EdgeInsets.only(left: 8, right: 8, bottom: 8)),
             )
