@@ -24,6 +24,7 @@ class _InvestmentDetailsLogListState extends State<InvestmentDetailsLogList> {
   late final ScrollController _scrollController;
   int _page = 1;
   bool _canPaginate = false;
+  bool _isPaginating = false;
   String? _error;
 
   void _getAssetLogs() {
@@ -31,6 +32,9 @@ class _InvestmentDetailsLogListState extends State<InvestmentDetailsLogList> {
       setState(() {
         _state = ListState.loading;  
       });
+    } else {
+      _canPaginate = false;
+      _isPaginating = true;
     }
 
     Provider.of<AssetLogProvider>(context, listen: false).getAssetLogs(
@@ -41,6 +45,7 @@ class _InvestmentDetailsLogListState extends State<InvestmentDetailsLogList> {
     ).then((response){
       _error = response.error;
       _canPaginate = response.canNextPage;
+      _isPaginating = false;
       if (_state != ListState.disposed) {
         setState(() {
           _state = response.error != null
@@ -58,7 +63,7 @@ class _InvestmentDetailsLogListState extends State<InvestmentDetailsLogList> {
   void _scrollHandler() {
     if (
       _canPaginate 
-      && _scrollController.offset >= _scrollController.position.maxScrollExtent
+      && _scrollController.offset >= _scrollController.position.maxScrollExtent / 2
       && !_scrollController.position.outOfRange
     ) {
       _page ++;
@@ -78,7 +83,7 @@ class _InvestmentDetailsLogListState extends State<InvestmentDetailsLogList> {
     if (_state == ListState.init) {
        _provider = Provider.of<AssetLogProvider>(context);
        _scrollController = ScrollController();
-       //_scrollController.addListener(_scrollHandler);
+       _scrollController.addListener(_scrollHandler);
       _getAssetLogs();
     }
     super.didChangeDependencies();
@@ -105,24 +110,20 @@ class _InvestmentDetailsLogListState extends State<InvestmentDetailsLogList> {
           itemBuilder: (context, index) {
             if (index == 0) {
               return const SizedBox(height: 100);
-            } else if (_canPaginate && index == _data.length + 1) {
+            } else if ((_canPaginate || _isPaginating) && index == _data.length + 1) {
               return Center(
-                child: GestureDetector(
-                  onTap: _scrollHandler,
-                  child: Container(
-                    margin: const EdgeInsets.all(8),
-                    height: 75,
-                    width: 75,
-                    child: const CircularProgressIndicator(),
-                  ),
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                  height: 45,
+                  width: 45,
+                  child: const CircularProgressIndicator(),
                 ),
               );
-            } else if (index == _data.length + (_canPaginate ? 2 : 1)){
+            } else if (index == _data.length + ((_canPaginate || _isPaginating) ? 2 : 1)){
               return const SizedBox(height: 65);
             }
 
             final data = _data[index - 1];
-
             return InvestmentDetailsListCell(data);
           },
           itemCount: _data.length + (_canPaginate ? 3 : 2),
@@ -131,20 +132,24 @@ class _InvestmentDetailsLogListState extends State<InvestmentDetailsLogList> {
           shrinkWrap: true,
         );
       case ListState.empty:
-        return Padding(
-          padding: EdgeInsets.only(top: 
-            widget._appBarHeight
-            + MediaQuery.of(context).padding.top
-            + MediaQuery.of(context).padding.bottom),
-          child:const NoItemView("Couldn't find investment."),
+        return Center(
+          child: Padding(
+            padding: EdgeInsets.only(top: 
+              widget._appBarHeight
+              + MediaQuery.of(context).padding.top
+              + MediaQuery.of(context).padding.bottom),
+            child:const NoItemView("Couldn't find investment."),
+          ),
         );
       case ListState.error:
-        return Padding(
-          padding: EdgeInsets.only(top: 
-          widget._appBarHeight 
-          + MediaQuery.of(context).padding.top
-          + MediaQuery.of(context).padding.bottom),
-          child: ErrorView(_error ?? "Unknown error!", _getAssetLogs)
+        return Center(
+          child: Padding(
+            padding: EdgeInsets.only(top: 
+            widget._appBarHeight 
+            + MediaQuery.of(context).padding.top
+            + MediaQuery.of(context).padding.bottom),
+            child: ErrorView(_error ?? "Unknown error!", _getAssetLogs)
+          ),
         );
       case ListState.loading:
         return const LoadingView("Fetching investments");

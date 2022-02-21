@@ -10,7 +10,7 @@ class NoItemView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MediaQuery.of(context).orientation == Orientation.portrait 
-      ? Expanded(child: _body())
+      ? _body()
       : SizedBox(
           height: 250,
           child: _body(),
