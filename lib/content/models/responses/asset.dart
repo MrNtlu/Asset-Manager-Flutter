@@ -21,18 +21,6 @@ class AssetLog {
   );
 }
 
-class Asset {
-  final num currentValue;
-  final String name;
-  final String toAsset;
-  final String fromAsset;
-  final String type;
-  final num pl;
-  final num amount;
-
-  const Asset(this.currentValue, this.name, this.toAsset, this.fromAsset, this.type, this.pl, this.amount);
-}
-
 class AssetStats {
   final String currency;
   final num totalBought;

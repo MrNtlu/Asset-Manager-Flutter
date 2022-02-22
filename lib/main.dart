@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:asset_flutter/auth/pages/login_page.dart';
 import 'package:asset_flutter/auth/pages/register_page.dart';
 import 'package:asset_flutter/content/pages/tabs_page.dart';
+import 'package:asset_flutter/content/providers/asset.dart';
 import 'package:asset_flutter/content/providers/asset_logs.dart';
 import 'package:asset_flutter/content/providers/asset_stats.dart';
 import 'package:asset_flutter/content/providers/assets.dart';
@@ -52,7 +53,10 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider.value(
           value: SubscriptionDetailsProvider()
-        )
+        ),
+        ChangeNotifierProvider.value(
+          value: AssetProvider()
+        ),
       ],
       child: MaterialApp(
         title: 'Wealth Manager',

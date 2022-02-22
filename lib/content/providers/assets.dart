@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:asset_flutter/common/models/response.dart';
 import 'package:asset_flutter/content/models/requests/asset.dart';
-import 'package:asset_flutter/content/models/responses/asset.dart';
+import 'package:asset_flutter/content/providers/asset.dart';
 import 'package:asset_flutter/static/routes.dart';
 import 'package:asset_flutter/static/token.dart';
 import 'package:asset_flutter/utils/extensions.dart';
@@ -12,6 +12,10 @@ class AssetsProvider with ChangeNotifier {
   final List<Asset> _items = [];
 
   List<Asset> get items => _items;
+
+  Asset findByAsset(String toAsset, String fromAsset) {
+    return _items.firstWhere((element) => element.toAsset == toAsset && element.fromAsset == fromAsset);
+  }
 
   Future<BaseListResponse<Asset>> getAssets({
     String sort = "name", //name value amount profit

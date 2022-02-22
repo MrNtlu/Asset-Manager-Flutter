@@ -1,5 +1,5 @@
-import 'package:asset_flutter/content/models/responses/asset.dart';
 import 'package:asset_flutter/content/pages/portfolio/investment_details_page.dart';
+import 'package:asset_flutter/content/providers/asset.dart';
 import 'package:asset_flutter/content/widgets/portfolio/il_cell_image.dart';
 import 'package:asset_flutter/content/widgets/portfolio/pl_text.dart';
 import 'package:asset_flutter/static/colors.dart';
@@ -9,7 +9,7 @@ import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
 
 class PortfolioInvestmentListCell extends StatelessWidget {
-  final Asset data;
+  late final Asset data;
   late final String image;
 
   PortfolioInvestmentListCell(this.data) {

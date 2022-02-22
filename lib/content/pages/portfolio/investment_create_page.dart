@@ -7,6 +7,7 @@ import 'package:asset_flutter/common/widgets/textformfield.dart';
 import 'package:asset_flutter/content/models/requests/asset.dart';
 import 'package:asset_flutter/content/models/responses/investings.dart';
 import 'package:asset_flutter/content/providers/assets.dart';
+import 'package:asset_flutter/content/widgets/portfolio/investment_toggle_button.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/currencies.dart';
 import 'package:asset_flutter/static/routes.dart';
@@ -31,13 +32,13 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
 
   final AssetCreate _assetCreate = AssetCreate('', '', '', -1, '', '');
   late final List<Investings> _investingList = [];
-  final List<bool> _isSelected = [true, false];
   Investings? _selectedItem;
   double? _price;
 
   late final Dropdown _investmentDropdown;
   late final Dropdown _currencyDropdown;
   late final DropdownSearch _investingsDropdown;
+  late final InvestmentToggleButton _toggleButton;
 
   CreateState _state = CreateState.init;
   int _currentStep = 0;
@@ -47,9 +48,9 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
     _assetCreate.toAsset = _selectedItem!.symbol;
     _assetCreate.name = _selectedItem!.name;
     _assetCreate.fromAsset = _currencyDropdown.dropdownValue.toUpperCase();
-    _assetCreate.type = _isSelected[0] ? "buy" : "sell";
+    _assetCreate.type = _toggleButton.isSelected[0] ? "buy" : "sell";
     _assetCreate.assetType = _investmentDropdown.dropdownValue.toLowerCase();
-    if (_isSelected[0]) {
+    if (_toggleButton.isSelected[0]) {
       _assetCreate.boughtPrice = _price;
     } else {
       _assetCreate.soldPrice = _price;
@@ -110,6 +111,7 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
       _investmentDropdown = _createInvestmentDropdown();
       _investingsDropdown = _createInvestingsDropdown();
       _currencyDropdown = _createCurrencyDropdown();
+      _toggleButton = InvestmentToggleButton();
       _assetsProvider = Provider.of<AssetsProvider>(context, listen: false);
     }
     _state = CreateState.editing;
@@ -149,7 +151,7 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
             Container(
               alignment: Alignment.center,
               margin: const EdgeInsets.only(top: 8, bottom: 12),
-              child: _createToggleButtons(),
+              child: _toggleButton,
             ),
             Expanded(
               child: Stepper(
@@ -333,31 +335,6 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
               ),
             ))
       ];
-
-  ToggleButtons _createToggleButtons() => ToggleButtons(
-        color: Colors.black,
-        selectedColor: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        fillColor: _isSelected[0] ? Colors.green : Colors.red,
-        children: const [
-          Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12),
-              child: Text("Buy", style: TextStyle(fontSize: 18))),
-          Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12),
-              child: Text("Sell", style: TextStyle(fontSize: 18))),
-        ],
-        isSelected: _isSelected,
-        onPressed: (int newIndex) {
-          setState(() {
-            var falseIndex = newIndex == 0 ? 1 : 0;
-            if (!_isSelected[newIndex]) {
-              _isSelected[newIndex] = true;
-              _isSelected[falseIndex] = false;
-            }
-          });
-        },
-      );
 
   Dropdown _createCurrencyDropdown() => Dropdown(
         SupportedCurrencies().currencies,

@@ -3,7 +3,7 @@ import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
-import 'package:asset_flutter/content/models/responses/asset.dart';
+import 'package:asset_flutter/content/providers/asset.dart';
 import 'package:asset_flutter/content/providers/assets.dart';
 import 'package:asset_flutter/content/widgets/portfolio/add_investment_button.dart';
 import 'package:asset_flutter/content/widgets/portfolio/il_cell.dart';

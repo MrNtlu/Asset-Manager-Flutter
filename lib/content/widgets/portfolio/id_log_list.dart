@@ -3,6 +3,7 @@ import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
 import 'package:asset_flutter/content/models/responses/asset.dart';
+import 'package:asset_flutter/content/providers/asset.dart';
 import 'package:asset_flutter/content/providers/asset_logs.dart';
 import 'package:asset_flutter/content/widgets/portfolio/id_list_cell.dart';
 import 'package:flutter/material.dart';

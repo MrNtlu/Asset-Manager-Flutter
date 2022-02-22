@@ -1,4 +1,4 @@
-import 'package:asset_flutter/content/models/responses/asset.dart';
+import 'package:asset_flutter/content/providers/asset.dart';
 import 'package:asset_flutter/content/widgets/portfolio/il_cell_image.dart';
 import 'package:asset_flutter/content/widgets/portfolio/pl_text.dart';
 import 'package:asset_flutter/static/colors.dart';
@@ -68,7 +68,7 @@ class InvestmentDetailsTopBar extends StatelessWidget {
           Container(
             margin: const EdgeInsets.only(bottom: 6),
             child: Text(
-              _data.amount.toString() + ' ' + _data.toAsset,
+              _data.amount.numToString() + ' ' + _data.toAsset,
               style: const TextStyle(
                   fontSize: 20,
                   color: Colors.white,

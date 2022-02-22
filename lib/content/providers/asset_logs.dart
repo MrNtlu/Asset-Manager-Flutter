@@ -43,24 +43,39 @@ class AssetLogProvider with ChangeNotifier {
     }
   }
 
-  Future addAssetLog(AssetCreate assetCreate) async {
+  Future<BaseAPIResponse> addAssetLog(AssetCreate assetCreate) async {
     try {
       final response = await http.post(
         Uri.parse(APIRoutes().assetRoutes.createAsset),
         body: json.encode(assetCreate.convertToJson()),
         headers: UserToken().getBearerToken(),
       );
-      print(response.body);
-
+      
+      return response.getBaseResponse();
     } catch (error) {
-      //TODO: implement
-      print("Error " + error.toString());
+      return BaseAPIResponse(error.toString());
     }
   }
 
-  void deleteAssetLog(String id) {
-    _items.removeWhere((element) => element.id == id);
-    notifyListeners();
+  Future<BaseAPIResponse> deleteAssetLog(String id) async {
+    try {
+      final response = await http.delete(
+        Uri.parse(APIRoutes().assetRoutes.deleteAssetLogByLogID),
+        body: json.encode({
+          "id": id
+        }),
+        headers: UserToken().getBearerToken()
+      );
+
+      if (response.getBaseResponse().error == null) {
+        _items.removeWhere((element) => element.id == id);
+        notifyListeners();
+      }
+
+      return response.getBaseResponse();
+    } catch (error) {
+      return BaseAPIResponse(error.toString());
+    }
   }
 
   void editAssetLog(AssetLog assetLog) {

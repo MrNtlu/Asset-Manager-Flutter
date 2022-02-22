@@ -12,7 +12,14 @@ extension DoubleExt on double {
 
 extension NumExt on num {
   String numToString(){
-    return toDouble().toStringAsFixed(2);
+    if (this >= 1) {
+      return toDouble().toStringAsFixed(2);
+    } 
+    return toStringAsFixed(
+      toString().length >= 8 
+        ? 6
+        : toString().length - 2
+    );
   }
 }
 

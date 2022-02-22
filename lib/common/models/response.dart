@@ -1,6 +1,7 @@
 import 'package:asset_flutter/content/models/responses/asset.dart';
 import 'package:asset_flutter/content/models/responses/investings.dart';
 import 'package:asset_flutter/content/models/responses/subscription.dart';
+import 'package:asset_flutter/content/providers/asset.dart';
 import 'package:asset_flutter/content/providers/subscription.dart';
 
 class BaseAPIResponse {

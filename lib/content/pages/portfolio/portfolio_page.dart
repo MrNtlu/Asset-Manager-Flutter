@@ -69,20 +69,3 @@ class PortfolioPage extends StatelessWidget {
     );
   }
 }
-
-class TestData {
-  static List<Asset> testAssetData = [
-    const Asset(300.0, 'Bitcoin', 'BTC', 'USD', 'crypto', -68.28, 0.00062),
-    const Asset(25.0, 'Polygon', 'MATIC', 'USD', 'crypto', 40.67, 105.2),
-    const Asset(167.2, 'Loopspring', 'LRC', 'USD', 'crypto', 140.67, 50.0),
-    const Asset(217.53, 'Apple Inc.', 'AAPL', 'USD', 'stock', 5.78, 35.2),
-    const Asset(78.4, 'Intel', 'INTC', 'USD', 'stock', -20.5, 3.6),
-    const Asset(59.21, 'Olin Corporation', 'OLN', 'USD', 'stock', 3.9, 10.2),
-    const Asset(107.32, 'Audius', 'AUDIO', 'GBP', 'crypto', -120.5, 325.6),
-    const Asset(45.9, 'Avalanche', 'AVAX', 'USD', 'crypto', 34.2, 34.7),
-    const Asset(45.9, 'Litecoin', 'LTC', 'USD', 'crypto', 34.2, 34.7),
-    const Asset(45.9, 'Amazon.com, Inc.', 'AMZN', 'USD', 'stock', 34.2, 34.7),
-    const Asset(45.9, 'Activision Blizzard, Inc.', 'ATVI', 'USD', 'stock', 34.2, 34.7),
-    const Asset(45.9, 'Ethereum Classic', 'ETC', 'USD', 'crypto', 34.2, 34.7),
-  ];
-}
