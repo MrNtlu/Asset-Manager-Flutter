@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 class InvestmentToggleButton extends StatefulWidget {
   final List<bool> isSelected = [true, false];
 
-  InvestmentToggleButton({Key? key}) : super(key: key);
+  InvestmentToggleButton({bool isSell = false, Key? key}) : super(key: key) {
+    if (isSell) {
+      isSelected[0] = false;
+      isSelected[1] = true;
+    }
+  }
 
   @override
   State<InvestmentToggleButton> createState() => _InvestmentToggleButtonState();

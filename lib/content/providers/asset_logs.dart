@@ -78,8 +78,30 @@ class AssetLogProvider with ChangeNotifier {
     }
   }
 
-  void editAssetLog(AssetLog assetLog) {
-    _items[_items.indexWhere((element) => element.id == assetLog.id)] = assetLog;
-    notifyListeners();
+  Future<BaseAPIResponse> editAssetLog(AssetLog assetLog, bool isAmountChanged) async {
+    try {
+      final response = await http.put(
+        Uri.parse(APIRoutes().assetRoutes.updateAssetLogByAssetID),
+        body: json.encode(
+          AssetUpdate(
+            assetLog.id, 
+            amount: isAmountChanged ? assetLog.amount.toDouble() : null,
+            boughtPrice: assetLog.boughtPrice?.toDouble(),
+            soldPrice: assetLog.soldPrice?.toDouble(),
+            type: assetLog.type
+          ).convertToJson()
+        ),
+        headers: UserToken().getBearerToken()
+      );
+
+      if (response.getBaseResponse().error == null) {
+        _items[_items.indexWhere((element) => element.id == assetLog.id)] = assetLog;
+        notifyListeners();
+      }
+
+      return response.getBaseResponse();
+    } catch (error) {
+      return BaseAPIResponse(error.toString());
+    }
   }
 }

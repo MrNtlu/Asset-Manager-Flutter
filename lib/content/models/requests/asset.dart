@@ -54,13 +54,30 @@ class AssetLogFilter {
       {this.type});
 }
 
-class AssetUpdate {
+class AssetUpdate implements JSONConverter {
   final String id;
   final double? boughtPrice;
   final double? soldPrice;
-  final double amount;
+  final double? amount;
+  final String? type;
 
-  const AssetUpdate(this.id, this.amount, {this.boughtPrice, this.soldPrice});
+  const AssetUpdate(this.id, {
+    this.amount, this.boughtPrice,
+    this.soldPrice, this.type
+  });
+
+  @override
+  Map<String, Object> convertToJson() => {
+    "id": id,
+    if(amount != null)
+    "amount": amount!,
+    if(boughtPrice != null)
+    "bought_price": boughtPrice!,
+    if(soldPrice != null)
+    "sold_price": soldPrice!,
+    if(type != null)
+    "type": type!
+  };
 }
 
 class AssetLogsDelete {

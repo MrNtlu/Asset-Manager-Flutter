@@ -8,10 +8,10 @@ class AssetLog {
   num value;
   final String toAsset;
   final String fromAsset;
-  final String type;
-  final num amount;
-  final num? boughtPrice;
-  final num? soldPrice;
+  String type;
+  num amount;
+  num? boughtPrice;
+  num? soldPrice;
   final DateTime createdAt;
 
   AssetLog(
