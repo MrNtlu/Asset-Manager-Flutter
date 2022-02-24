@@ -60,16 +60,15 @@ class _PortfolioInvestmentState extends State<PortfolioInvestment> {
   @override
   Widget build(BuildContext context) {
     var _data = _assetsProvider.items;
+    var _isPortrait = MediaQuery.of(context).orientation == Orientation.portrait  || Platform.isMacOS || Platform.isWindows;
 
-    return MediaQuery.of(context).orientation == Orientation.portrait  || Platform.isMacOS || Platform.isWindows 
-    ? Container(
-        color: Colors.white,
-        child: _portraitBody(_data),
-      )
-    : _landscapeBody();
+    return Container(
+      color: Colors.white,
+      child: _body(_data, _isPortrait),
+    );
   }
 
-  Widget _portraitBody(List<Asset> _data){
+  Widget _body(List<Asset> _data, bool _isPortrait){
     switch (_state) {
       case ListState.loading:
         return const LoadingView("Fetching investments");
@@ -84,22 +83,9 @@ class _PortfolioInvestmentState extends State<PortfolioInvestment> {
         return Column(
           children: [
             const SectionTitle("Investments", ""),
-            Expanded(
-              child: ListView.builder(
-                itemBuilder: ((context, index) {
-                  if(index == _data.length) {
-                    return const SizedBox();
-                  }
-                  final data = _data[index];
-                  return PortfolioInvestmentListCell(data);
-                }),
-                itemExtent: 75,
-                itemCount: _data.length + 1,
-                padding: const EdgeInsets.only(top: 4),
-                physics: const ClampingScrollPhysics(),
-                shrinkWrap: true,
-              ),
-            ),
+            _isPortrait
+              ? _portraitListView(_data)
+              : _landscapeListView(_data),
           ],
         );
       case ListState.error:
@@ -109,35 +95,38 @@ class _PortfolioInvestmentState extends State<PortfolioInvestment> {
     }
   }
 
-  Widget _landscapeBody() {
-    switch (_state) {
-      case ListState.loading:
-        return const LoadingView("Fetching investments");
-      case ListState.empty:
-        return Column(
-          children: const[
-            NoItemView("Couldn't find investment."),
-            AddInvestmentButton()
-          ],
-        );
-      case ListState.done:
-        return Container(
-          color: Colors.white,
-          child: InkWell(
-            onTap: (() {
-              //TODO: Implement
-              print("Investment Details Pressed");
-            }),
-            child: Column(
-              children: const [
-                SectionTitle("Investments", "See All>"),
-                AddInvestmentButton()
-              ],
-            )
-          ),
-        );
-      default:
-        return const LoadingView("Fetching investments");
-    }
-  }
+  Widget _portraitListView(List<Asset> _data) => Expanded(
+    child: ListView.builder(
+      itemBuilder: ((context, index) {
+        if(index == _data.length) {
+          return const SizedBox();
+        }
+        final data = _data[index];
+        return PortfolioInvestmentListCell(data);
+      }),
+      itemExtent: 75,
+      itemCount: _data.length + 1,
+      padding: const EdgeInsets.only(top: 4),
+      physics: const ClampingScrollPhysics(),
+      shrinkWrap: true,
+    ),
+  );
+
+  Widget _landscapeListView(List<Asset> _data) => SizedBox(
+    height: _data.length < 6 ? _data.length * 75 : 450,
+    child: ListView.builder(
+      itemBuilder: ((context, index) {
+        if(index == _data.length) {
+          return const SizedBox();
+        }
+        final data = _data[index];
+        return PortfolioInvestmentListCell(data);
+      }),
+      itemExtent: 75,
+      itemCount: _data.length + 1,
+      padding: const EdgeInsets.only(top: 4),
+      physics: const ClampingScrollPhysics(),
+      shrinkWrap: true,
+    ),
+  );
 }

@@ -5,11 +5,13 @@ class APIRoutes {
   late final AssetRoutes assetRoutes;
   late final SubscriptionRoutes subscriptionRoutes;
   late final AuthRoutes authRoutes;
+  late final UserRoutes userRoutes;
 
   APIRoutes._privateConstructor() {
     assetRoutes = AssetRoutes(baseURL: baseTestURL);
     subscriptionRoutes = SubscriptionRoutes(baseURL: baseTestURL);
     authRoutes = AuthRoutes(baseURL: baseTestURL);
+    userRoutes = UserRoutes(baseURL: baseTestURL);
   }
 
   static final APIRoutes _instance = APIRoutes._privateConstructor();
@@ -25,7 +27,6 @@ class AuthRoutes {
   late String login;
   late String register;
   late String logout;
-  late String confirmPasswordReset;
 
   AuthRoutes({baseURL}) {
     _baseAuthURL = baseURL + '/auth';
@@ -33,7 +34,24 @@ class AuthRoutes {
     login = _baseAuthURL + '/login';
     register = _baseAuthURL + '/register';
     logout = _baseAuthURL + '/logout';
-    confirmPasswordReset = _baseAuthURL + '/confirm-password-reset';
+  }
+}
+
+class UserRoutes {
+  late String _baseUserURL;
+
+  late String forgotPassword;
+  late String changePassword;
+  late String changeCurrency;
+  late String deleteUser;
+
+  UserRoutes({baseURL}) {
+    _baseUserURL = baseURL + '/user';
+
+    forgotPassword = _baseUserURL + '/forgot-password';
+    changePassword = _baseUserURL + '/change-password';
+    changeCurrency = _baseUserURL + '/change-currency';
+    deleteUser = _baseUserURL;
   }
 }
 

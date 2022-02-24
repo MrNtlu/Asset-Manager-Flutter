@@ -21,6 +21,8 @@ class BaseItemResponse<T> {
     if (response != null) {
       var _typeConverter = _TypeConverter<T>();
       data = _typeConverter.convertToObject(response);
+    } else {
+      data = null;
     }
   }
 }

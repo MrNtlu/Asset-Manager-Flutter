@@ -14,8 +14,11 @@ extension NumExt on num {
   String numToString(){
     if (this >= 1) {
       return toDouble().toStringAsFixed(2);
-    } 
-    return toStringAsFixed(
+    } else if (this == 0) {
+      return toDouble().toString();
+    }
+    
+    return toDouble().toStringAsFixed(
       toString().length >= 8 
         ? 6
         : toString().length - 2
