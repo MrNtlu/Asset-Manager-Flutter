@@ -121,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                           children: <Widget>[
                             Container(
                                 margin: const EdgeInsets.all(32),
-                                child: const FlutterLogo(size: 128)),
+                                child: Image.asset("assets/images/investment.png", height: 128, width: 128)),
                             CustomTextFormField(
                               'Email',
                               TextInputType.emailAddress,

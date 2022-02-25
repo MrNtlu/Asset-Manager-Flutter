@@ -13,6 +13,8 @@
     <li> Http
     <li> Dropdown Search
     <li> Lottie
+    <li> Flutter Launcher Icons
+    <li> Flutter Markdown
 </ul>
 
 &nbsp;

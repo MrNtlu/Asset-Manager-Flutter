@@ -1,4 +1,4 @@
-package com.example.asset_flutter
+package com.mrntlu.kantan
 
 import io.flutter.embedding.android.FlutterActivity
 

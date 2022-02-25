@@ -1,5 +1,5 @@
 class APIRoutes {
-  final baseTestURL = 'http://localhost:8080';
+  final baseTestURL = 'http://10.0.2.2:8080';
   final baseURL = 'https://assetmanager-go.oa.r.appspot.com';
 
   late final AssetRoutes assetRoutes;

@@ -15,29 +15,22 @@ class _AuthCheckboxState extends State<AuthCheckbox> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          widget._value = !widget._value;
-        });
-      },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start, 
-        children: [
-          Checkbox(
-            value: widget._value,
-            onChanged: (value) {
-              setState(() {
-                widget._value = !widget._value;
-              });
-            },
-          ),
-          Text(
-            widget.title,
-            style: TextStyle(fontSize: 14, color: widget._value ? Colors.black : Colors.grey),
-          ),
-        ]
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start, 
+      children: [
+        Checkbox(
+          value: widget._value,
+          onChanged: (value) {
+            setState(() {
+              widget._value = !widget._value;
+            });
+          },
+        ),
+        Text(
+          widget.title,
+          style: TextStyle(fontSize: 14, color: widget._value ? Colors.black : Colors.grey),
+        ),
+      ]
     );
   }
 }

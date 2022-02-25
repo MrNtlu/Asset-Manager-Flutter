@@ -1,4 +1,5 @@
 import 'package:asset_flutter/auth/models/requests/user.dart';
+import 'package:asset_flutter/auth/pages/policy_page.dart';
 import 'package:asset_flutter/auth/widgets/auth_button.dart';
 import 'package:asset_flutter/auth/widgets/auth_checkbox.dart';
 import 'package:asset_flutter/auth/widgets/auth_currency_dropdown.dart';
@@ -177,15 +178,29 @@ class _RegisterPageState extends State<RegisterPage> {
                       },
                     ),
                     _currencyDropdown,
-                    Container(
-                      width: double.infinity,
-                      margin: const EdgeInsets.fromLTRB(32, 4, 32, 0),
-                      child: _termsConditionsCheck,
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+                          return PolicyPage(false);
+                        }));
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        margin: const EdgeInsets.fromLTRB(32, 4, 32, 0),
+                        child: _termsConditionsCheck,
+                      ),
                     ),
-                    Container(
-                      width: double.infinity,
-                      margin: const EdgeInsets.fromLTRB(32, 4, 32, 0),
-                      child: _privacyPolicyCheck,
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+                          return PolicyPage(true);
+                        }));
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        margin: const EdgeInsets.fromLTRB(32, 4, 32, 0),
+                        child: _privacyPolicyCheck,
+                      ),
                     ),
                     AuthButton((BuildContext ctx){
                       _onRegisterPressed(context);
