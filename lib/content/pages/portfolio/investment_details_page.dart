@@ -2,7 +2,6 @@ import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/add_elevated_button.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
-import 'package:asset_flutter/common/widgets/success_view.dart';
 import 'package:asset_flutter/content/providers/asset.dart';
 import 'package:asset_flutter/content/providers/asset_details.dart';
 import 'package:asset_flutter/content/widgets/portfolio/id_log_bottom_sheet.dart';
@@ -56,10 +55,6 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
           setState(() {
             _state = EditState.view;
           });
-          showDialog(
-            context: context, 
-            builder: (ctx) => const SuccessView("added", shouldJustPop: true)
-          ); 
         }
       }
     });
@@ -114,9 +109,13 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
       var _stateListener = Provider.of<AssetDetailsStateProvider>(context);
       _stateListener.addListener(() {
         if (_state != EditState.disposed) {
-          setState(() {
-            _state = _stateListener.state;
-          });
+          if (_state == EditState.editing) {
+            _getStats();
+          } else {
+            setState(() {
+              _state = _stateListener.state;
+            });
+          }
         }
       });
     }

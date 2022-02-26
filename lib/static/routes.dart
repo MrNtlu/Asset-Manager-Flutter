@@ -1,5 +1,7 @@
+import 'dart:io';
+
 class APIRoutes {
-  final baseTestURL = 'http://10.0.2.2:8080';
+  final baseTestURL = Platform.isAndroid ? 'http://10.0.2.2:8080' : 'http://localhost:8080';
   final baseURL = 'https://assetmanager-go.oa.r.appspot.com';
 
   late final AssetRoutes assetRoutes;

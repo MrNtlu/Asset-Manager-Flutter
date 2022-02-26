@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:asset_flutter/content/models/responses/asset.dart';
 import 'package:asset_flutter/content/widgets/portfolio/add_investment_button.dart';
 import 'package:asset_flutter/content/widgets/portfolio/investment_list.dart';
 import 'package:asset_flutter/content/widgets/portfolio/portfolio_stats_header.dart';

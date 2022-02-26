@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:asset_flutter/common/models/response.dart';
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/check_dialog.dart';
@@ -66,22 +68,19 @@ class InvestmentDetailsListCell extends StatelessWidget {
       _data.soldPrice = price;
     }
 
-    Future.wait([
-      Provider.of<AssetLogProvider>(context, listen: false).editAssetLog(_data, isAmountChanged),
-      Provider.of<AssetProvider>(context, listen: false).getAssetStats(
-        toAsset: _data.toAsset, 
-        fromAsset: _data.fromAsset
-      )
-    ]).then((response){
-      BaseAPIResponse _baseApiResponse = response.first as BaseAPIResponse;
-      if (_baseApiResponse.error != null) {
+    Provider.of<AssetLogProvider>(context, listen: false).editAssetLog(_data, isAmountChanged).then((response){
+      if (response.error != null) {
         showDialog(
           context: context, 
-          builder: (ctx) => ErrorDialog(_baseApiResponse.error!)
+          builder: (ctx) => ErrorDialog(response.error!)
         );
       } else {
-         _provider.setState(EditState.view);
+        Provider.of<AssetProvider>(context, listen: false).getAssetStats(
+          toAsset: _data.toAsset, 
+          fromAsset: _data.fromAsset
+        ).whenComplete(() => _provider.setState(EditState.view));
       }
+      
     });
   }
 

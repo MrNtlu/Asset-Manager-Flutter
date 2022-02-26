@@ -5,7 +5,6 @@ import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
 import 'package:asset_flutter/content/providers/asset.dart';
 import 'package:asset_flutter/content/providers/assets.dart';
-import 'package:asset_flutter/content/widgets/portfolio/add_investment_button.dart';
 import 'package:asset_flutter/content/widgets/portfolio/il_cell.dart';
 import 'package:asset_flutter/content/widgets/portfolio/section_title.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +39,10 @@ class _PortfolioInvestmentState extends State<PortfolioInvestment> {
         });
       }
     });
+  }
+
+  Future<void> _onRefresh(BuildContext ctx) async {
+    _getAssets();
   }
 
   @override
@@ -80,13 +83,16 @@ class _PortfolioInvestmentState extends State<PortfolioInvestment> {
           ],
         );
       case ListState.done:
-        return Column(
-          children: [
-            const SectionTitle("Investments", ""),
-            _isPortrait
-              ? _portraitListView(_data)
-              : _landscapeListView(_data),
-          ],
+        return RefreshIndicator(
+          onRefresh: () => _onRefresh(context),
+          child: Column(
+            children: [
+              const SectionTitle("Investments", ""),
+              _isPortrait
+                ? _portraitListView(_data)
+                : _landscapeListView(_data),
+            ],
+          ),
         );
       case ListState.error:
         return ErrorView(_error ?? "Unknown error!", _getAssets);
