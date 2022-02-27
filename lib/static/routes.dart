@@ -2,7 +2,7 @@ import 'dart:io';
 
 class APIRoutes {
   final baseTestURL = Platform.isAndroid ? 'http://10.0.2.2:8080' : 'http://localhost:8080';
-  final baseURL = 'https://assetmanager-go.oa.r.appspot.com';
+  final baseURL = 'https://rocky-reaches-65250.herokuapp.com/';
 
   late final AssetRoutes assetRoutes;
   late final SubscriptionRoutes subscriptionRoutes;
