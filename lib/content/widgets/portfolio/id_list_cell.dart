@@ -89,6 +89,7 @@ class InvestmentDetailsListCell extends StatelessWidget {
     _provider = Provider.of<AssetDetailsStateProvider>(context, listen: false);
     return Card(
       margin: const EdgeInsets.only(top: 8, right: 4, left: 4),
+      clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
         side: BorderSide(
