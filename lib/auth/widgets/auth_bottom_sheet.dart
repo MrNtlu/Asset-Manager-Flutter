@@ -36,36 +36,39 @@ class AuthBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 250,
-      margin: const EdgeInsets.all(12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          CustomTextFormField(
-            'Email', 
-            TextInputType.emailAddress, 
-            textfieldController: _emailInput,
-            prefixIcon: Icon(
-              Icons.email,
-              color: AppColors().primaryColor
-            ),
-            textInputAction: TextInputAction.done,
-          ),
-          Container(
-            width: double.infinity,
-            margin: const EdgeInsets.fromLTRB(32, 8, 32, 16),
-            child: const Text(
-              "Please enter your email address. You'll receive password recet email if you have an account.",
-              softWrap: true,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 12,
+    return Padding(
+      padding: MediaQuery.of(context).viewInsets,
+      child: Container(
+        height: 250,
+        margin: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            CustomTextFormField(
+              'Email', 
+              TextInputType.emailAddress, 
+              textfieldController: _emailInput,
+              prefixIcon: Icon(
+                Icons.email,
+                color: AppColors().primaryColor
               ),
-            )
-          ),
-          AuthButton(onSendEmailPressed, 'Reset', AppColors().lightBlack)
-        ],
+              textInputAction: TextInputAction.done,
+            ),
+            Container(
+              width: double.infinity,
+              margin: const EdgeInsets.fromLTRB(32, 8, 32, 16),
+              child: const Text(
+                "Please enter your email address. You'll receive password recet email if you have an account.",
+                softWrap: true,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 12,
+                ),
+              )
+            ),
+            AuthButton(onSendEmailPressed, 'Reset', AppColors().lightBlack)
+          ],
+        ),
       ),
     ); 
   }

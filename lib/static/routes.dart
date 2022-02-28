@@ -2,7 +2,7 @@ import 'dart:io';
 
 class APIRoutes {
   final baseTestURL = Platform.isAndroid ? 'http://10.0.2.2:8080' : 'http://localhost:8080';
-  final baseURL = 'https://rocky-reaches-65250.herokuapp.com/';
+  final baseURL = 'https://rocky-reaches-65250.herokuapp.com';
 
   late final AssetRoutes assetRoutes;
   late final SubscriptionRoutes subscriptionRoutes;
@@ -10,10 +10,10 @@ class APIRoutes {
   late final UserRoutes userRoutes;
 
   APIRoutes._privateConstructor() {
-    assetRoutes = AssetRoutes(baseURL: baseTestURL);
-    subscriptionRoutes = SubscriptionRoutes(baseURL: baseTestURL);
-    authRoutes = AuthRoutes(baseURL: baseTestURL);
-    userRoutes = UserRoutes(baseURL: baseTestURL);
+    assetRoutes = AssetRoutes(baseURL: baseURL);
+    subscriptionRoutes = SubscriptionRoutes(baseURL: baseURL);
+    authRoutes = AuthRoutes(baseURL: baseURL);
+    userRoutes = UserRoutes(baseURL: baseURL);
   }
 
   static final APIRoutes _instance = APIRoutes._privateConstructor();

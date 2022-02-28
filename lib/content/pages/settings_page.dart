@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:asset_flutter/auth/pages/login_page.dart';
 import 'package:asset_flutter/auth/widgets/auth_currency_dropdown.dart';
 import 'package:asset_flutter/common/models/state.dart';
@@ -11,6 +12,7 @@ import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/routes.dart';
 import 'package:asset_flutter/static/shared_pref.dart';
 import 'package:asset_flutter/static/token.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:http/http.dart' as http;
@@ -23,6 +25,7 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {  
   DetailState _state = DetailState.view;
+  final bool isApple = Platform.isIOS || Platform.isMacOS;
 
   void _changeCurrency(String currency) {
     setState(() {
@@ -191,20 +194,33 @@ class _SettingsPageState extends State<SettingsPage> {
                         final RegisterCurrencyDropdown _currencyDropdown = RegisterCurrencyDropdown(); 
                         showModalBottomSheet(
                           context: context, 
-                          builder: (ctx) => SizedBox(
-                            height: 175,
-                            child: Column(
-                              children: [
-                                _currencyDropdown,
-                                const SizedBox(height: 24),
-                                ElevatedButton(
-                                  onPressed: (){
-                                    Navigator.pop(context);
-                                    _changeCurrency(_currencyDropdown.dropdown.dropdownValue);
-                                  }, 
-                                  child: const Text('Save', style: TextStyle(fontSize: 16))
-                                )
-                              ],
+                          isScrollControlled: true,
+                          builder: (ctx) => Padding(
+                            padding: MediaQuery.of(context).viewInsets,
+                            child: SizedBox(
+                              height: 175,
+                              child: Column(
+                                children: [
+                                  _currencyDropdown,
+                                  const SizedBox(height: 24),
+                                  isApple
+                                  ? CupertinoButton.filled(
+                                    padding: const EdgeInsets.all(12),
+                                    onPressed: (){
+                                      Navigator.pop(context);
+                                      _changeCurrency(_currencyDropdown.dropdown.dropdownValue);
+                                    }, 
+                                    child: const Text('Save', style: TextStyle(fontSize: 16))
+                                  )
+                                  : ElevatedButton(
+                                    onPressed: (){
+                                      Navigator.pop(context);
+                                      _changeCurrency(_currencyDropdown.dropdown.dropdownValue);
+                                    }, 
+                                    child: const Text('Save', style: TextStyle(fontSize: 16))
+                                  )
+                                ],
+                              ),
                             ),
                           )
                         );
@@ -225,64 +241,83 @@ class _SettingsPageState extends State<SettingsPage> {
                         late String newPassword;
 
                         showModalBottomSheet(
-                          context: context, 
-                          builder: (ctx) => SizedBox(
-                            height: 300,
-                            child: Form(
-                              key: _form,
-                              child: Column(
-                                children: [
-                                  PasswordTextFormField(
-                                    label: "Old Password",
-                                    prefixIcon: Icon(Icons.password, color: AppColors().primaryColor),
-                                    onSaved: (value) {
-                                      if (value != null) {
-                                        oldPassword = value;
-                                      }
-                                    },
-                                    validator: (value) {
-                                      if (value != null) {
-                                        if (value.isEmpty) {
-                                          return "Please don't leave this empty.";
+                          context: context,
+                          isScrollControlled: true,
+                          builder: (ctx) => Padding(
+                            padding: MediaQuery.of(context).viewInsets,
+                            child: SizedBox(
+                              height: 300,
+                              child: Form(
+                                key: _form,
+                                child: Column(
+                                  children: [
+                                    PasswordTextFormField(
+                                      label: "Old Password",
+                                      prefixIcon: Icon(Icons.password, color: AppColors().primaryColor),
+                                      onSaved: (value) {
+                                        if (value != null) {
+                                          oldPassword = value;
                                         }
-                                      }
-
-                                      return null;
-                                    },
-                                  ),
-                                  PasswordTextFormField(
-                                    label: "New Password",
-                                    prefixIcon: Icon(Icons.password, color: AppColors().primaryColor),
-                                    onSaved: (value) {
-                                      if (value != null) {
-                                        newPassword = value;
-                                      }
-                                    },
-                                    validator: (value) {
-                                      if (value != null) {
-                                        if (value.isEmpty) {
-                                          return "Please don't leave this empty.";
+                                      },
+                                      validator: (value) {
+                                        if (value != null) {
+                                          if (value.isEmpty) {
+                                            return "Please don't leave this empty.";
+                                          }
                                         }
-                                      }
 
-                                      return null;
-                                    },
-                                  ),
-                                  const SizedBox(height: 24),
-                                  ElevatedButton(
-                                    onPressed: (){
-                                      final isValid = _form.currentState?.validate();
-                                      if (isValid != null && !isValid) {
-                                        return;
-                                      }
-                                      _form.currentState?.save();
+                                        return null;
+                                      },
+                                    ),
+                                    PasswordTextFormField(
+                                      label: "New Password",
+                                      prefixIcon: Icon(Icons.password, color: AppColors().primaryColor),
+                                      onSaved: (value) {
+                                        if (value != null) {
+                                          newPassword = value;
+                                        }
+                                      },
+                                      validator: (value) {
+                                        if (value != null) {
+                                          if (value.isEmpty) {
+                                            return "Please don't leave this empty.";
+                                          }
+                                        }
 
-                                      Navigator.pop(context);
-                                      _changePassword(oldPassword, newPassword);
-                                    }, 
-                                    child: const Text('Change Password', style: TextStyle(fontSize: 16))
-                                  )
-                                ],
+                                        return null;
+                                      },
+                                    ),
+                                    const SizedBox(height: 24),
+                                    isApple
+                                    ? CupertinoButton.filled(
+                                      padding: const EdgeInsets.all(12),
+                                      onPressed: (){
+                                        final isValid = _form.currentState?.validate();
+                                        if (isValid != null && !isValid) {
+                                          return;
+                                        }
+                                        _form.currentState?.save();
+
+                                        Navigator.pop(context);
+                                        _changePassword(oldPassword, newPassword);
+                                      }, 
+                                      child: const Text('Change Password', style: TextStyle(fontSize: 16))
+                                    )
+                                    : ElevatedButton(
+                                      onPressed: (){
+                                        final isValid = _form.currentState?.validate();
+                                        if (isValid != null && !isValid) {
+                                          return;
+                                        }
+                                        _form.currentState?.save();
+
+                                        Navigator.pop(context);
+                                        _changePassword(oldPassword, newPassword);
+                                      }, 
+                                      child: const Text('Change Password', style: TextStyle(fontSize: 16))
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           )
@@ -295,7 +330,15 @@ class _SettingsPageState extends State<SettingsPage> {
                   leading: const Icon(Icons.logout_rounded),
                   title: const Text('Sign out'),
                   onPressed: (ctx) {
-                    showDialog(
+                    isApple
+                    ? showCupertinoDialog(
+                      context: context, 
+                      builder: (ctx) => AreYouSureDialog("sign out", (){
+                        Navigator.pop(ctx);
+                        _logOut();
+                      })
+                    )
+                    : showDialog(
                       context: context, 
                       builder: (ctx) => AreYouSureDialog("sign out", (){
                         Navigator.pop(ctx);
@@ -313,7 +356,20 @@ class _SettingsPageState extends State<SettingsPage> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(32),
-                        child: TextButton(
+                        child: isApple
+                        ? CupertinoButton(
+                          child: const Text('Delete Account', style: TextStyle(color: Color(0xFF777777))),
+                          onPressed: (){
+                            showCupertinoDialog(
+                            context: context, 
+                            builder: (ctx) => AreYouSureDialog("delete account", (){
+                              Navigator.pop(ctx);
+                              _deleteUserAccount();
+                            })
+                          );
+                          },
+                        )
+                        : TextButton(
                           child: const Text('Delete Account', style: TextStyle(color: Color(0xFF777777))),
                           onPressed: (){
                             showDialog(

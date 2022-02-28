@@ -19,16 +19,18 @@ import '../../../common/widgets/error_dialog.dart';
 
 class InvestmentDetailsListCell extends StatelessWidget {
   final AssetLog _data;
-  late final AssetDetailsStateProvider _provider;
+  late final AssetDetailsStateProvider _detailsStateProvider;
+  late final AssetProvider _assetProvider;
+  late final AssetLogProvider _assetLogProvider;
 
   InvestmentDetailsListCell(this._data, {Key? key}) : super(key: key);
 
   void _deleteAssetLog(BuildContext context) {
-    Provider.of<AssetDetailsStateProvider>(context, listen: false).setState(EditState.loading);
+    _detailsStateProvider.setState(EditState.editing);
 
     Future.wait([
-      Provider.of<AssetLogProvider>(context, listen: false).deleteAssetLog(_data.id),
-      Provider.of<AssetProvider>(context, listen: false).getAssetStats(
+      _assetLogProvider.deleteAssetLog(_data.id),
+      _assetProvider.getAssetStats(
         toAsset: _data.toAsset, 
         fromAsset: _data.fromAsset
       )
@@ -40,13 +42,13 @@ class InvestmentDetailsListCell extends StatelessWidget {
           builder: (ctx) => ErrorDialog(_baseApiResponse.error!)
         );
       } else {
-         _provider.setState(EditState.view);
+         _detailsStateProvider.setState(EditState.view);
       }
     });
   }
 
   void _editAssetLog(BuildContext context, String type, double amount, double price, bool isBought) {
-    Provider.of<AssetDetailsStateProvider>(context, listen: false).setState(EditState.loading);
+    _detailsStateProvider.setState(EditState.editing);
 
     var isAmountChanged = _data.amount != amount;
     if (isAmountChanged) {
@@ -68,25 +70,38 @@ class InvestmentDetailsListCell extends StatelessWidget {
       _data.soldPrice = price;
     }
 
-    Provider.of<AssetLogProvider>(context, listen: false).editAssetLog(_data, isAmountChanged).then((response){
-      if (response.error != null) {
-        showDialog(
-          context: context, 
-          builder: (ctx) => ErrorDialog(response.error!)
-        );
-      } else {
-        Provider.of<AssetProvider>(context, listen: false).getAssetStats(
-          toAsset: _data.toAsset, 
-          fromAsset: _data.fromAsset
-        ).whenComplete(() => _provider.setState(EditState.view));
+    _assetLogProvider.editAssetLog(_data, isAmountChanged).then((response){
+      try {
+        if (response.error != null) {
+          showDialog(
+            context: context, 
+            builder: (ctx) => ErrorDialog(response.error!)
+          );
+        } else {
+          _assetProvider.getAssetStats(
+            toAsset: _data.toAsset, 
+            fromAsset: _data.fromAsset
+          ).whenComplete(() => _detailsStateProvider.setState(EditState.view));
+        } 
+      } catch (error) {
+        _detailsStateProvider.setState(EditState.view);
       }
-      
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    _provider = Provider.of<AssetDetailsStateProvider>(context, listen: false);
+    _detailsStateProvider = Provider.of<AssetDetailsStateProvider>(context, listen: false);
+    _assetProvider = Provider.of<AssetProvider>(context, listen: false);
+    _assetLogProvider = Provider.of<AssetLogProvider>(context, listen: false);
+    final _logBottomSheet = InvestmentDetailsLogBottomSheet(
+      _data.toAsset, 
+      _editAssetLog,
+      isSell: _data.type == "sell",
+      price: (_data.boughtPrice ?? _data.soldPrice)!.toDouble(),
+      amount: _data.amount.toDouble(),
+    );
+
     return Card(
       margin: const EdgeInsets.only(top: 8, right: 4, left: 4),
       clipBehavior: Clip.antiAlias,
@@ -109,17 +124,9 @@ class InvestmentDetailsListCell extends StatelessWidget {
                   Navigator.pop(ctx);
                   showModalBottomSheet(
                     context: ctx, 
+                    isScrollControlled: true,
                     barrierColor: Colors.black54,
-                    isDismissible: false,
-                    builder: (ctx) {
-                      return InvestmentDetailsLogBottomSheet(
-                        _data.toAsset, 
-                        _editAssetLog,
-                        isSell: _data.type == "sell",
-                        price: (_data.boughtPrice ?? _data.soldPrice)!.toDouble(),
-                        amount: _data.amount.toDouble(),
-                      );
-                    }
+                    builder: (ctx) => _logBottomSheet
                   );
                 }),
               ),

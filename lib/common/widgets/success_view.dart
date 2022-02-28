@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:asset_flutter/static/colors.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -11,6 +14,8 @@ class SuccessView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isApple = Platform.isIOS || Platform.isMacOS;
+
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12)
@@ -38,7 +43,21 @@ class SuccessView extends StatelessWidget {
                 ),
               ),
             ),
-            ElevatedButton(
+            isApple
+            ? CupertinoButton(
+              child:  const Text("Done"),
+              onPressed: (){
+                if (isNonTabView) {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                } else if (shouldJustPop) {
+                  Navigator.pop(context);
+                } else {
+                  Navigator.pushNamedAndRemoveUntil(context, "/tabs", (route) => false);
+                }
+              }
+            )
+            : ElevatedButton(
               onPressed: (){
                 if (isNonTabView) {
                   Navigator.pop(context);

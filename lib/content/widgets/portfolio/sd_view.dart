@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/check_dialog.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
@@ -10,6 +12,7 @@ import 'package:asset_flutter/content/providers/subscriptions.dart';
 import 'package:asset_flutter/content/widgets/portfolio/sd_view_text.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,6 +29,7 @@ class SubscriptionDetailsView extends StatefulWidget {
 class _SubscriptionDetailsViewState extends State<SubscriptionDetailsView> {
   DetailState _state = DetailState.view;
   SubscriptionDetails? _subscriptionDetails;
+  final bool isApple = Platform.isIOS || Platform.isMacOS;
 
   void _deleteSubscription() {
     widget.canEnterEditMode = false;
@@ -152,7 +156,20 @@ class _SubscriptionDetailsViewState extends State<SubscriptionDetailsView> {
             ),
             Padding(
               padding: const EdgeInsets.all(12),
-              child: OutlinedButton(
+              child: isApple
+              ? CupertinoButton(
+                onPressed: () {
+                  showCupertinoDialog(
+                    context: context, 
+                    builder: (ctx) => AreYouSureDialog('delete', (){
+                      Navigator.pop(context);
+                      _deleteSubscription();
+                    })
+                  );
+                },
+                child: const Text("Delete Subscription")
+              )
+              : OutlinedButton(
                 onPressed: () {
                   showDialog(
                     context: context, 

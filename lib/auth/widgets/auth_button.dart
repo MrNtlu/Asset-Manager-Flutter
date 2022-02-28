@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AuthButton extends StatelessWidget {
@@ -11,25 +14,36 @@ class AuthButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isApple = Platform.isIOS || Platform.isMacOS;
+
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-      child: ElevatedButton(
-        onPressed: () => onPressedHandler(context),
-        child: Padding(
+      child: isApple
+        ? CupertinoButton.filled(
           padding: const EdgeInsets.all(12),
           child: Text(
             text,
             style: TextStyle(fontSize: fontSize),
-          ),
-        ),
-        style: ElevatedButton.styleFrom(
-          primary: color,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18)
-          ),
-        ),
-      ),
+          ), 
+          onPressed: () => onPressedHandler(context),
+        )
+        : ElevatedButton(
+            onPressed: () => onPressedHandler(context),
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Text(
+                text,
+                style: TextStyle(fontSize: fontSize),
+              ),
+            ),
+            style: ElevatedButton.styleFrom(
+              primary: color,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18)
+              ),
+            ),
+          )
     );
   }
 }

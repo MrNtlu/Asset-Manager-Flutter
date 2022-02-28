@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/dropdown.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
@@ -14,6 +16,7 @@ import 'package:asset_flutter/static/routes.dart';
 import 'package:asset_flutter/utils/currency_handler.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -26,6 +29,7 @@ class InvestmentCreatePage extends StatefulWidget {
 }
 
 class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
+  final bool isApple = Platform.isIOS || Platform.isMacOS;
   final _form = GlobalKey<FormState>();
   final _investingsDropdownKey = GlobalKey<DropdownSearchState<String>>();
   late final AssetsProvider _assetsProvider;
@@ -167,13 +171,22 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         if (_currentStep != 2)
-                          ElevatedButton(
+                          isApple
+                          ? CupertinoButton.filled(
+                              padding: const EdgeInsets.all(12),
+                              onPressed: details.onStepContinue,
+                              child: const Text("Continue"))
+                          : ElevatedButton(
                               onPressed: details.onStepContinue,
                               child: const Text("Continue")),
                         if (_currentStep != 0)
                           Padding(
                             padding: const EdgeInsets.only(left: 8),
-                            child: OutlinedButton(
+                            child: isApple 
+                              ? CupertinoButton(
+                                onPressed: details.onStepCancel,
+                                child: const Text("Cancel"))
+                              : OutlinedButton(
                                 onPressed: details.onStepCancel,
                                 child: const Text("Cancel")),
                           )
@@ -287,7 +300,7 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
                 children: [
                   CustomTextFormField(
                     "Buy/Sell Price",
-                    const TextInputType.numberWithOptions(decimal: true),
+                    const TextInputType.numberWithOptions(decimal: true, signed: true),
                     initialText: _price != null ? _price.toString() : null,
                     textInputAction: TextInputAction.next,
                     onSaved: (value) {
@@ -309,7 +322,7 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
                   ),
                   CustomTextFormField(
                     "Amount",
-                    const TextInputType.numberWithOptions(decimal: true),
+                    const TextInputType.numberWithOptions(decimal: true, signed: true),
                     initialText: _assetCreate.amount != -1
                         ? _assetCreate.amount.toString()
                         : null,

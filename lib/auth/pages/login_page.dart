@@ -10,6 +10,7 @@ import 'package:asset_flutter/content/pages/tabs_page.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/shared_pref.dart';
 import 'package:asset_flutter/utils/extensions.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:asset_flutter/common/widgets/textformfield.dart';
 import 'package:asset_flutter/common/widgets/password_textformfield.dart';
@@ -74,6 +75,7 @@ class _LoginPageState extends State<LoginPage> {
   void _openForgotPasswordBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       builder: (_) => AuthBottomSheet()
     );
   }
@@ -97,6 +99,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isApple = Platform.isIOS || Platform.isMacOS;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -201,11 +205,18 @@ class _LoginPageState extends State<LoginPage> {
                                     bottom: 32, end: 32),
                                 child: Align(
                                   alignment: Alignment.bottomRight,
-                                  child: TextButton(
-                                      onPressed: () =>
-                                          _openForgotPasswordBottomSheet(
-                                              context),
-                                      child: const Text('Forgot Password')),
+                                  child: isApple
+                                  ? CupertinoButton(
+                                    padding: const EdgeInsets.all(12),
+                                    onPressed: () =>
+                                        _openForgotPasswordBottomSheet(
+                                            context),
+                                    child: const Text('Forgot Password'))
+                                  : TextButton(
+                                    onPressed: () =>
+                                        _openForgotPasswordBottomSheet(
+                                            context),
+                                    child: const Text('Forgot Password')),
                                 ),
                               ),
                             ),

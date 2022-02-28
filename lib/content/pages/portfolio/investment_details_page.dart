@@ -36,6 +36,7 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
   EditState _state = EditState.init;
   late final AppBar _appBar;
   late final AssetProvider _assetProvider;
+  late final InvestmentDetailsLogBottomSheet _logBottomSheet;
 
   void _getStats() {
     Provider.of<AssetProvider>(context, listen: false).getAssetStats(
@@ -105,6 +106,11 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
         title: Text(widget._data.name),
         backgroundColor: AppColors().primaryLightishColor,
       );
+      
+      _logBottomSheet = InvestmentDetailsLogBottomSheet(
+        widget._data.toAsset, 
+        _createInvestmentLog
+      );
 
       var _stateListener = Provider.of<AssetDetailsStateProvider>(context);
       _stateListener.addListener(() {
@@ -144,15 +150,10 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
               alignment: Alignment.bottomCenter,
               child: AddElevatedButton(('Add ' + widget._data.toAsset), () {
                 showModalBottomSheet(
-                  context: context, 
+                  context: context,
+                  isScrollControlled: true,
                   barrierColor: Colors.black54,
-                  isDismissible: false,
-                  builder: (ctx) {
-                    return InvestmentDetailsLogBottomSheet(
-                      widget._data.toAsset, 
-                      _createInvestmentLog
-                    );
-                  }
+                  builder: (ctx) => _logBottomSheet
                 );
               },
               edgeInsets: const EdgeInsets.only(left: 8, right: 8, bottom: 8)),

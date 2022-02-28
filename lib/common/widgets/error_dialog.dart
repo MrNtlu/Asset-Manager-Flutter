@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -8,6 +11,8 @@ class ErrorDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isApple = Platform.isIOS || Platform.isMacOS;
+
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12)
@@ -36,7 +41,14 @@ class ErrorDialog extends StatelessWidget {
                 ),
               ),
             ),
-            ElevatedButton(
+            isApple
+            ? CupertinoButton(
+              child: const Text("OK!"), 
+              onPressed: (){
+                Navigator.pop(context);
+              }
+            )
+            : ElevatedButton(
               style: ElevatedButton.styleFrom(primary: const Color(0xFFFC2C59)),
               onPressed: (){
                 Navigator.pop(context);
