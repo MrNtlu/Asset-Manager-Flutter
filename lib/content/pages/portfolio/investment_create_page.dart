@@ -34,7 +34,7 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
   final _investingsDropdownKey = GlobalKey<DropdownSearchState<String>>();
   late final AssetsProvider _assetsProvider;
 
-  final AssetCreate _assetCreate = AssetCreate('', '', '', -1, '', '');
+  final AssetCreate _assetCreate = AssetCreate('', '', '', -1, '', '', -1);
   late final List<Investings> _investingList = [];
   Investings? _selectedItem;
   double? _price;
@@ -54,11 +54,7 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
     _assetCreate.fromAsset = _currencyDropdown.dropdownValue.toUpperCase();
     _assetCreate.type = _toggleButton.isSelected[0] ? "buy" : "sell";
     _assetCreate.assetType = _investmentDropdown.dropdownValue.toLowerCase();
-    if (_toggleButton.isSelected[0]) {
-      _assetCreate.boughtPrice = _price;
-    } else {
-      _assetCreate.soldPrice = _price;
-    }
+    _assetCreate.price = _price!;
   }
 
   void _createInvestment(BuildContext context) {
@@ -144,9 +140,7 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
     switch (_state) {
       case CreateState.success:
         return Container(
-          color: Colors.black54, 
-          child: const SuccessView("created")
-        );
+            color: Colors.black54, child: const SuccessView("created"));
       case CreateState.loading:
         return const LoadingView("Creating Investment");
       case CreateState.editing:
@@ -172,23 +166,23 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
                       children: [
                         if (_currentStep != 2)
                           isApple
-                          ? CupertinoButton.filled(
-                              padding: const EdgeInsets.all(12),
-                              onPressed: details.onStepContinue,
-                              child: const Text("Continue"))
-                          : ElevatedButton(
-                              onPressed: details.onStepContinue,
-                              child: const Text("Continue")),
+                              ? CupertinoButton.filled(
+                                  padding: const EdgeInsets.all(12),
+                                  onPressed: details.onStepContinue,
+                                  child: const Text("Continue"))
+                              : ElevatedButton(
+                                  onPressed: details.onStepContinue,
+                                  child: const Text("Continue")),
                         if (_currentStep != 0)
                           Padding(
                             padding: const EdgeInsets.only(left: 8),
-                            child: isApple 
-                              ? CupertinoButton(
-                                onPressed: details.onStepCancel,
-                                child: const Text("Cancel"))
-                              : OutlinedButton(
-                                onPressed: details.onStepCancel,
-                                child: const Text("Cancel")),
+                            child: isApple
+                                ? CupertinoButton(
+                                    onPressed: details.onStepCancel,
+                                    child: const Text("Cancel"))
+                                : OutlinedButton(
+                                    onPressed: details.onStepCancel,
+                                    child: const Text("Cancel")),
                           )
                       ],
                     ),
@@ -300,7 +294,8 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
                 children: [
                   CustomTextFormField(
                     "Buy/Sell Price",
-                    const TextInputType.numberWithOptions(decimal: true, signed: true),
+                    const TextInputType.numberWithOptions(
+                        decimal: true, signed: true),
                     initialText: _price != null ? _price.toString() : null,
                     textInputAction: TextInputAction.next,
                     onSaved: (value) {
@@ -322,7 +317,8 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
                   ),
                   CustomTextFormField(
                     "Amount",
-                    const TextInputType.numberWithOptions(decimal: true, signed: true),
+                    const TextInputType.numberWithOptions(
+                        decimal: true, signed: true),
                     initialText: _assetCreate.amount != -1
                         ? _assetCreate.amount.toString()
                         : null,

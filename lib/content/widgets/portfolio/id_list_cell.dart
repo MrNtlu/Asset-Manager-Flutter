@@ -56,18 +56,11 @@ class InvestmentDetailsListCell extends StatelessWidget {
     }
 
     if (_data.type != type) {
-      if (type == "buy") {
-        _data.soldPrice = null;
-        _data.boughtPrice = price;
-      } else {
-        _data.boughtPrice = null;
-        _data.soldPrice = price;
-      }
       _data.type = type;
-    } else if (_data.type == "buy" && _data.boughtPrice != price) {
-      _data.boughtPrice = price;
-    } else if (_data.type == "sell" && _data.soldPrice != price) {
-      _data.soldPrice = price;
+    }
+    
+    if (_data.price != price) {
+      _data.price = price;
     }
 
     _assetLogProvider.editAssetLog(_data, isAmountChanged).then((response){
@@ -98,7 +91,7 @@ class InvestmentDetailsListCell extends StatelessWidget {
       _data.toAsset, 
       _editAssetLog,
       isSell: _data.type == "sell",
-      price: (_data.boughtPrice ?? _data.soldPrice)!.toDouble(),
+      price: _data.price.toDouble(),
       amount: _data.amount.toDouble(),
     );
 
@@ -168,7 +161,7 @@ class InvestmentDetailsListCell extends StatelessWidget {
               ),
               InvestmentDetailsLogListCellText(
                 (_data.type == "buy" ? "Bought Price in " : "Sold Price in ") + _data.fromAsset,
-                _data.type == "buy" ? _data.boughtPrice!.numToString() : _data.soldPrice!.numToString(),
+                _data.price.numToString(),
               ),
               InvestmentDetailsLogListCellText(
                 "Amount",

@@ -73,8 +73,7 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
         amount, 
         _assetProvider.asset!.type, 
         _assetProvider.asset!.name, 
-        boughtPrice: isBought ? price : null,
-        soldPrice: isBought ? null : price
+        price,
       )
     ).then((response) {
       if (_state != EditState.disposed) {

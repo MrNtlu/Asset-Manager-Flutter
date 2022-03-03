@@ -86,8 +86,7 @@ class AssetLogProvider with ChangeNotifier {
           AssetUpdate(
             assetLog.id, 
             amount: isAmountChanged ? assetLog.amount.toDouble() : null,
-            boughtPrice: assetLog.boughtPrice?.toDouble(),
-            soldPrice: assetLog.soldPrice?.toDouble(),
+            price: assetLog.price.toDouble(),
             type: assetLog.type
           ).convertToJson()
         ),

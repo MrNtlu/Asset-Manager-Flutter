@@ -3,26 +3,22 @@ import 'package:asset_flutter/common/models/json_convert.dart';
 class AssetCreate implements JSONConverter {
   String toAsset;
   String fromAsset;
-  double? boughtPrice;
-  double? soldPrice;
+  double price;
   double amount;
   String assetType; //crypto stock exchange
   String type; //sell buy
   String name;
 
   AssetCreate(
-      this.toAsset, this.fromAsset, this.type, 
-      this.amount, this.assetType, this.name,
-      {this.boughtPrice, this.soldPrice});
+    this.toAsset, this.fromAsset, this.type, 
+    this.amount, this.assetType, this.name, this.price
+  );
 
   @override
   Map<String, Object> convertToJson() => {
     "to_asset": toAsset,
     "from_asset": fromAsset,
-    if(boughtPrice != null)
-    "bought_price": boughtPrice!,
-    if(soldPrice != null)
-    "sold_price": soldPrice!,
+    "price": price,
     "amount": amount,
     "asset_type": assetType,
     "type": type
@@ -56,14 +52,12 @@ class AssetLogFilter {
 
 class AssetUpdate implements JSONConverter {
   final String id;
-  final double? boughtPrice;
-  final double? soldPrice;
+  final double? price;
   final double? amount;
   final String? type;
 
   const AssetUpdate(this.id, {
-    this.amount, this.boughtPrice,
-    this.soldPrice, this.type
+    this.amount, this.price, this.type
   });
 
   @override
@@ -71,10 +65,8 @@ class AssetUpdate implements JSONConverter {
     "id": id,
     if(amount != null)
     "amount": amount!,
-    if(boughtPrice != null)
-    "bought_price": boughtPrice!,
-    if(soldPrice != null)
-    "sold_price": soldPrice!,
+    if(price != null)
+    "price": price!,
     if(type != null)
     "type": type!
   };

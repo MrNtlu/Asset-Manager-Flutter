@@ -10,14 +10,12 @@ class AssetLog {
   final String fromAsset;
   String type;
   num amount;
-  num? boughtPrice;
-  num? soldPrice;
+  num price;
   final DateTime createdAt;
 
   AssetLog(
     this.id, this.value, this.toAsset, this.fromAsset, 
-    this.type, this.amount, this.createdAt, 
-    {this.boughtPrice, this.soldPrice}
+    this.type, this.amount, this.createdAt, this.price
   );
 }
 

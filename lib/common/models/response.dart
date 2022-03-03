@@ -92,8 +92,7 @@ class _TypeConverter<T> {
         response["type"],
         response["amount"], 
         DateTime.parse(response["created_at"]),
-        boughtPrice: response["bought_price"],
-        soldPrice: response["sold_price"]
+        response["price"],
       ) as T;
     } else if (T == AssetStats) {
       return AssetStats(
