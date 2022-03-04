@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:asset_flutter/common/models/response.dart';
 import 'package:asset_flutter/content/models/requests/asset.dart';
+import 'package:asset_flutter/content/models/responses/asset.dart';
 import 'package:asset_flutter/content/providers/asset.dart';
 import 'package:asset_flutter/static/routes.dart';
 import 'package:asset_flutter/static/token.dart';
@@ -10,6 +11,7 @@ import 'package:http/http.dart' as http;
 
 class AssetsProvider with ChangeNotifier {
   final List<Asset> _items = [];
+  AssetStats? assetStats;
 
   List<Asset> get items => _items;
 
@@ -17,7 +19,7 @@ class AssetsProvider with ChangeNotifier {
     return _items.firstWhere((element) => element.toAsset == toAsset && element.fromAsset == fromAsset);
   }
 
-  Future<BaseListResponse<Asset>> getAssets({
+  Future<AssetResponse> getAssets({
     String sort = "name", //name value amount profit
     int type = 1
   }) async {
@@ -28,13 +30,15 @@ class AssetsProvider with ChangeNotifier {
         headers: UserToken().getBearerToken(),
       );
       
-      var baseListResponse = response.getBaseListResponse<Asset>();
-      _items.addAll(baseListResponse.data);
+      var assetResponse = response.getStatsResponse();
+      _items.addAll(assetResponse.data);
+      assetStats = assetResponse.stats;
+
       notifyListeners();
 
-      return baseListResponse;
+      return assetResponse;
     } catch (error) {
-      return BaseListResponse(error: error.toString());
+      return AssetResponse(error: error.toString());
     }
   }
 

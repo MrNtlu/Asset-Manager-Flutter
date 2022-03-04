@@ -1,4 +1,4 @@
-import 'package:asset_flutter/content/providers/asset_stats.dart';
+import 'package:asset_flutter/content/providers/assets.dart';
 import 'package:asset_flutter/content/widgets/portfolio/pl_text.dart';
 import 'package:asset_flutter/content/widgets/portfolio/section_title.dart';
 import 'package:asset_flutter/static/colors.dart';
@@ -15,7 +15,7 @@ class Portfolio extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final assetStatsProvider = Provider.of<AssetStatsProvider>(context);
+    final assetStatsProvider = Provider.of<AssetsProvider>(context);
     final assetStats = assetStatsProvider.assetStats;
     final currencySymbol = convertCurrencyToSymbol(assetStats!.currency == ''
                         ? 'USD'

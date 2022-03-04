@@ -40,7 +40,7 @@ class ILNetworkImage extends StatelessWidget {
       _image,
       width: 48,
       height: 48,
-      fit: BoxFit.fill,
+      fit: BoxFit.contain,
       frameBuilder: (context, child, int? frame, bool? wasSynchronouslyLoaded) {
         if (frame == null) {
           return CircularProgressIndicator(

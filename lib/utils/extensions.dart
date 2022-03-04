@@ -74,6 +74,22 @@ extension StringExt on String {
 }
 
 extension ResponseExt on Response {
+  AssetResponse getStatsResponse() => AssetResponse(
+    message: json.decode(body)["message"],
+    response: json.decode(body)["data"],
+    code: json.decode(body)["code"],
+    error: json.decode(body)["error"],
+    statsResponse: json.decode(body)["stats"]
+  );
+
+  SubscriptionResponse getSubscriptionStatsResponse() => SubscriptionResponse(
+    message: json.decode(body)["message"],
+    response: json.decode(body)["data"],
+    code: json.decode(body)["code"],
+    error: json.decode(body)["error"],
+    statsResponse: json.decode(body)["stats"]
+  );
+
   BaseAPIResponse getBaseResponse() => BaseAPIResponse(
     json.decode(body)["error"], 
   );

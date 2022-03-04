@@ -1,7 +1,7 @@
 import 'dart:math';
-
 import 'package:asset_flutter/common/models/response.dart';
 import 'package:asset_flutter/content/models/requests/subscription.dart';
+import 'package:asset_flutter/content/models/responses/subscription.dart';
 import 'package:asset_flutter/content/providers/subscription.dart';
 import 'package:asset_flutter/static/routes.dart';
 import 'package:asset_flutter/static/token.dart';
@@ -12,20 +12,22 @@ import 'package:http/http.dart' as http;
 
 class SubscriptionsProvider with ChangeNotifier {
   final List<Subscription> _items = [];
+  final List<SubscriptionStats> _stats = [];
 
-  List<Subscription> get items {
-    return [..._items];
-  }
+  List<SubscriptionStats> get stats => _stats;
+
+  List<Subscription> get items => _items;
 
   Subscription findById(String id) {
     return _items.firstWhere((element) => element.id == id);
   }
 
-  Future<BaseListResponse<Subscription>> getSubscriptions({
+  Future<SubscriptionResponse> getSubscriptions({
     String sort = "name", //name currency price
     int type = 1
   }) async {
     _items.clear();
+    _stats.clear();
     try {
       final response = await http.get(
         Uri.parse(
@@ -34,13 +36,15 @@ class SubscriptionsProvider with ChangeNotifier {
         headers: UserToken().getBearerToken()
       );
 
-      var baseListResponse = response.getBaseListResponse<Subscription>();
-      _items.addAll(baseListResponse.data);
+      var subsStatsResponse = response.getSubscriptionStatsResponse();
+      _items.addAll(subsStatsResponse.data);
+      _stats.addAll(subsStatsResponse.stats);
+
       notifyListeners();
 
-      return baseListResponse;
+      return subsStatsResponse;
     } catch (error) {
-      return BaseListResponse(error: error.toString());
+      return SubscriptionResponse(error: error.toString());
     }
   }
 

@@ -71,6 +71,72 @@ class BaseListResponse<T> {
   }
 }
 
+class AssetResponse {
+  late AssetStats? stats;
+  late List<Asset> data = [];
+  final String? message;
+  final int? code;
+  final String? error;
+
+  AssetResponse({
+    List<dynamic>? response,
+    this.message,
+    this.code,
+    this.error,
+    Map<String, dynamic>? statsResponse
+  }) {
+    if (response != null) {
+      var _typeConverter = _TypeConverter<Asset>();
+      response.map((e) {
+        return e as Map<String, dynamic>; 
+      }).forEach((element) { 
+        data.add(_typeConverter.convertToObject(element));
+      });
+    }
+
+    if (statsResponse != null) {
+      var _typeConverter = _TypeConverter<AssetStats>();
+      stats = _typeConverter.convertToObject(statsResponse);
+    } else {
+      stats = null;
+    }
+  }
+}
+
+class SubscriptionResponse {
+  late List<SubscriptionStats> stats = [];
+  late List<Subscription> data = [];
+  final String? message;
+  final int? code;
+  final String? error;
+
+  SubscriptionResponse({
+    List<dynamic>? response,
+    this.message,
+    this.code,
+    this.error,
+    List<dynamic>? statsResponse
+  }) {
+    if (response != null) {
+      var _typeConverter = _TypeConverter<Subscription>();
+      response.map((e) {
+        return e as Map<String, dynamic>; 
+      }).forEach((element) { 
+        data.add(_typeConverter.convertToObject(element));
+      });
+    }
+
+    if (statsResponse != null) {
+      var _typeConverter = _TypeConverter<SubscriptionStats>();
+      statsResponse.map((e) {
+        return e as Map<String, dynamic>; 
+      }).forEach((element) { 
+        stats.add(_typeConverter.convertToObject(element));
+      });
+    }
+  }
+}
+
 class _TypeConverter<T> {
   T convertToObject(Map<String, dynamic> response){
     if (T == Asset) {

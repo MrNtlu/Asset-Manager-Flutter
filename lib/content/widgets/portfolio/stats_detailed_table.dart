@@ -1,4 +1,4 @@
-import 'package:asset_flutter/content/providers/asset_stats.dart';
+import 'package:asset_flutter/content/providers/assets.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +12,7 @@ class PortfolioStatsDetailedTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double _textSize = MediaQuery.of(context).size.width > 370 ? 16 : 14;
-    final assetStatsProvider = Provider.of<AssetStatsProvider>(context, listen: false);
+    final assetStatsProvider = Provider.of<AssetsProvider>(context, listen: false);
     final assetStats = assetStatsProvider.assetStats;
 
     return Container(

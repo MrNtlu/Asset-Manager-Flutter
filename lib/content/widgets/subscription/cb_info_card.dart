@@ -1,4 +1,4 @@
-import 'package:asset_flutter/content/providers/subscription_stats.dart';
+import 'package:asset_flutter/content/providers/subscriptions.dart';
 import 'package:asset_flutter/content/widgets/subscription/cb_container.dart';
 import 'package:asset_flutter/content/widgets/subscription/cb_info_text.dart';
 import 'package:asset_flutter/static/colors.dart';
@@ -14,8 +14,8 @@ class CurrencyBarInfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final subscriptionStatsProvider = Provider.of<SubscriptionStatsProvider>(context);
-    final subscriptionStats = subscriptionStatsProvider.items;
+    final subscriptionStatsProvider = Provider.of<SubscriptionsProvider>(context);
+    final subscriptionStats = subscriptionStatsProvider.stats;
 
     return Container(
       margin: const EdgeInsets.only(left: 8, right: 8),

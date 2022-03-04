@@ -1,4 +1,4 @@
-import 'package:asset_flutter/content/providers/asset_stats.dart';
+import 'package:asset_flutter/content/providers/assets.dart';
 import 'package:asset_flutter/static/chart.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +9,7 @@ class PortfolioStatsDistributionChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final assetStatsProvider = Provider.of<AssetStatsProvider>(context, listen: false);
+    final assetStatsProvider = Provider.of<AssetsProvider>(context, listen: false);
     final assetStats = assetStatsProvider.assetStats;
 
     return Container(
