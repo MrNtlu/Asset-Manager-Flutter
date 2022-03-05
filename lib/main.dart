@@ -7,6 +7,7 @@ import 'package:asset_flutter/content/providers/asset.dart';
 import 'package:asset_flutter/content/providers/asset_details.dart';
 import 'package:asset_flutter/content/providers/asset_logs.dart';
 import 'package:asset_flutter/content/providers/assets.dart';
+import 'package:asset_flutter/content/providers/portfolio_state.dart';
 import 'package:asset_flutter/content/providers/subscription_details.dart';
 import 'package:asset_flutter/content/providers/subscriptions.dart';
 import 'package:asset_flutter/static/token.dart';
@@ -52,7 +53,10 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider.value(
           value: AssetDetailsStateProvider()
-        )
+        ),
+        ChangeNotifierProvider.value(
+          value: PortfolioStateProvider()
+        ),
       ],
       child: MaterialApp(
         title: 'Kantan',

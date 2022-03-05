@@ -101,7 +101,7 @@ extension ResponseExt on Response {
 
   BasePaginationResponse<T> getBasePaginationResponse<T>() => BasePaginationResponse(
     response: json.decode(body)["data"],
-    canNextPage: (json.decode(body)["pagination"]["next"] ?? 0) > 0,
+    canNextPage: (json.decode(body)["pagination"]?["next"] ?? 0) > 0,
     error: json.decode(body)["error"]
   );
 

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:asset_flutter/common/models/response.dart';
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/check_dialog.dart';
@@ -7,6 +5,7 @@ import 'package:asset_flutter/content/models/responses/asset.dart';
 import 'package:asset_flutter/content/providers/asset.dart';
 import 'package:asset_flutter/content/providers/asset_details.dart';
 import 'package:asset_flutter/content/providers/asset_logs.dart';
+import 'package:asset_flutter/content/providers/portfolio_state.dart';
 import 'package:asset_flutter/content/widgets/portfolio/id_log_bottom_sheet.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/utils/extensions.dart';
@@ -42,7 +41,12 @@ class InvestmentDetailsListCell extends StatelessWidget {
           builder: (ctx) => ErrorDialog(_baseApiResponse.error!)
         );
       } else {
-         _detailsStateProvider.setState(EditState.view);
+        if(_assetLogProvider.items.length == 0) {
+          Provider.of<PortfolioStateProvider>(context, listen: false).setRefresh(true);
+          Navigator.pop(context);
+          return;
+        }
+        _detailsStateProvider.setState(EditState.view);
       }
     });
   }

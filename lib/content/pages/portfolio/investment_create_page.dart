@@ -298,6 +298,7 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
                         decimal: true, signed: true),
                     initialText: _price != null ? _price.toString() : null,
                     textInputAction: TextInputAction.next,
+                    edgeInsets: const EdgeInsets.symmetric(vertical: 8),
                     onSaved: (value) {
                       if (value != null) {
                         _price = double.parse(value);
@@ -323,6 +324,7 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
                         ? _assetCreate.amount.toString()
                         : null,
                     textInputAction: TextInputAction.done,
+                    edgeInsets: const EdgeInsets.symmetric(vertical: 8),
                     onSaved: (value) {
                       if (value != null) {
                         _assetCreate.amount = double.parse(value);

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
@@ -27,6 +28,7 @@ class _InvestmentDetailsLogListState extends State<InvestmentDetailsLogList> {
   bool _canPaginate = false;
   bool _isPaginating = false;
   String? _error;
+  late bool isPortraitOrDesktop;
 
   void _getAssetLogs() {
     if (_page == 1) {
@@ -87,6 +89,9 @@ class _InvestmentDetailsLogListState extends State<InvestmentDetailsLogList> {
        _scrollController.addListener(_scrollHandler);
       _getAssetLogs();
     }
+    isPortraitOrDesktop = MediaQuery.of(context).orientation == Orientation.portrait 
+      || Platform.isMacOS 
+      || Platform.isWindows;
     super.didChangeDependencies();
   }
 
@@ -133,23 +138,33 @@ class _InvestmentDetailsLogListState extends State<InvestmentDetailsLogList> {
           shrinkWrap: true,
         );
       case ListState.empty:
+        var noItemView = const NoItemView("Couldn't find investment.");
         return Center(
           child: Padding(
-            padding: EdgeInsets.only(top: 
-              widget._appBarHeight
-              + MediaQuery.of(context).padding.top
-              + MediaQuery.of(context).padding.bottom),
-            child:const NoItemView("Couldn't find investment."),
+            padding: EdgeInsets.only(
+              top: isPortraitOrDesktop ? widget._appBarHeight : 95,
+              bottom: isPortraitOrDesktop ? 0 : 50
+            ),
+            child: isPortraitOrDesktop
+              ? noItemView
+              : SingleChildScrollView(
+                child: noItemView,
+              ),
           ),
         );
       case ListState.error:
+        var errorView = ErrorView(_error ?? "Unknown error!", _getAssetLogs);
         return Center(
           child: Padding(
-            padding: EdgeInsets.only(top: 
-            widget._appBarHeight 
-            + MediaQuery.of(context).padding.top
-            + MediaQuery.of(context).padding.bottom),
-            child: ErrorView(_error ?? "Unknown error!", _getAssetLogs)
+            padding: EdgeInsets.only(
+              top: isPortraitOrDesktop ? 105 : 95,
+              bottom: isPortraitOrDesktop ? 0 : 50
+            ),
+            child: isPortraitOrDesktop 
+              ? errorView
+              : SingleChildScrollView(
+                child: errorView,
+              )
           ),
         );
       case ListState.loading:

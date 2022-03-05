@@ -4,6 +4,7 @@ import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
 import 'package:asset_flutter/content/providers/assets.dart';
+import 'package:asset_flutter/content/providers/portfolio_state.dart';
 import 'package:asset_flutter/content/widgets/portfolio/add_investment_button.dart';
 import 'package:asset_flutter/content/widgets/portfolio/investment_list.dart';
 import 'package:asset_flutter/content/widgets/portfolio/portfolio_stats_header.dart';
@@ -58,6 +59,13 @@ class _PortfolioPageState extends State<PortfolioPage> {
     if (_state == ListState.init) {
       _assetsProvider = Provider.of<AssetsProvider>(context);
       _getAssets();
+
+      var _refreshListener = Provider.of<PortfolioStateProvider>(context);
+      _refreshListener.addListener(() {
+        if (_state != ListState.disposed && _refreshListener.shouldRefresh) {
+          _getAssets();
+        }
+      });
     }
     super.didChangeDependencies();
   }
