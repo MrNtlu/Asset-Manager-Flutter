@@ -93,7 +93,6 @@ class _PortfolioPageState extends State<PortfolioPage> {
       case ListState.empty:
       case ListState.done:
         return NestedScrollView(
-          physics: const BouncingScrollPhysics(),
           floatHeaderSlivers: false,
           headerSliverBuilder: ((context, innerBoxIsScrolled) => [
               SliverAppBar(

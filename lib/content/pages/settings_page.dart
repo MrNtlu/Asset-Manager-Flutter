@@ -76,6 +76,9 @@ class _SettingsPageState extends State<SettingsPage> {
         setState(() {
           _state = DetailState.view;
         });
+        if (response.getBaseResponse().error == null) {
+          SharedPref().deleteLoginCredentials();
+        }
         showDialog(
           context: context, 
           builder: (ctx) => response.getBaseResponse().error == null 

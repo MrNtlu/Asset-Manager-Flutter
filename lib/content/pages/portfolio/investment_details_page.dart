@@ -1,9 +1,11 @@
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/add_elevated_button.dart';
+import 'package:asset_flutter/common/widgets/check_dialog.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/content/providers/asset.dart';
 import 'package:asset_flutter/content/providers/asset_details.dart';
+import 'package:asset_flutter/content/providers/portfolio_state.dart';
 import 'package:asset_flutter/content/widgets/portfolio/id_log_bottom_sheet.dart';
 import 'package:asset_flutter/content/widgets/portfolio/id_log_list.dart';
 import 'package:asset_flutter/content/widgets/portfolio/id_top_bar.dart';
@@ -36,7 +38,7 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
   EditState _state = EditState.init;
   late final AppBar _appBar;
   late final AssetProvider _assetProvider;
-  late final InvestmentDetailsLogBottomSheet _logBottomSheet;
+  bool isDataChanged = false;
 
   void _getStats() {
     Provider.of<AssetProvider>(context, listen: false).getAssetStats(
@@ -83,10 +85,37 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
             builder: (ctx) => ErrorDialog(response.error!)
           );
         }
+        isDataChanged = true;
 
         _getStats();
       }
     });
+  }
+
+  void _deleteLogs(BuildContext context) {
+    showDialog(
+      context: context, 
+      builder: (ctx) => AreYouSureDialog("delete investment", (){
+        Navigator.pop(context);
+        setState(() {
+          _state = EditState.editing;
+        });
+        
+        Provider.of<AssetLogProvider>(context, listen: false)
+          .deleteAllAssetLogs(widget._data.toAsset, widget._data.fromAsset)
+          .then((response){
+            if (response.error != null) {
+              showDialog(
+                context: context, 
+                builder: (ctx) => ErrorDialog(response.error!)
+              );
+            } else {
+              isDataChanged = true;
+              Navigator.maybePop(context);
+            }
+        });
+      })
+    );
   }
 
   @override
@@ -104,17 +133,20 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
       _appBar = AppBar(
         title: Text(widget._data.name),
         backgroundColor: AppColors().primaryLightishColor,
-      );
-      
-      _logBottomSheet = InvestmentDetailsLogBottomSheet(
-        widget._data.toAsset, 
-        _createInvestmentLog
+        actions: [
+          IconButton(
+            onPressed: () => _deleteLogs(context), 
+            icon: Icon(Icons.delete_rounded),
+            tooltip: "Delete Investment",
+          )
+        ],
       );
 
       var _stateListener = Provider.of<AssetDetailsStateProvider>(context);
       _stateListener.addListener(() {
         if (_state != EditState.disposed) {
           if (_state == EditState.editing) {
+            isDataChanged = true;
             _getStats();
           } else {
             setState(() {
@@ -129,11 +161,19 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: _appBar,
-      body: SafeArea(
-        child: _body(),
+    return WillPopScope(
+      onWillPop: () async {
+        if (isDataChanged) {
+          Provider.of<PortfolioStateProvider>(context, listen: false).setRefresh(true);
+        }
+        return true;
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: _appBar,
+        body: SafeArea(
+          child: _body(),
+        ),
       ),
     );
   }
@@ -152,7 +192,10 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
                   context: context,
                   isScrollControlled: true,
                   barrierColor: Colors.black54,
-                  builder: (ctx) => _logBottomSheet
+                  builder: (ctx) => InvestmentDetailsLogBottomSheet(
+                    widget._data.toAsset, 
+                    _createInvestmentLog
+                  )
                 );
               },
               edgeInsets: const EdgeInsets.only(left: 8, right: 8, bottom: 8)),

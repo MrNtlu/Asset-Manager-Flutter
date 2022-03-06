@@ -78,6 +78,28 @@ class AssetLogProvider with ChangeNotifier {
     }
   }
 
+  Future<BaseAPIResponse> deleteAllAssetLogs(String toAsset, String fromAsset) async {
+    try {
+      final response = await http.delete(
+        Uri.parse(APIRoutes().assetRoutes.deleteAssetLogsByUserID),
+        body: json.encode({
+          "to_asset": toAsset,
+          "from_asset": fromAsset
+        }),
+        headers: UserToken().getBearerToken()
+      );
+
+      if (response.getBaseResponse().error == null) {
+        _items.clear();
+        notifyListeners();
+      }
+
+      return response.getBaseResponse();
+    } catch (error) {
+      return BaseAPIResponse(error.toString());
+    }
+  }
+
   Future<BaseAPIResponse> editAssetLog(AssetLog assetLog, bool isAmountChanged) async {
     try {
       final response = await http.put(
