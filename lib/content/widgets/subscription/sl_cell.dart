@@ -18,6 +18,7 @@ class SubscriptionListCell extends StatelessWidget {
       child: SizedBox(
         height: 105,
         child: Card(
+            clipBehavior: Clip.antiAlias,
             elevation: 4,
             color: Color(subscription.color),
             margin: const EdgeInsets.only(left: 8, bottom: 12, right: 8),

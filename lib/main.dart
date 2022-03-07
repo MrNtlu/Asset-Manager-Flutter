@@ -14,6 +14,11 @@ import 'package:asset_flutter/static/token.dart';
 import 'package:flutter/material.dart';
 import 'package:desktop_window/desktop_window.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+
+FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+FirebaseCrashlytics crashlytics = FirebaseCrashlytics.instance;
 
 void main() {
   setWindowForPC();
@@ -36,33 +41,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(
-          value: SubscriptionsProvider()
-        ),
-        ChangeNotifierProvider.value(
-          value: AssetLogProvider()
-        ),
-        ChangeNotifierProvider.value(
-          value: AssetsProvider()
-        ),
-        ChangeNotifierProvider.value(
-          value: SubscriptionDetailsProvider()
-        ),
-        ChangeNotifierProvider.value(
-          value: AssetProvider()
-        ),
-        ChangeNotifierProvider.value(
-          value: AssetDetailsStateProvider()
-        ),
-        ChangeNotifierProvider.value(
-          value: PortfolioStateProvider()
-        ),
+        ChangeNotifierProvider.value(value: SubscriptionsProvider()),
+        ChangeNotifierProvider.value(value: AssetLogProvider()),
+        ChangeNotifierProvider.value(value: AssetsProvider()),
+        ChangeNotifierProvider.value(value: SubscriptionDetailsProvider()),
+        ChangeNotifierProvider.value(value: AssetProvider()),
+        ChangeNotifierProvider.value(value: AssetDetailsStateProvider()),
+        ChangeNotifierProvider.value(value: PortfolioStateProvider()),
       ],
       child: MaterialApp(
         title: 'Kantan',
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
         ),
+        debugShowCheckedModeBanner: false,
         home: LoginPage(),
         routes: {
           LoginPage.routeName: (ctx) => LoginPage(),
