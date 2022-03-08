@@ -10,6 +10,8 @@ Android: Soon :pray:
 
 Backend: [Asset Manager Backend](https://github.com/MrNtlu/Asset-Manager)
 
+Scraper: [Asset Scraper](https://github.com/MrNtlu/Asset-Scraper)
+
 &nbsp;
 
 ### Asset Manager (Mac & Windows & Android & iOS)
