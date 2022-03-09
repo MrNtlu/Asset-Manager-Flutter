@@ -2,11 +2,11 @@
 
 # Kantan - Investment Manager / Asset Manager - Flutter
 
-Mac: [Download Kantan Mac](https://github.com/MrNtlu/Asset-Manager-Flutter/raw/master/installers/dmg_creator/kantan.dmg)
-
 iOS: Soon :pray:
 
-Android: Soon :pray:
+Mac: [Download Kantan Mac](https://github.com/MrNtlu/Asset-Manager-Flutter/raw/master/installers/dmg_creator/kantan.dmg)
+
+Android: [Download Kantan on Google Play](https://play.google.com/store/apps/details?id=com.mrntlu.kantan)
 
 Backend: [Asset Manager Backend](https://github.com/MrNtlu/Asset-Manager)
 
