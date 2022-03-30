@@ -11,11 +11,12 @@ class Asset {
   final String toAsset;
   final String fromAsset;
   final String type;
+  final String market;
   num pl;
   num amount;
 
 
-  Asset(this.currentValue, this.name, this.toAsset, this.fromAsset, this.type, this.pl, this.amount);
+  Asset(this.currentValue, this.name, this.toAsset, this.fromAsset, this.type, this.market, this.pl, this.amount);
 }
 
 class AssetProvider with ChangeNotifier {

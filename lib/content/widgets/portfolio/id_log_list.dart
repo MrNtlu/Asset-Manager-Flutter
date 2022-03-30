@@ -44,6 +44,7 @@ class _InvestmentDetailsLogListState extends State<InvestmentDetailsLogList> {
       toAsset: widget._asset.toAsset, 
       fromAsset: widget._asset.fromAsset,
       page: _page,
+      assetMarket: widget._asset.market
       // sort: 
     ).then((response){
       _error = response.error;

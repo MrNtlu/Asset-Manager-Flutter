@@ -4,8 +4,8 @@ import 'package:asset_flutter/content/widgets/portfolio/il_cell_image.dart';
 import 'package:asset_flutter/content/widgets/portfolio/pl_text.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/images.dart';
-import 'package:asset_flutter/utils/currency_handler.dart';
 import 'package:asset_flutter/utils/extensions.dart';
+import 'package:asset_flutter/utils/stock_handler.dart';
 import 'package:flutter/material.dart';
 
 class PortfolioInvestmentListCell extends StatelessWidget {
@@ -17,8 +17,10 @@ class PortfolioInvestmentListCell extends StatelessWidget {
       image = PlaceholderImages().cryptoImage(data.toAsset);
     } else if (data.type == "exchange") {
       image = PlaceholderImages().exchangeImage(data.toAsset);
+    } else if (data.type == "stock") {
+      image = 'icons/flags/png/${convertIndexNameToFlag(data.market)}.png';
     } else {
-      image = PlaceholderImages().stockImage(data.toAsset);
+      image = 'assets/images/gold.png';
     }
   }
 
@@ -71,7 +73,7 @@ class PortfolioInvestmentListCell extends StatelessWidget {
                       child: PortfolioPLText(data.pl.toDouble(), null,
                           fontSize: 13,
                           iconSize: 15,
-                          plPrefix: convertCurrencyToSymbol(data.fromAsset)))
+                          plPrefix: data.fromAsset))
                 ],
               ),
             )

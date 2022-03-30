@@ -6,12 +6,14 @@ class AssetCreate implements JSONConverter {
   double price;
   double amount;
   String assetType; //crypto stock exchange
+  String assetMarket;
   String type; //sell buy
   String name;
 
   AssetCreate(
     this.toAsset, this.fromAsset, this.type, 
-    this.amount, this.assetType, this.name, this.price
+    this.amount, this.assetType, this.assetMarket,
+    this.name, this.price
   );
 
   @override
@@ -21,6 +23,7 @@ class AssetCreate implements JSONConverter {
     "price": price,
     "amount": amount,
     "asset_type": assetType,
+    "asset_market": assetMarket,
     "type": type
   };
 }

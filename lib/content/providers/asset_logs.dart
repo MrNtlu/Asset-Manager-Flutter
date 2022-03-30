@@ -18,7 +18,8 @@ class AssetLogProvider with ChangeNotifier {
     required String toAsset,
     required String fromAsset,
     int page = 1,
-    String sort = "newest" // newest oldest amount
+    String sort = "newest", // newest oldest amount
+    required String assetMarket,
   }) async {
     if (page == 1) {
       _items.clear();
@@ -28,7 +29,7 @@ class AssetLogProvider with ChangeNotifier {
       final response = await http.get(
         Uri.parse(
           APIRoutes().assetRoutes.assetLogsByUserID 
-          + "?to_asset=$toAsset&from_asset=$fromAsset&sort=$sort&page=$page"
+          + "?to_asset=$toAsset&from_asset=$fromAsset&sort=$sort&page=$page&asset_market=$assetMarket"
         ),
         headers: UserToken().getBearerToken()  
       );

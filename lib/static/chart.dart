@@ -6,12 +6,14 @@ class ChartAttributes {
     "Stock",
     "Crypto",
     "Exchange",
+    "Commodity",
     "Total"
   ];
 
   List<Color> chartStatsColor = [
     AppColors().primaryColor,
     AppColors().orangeColor,
+    Colors.red,
     AppColors().primaryLightColor,
     Colors.yellow
   ];

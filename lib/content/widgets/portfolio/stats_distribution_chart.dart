@@ -13,7 +13,7 @@ class PortfolioStatsDistributionChart extends StatelessWidget {
     final assetStatsProvider = Provider.of<AssetsProvider>(context, listen: false);
     final assetStats = assetStatsProvider.assetStats;
 
-    return assetStats == null || assetStats.stockPL == 0 && assetStats.totalPL == 0 && assetStats.cryptoPL == 0 && assetStats.exchangePL == 0
+    return assetStats == null || assetStats.stockPL == 0 && assetStats.commodityPL == 0 && assetStats.totalPL == 0 && assetStats.cryptoPL == 0 && assetStats.exchangePL == 0
       ? Container()
       : Column(
         children: [
@@ -21,7 +21,7 @@ class PortfolioStatsDistributionChart extends StatelessWidget {
           Container(
             height: 250,
             margin: const EdgeInsets.only(top: 8, bottom: 12),
-            width: MediaQuery.of(context).size.width * 0.7,
+            width: MediaQuery.of(context).size.width * 0.75,
             child: BarChart(
               BarChartData(
                 alignment: BarChartAlignment.center,
@@ -37,7 +37,7 @@ class PortfolioStatsDistributionChart extends StatelessWidget {
                   }
                 ),
                 barGroups: assetStats.convertDataToBarChart(),
-                groupsSpace: 35,
+                groupsSpace: 40,
                 titlesData: FlTitlesData(
                   topTitles: SideTitles(
                     showTitles: true,

@@ -36,11 +36,46 @@ class ILNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return _imageBodyByType(_type);
+  }
+
+  Widget _imageBodyByType(String _type) {
+    if (_type == "stock" || _type == "commodity") {
+      return Image.asset(
+        _image, 
+        package: _type == "stock" ? 'country_icons': null,
+        width: 48,
+        height: 48,
+        fit: BoxFit.cover,
+        frameBuilder: (context, child, int? frame, bool? wasSynchronouslyLoaded) {
+          if (frame == null) {
+            return CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(AppColors().primaryLightColor),
+              backgroundColor: Colors.white,
+            );
+          }
+          return child;
+        },
+        errorBuilder: ((context, error, stackTrace) {
+          if(!didFailBefore){
+            switch (_type) {
+              case "crypto":
+                return ILNetworkImage(PlaceholderImages().cryptoFailImage(), _type, didFailBefore: true);
+              case "stock":
+                return Icon(PlaceholderImages().stockFailIcon());
+              case "exchange":
+                return Icon(PlaceholderImages().exchangeFailIcon());
+            }
+          }
+          return const Icon(Icons.error);
+        }
+      ));
+    }
     return Image.network(
       _image,
       width: 48,
       height: 48,
-      fit: BoxFit.contain,
+      fit: BoxFit.cover,
       frameBuilder: (context, child, int? frame, bool? wasSynchronouslyLoaded) {
         if (frame == null) {
           return CircularProgressIndicator(
@@ -68,7 +103,7 @@ class ILNetworkImage extends StatelessWidget {
           }
         }
         return const Icon(Icons.error);
-      }),
-    );
+      }
+    ));
   }
 }

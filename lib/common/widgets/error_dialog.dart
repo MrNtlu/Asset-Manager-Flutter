@@ -31,7 +31,7 @@ class ErrorDialog extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 24, top: 8),
+              padding: const EdgeInsets.fromLTRB(8, 8, 8, 24),
               child: Text(
                 _error,
                 textAlign: TextAlign.center,

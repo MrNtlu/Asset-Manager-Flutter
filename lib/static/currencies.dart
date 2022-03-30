@@ -1,38 +1,21 @@
 class SupportedCurrencies {
-  final List<String> subCurrencies = [
-    "AED",
-    "ARS",
-    "AUD",
-    "BRL",
-    "CAD",
-    "CHF",
-    "CNH",
-    "CNY",
-    "DKK",
-    "EGP",
+  final List<String> currencies = ["USD", "EUR", "GBP", "KRW", "JPY"];
+  final List<String> stockCurrencies = [
+    "USD",
+    "USD",
+    "USD",
+    "EUR",
+    "TRY",
     "EUR",
     "GBP",
-    "HKD",
-    "HRK",
-    "IDR",
-    "ILS",
-    "INR",
+    "CHF",
     "JPY",
-    "KRW",
-    "MXN",
-    "NGN",
-    "NOK",
-    "PHP",
-    "PKR",
-    "PLN",
-    "RUB",
-    "SAR",
-    "THB",
-    "TRY",
-    "USD",
-    "UYU",
+    "HKD",
+    "TWD",
+    "CNY"
   ];
-  final List<String> currencies = ["USD", "EUR", "GBP", "KRW", "JPY"];
+  final List<String> commodityCurrencies = ["USD"];
+  final List<String> cryptoCurrencies = ["USD"];
 
   SupportedCurrencies._privateConstructor();
 

@@ -30,7 +30,7 @@ class SDEditHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     dropdown = Dropdown(
-      SupportedCurrencies().subCurrencies,
+      SupportedCurrencies().currencies,
       dropdownValue: currency,
     );
 

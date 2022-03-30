@@ -2,7 +2,6 @@ import 'package:asset_flutter/content/providers/asset.dart';
 import 'package:asset_flutter/content/widgets/portfolio/il_cell_image.dart';
 import 'package:asset_flutter/content/widgets/portfolio/pl_text.dart';
 import 'package:asset_flutter/static/colors.dart';
-import 'package:asset_flutter/utils/currency_handler.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
 
@@ -59,7 +58,7 @@ class InvestmentDetailsTopBar extends StatelessWidget {
                         child: PortfolioPLText(_data.pl.toDouble(), null,
                             fontSize: 15,
                             iconSize: 17,
-                            plPrefix: convertCurrencyToSymbol(_data.fromAsset)))
+                            plPrefix: _data.fromAsset))
                   ],
                 ),
               )

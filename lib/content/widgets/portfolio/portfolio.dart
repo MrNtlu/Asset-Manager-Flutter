@@ -2,7 +2,6 @@ import 'package:asset_flutter/content/providers/assets.dart';
 import 'package:asset_flutter/content/widgets/portfolio/pl_text.dart';
 import 'package:asset_flutter/content/widgets/portfolio/section_title.dart';
 import 'package:asset_flutter/static/colors.dart';
-import 'package:asset_flutter/utils/currency_handler.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -17,9 +16,9 @@ class Portfolio extends StatelessWidget {
   Widget build(BuildContext context) {
     final assetStatsProvider = Provider.of<AssetsProvider>(context);
     final assetStats = assetStatsProvider.assetStats;
-    final currencySymbol = convertCurrencyToSymbol(assetStats!.currency == ''
+    final currencySymbol = assetStats!.currency == ''
                         ? 'USD'
-                        : assetStats.currency);
+                        : assetStats.currency;
 
     return Container(
       padding: const EdgeInsets.only(top: 12, bottom: 8),
@@ -31,7 +30,7 @@ class Portfolio extends StatelessWidget {
             color: AppColors().primaryLightishColor,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
             child: Padding(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.fromLTRB(8, 8, 12, 8),
               child: Column(
                 children: [
                   Align(
@@ -39,7 +38,7 @@ class Portfolio extends StatelessWidget {
                     child: Text(
                       (assetStats.currency == ''
                         ? 'USD'
-                        : assetStats.currency) + "($currencySymbol)",
+                        : assetStats.currency),
                       style: const TextStyle(
                         fontSize: 14,
                         color: Colors.white

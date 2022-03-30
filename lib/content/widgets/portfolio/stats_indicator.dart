@@ -8,7 +8,7 @@ class PortfolioStatsIndicator extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        for (var i = 0; i < 3; i++)
+        for (var i = 0; i < 4; i++)
         Container(
           padding: const EdgeInsets.symmetric(vertical: 2),
           child: Row(

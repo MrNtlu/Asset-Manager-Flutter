@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:asset_flutter/content/providers/asset_logs.dart';
 import 'package:asset_flutter/content/models/requests/asset.dart';
+import 'package:asset_flutter/utils/stock_handler.dart';
 
 class InvestmentDetailsPage extends StatefulWidget {
   final Asset _data;
@@ -25,8 +26,10 @@ class InvestmentDetailsPage extends StatefulWidget {
       image = PlaceholderImages().cryptoImage(_data.toAsset);
     } else if (_data.type == "exchange") {
       image = PlaceholderImages().exchangeImage(_data.toAsset);
+    } else if (_data.type == "stock") {
+      image = 'icons/flags/png/${convertIndexNameToFlag(_data.market)}.png';
     } else {
-      image = PlaceholderImages().stockImage(_data.toAsset);
+      image = 'assets/images/gold.png';
     }
   }
 
@@ -74,6 +77,7 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
         type, 
         amount, 
         _assetProvider.asset!.type, 
+        _assetProvider.asset!.market,
         _assetProvider.asset!.name, 
         price,
       )

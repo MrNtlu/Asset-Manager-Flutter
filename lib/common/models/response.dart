@@ -146,6 +146,7 @@ class _TypeConverter<T> {
         response["to_asset"],
         response["from_asset"],
         response["asset_type"],
+        response["asset_market"],
         response["p/l"],
         response["remaining_amount"],
       ) as T;
@@ -168,14 +169,17 @@ class _TypeConverter<T> {
         response["stock_assets"],
         response["crypto_assets"],
         response["exchange_assets"],
+        response["commodity_assets"],
         response["total_assets"],
         response["stock_p/l"],
         response["crypto_p/l"],
         response["exchange_p/l"],
+        response["commodity_p/l"],
         response["total_p/l"],
         response["stock_percentage"],
         response["crypto_percentage"],
         response["exchange_percentage"],
+        response["commodity_percentage"],
       ) as T;
     } else if (T == Investings) {
       return Investings(
