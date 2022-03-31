@@ -11,6 +11,7 @@ class MarketDropdowns extends StatefulWidget {
   State<MarketDropdowns> createState() => _MarketDropdownsState();
 }
 
+//TODO: Change the design of dropdowns
 class _MarketDropdownsState extends State<MarketDropdowns> {
   late List<String> _marketDropdownList;
   bool isInit = false;
@@ -53,7 +54,7 @@ class _MarketDropdownsState extends State<MarketDropdowns> {
                 );
               }).toList(),
               onChanged: (value) {
-                if (value != null) {
+                if (value != null && value != _typeDropdownValue) {
                   setState(() {
                     _marketDropdownList = SupportedMarkets().setMarketList(value);
                     _marketDropdownValue = _marketDropdownList[0];
@@ -81,7 +82,7 @@ class _MarketDropdownsState extends State<MarketDropdowns> {
                   );
                 }).toList(),
               onChanged: (value) {
-                if (value != null) {
+                if (value != null && value != _marketDropdownValue) {
                   setState(() {
                     _marketDropdownValue = value;
                   });

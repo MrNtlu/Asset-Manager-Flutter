@@ -23,6 +23,8 @@ class PricesProvider with ChangeNotifier {
     required String type,
     required String market,
   }) async {
+    _items.clear();
+    
     try {
       final response = await http.get(
         Uri.parse(

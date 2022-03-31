@@ -1,10 +1,10 @@
-import 'dart:io';
-
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
 import 'package:asset_flutter/content/providers/market/market_selection_state.dart';
+import 'package:asset_flutter/content/providers/market/prices.dart';
+import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sliver_tools/sliver_tools.dart';
@@ -20,17 +20,27 @@ class MarketList extends StatefulWidget {
 class _MarketListState extends State<MarketList> {
   ListState _state = ListState.init;
   String? _error;
-  
+  late final PricesProvider _pricesProvider;
+
 
   void _getMarketPrices({type = "crypto", market = "CoinMarketCap"}) {
     setState(() {
       _state = ListState.loading;
     });
 
-
-
-    setState(() {
-      _state = ListState.done;
+    _pricesProvider.getMarketPrices(type: type, market: market).then((response) {
+      _error = response.error;
+      if (_state != ListState.disposed) {  
+        setState(() {
+          _state = (response.code != null || response.error != null)
+            ? ListState.error
+            : (
+              response.data.isEmpty
+                ? ListState.empty
+                : ListState.done
+            );
+        });
+      }
     });
   }
 
@@ -43,6 +53,7 @@ class _MarketListState extends State<MarketList> {
   @override
   void didChangeDependencies() {
     if (_state == ListState.init) {
+      _pricesProvider = Provider.of<PricesProvider>(context);
       _getMarketPrices();
 
       var _refreshListener = Provider.of<MarketSelectionStateProvider>(context);
@@ -57,7 +68,7 @@ class _MarketListState extends State<MarketList> {
 
   @override
   Widget build(BuildContext context) {
-    return _portraitBody();
+    return Expanded(child: _portraitBody());
   }
 
   Widget _portraitBody() {
@@ -69,94 +80,101 @@ class _MarketListState extends State<MarketList> {
       case ListState.empty:
         return const NoItemView("Couldn't find anything.");
       case ListState.done:
-        return Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: AppColors().primaryDarkestColor,
-                width: 0.5
-              ),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(16),
-                topRight: Radius.circular(16),
-                bottomLeft: Radius.circular(6),
-                bottomRight: Radius.circular(6),
-              )
+        return Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: AppColors().primaryDarkestColor,
+              width: 0.5
             ),
-            clipBehavior: Clip.antiAlias,
-            child: CustomScrollView(
-              slivers: [
-                MultiSliver(
-                  children: [
-                    SliverPinnedHeader(
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(16),
-                            topRight: Radius.circular(16),
-                          )
-                        ),
-                        margin: const EdgeInsets.all(0),
-                        elevation: 5,
-                        color: AppColors().primaryColor,
-                        child: Container(
-                          margin: const EdgeInsets.all(8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                "Name/Symbol",
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white
-                                ),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16),
+              topRight: Radius.circular(16),
+              bottomLeft: Radius.circular(6),
+              bottomRight: Radius.circular(6),
+            )
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: CustomScrollView(
+            slivers: [
+              MultiSliver(
+                children: [
+                  SliverPinnedHeader(
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(16),
+                          topRight: Radius.circular(16),
+                        )
+                      ),
+                      margin: const EdgeInsets.all(0),
+                      elevation: 5,
+                      color: AppColors().primaryColor,
+                      child: Container(
+                        margin: const EdgeInsets.all(8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              "Name/Symbol",
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white
                               ),
-                              const Text(
-                                "Price",
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white
-                                ),
+                            ),
+                            Text(
+                              "Price(${_pricesProvider.items[0].currency == '' ? 'USD' : _pricesProvider.items[0].currency})",
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white
                               ),
-                            ]
-                          ),
+                            ),
+                          ]
                         ),
-                      )
-                    ),
-                    SliverList(
-                      delegate: SliverChildBuilderDelegate((context, index){
-                        return Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          color: index % 2 == 0 ? AppColors().primaryLightColor: Colors.white,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                "Bitcoin/BTC", 
+                      ),
+                    )
+                  ),
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate((context, index){
+                      var item = _pricesProvider.items[index];
+
+                      return Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        color: index % 2 == 0 ? AppColors().primaryLightColor: Colors.white,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: Text(
+                                item.name != item.symbol ? "${item.name}/${item.symbol}" : item.name, 
                                 textAlign: TextAlign.left,
                                 style: const TextStyle(
-                                  fontSize: 16
+                                  fontSize: 18,
                                 ),
                               ),
-                              const Text(
-                                "40923.23", 
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Text(
+                                item.price.numToString(), 
                                 textAlign: TextAlign.right,
+                                overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
-                                  fontSize: 16
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            ],
-                          ),
-                        );
-                      },
-                      childCount: 5)
-                    ),
-                  ],
-                ),
-              ]
-            ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    childCount: _pricesProvider.items.length)
+                  ),
+                ],
+              ),
+            ]
           ),
         );
       default:
