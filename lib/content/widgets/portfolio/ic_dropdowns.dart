@@ -19,7 +19,7 @@ class _InvestmentCreateDropdownsState extends State<InvestmentCreateDropdowns> {
   void didChangeDependencies() {
     if (!isInit) {
       widget.typeDropdownValue = "Crypto";
-      _marketDropdownList = setMarketList("crypto");
+      _marketDropdownList = SupportedMarkets().setMarketList("crypto");
       widget.marketDropdownValue = _marketDropdownList[0];
       isInit = true;
     }
@@ -59,7 +59,7 @@ class _InvestmentCreateDropdownsState extends State<InvestmentCreateDropdowns> {
               onChanged: (value) {
                 if (value != null) {
                   setState(() {
-                    _marketDropdownList = setMarketList(value);
+                    _marketDropdownList = SupportedMarkets().setMarketList(value);
                     widget.marketDropdownValue = _marketDropdownList[0];
                     widget.typeDropdownValue = value;
                   });
@@ -103,18 +103,5 @@ class _InvestmentCreateDropdownsState extends State<InvestmentCreateDropdowns> {
         ],
       ),
     );
-  }
-
-  List<String> setMarketList(String type) {
-    switch (type.toLowerCase()) {
-      case "stock":
-        return SupportedMarkets().stockMarkets;
-      case "exchange":
-        return SupportedMarkets().exchangeMarket;
-      case "commodity":
-        return SupportedMarkets().commodityMarket;
-      default:
-        return SupportedMarkets().cryptoMarket;
-    }
   }
 }

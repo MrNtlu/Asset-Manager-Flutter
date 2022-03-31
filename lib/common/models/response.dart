@@ -2,6 +2,7 @@ import 'package:asset_flutter/content/models/responses/asset.dart';
 import 'package:asset_flutter/content/models/responses/investings.dart';
 import 'package:asset_flutter/content/models/responses/subscription.dart';
 import 'package:asset_flutter/content/providers/asset.dart';
+import 'package:asset_flutter/content/providers/market/prices.dart';
 import 'package:asset_flutter/content/providers/subscription.dart';
 
 class BaseAPIResponse {
@@ -219,6 +220,13 @@ class _TypeConverter<T> {
         response["total_monthly_payment"],
         response["total_payment"]
       ) as T;
+    } else if (T == MarketPrices) {
+      return MarketPrices(
+        response["name"], 
+        response["symbol"], 
+        response["currency"], 
+        response["market"], 
+        response["price"]) as T;
     } else{
       return response as T;
     }

@@ -26,4 +26,17 @@ class SupportedMarkets {
   factory SupportedMarkets() {
     return _instance;
   }
+
+  List<String> setMarketList(String type) {
+    switch (type.toLowerCase()) {
+      case "stock":
+        return stockMarkets;
+      case "exchange":
+        return exchangeMarket;
+      case "commodity":
+        return commodityMarket;
+      default:
+        return cryptoMarket;
+    }
+  }
 }

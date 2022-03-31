@@ -361,8 +361,7 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
           Uri.parse(APIRoutes().assetRoutes.investingsByType +
               "?type=${_investmentCreateDropdowns.typeDropdownValue.toLowerCase()}&market=${_investmentCreateDropdowns.marketDropdownValue}"),
         );
-        _investingList
-            .addAll(response.getBaseListResponse<Investings>().data);
+        _investingList.addAll(response.getBaseListResponse<Investings>().data);
       }
       return _investingList;
     },

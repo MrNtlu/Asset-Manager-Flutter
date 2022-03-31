@@ -1,3 +1,4 @@
+import 'package:asset_flutter/content/pages/market/markets_page.dart';
 import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
 import 'package:asset_flutter/content/pages/settings_page.dart';
 import 'package:asset_flutter/content/pages/subscription/subscription_page.dart';
@@ -17,12 +18,13 @@ class TabsPage extends StatefulWidget {
 
 class _TabsPage extends State<TabsPage> {
   final List<Widget> _pages = [
+    MarketsPage(),
     PortfolioPage(),
     SubscriptionPage(),
     SettingsPage()
   ];
 
-  int _selectedPageIndex = 0;
+  int _selectedPageIndex = 1;
 
   void _selectPage(int index) {
     setState(() {
@@ -41,7 +43,10 @@ class _TabsPage extends State<TabsPage> {
         unselectedItemColor: Colors.grey,
         currentIndex: _selectedPageIndex,
         elevation: 5,
+        showUnselectedLabels: true,
         items: const [
+          BottomNavigationBarItem(
+              icon: ImageIcon(AssetImage("assets/images/markets.png")), label: "Markets"),
           BottomNavigationBarItem(
               icon: Icon(Icons.attach_money_rounded), label: "Portfolio"),
           BottomNavigationBarItem(

@@ -8,18 +8,32 @@ class APIRoutes {
   late final SubscriptionRoutes subscriptionRoutes;
   late final AuthRoutes authRoutes;
   late final UserRoutes userRoutes;
+  late final InvestingRoutes investingRoutes;
 
   APIRoutes._privateConstructor() {
-    assetRoutes = AssetRoutes(baseURL: baseURL);
-    subscriptionRoutes = SubscriptionRoutes(baseURL: baseURL);
-    authRoutes = AuthRoutes(baseURL: baseURL);
-    userRoutes = UserRoutes(baseURL: baseURL);
+    assetRoutes = AssetRoutes(baseURL: baseTestURL);
+    subscriptionRoutes = SubscriptionRoutes(baseURL: baseTestURL);
+    authRoutes = AuthRoutes(baseURL: baseTestURL);
+    userRoutes = UserRoutes(baseURL: baseTestURL);
+    investingRoutes = InvestingRoutes(baseURL: baseTestURL);
   }
 
   static final APIRoutes _instance = APIRoutes._privateConstructor();
 
   factory APIRoutes() {
     return _instance;
+  }
+}
+
+class InvestingRoutes {
+  late String _baseInvestingURL;
+
+  late String prices;
+  
+  InvestingRoutes({baseURL}) {
+    _baseInvestingURL = baseURL + '/investings';
+
+    prices = _baseInvestingURL + '/prices';
   }
 }
 
