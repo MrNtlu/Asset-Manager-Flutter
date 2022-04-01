@@ -1,4 +1,5 @@
 import 'package:asset_flutter/content/providers/market/market_selection_state.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/markets.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,6 @@ class MarketDropdowns extends StatefulWidget {
   State<MarketDropdowns> createState() => _MarketDropdownsState();
 }
 
-//TODO: Change the design of dropdowns
 class _MarketDropdownsState extends State<MarketDropdowns> {
   late List<String> _marketDropdownList;
   bool isInit = false;
@@ -33,62 +33,70 @@ class _MarketDropdownsState extends State<MarketDropdowns> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(top: 16, bottom: 8),
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
+      elevation: 6,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(12))
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Expanded(
-            child: DropdownButton<String>(
-              isExpanded: true,
-              style: const TextStyle(fontSize: 16, color: Colors.black),
-              dropdownColor: Colors.white,
-              value: _typeDropdownValue,
-              items: const ["Crypto", "Stock", "Exchange", "Commodity"].map((value) {
-                return DropdownMenuItem(
-                  value: value,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Text(value),
-                  ),
-                );
-              }).toList(),
-              onChanged: (value) {
-                if (value != null && value != _typeDropdownValue) {
-                  setState(() {
-                    _marketDropdownList = SupportedMarkets().setMarketList(value);
-                    _marketDropdownValue = _marketDropdownList[0];
-                    _typeDropdownValue = value;
-                  });
-                  _marketSelectionProvider.newMarketSelection(_typeDropdownValue.toLowerCase(), _marketDropdownValue);
-                }
-              },
-            ),
-          ),
-          SizedBox(width: 16),
-          Expanded(
-            child: DropdownButton<String>(
-              isExpanded: true,
-              style: const TextStyle(fontSize: 16, color: Colors.black),
-              value: _marketDropdownValue,
-              dropdownColor: Colors.white,
-              items: _marketDropdownList.map((value) {
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                isExpanded: true,
+                style: const TextStyle(fontSize: 16, color: Colors.black),
+                dropdownColor: Colors.white,
+                value: _typeDropdownValue,
+                items: const ["Crypto", "Stock", "Commodity"].map((value) {
                   return DropdownMenuItem(
                     value: value,
                     child: Padding(
                       padding: const EdgeInsets.all(8),
-                      child: AutoSizeText(value),
+                      child: Text(value),
                     ),
                   );
                 }).toList(),
-              onChanged: (value) {
-                if (value != null && value != _marketDropdownValue) {
-                  setState(() {
-                    _marketDropdownValue = value;
-                  });
-                  _marketSelectionProvider.newMarketSelection(_typeDropdownValue.toLowerCase(), _marketDropdownValue);
-                }
-              },
+                onChanged: (value) {
+                  if (value != null && value != _typeDropdownValue) {
+                    setState(() {
+                      _marketDropdownList = SupportedMarkets().setMarketList(value);
+                      _marketDropdownValue = _marketDropdownList[0];
+                      _typeDropdownValue = value;
+                    });
+                    _marketSelectionProvider.newMarketSelection(_typeDropdownValue.toLowerCase(), _marketDropdownValue);
+                  }
+                },
+              ),
+            ),
+          ),
+          SizedBox(width: 16),
+          Expanded(
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                isExpanded: true,
+                style: const TextStyle(fontSize: 16, color: Colors.black),
+                value: _marketDropdownValue,
+                dropdownColor: Colors.white,
+                items: _marketDropdownList.map((value) {
+                    return DropdownMenuItem(
+                      value: value,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: AutoSizeText(value),
+                      ),
+                    );
+                  }).toList(),
+                onChanged: (value) {
+                  if (value != null && value != _marketDropdownValue) {
+                    setState(() {
+                      _marketDropdownValue = value;
+                    });
+                    _marketSelectionProvider.newMarketSelection(_typeDropdownValue.toLowerCase(), _marketDropdownValue);
+                  }
+                },
+              ),
             ),
           ),
         ],

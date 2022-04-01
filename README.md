@@ -29,7 +29,6 @@ Scraper: [Asset Scraper](https://github.com/MrNtlu/Asset-Scraper)
     <li> Lottie
     <li> Flutter Launcher Icons
     <li> Flutter Markdown
-    <li> Flutter Platform Widgets
     <li> Country Icons
     <li> Sliver Tools
 </ul>

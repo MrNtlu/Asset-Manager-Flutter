@@ -26,6 +26,9 @@ class PricesProvider with ChangeNotifier {
     _items.clear();
     
     try {
+      if (market.contains("&")) {
+        market = market.replaceAll("&", "%26");
+      }
       final response = await http.get(
         Uri.parse(
           APIRoutes().investingRoutes.prices + "?type=$type&market=$market"
