@@ -1,5 +1,4 @@
 import 'package:asset_flutter/content/providers/market/market_selection_state.dart';
-import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/markets.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';

@@ -11,11 +11,11 @@ class APIRoutes {
   late final InvestingRoutes investingRoutes;
 
   APIRoutes._privateConstructor() {
-    assetRoutes = AssetRoutes(baseURL: baseTestURL);
-    subscriptionRoutes = SubscriptionRoutes(baseURL: baseTestURL);
-    authRoutes = AuthRoutes(baseURL: baseTestURL);
-    userRoutes = UserRoutes(baseURL: baseTestURL);
-    investingRoutes = InvestingRoutes(baseURL: baseTestURL);
+    assetRoutes = AssetRoutes(baseURL: baseURL);
+    subscriptionRoutes = SubscriptionRoutes(baseURL: baseURL);
+    authRoutes = AuthRoutes(baseURL: baseURL);
+    userRoutes = UserRoutes(baseURL: baseURL);
+    investingRoutes = InvestingRoutes(baseURL: baseURL);
   }
 
   static final APIRoutes _instance = APIRoutes._privateConstructor();
