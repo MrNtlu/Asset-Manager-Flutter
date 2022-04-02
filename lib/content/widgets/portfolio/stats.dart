@@ -7,6 +7,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+//TODO: Try to improve piechart with stats
 class PortfolioStats extends StatelessWidget {
   final bool _isDetails;
   const PortfolioStats(this._isDetails, {Key? key}) : super(key: key);

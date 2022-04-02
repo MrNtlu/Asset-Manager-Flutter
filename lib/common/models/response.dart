@@ -3,6 +3,7 @@ import 'package:asset_flutter/content/models/responses/investings.dart';
 import 'package:asset_flutter/content/models/responses/subscription.dart';
 import 'package:asset_flutter/content/providers/asset.dart';
 import 'package:asset_flutter/content/providers/market/prices.dart';
+import 'package:asset_flutter/content/providers/portfolio/daily_stats.dart';
 import 'package:asset_flutter/content/providers/subscription.dart';
 
 class BaseAPIResponse {
@@ -227,6 +228,12 @@ class _TypeConverter<T> {
         response["currency"], 
         response["market"], 
         response["price"]) as T;
+    } else if (T == DailyAssetStats) {
+      return DailyAssetStats(
+        response["currency"],
+        ((response["total_assets"]) as List).map((e) => e as num).toList(),
+        ((response["total_p/l"]) as List).map((e) => e as num).toList(),
+      ) as T;
     } else{
       return response as T;
     }

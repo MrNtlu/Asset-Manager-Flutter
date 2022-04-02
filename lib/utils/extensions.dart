@@ -95,7 +95,7 @@ extension ResponseExt on Response {
   );
 
   BaseItemResponse<T> getBaseItemResponse<T>() => BaseItemResponse<T>(
-    message: json.decode(body)["message"],
+    message: json.decode(body)["message"] ?? '',
     response: json.decode(body)["data"],
   );
 

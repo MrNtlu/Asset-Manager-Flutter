@@ -9,7 +9,9 @@ import 'package:asset_flutter/content/providers/asset_logs.dart';
 import 'package:asset_flutter/content/providers/assets.dart';
 import 'package:asset_flutter/content/providers/market/market_selection_state.dart';
 import 'package:asset_flutter/content/providers/market/prices.dart';
-import 'package:asset_flutter/content/providers/portfolio_state.dart';
+import 'package:asset_flutter/content/providers/portfolio/daily_stats.dart';
+import 'package:asset_flutter/content/providers/portfolio/portfolio_state.dart';
+import 'package:asset_flutter/content/providers/portfolio/stats_toggle_state.dart';
 import 'package:asset_flutter/content/providers/subscription_details.dart';
 import 'package:asset_flutter/content/providers/subscriptions.dart';
 import 'package:asset_flutter/static/token.dart';
@@ -52,6 +54,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: PortfolioStateProvider()),
         ChangeNotifierProvider.value(value: MarketSelectionStateProvider()),
         ChangeNotifierProvider.value(value: PricesProvider()),
+        ChangeNotifierProvider.value(value: StatsToggleSelectionStateProvider()),
+        ChangeNotifierProvider.value(value: DailyStatsProvider()),
       ],
       child: MaterialApp(
         title: 'Kantan',

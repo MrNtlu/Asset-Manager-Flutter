@@ -4,8 +4,9 @@ import 'package:lottie/lottie.dart';
 class ErrorView extends StatelessWidget {
   final String _text;
   final VoidCallback _onPressed;
-
-  const ErrorView(this._text, this._onPressed, {Key? key}) : super(key: key);
+  final Color textColor;
+  
+  const ErrorView(this._text, this._onPressed, {this.textColor = Colors.black, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +33,8 @@ class ErrorView extends StatelessWidget {
           child: Text(
             _text,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: Colors.black,
+            style: TextStyle(
+              color: this.textColor,
               fontSize: 18,
             ),
           ),

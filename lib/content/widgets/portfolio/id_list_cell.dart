@@ -5,7 +5,7 @@ import 'package:asset_flutter/content/models/responses/asset.dart';
 import 'package:asset_flutter/content/providers/asset.dart';
 import 'package:asset_flutter/content/providers/asset_details.dart';
 import 'package:asset_flutter/content/providers/asset_logs.dart';
-import 'package:asset_flutter/content/providers/portfolio_state.dart';
+import 'package:asset_flutter/content/providers/portfolio/portfolio_state.dart';
 import 'package:asset_flutter/content/widgets/portfolio/id_log_bottom_sheet.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/utils/extensions.dart';

@@ -16,7 +16,7 @@ class _MarketDropdownsState extends State<MarketDropdowns> {
   bool isInit = false;
   late String _typeDropdownValue;
   late String _marketDropdownValue;
-  late MarketSelectionStateProvider _marketSelectionProvider;
+  late final MarketSelectionStateProvider _marketSelectionProvider;
 
   @override
   void didChangeDependencies() {

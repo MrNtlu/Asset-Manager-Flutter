@@ -5,6 +5,9 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+//TODO: Redesign and create bar chart with green/red colors
+// https://github.com/imaNNeoFighT/fl_chart/blob/master/example/lib/bar_chart/samples/bar_chart_sample2.dart
+// https://www.youtube.com/watch?v=7wUmzYOPQ8w
 class PortfolioStatsDistributionChart extends StatelessWidget {
   const PortfolioStatsDistributionChart({Key? key}) : super(key: key);
 

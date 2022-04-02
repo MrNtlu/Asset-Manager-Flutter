@@ -5,8 +5,9 @@ import 'package:lottie/lottie.dart';
 
 class LoadingView extends StatelessWidget {
   final String _text;
+  final Color textColor;
 
-  const LoadingView(this._text, {Key? key}) : super(key: key);
+  const LoadingView(this._text, {this.textColor = Colors.black, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +37,8 @@ class LoadingView extends StatelessWidget {
         alignment: Alignment.center,
         child: Text(
           _text,
-          style: const TextStyle(
-              color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              color: this.textColor, fontSize: 16, fontWeight: FontWeight.bold),
         ),
       )
     ]
