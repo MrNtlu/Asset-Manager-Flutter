@@ -5,9 +5,11 @@ import 'package:asset_flutter/auth/widgets/auth_currency_dropdown.dart';
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/check_dialog.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
+import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/password_textformfield.dart';
 import 'package:asset_flutter/common/widgets/success_view.dart';
+import 'package:asset_flutter/content/models/responses/user.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/routes.dart';
 import 'package:asset_flutter/static/shared_pref.dart';
@@ -23,9 +25,14 @@ class SettingsPage extends StatefulWidget {
   State<SettingsPage> createState() => _SettingsPageState();
 }
 
+//TODO: Payment implementation https://www.youtube.com/watch?v=h-jOMh2KXTA&t=1928s
+//TODO: UserInformation design
+//TODO: Premium Subscription/In-app Store page
 class _SettingsPageState extends State<SettingsPage> {  
-  DetailState _state = DetailState.view;
+  DetailState _state = DetailState.init;
   final bool isApple = Platform.isIOS || Platform.isMacOS;
+  UserInfo? _userInfo = null;
+  String? error = null;
 
   void _changeCurrency(String currency) {
     setState(() {
@@ -165,10 +172,43 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   }
 
+  void _getUserInfo() {
+    setState(() {
+      _state = DetailState.loading;
+    });
+
+    try {
+      http.get(
+        Uri.parse(APIRoutes().userRoutes.info),
+        headers: UserToken().getBearerToken()
+      ).then((response){
+        _userInfo = response.getBaseItemResponse<UserInfo>().data;
+        error = _userInfo == null ? response.getBaseItemResponse<UserInfo>().message : null;
+
+        setState(() {
+          _state = _userInfo == null ? DetailState.error : DetailState.view;
+        });
+      });
+    } catch(error) {
+      this.error = error.toString();
+      setState(() {
+        _state = DetailState.error;
+      });
+    }
+  }
+
   @override
   void dispose() {
     _state = DetailState.disposed;
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_state == DetailState.init) {
+      _getUserInfo();
+    }
+    super.didChangeDependencies();
   }
 
   @override
@@ -180,9 +220,26 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget _body() {
     switch (_state) {
+      case DetailState.error:
+        return ErrorView(error ?? "Error occured.", _getUserInfo);
       case DetailState.view:
         return SettingsList(
           sections: [
+            SettingsSection(
+              title: const Text('User Information'),
+              tiles: [
+                CustomSettingsTile(
+                  child: Column(
+                    children: [
+                      Text(_userInfo!.email),
+                      Text(_userInfo!.currency),
+                      Text(_userInfo!.investingLimit),
+                      Text(_userInfo!.subscriptionLimit),
+                    ],
+                  )
+                ),
+              ]
+            ),
             SettingsSection(
               title: const Text('Account'),
               tiles: [

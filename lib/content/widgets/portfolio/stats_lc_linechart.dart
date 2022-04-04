@@ -3,6 +3,7 @@ import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/content/providers/portfolio/daily_stats.dart';
 import 'package:asset_flutter/content/providers/portfolio/stats_toggle_state.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -109,23 +110,12 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          color: const Color(0xff020227),
+          color: AppColors().barCardColor,
           child: Column(
             children: [
               Padding(
                 padding: const EdgeInsets.only(top: 4),
-                child: Text(
-                  "Total Assets${
-                    _dailyStatsProvider.item != null
-                    ? '('+_dailyStatsProvider.item!.currency+')'
-                    : ''
-                  }", 
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold
-                  )
-                ),
+                child: _chartHeaderText("Total Assets"),
               ),
               SizedBox(
                 height: 320,
@@ -142,23 +132,12 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          color: const Color(0xff020227),
+          color: AppColors().barCardColor,
           child: Column(
             children: [
               Padding(
                 padding: const EdgeInsets.only(top: 4),
-                child: Text(
-                  "Profit/Loss${
-                     _dailyStatsProvider.item != null
-                    ? '('+_dailyStatsProvider.item!.currency+')'
-                    : ''
-                  }", 
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold
-                  )
-                ),
+                child: _chartHeaderText("Profit/Loss")
               ),
               SizedBox(
                 height: 320,
@@ -173,6 +152,19 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
       ],
     );
   }
+
+  Text _chartHeaderText(String title) => Text(
+    "$title${
+        _dailyStatsProvider.item != null && _dailyStatsProvider.item!.currency != ''
+      ? '('+_dailyStatsProvider.item!.currency+')'
+      : ''
+    }",
+    style: const TextStyle(
+      color: Colors.white,
+      fontSize: 12,
+      fontWeight: FontWeight.bold
+    )
+  );
 
   Widget _portraitBody({bool isProfit = true}) {
     switch (_state) {
@@ -198,7 +190,12 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
       case ViewState.done:
         return LineChart(
           LineChartData(
-            lineTouchData: LineTouchData(enabled: true),
+            lineTouchData: LineTouchData(
+              enabled: true,
+              touchTooltipData: LineTouchTooltipData(
+                fitInsideHorizontally: true
+              )
+            ),
             minX: 0,
             maxX: isProfit ? (plList.length - 1) : (assetList.length - 1),
             minY: _getLowestValue(isProfit: isProfit),

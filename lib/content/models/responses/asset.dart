@@ -59,20 +59,24 @@ class AssetStats {
   List<PieChartSectionData> convertDataToChart() {
     final list = List<PieChartSectionData>.empty(growable: true);
     for (var i = 0; i < 4; i++) {
+      var percentageData = ((i == 0)
+        ? commodityPercentage
+        : (i == 1)
+            ? cryptoPercentage
+            : (i == 2)
+              ? exchangePercentage
+              : stockPercentage).toDouble();
       list.add(PieChartSectionData(
         color: ChartAttributes().chartStatsColor[i],
-        value: ((i == 0)
-                ? stockAsset
-                : (i == 1)
-                    ? cryptoAsset
-                    : (i == 2)
-                      ? exchangeAsset
-                      : commodityAsset)
-            .toDouble(),
-        showTitle: false,
-        radius: 45,
+        value: percentageData,
+        title: percentageData.toStringAsFixed(1),
+        showTitle: true,
+        radius: 47,
         titleStyle: const TextStyle(
-            fontWeight: FontWeight.bold, color: Colors.white, fontSize: 12),
+          fontWeight: FontWeight.bold, 
+          color: Colors.white,
+          fontSize: 10
+        ),
       ));
     }
     return list;
@@ -82,26 +86,26 @@ class AssetStats {
     final list = List<BarChartGroupData>.empty(growable: true);
     for (var i = 0; i < 5; i++) {
       var value = (i == 0)
-          ? stockPL
+          ? commodityPL
           : (i == 1)
               ? cryptoPL
               : (i == 2)
                   ? exchangePL
                   : (i == 3)
-                    ? commodityPL
+                    ? stockPL
                     : totalPL;
-      value = double.parse((value.toDouble()).revertValue().toStringAsFixed(2));
+      var absValue = double.parse((value.toDouble()).abs().toStringAsFixed(2));
       list.add(BarChartGroupData(x: i, barRods: [
         BarChartRodData(
-          y: value.toDouble(),
+          y: absValue.toDouble(),
           width: 25,
-          borderRadius: value > 0
+          borderRadius: absValue > 0
               ? const BorderRadius.only(
                   topLeft: Radius.circular(6), topRight: Radius.circular(6))
               : const BorderRadius.only(
                   bottomLeft: Radius.circular(6),
                   bottomRight: Radius.circular(6)),
-          colors: [ChartAttributes().chartStatsColor[i]],
+          colors: [value.toDouble() > 0 ? const Color(0xffff5182) : const Color(0xff53fdd7)],
         )
       ]));
     }

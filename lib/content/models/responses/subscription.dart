@@ -47,7 +47,7 @@ class BillCycle implements JSONConverter{
   }) => BillCycle(day: day ?? this.day, month: month ?? this.month, year: year ?? this.year);
 
   @override
-  Map<String, Object> convertToJson()=> {
+  Map<String, Object> convertToJson() => {
     "day": day,
     "month": month,
     "year": year

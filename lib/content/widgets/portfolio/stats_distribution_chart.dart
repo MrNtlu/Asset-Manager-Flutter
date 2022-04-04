@@ -1,13 +1,11 @@
 import 'package:asset_flutter/content/providers/assets.dart';
 import 'package:asset_flutter/content/widgets/portfolio/section_title.dart';
 import 'package:asset_flutter/static/chart.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-//TODO: Redesign and create bar chart with green/red colors
-// https://github.com/imaNNeoFighT/fl_chart/blob/master/example/lib/bar_chart/samples/bar_chart_sample2.dart
-// https://www.youtube.com/watch?v=7wUmzYOPQ8w
 class PortfolioStatsDistributionChart extends StatelessWidget {
   const PortfolioStatsDistributionChart({Key? key}) : super(key: key);
 
@@ -20,20 +18,28 @@ class PortfolioStatsDistributionChart extends StatelessWidget {
       ? Container()
       : Column(
         children: [
-          SectionTitle("Profit/Loss Distribution", ""),
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: SectionTitle("Profit/Loss Distribution", ""),
+          ),
           Card(
             elevation: 4,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
-            color: const Color(0xff020227),
+            color: AppColors().barCardColor,
             child: Container(
               height: 250,
               margin: const EdgeInsets.only(top: 12, bottom: 4),
               child: BarChart(
                 BarChartData(
                   alignment: BarChartAlignment.center,
-                  barTouchData: BarTouchData(enabled: true),
+                  barTouchData: BarTouchData(
+                    enabled: true,
+                    touchTooltipData: BarTouchTooltipData(
+                      fitInsideHorizontally: true,
+                    )
+                  ),
                   borderData: FlBorderData(show: false),
                   gridData: FlGridData(
                     drawVerticalLine: false,
@@ -49,12 +55,11 @@ class PortfolioStatsDistributionChart extends StatelessWidget {
                   titlesData: FlTitlesData(
                     topTitles: SideTitles(
                       showTitles: true,
-                      getTextStyles: (context, value) => TextStyle(color: ChartAttributes().chartStatsColor[value.toInt()], fontSize: 12),
+                      getTextStyles: (context, value) => TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
                       getTitles: (id) => ChartAttributes().chartStatsText[id.toInt()],
                     ),
                     bottomTitles: SideTitles(
-                      showTitles: true,
-                      getTitles: (id) => "",
+                      showTitles: false,
                     ),
                     leftTitles: SideTitles(
                       showTitles: false

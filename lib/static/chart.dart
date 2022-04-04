@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 class ChartAttributes {
   final List<String> chartStatsText = [
-    "Stock",
+    "Commodity",
     "Crypto",
     "Exchange",
-    "Commodity",
+    "Stock",
     "Total"
   ];
 

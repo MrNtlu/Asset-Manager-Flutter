@@ -11,6 +11,7 @@ class AppColors {
   final greenColor = const Color(0xFF66BB6A);
   final redColor = const Color(0xFFEE8582);
   final orangeColor = const Color(0xFFF57C00);
+  final barCardColor = const Color(0xff020227);
 
   AppColors._privateConstructor();
 

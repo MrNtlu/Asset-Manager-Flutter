@@ -56,6 +56,7 @@ class AuthRoutes {
 class UserRoutes {
   late String _baseUserURL;
 
+  late String info;
   late String forgotPassword;
   late String changePassword;
   late String changeCurrency;
@@ -64,6 +65,7 @@ class UserRoutes {
   UserRoutes({baseURL}) {
     _baseUserURL = baseURL + '/user';
 
+    info = _baseUserURL + '/info';
     forgotPassword = _baseUserURL + '/forgot-password';
     changePassword = _baseUserURL + '/change-password';
     changeCurrency = _baseUserURL + '/change-currency';

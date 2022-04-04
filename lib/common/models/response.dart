@@ -1,6 +1,7 @@
 import 'package:asset_flutter/content/models/responses/asset.dart';
 import 'package:asset_flutter/content/models/responses/investings.dart';
 import 'package:asset_flutter/content/models/responses/subscription.dart';
+import 'package:asset_flutter/content/models/responses/user.dart';
 import 'package:asset_flutter/content/providers/asset.dart';
 import 'package:asset_flutter/content/providers/market/prices.dart';
 import 'package:asset_flutter/content/providers/portfolio/daily_stats.dart';
@@ -231,8 +232,16 @@ class _TypeConverter<T> {
     } else if (T == DailyAssetStats) {
       return DailyAssetStats(
         response["currency"],
-        ((response["total_assets"]) as List).map((e) => e as num).toList(),
-        ((response["total_p/l"]) as List).map((e) => e as num).toList(),
+        response["total_assets"] != null ? ((response["total_assets"]) as List).map((e) => e as num).toList() : [],
+        response["total_p/l"] != null ? ((response["total_p/l"]) as List).map((e) => e as num).toList() : [],
+      ) as T;
+    } else if (T == UserInfo) {
+      return UserInfo(
+        response["is_premium"],
+        response["email_address"],
+        response["currency"],
+        response["investing_limit"],
+        response["subscription_limit"],
       ) as T;
     } else{
       return response as T;

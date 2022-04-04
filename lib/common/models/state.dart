@@ -18,8 +18,10 @@ enum ViewState {
 }
 
 enum DetailState {
+  init,
   view,
   loading,
+  error,
   disposed,
 }
 

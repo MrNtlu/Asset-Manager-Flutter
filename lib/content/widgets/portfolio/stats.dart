@@ -7,7 +7,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-//TODO: Try to improve piechart with stats
 class PortfolioStats extends StatelessWidget {
   final bool _isDetails;
   const PortfolioStats(this._isDetails, {Key? key}) : super(key: key);
@@ -34,7 +33,7 @@ Widget statsBodyWidget(BuildContext context, bool isDetails) {
   final assetStats = assetStatsProvider.assetStats;
 
   return Column(children: [
-    SectionTitle(isDetails ? "Wealth Distribution" : "Statistics", isDetails ? "" : "Details>"),
+    SectionTitle(isDetails ? "Investment Distribution" : "Statistics", isDetails ? "" : "Details>"),
     Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -46,7 +45,7 @@ Widget statsBodyWidget(BuildContext context, bool isDetails) {
             PieChartData(
               borderData: FlBorderData(show: false),
               sectionsSpace: 0,
-              centerSpaceRadius: 30,
+              centerSpaceRadius: 27,
               sections: assetStats!.currency == ''
                 ? _emptyChartData()
                 : assetStats.convertDataToChart(),

@@ -15,58 +15,67 @@ class PortfolioStatsDetailedTable extends StatelessWidget {
     final assetStatsProvider = Provider.of<AssetsProvider>(context, listen: false);
     final assetStats = assetStatsProvider.assetStats;
 
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.all(3),
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
-        child: DataTable(
-          border: TableBorder.all(
-            borderRadius: BorderRadius.circular(9),
-            width: 1,
-            color: AppColors().primaryLightishColor,
-          ),
-          dividerThickness: 1,
-          headingRowColor: MaterialStateColor.resolveWith((states) => AppColors().primaryLightishColor),
-          columns: [
-            DataColumn(
-              label: Text(
-                'Detailed Stats',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: _textSize
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: Column(
+        children: [
+          Container(
+            width: double.infinity,
+            margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 8),
+            child: Card(
+              clipBehavior: Clip.antiAlias,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
+              child: DataTable(
+                border: TableBorder.all(
+                  borderRadius: BorderRadius.circular(9),
+                  width: 1,
+                  color: AppColors().barCardColor,
                 ),
-              ),
-            ),
-            DataColumn(
-              numeric: true,
-              label: FittedBox(
-                child: Text(
-                  'Value ('+assetStats!.currency+')',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: _textSize
+                dividerThickness: 1,
+                headingRowColor: MaterialStateColor.resolveWith((states) => AppColors().barCardColor),
+                columns: [
+                  DataColumn(
+                    label: Text(
+                      'Detailed Stats',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: _textSize
+                      ),
+                    ),
                   ),
-                ),
+                  DataColumn(
+                    numeric: true,
+                    label: FittedBox(
+                      child: Text(
+                        'Value ('+assetStats!.currency+')',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: _textSize
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+                rows: [
+                  _statsDataRow('Total Wealth', assetStats.totalAsset, _textSize),
+                  _statsDataRow('Stock', assetStats.stockAsset, _textSize),
+                  _statsDataRow('Crypto', assetStats.cryptoAsset, _textSize),
+                  _statsDataRow('Exchange', assetStats.exchangeAsset, _textSize),
+                  _statsDataRow('Commodity', assetStats.commodityAsset, _textSize),
+                  _statsDataRow('Total Profit/Loss', assetStats.totalPL.toDouble().revertValue(), _textSize),
+                  _statsDataRow('Stock Profit/Loss', assetStats.stockPL.toDouble().revertValue(), _textSize),
+                  _statsDataRow('Crypto Profit/Loss', assetStats.cryptoPL.toDouble().revertValue(), _textSize),
+                  _statsDataRow('Exchange Profit/Loss', assetStats.exchangePL.toDouble().revertValue(), _textSize),
+                  _statsDataRow('Commodity Profit/Loss', assetStats.commodityPL.toDouble().revertValue(), _textSize),
+                  _statsDataRow('Total Bought', assetStats.totalBought, _textSize),
+                  _statsDataRow('Total Sold', assetStats.totalSold, _textSize),
+                ],
               ),
             ),
-          ],
-          rows: [
-            _statsDataRow('Total Wealth', assetStats.totalAsset, _textSize),
-            _statsDataRow('Stock', assetStats.stockAsset, _textSize),
-            _statsDataRow('Crypto', assetStats.cryptoAsset, _textSize),
-            _statsDataRow('Exchange', assetStats.exchangeAsset, _textSize),
-            _statsDataRow('Total Profit/Loss', assetStats.totalPL.toDouble().revertValue(), _textSize),
-            _statsDataRow('Stock Profit/Loss', assetStats.stockPL.toDouble().revertValue(), _textSize),
-            _statsDataRow('Crypto Profit/Loss', assetStats.cryptoPL.toDouble().revertValue(), _textSize),
-            _statsDataRow('Exchange Profit/Loss', assetStats.exchangePL.toDouble().revertValue(), _textSize),
-            _statsDataRow('Total Bought', assetStats.totalBought, _textSize),
-            _statsDataRow('Total Sold', assetStats.totalSold, _textSize),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
