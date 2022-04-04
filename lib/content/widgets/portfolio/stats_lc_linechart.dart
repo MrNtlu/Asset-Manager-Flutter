@@ -19,6 +19,7 @@ class StatsLCLineChart extends StatefulWidget{
 
 class _StatsLCLineChartState extends State<StatsLCLineChart> {
   late List<double> plList;
+  late List<double> assetList;
 
   ViewState _state = ViewState.init;
   String? _error;
@@ -37,29 +38,42 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
           _state = (response.message != "" || response.data == null)
             ? ViewState.error
             : (
-              response.data!.totalPL.isEmpty
+              response.data!.totalPL.isEmpty || response.data!.totalPL.length <= 2
                 ? ViewState.empty
                 : ViewState.done
             );
 
             if (_state == ViewState.done) {
-              plList = response.data!.totalPL.map((e) => (e as double).revertValue()).toList();
+              plList = response.data!.totalPL.map((e) => e.toDouble().revertValue()).toList();
+              assetList = response.data!.totalAssets.map((e) => e.toDouble()).toList();
             }
         });
       }
     });
   }
 
-  double _getLowestValue() {
-    return plList.reduce((value, element) => min(value, element));
+  double _getLowestValue({bool isProfit = true}) {
+    return isProfit 
+      ? plList.reduce((value, element) => min(value, element))
+      : assetList.reduce((value, element) => min(value, element));
   }
 
-  double _getMaxValue() {
-    return plList.reduce((value, element) => max(value, element));
+  double _getMaxValue({bool isProfit = true}) {
+    return isProfit
+      ? plList.reduce((value, element) => max(value, element))
+      : assetList.reduce((value, element) => max(value, element));
   }
 
-  List<FlSpot> _lineChartMapper() {
-    return plList.map((e) => FlSpot(plList.indexOf(e).toDouble(), double.parse(e.toStringAsFixed(2)))).toList();
+  List<FlSpot> _lineChartMapper({bool isProfit = true}) {
+    final List<double> tempList = isProfit ? plList : assetList;
+    List<FlSpot> flSpotList = [];
+    for (var i = 0; i < tempList.length; i++) {
+      flSpotList.add(
+        FlSpot(i.toDouble(), double.parse(tempList[i].toStringAsFixed(2)))
+      );
+    }
+
+    return flSpotList;
   }
 
   @override
@@ -88,24 +102,108 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
 
   @override
   Widget build(BuildContext context) {
-    return _portraitBody();
+    return Column(
+      children: [
+        Card(
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          color: const Color(0xff020227),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: Text(
+                  "Total Assets${
+                    _dailyStatsProvider.item != null
+                    ? '('+_dailyStatsProvider.item!.currency+')'
+                    : ''
+                  }", 
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold
+                  )
+                ),
+              ),
+              SizedBox(
+                height: 320,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(6, 18, 6, 4),
+                  child: _portraitBody(isProfit: false),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Card(
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          color: const Color(0xff020227),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: Text(
+                  "Profit/Loss${
+                     _dailyStatsProvider.item != null
+                    ? '('+_dailyStatsProvider.item!.currency+')'
+                    : ''
+                  }", 
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold
+                  )
+                ),
+              ),
+              SizedBox(
+                height: 320,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(6, 18, 6, 4),
+                  child: _portraitBody(),
+                ),
+              ),
+            ],
+          ),
+        )
+      ],
+    );
   }
 
-  Widget _portraitBody() {
+  Widget _portraitBody({bool isProfit = true}) {
     switch (_state) {
       case ViewState.loading:
         return const LoadingView("Fetcing stats", textColor: Colors.white);
       case ViewState.error:
         return ErrorView(_error ?? "Unknown error!", _getDailyStats);
+      case ViewState.empty:
+        return Center(
+          child: Text(
+            "Not enough data for ${
+              _statsSelectionProvider.interval == null || _statsSelectionProvider.interval == 'weekly' 
+                ? '7 days'
+                : (
+                  _statsSelectionProvider.interval == 'monthly'
+                    ? '30 days'
+                    : '3 months'
+                )
+            }", 
+            style: const TextStyle(color: Colors.white)
+          ),
+        );
       case ViewState.done:
         return LineChart(
           LineChartData(
             lineTouchData: LineTouchData(enabled: true),
             minX: 0,
-            maxX: (plList.length -1),
-            minY: _getLowestValue(),
-            maxY: _getMaxValue(),
-            titlesData: getTitleData(),
+            maxX: isProfit ? (plList.length - 1) : (assetList.length - 1),
+            minY: _getLowestValue(isProfit: isProfit),
+            maxY: _getMaxValue(isProfit: isProfit),
+            titlesData: getTitleData(isProfit: isProfit),
             gridData: FlGridData(
               show: true,
               getDrawingHorizontalLine: (value) {
@@ -128,8 +226,8 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
             ),
             lineBarsData: [
               LineChartBarData(
-                dotData: FlDotData(show: plList.length <= 75),
-                spots: _lineChartMapper(),
+                dotData: FlDotData(show: isProfit ? plList.length <= 75 : assetList.length <= 75),
+                spots: _lineChartMapper(isProfit: isProfit),
                 curveSmoothness: 0.25,
                 isCurved: true,
                 colors: [
@@ -153,7 +251,7 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
     }
   }
 
-  getTitleData() => FlTitlesData(
+  getTitleData({bool isProfit = true}) => FlTitlesData(
     show: true,
     rightTitles: SideTitles(showTitles: false),
     topTitles: SideTitles(showTitles: false),
@@ -167,24 +265,25 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
         fontSize: 10,
       ),
       getTitles: (value) {
+        var listLength = isProfit ? plList.length : assetList.length;
         if (value < 1) {
           return '';
-        } else if (plList.length < 75 && value == plList.length - 1) {
+        } else if (listLength < 75 && value == listLength - 1) {
           return '';
         }
 
-        if (plList.length <= 10) {
-          return getBottomTitleList("weekly")[value.toInt()];
-        } else if (plList.length > 10 && plList.length <= 20 && value % 2 == 0) {
-          return getBottomTitleList("monthly")[value.toInt()];
-        } else if (plList.length > 20 && plList.length <= 24 && value % 4 == 2) {
-          return getBottomTitleList("monthly")[value.toInt()];
-        } else if (plList.length > 24 && plList.length <= 45 && value % 5 == 0) {
-          return getBottomTitleList("monthly")[value.toInt()];
-        } else if (plList.length > 45 && plList.length <= 75 && value % 10 == 0) {
-          return getBottomTitleList("monthly")[value.toInt()];
-        } else if (plList.length > 75 && plList.length <= 90 && value % 30 == 0) {
-          return getBottomTitleList("3monthly")[value.toInt()];
+        if (listLength <= 10) {
+          return getBottomTitleList("weekly", isProfit: isProfit)[value.toInt()];
+        } else if (listLength > 10 && listLength <= 20 && value % 2 == 0) {
+          return getBottomTitleList("monthly", isProfit: isProfit)[value.toInt()];
+        } else if (listLength > 20 && listLength <= 24 && value % 4 == 2) {
+          return getBottomTitleList("monthly", isProfit: isProfit)[value.toInt()];
+        } else if (listLength > 24 && listLength <= 45 && value % 5 == 0) {
+          return getBottomTitleList("monthly", isProfit: isProfit)[value.toInt()];
+        } else if (listLength > 45 && listLength <= 75 && value % 10 == 0) {
+          return getBottomTitleList("monthly", isProfit: isProfit)[value.toInt()];
+        } else if (listLength > 75 && listLength <= 90 && value % 30 == 0) {
+          return getBottomTitleList("3monthly", isProfit: isProfit)[value.toInt()];
         }
         return '';
       },
@@ -192,11 +291,11 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
     ),
   );
 
-  List<String> getBottomTitleList(String interval) {
+  List<String> getBottomTitleList(String interval, {bool isProfit = true}) {
     final List<String> titleList = [];
-    final String formatType = plList.length <= 75 ? 'dd MM' : 'MMM yy';
+    final String formatType = (isProfit ? plList.length : assetList.length) <= 75 ? 'dd MM' : 'MMM yy';
 
-    for (var i = 0; i < plList.length; i++) {
+    for (var i = 0; i < (isProfit ? plList.length : assetList.length); i++) {
       late String title;
       if (i == 0) {
         title = DateFormat(formatType).format(DateTime.now());

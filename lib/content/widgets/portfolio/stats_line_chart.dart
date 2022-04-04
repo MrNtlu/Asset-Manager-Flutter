@@ -2,7 +2,6 @@ import 'package:asset_flutter/content/widgets/portfolio/stats_lc_linechart.dart'
 import 'package:asset_flutter/content/widgets/portfolio/stats_lc_toggle.dart';
 import 'package:flutter/material.dart';
 
-//TODO: Make seperate PL & TotalAssets and put currency information on top
 class PortfolioStatsLineChart extends StatelessWidget {
   const PortfolioStatsLineChart();
 
@@ -36,20 +35,7 @@ class PortfolioStatsLineChart extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(
-            height: 320,
-            child: Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              color: const Color(0xff020227),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(6, 18, 6, 4),
-                child: StatsLCLineChart(),
-              ),
-            ),
-          ),
+          StatsLCLineChart()
         ],
       ),
     );

@@ -21,44 +21,50 @@ class PortfolioStatsDistributionChart extends StatelessWidget {
       : Column(
         children: [
           SectionTitle("Profit/Loss Distribution", ""),
-          Container(
-            height: 250,
-            margin: const EdgeInsets.only(top: 8, bottom: 12),
-            width: MediaQuery.of(context).size.width * 0.75,
-            child: BarChart(
-              BarChartData(
-                alignment: BarChartAlignment.center,
-                barTouchData: BarTouchData(enabled: true),
-                borderData: FlBorderData(show: false),
-                gridData: FlGridData(
-                  drawVerticalLine: false,
-                  getDrawingHorizontalLine: (value){
-                    return FlLine(
-                      strokeWidth: value == 0 ? 0.4 : 0,
-                      color: Colors.black
-                    );
-                  }
-                ),
-                barGroups: assetStats.convertDataToBarChart(),
-                groupsSpace: 40,
-                titlesData: FlTitlesData(
-                  topTitles: SideTitles(
-                    showTitles: true,
-                    getTextStyles: (context, value) => TextStyle(color: ChartAttributes().chartStatsColor[value.toInt()], fontSize: 12),
-                    getTitles: (id) => ChartAttributes().chartStatsText[id.toInt()],
+          Card(
+            elevation: 4,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            color: const Color(0xff020227),
+            child: Container(
+              height: 250,
+              margin: const EdgeInsets.only(top: 12, bottom: 4),
+              child: BarChart(
+                BarChartData(
+                  alignment: BarChartAlignment.center,
+                  barTouchData: BarTouchData(enabled: true),
+                  borderData: FlBorderData(show: false),
+                  gridData: FlGridData(
+                    drawVerticalLine: false,
+                    getDrawingHorizontalLine: (value){
+                      return FlLine(
+                        strokeWidth: value == 0 ? 0.4 : 0,
+                        color: Colors.black
+                      );
+                    }
                   ),
-                  bottomTitles: SideTitles(
-                    showTitles: true,
-                    getTitles: (id) => "",
-                  ),
-                  leftTitles: SideTitles(
-                    showTitles: false
-                  ),
-                  rightTitles: SideTitles(
-                    showTitles: false,
-                  ),
+                  barGroups: assetStats.convertDataToBarChart(),
+                  groupsSpace: 45,
+                  titlesData: FlTitlesData(
+                    topTitles: SideTitles(
+                      showTitles: true,
+                      getTextStyles: (context, value) => TextStyle(color: ChartAttributes().chartStatsColor[value.toInt()], fontSize: 12),
+                      getTitles: (id) => ChartAttributes().chartStatsText[id.toInt()],
+                    ),
+                    bottomTitles: SideTitles(
+                      showTitles: true,
+                      getTitles: (id) => "",
+                    ),
+                    leftTitles: SideTitles(
+                      showTitles: false
+                    ),
+                    rightTitles: SideTitles(
+                      showTitles: false,
+                    ),
+                  )
                 )
-              )
+              ),
             ),
           ),
         ],
