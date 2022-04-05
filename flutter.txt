@@ -1,0 +1,1 @@
+flutter build appbundle // Building release app for android

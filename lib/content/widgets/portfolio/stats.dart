@@ -48,7 +48,7 @@ Widget statsBodyWidget(BuildContext context, bool isDetails) {
               centerSpaceRadius: 27,
               sections: assetStats!.currency == ''
                 ? _emptyChartData()
-                : assetStats.convertDataToChart(),
+                : assetStats.convertDataToChart(isDetails: isDetails),
             ),
           ),
         ),

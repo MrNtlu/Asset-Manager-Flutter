@@ -10,7 +10,7 @@
 .buildlog/
 .history
 .svn/
-flutter.txt
+lib/static/purchase_api.dart
 
 # IntelliJ related
 *.iml

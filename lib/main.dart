@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:asset_flutter/auth/pages/login_page.dart';
 import 'package:asset_flutter/auth/pages/register_page.dart';
+import 'package:asset_flutter/static/purchase_api.dart';
 import 'package:asset_flutter/content/pages/tabs_page.dart';
 import 'package:asset_flutter/content/providers/asset.dart';
 import 'package:asset_flutter/content/providers/asset_details.dart';
@@ -24,7 +25,10 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 FirebaseCrashlytics crashlytics = FirebaseCrashlytics.instance;
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await PurchaseApi().init();
+  
   setWindowForPC();
   runApp(const MyApp());
 }

@@ -9,6 +9,7 @@ import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/password_textformfield.dart';
 import 'package:asset_flutter/common/widgets/success_view.dart';
+import 'package:asset_flutter/content/widgets/settings/offers_sheet.dart';
 import 'package:asset_flutter/content/models/responses/user.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/routes.dart';
@@ -25,9 +26,7 @@ class SettingsPage extends StatefulWidget {
   State<SettingsPage> createState() => _SettingsPageState();
 }
 
-//TODO: Payment implementation https://www.youtube.com/watch?v=h-jOMh2KXTA&t=1928s
 //TODO: UserInformation design
-//TODO: Premium Subscription/In-app Store page
 class _SettingsPageState extends State<SettingsPage> {  
   DetailState _state = DetailState.init;
   final bool isApple = Platform.isIOS || Platform.isMacOS;
@@ -235,6 +234,16 @@ class _SettingsPageState extends State<SettingsPage> {
                       Text(_userInfo!.currency),
                       Text(_userInfo!.investingLimit),
                       Text(_userInfo!.subscriptionLimit),
+                      ElevatedButton(
+                        onPressed: () => showModalBottomSheet(
+                          context: context, 
+                          builder: (_) => const OffersSheet()
+                        ), 
+                        child: Text('See Plans'),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size.fromHeight(50)
+                        )
+                      )
                     ],
                   )
                 ),
