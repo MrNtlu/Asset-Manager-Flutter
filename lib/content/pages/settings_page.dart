@@ -9,6 +9,7 @@ import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/password_textformfield.dart';
 import 'package:asset_flutter/common/widgets/success_view.dart';
+import 'package:asset_flutter/content/widgets/portfolio/section_title.dart';
 import 'package:asset_flutter/content/widgets/settings/offers_sheet.dart';
 import 'package:asset_flutter/content/models/responses/user.dart';
 import 'package:asset_flutter/static/colors.dart';
@@ -225,27 +226,33 @@ class _SettingsPageState extends State<SettingsPage> {
         return SettingsList(
           sections: [
             SettingsSection(
-              title: const Text('User Information'),
               tiles: [
                 CustomSettingsTile(
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(_userInfo!.email),
-                      Text(_userInfo!.currency),
-                      Text(_userInfo!.investingLimit),
-                      Text(_userInfo!.subscriptionLimit),
-                      ElevatedButton(
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 6),
+                        child: SectionTitle("User Information", '', mainFontSize: 18),
+                      ),
+                      _userInfoText("Email", _userInfo!.email),
+                      _userInfoText("Membership", _userInfo!.isPremium ? "Premium" : "Free"),
+                      _userInfoText("Currency", _userInfo!.currency),
+                      _userInfoText("Investment Usage", _userInfo!.investingLimit),
+                      _userInfoText("Subscription Usage", _userInfo!.subscriptionLimit),
+                      TextButton(
                         onPressed: () => showModalBottomSheet(
                           context: context, 
                           builder: (_) => const OffersSheet()
                         ), 
-                        child: Text('See Plans'),
+                        child: Text('See Membership Plans'),
                         style: ElevatedButton.styleFrom(
                           minimumSize: Size.fromHeight(50)
                         )
-                      )
+                      ),
+                      Divider()
                     ],
-                  )
+                  ),
                 ),
               ]
             ),
@@ -462,4 +469,24 @@ class _SettingsPageState extends State<SettingsPage> {
         return const LoadingView("Please wait...");
     }
   }
+
+  Widget _userInfoText(String title, String data) => Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(title),
+        Padding(
+          padding: const EdgeInsets.only(top: 4),
+          child: Text(
+            data,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
 }
