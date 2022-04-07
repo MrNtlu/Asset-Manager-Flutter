@@ -2,6 +2,7 @@ import 'package:asset_flutter/content/pages/market/markets_page.dart';
 import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
 import 'package:asset_flutter/content/pages/settings_page.dart';
 import 'package:asset_flutter/content/pages/subscription/subscription_page.dart';
+import 'package:asset_flutter/static/purchase_api.dart';
 import 'package:asset_flutter/static/token.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +18,16 @@ class TabsPage extends StatefulWidget {
 }
 
 class _TabsPage extends State<TabsPage> {
+  bool isInit = false;
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    if (!isInit) {
+      await PurchaseApi().userInit();
+    }
+  }
+
   final List<Widget> _pages = [
     MarketsPage(),
     PortfolioPage(),

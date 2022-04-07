@@ -60,6 +60,7 @@ class UserRoutes {
   late String forgotPassword;
   late String changePassword;
   late String changeCurrency;
+  late String changeMembership;
   late String deleteUser;
 
   UserRoutes({baseURL}) {
@@ -69,6 +70,7 @@ class UserRoutes {
     forgotPassword = _baseUserURL + '/forgot-password';
     changePassword = _baseUserURL + '/change-password';
     changeCurrency = _baseUserURL + '/change-currency';
+    changeMembership = _baseUserURL + '/membership';
     deleteUser = _baseUserURL;
   }
 }

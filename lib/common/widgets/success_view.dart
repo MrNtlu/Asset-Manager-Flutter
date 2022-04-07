@@ -33,13 +33,16 @@ class SuccessView extends StatelessWidget {
                 fit: BoxFit.contain
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 16, left: 8, right: 8),
-              child: Text(
-                "Successfully $_text.",
-                style: TextStyle(
-                  color: AppColors().greenColor,
-                  fontSize: 18
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 16, left: 8, right: 8),
+                child: Text(
+                  "Successfully $_text.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: AppColors().greenColor,
+                    fontSize: 18
+                  ),
                 ),
               ),
             ),

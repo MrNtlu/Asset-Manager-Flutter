@@ -6,5 +6,5 @@ class UserInfo {
   final String investingLimit;
   final String subscriptionLimit;
 
-  UserInfo(this.isPremium, this.email, this.currency, this.investingLimit, this.subscriptionLimit);
+  const UserInfo(this.isPremium, this.email, this.currency, this.investingLimit, this.subscriptionLimit);
 }

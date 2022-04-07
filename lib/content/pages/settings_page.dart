@@ -13,11 +13,13 @@ import 'package:asset_flutter/content/widgets/portfolio/section_title.dart';
 import 'package:asset_flutter/content/widgets/settings/offers_sheet.dart';
 import 'package:asset_flutter/content/models/responses/user.dart';
 import 'package:asset_flutter/static/colors.dart';
+import 'package:asset_flutter/static/purchase_api.dart';
 import 'package:asset_flutter/static/routes.dart';
 import 'package:asset_flutter/static/shared_pref.dart';
 import 'package:asset_flutter/static/token.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:http/http.dart' as http;
 import 'package:asset_flutter/utils/extensions.dart';
@@ -27,7 +29,6 @@ class SettingsPage extends StatefulWidget {
   State<SettingsPage> createState() => _SettingsPageState();
 }
 
-//TODO: UserInformation design
 class _SettingsPageState extends State<SettingsPage> {  
   DetailState _state = DetailState.init;
   final bool isApple = Platform.isIOS || Platform.isMacOS;
@@ -122,6 +123,7 @@ class _SettingsPageState extends State<SettingsPage> {
             builder: (ctx) => ErrorDialog(response.getBaseResponse().error!)
           );
         } else {
+          Purchases.logOut();
           SharedPref().deleteLoginCredentials();
           Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (_) => LoginPage()));
@@ -184,6 +186,9 @@ class _SettingsPageState extends State<SettingsPage> {
       ).then((response){
         _userInfo = response.getBaseItemResponse<UserInfo>().data;
         error = _userInfo == null ? response.getBaseItemResponse<UserInfo>().message : null;
+        if (_userInfo != null) {
+          PurchaseApi().userInfo = _userInfo;
+        }
 
         setState(() {
           _state = _userInfo == null ? DetailState.error : DetailState.view;
