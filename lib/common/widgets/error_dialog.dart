@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -24,14 +23,14 @@ class ErrorDialog extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
               child: Lottie.asset(
                 "assets/lottie/error_dialog.json",
-                width: 135,
-                height: 135,
+                width: 125,
+                height: 125,
                 repeat: true,
                 fit: BoxFit.contain
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(8, 8, 8, 24),
+              padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
               child: Text(
                 _error,
                 textAlign: TextAlign.center,
@@ -48,8 +47,7 @@ class ErrorDialog extends StatelessWidget {
                 Navigator.pop(context);
               }
             )
-            : ElevatedButton(
-              style: ElevatedButton.styleFrom(primary: const Color(0xFFFC2C59)),
+            : TextButton(
               onPressed: (){
                 Navigator.pop(context);
               }, 

@@ -1,6 +1,7 @@
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
+import 'package:asset_flutter/common/widgets/premium_dialog.dart';
 import 'package:asset_flutter/common/widgets/success_view.dart';
 import 'package:asset_flutter/content/providers/subscriptions.dart';
 import 'package:asset_flutter/content/widgets/portfolio/sd_edit.dart';
@@ -44,10 +45,17 @@ class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
             _state = CreateState.success;
           });
         } else {
-          showDialog(
-            context: context, 
-            builder: (ctx) => ErrorDialog(value.error!)
-          );
+          if (value.error!.startsWith("free members")) {
+            showDialog(
+              context: context, 
+              builder: (ctx) => PremiumErrorDialog(value.error!)
+            );
+          } else {
+            showDialog(
+              context: context, 
+              builder: (ctx) => ErrorDialog(value.error!)
+            );
+          }
           setState(() {
             _state = CreateState.editing;
           });

@@ -1,16 +1,16 @@
 import 'dart:io';
-
 import 'package:asset_flutter/common/widgets/textformfield.dart';
 import 'package:asset_flutter/content/widgets/portfolio/investment_toggle_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class InvestmentDetailsLogBottomSheet extends StatelessWidget {
   double? price;
   double? amount;
   final String _toAsset;
   late final InvestmentToggleButton _toggleButton;
-  final _form = GlobalKey<FormState>();
+  static final _form = GlobalKey<FormState>();
   final Function(BuildContext, String, double, double, bool) _investmentLogHandler;
 
   InvestmentDetailsLogBottomSheet(
@@ -124,7 +124,11 @@ class InvestmentDetailsLogBottomSheet extends StatelessWidget {
                       },
                       child: Text((price != null ? "Update " : "Add ") + _toAsset,
                           style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold)))
+                            fontSize: 16, 
+                            fontWeight: FontWeight.bold
+                          )
+                        )
+                      )
                     : ElevatedButton(
                       onPressed: () {
                         final _isValid = _form.currentState?.validate();
@@ -142,8 +146,12 @@ class InvestmentDetailsLogBottomSheet extends StatelessWidget {
                             _toggleButton.isSelected[0]);
                       },
                       child: Text((price != null ? "Update " : "Add ") + _toAsset,
-                          style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold))),
+                        style: const TextStyle(
+                          fontSize: 16, 
+                          fontWeight: FontWeight.bold
+                        )
+                      )
+                    ),
                   ],
                 ),
               )

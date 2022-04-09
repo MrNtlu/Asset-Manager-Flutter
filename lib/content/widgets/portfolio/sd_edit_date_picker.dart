@@ -4,6 +4,7 @@ import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class SDEditDatePicker extends StatefulWidget {
   DateTime billDate;
   SDEditDatePicker({required this.billDate, Key? key}) : super(key: key);

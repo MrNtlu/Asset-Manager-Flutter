@@ -31,7 +31,8 @@ class InvestmentDetailsListCell extends StatelessWidget {
       _assetLogProvider.deleteAssetLog(_data.id),
       _assetProvider.getAssetStats(
         toAsset: _data.toAsset, 
-        fromAsset: _data.fromAsset
+        fromAsset: _data.fromAsset,
+        assetMarket: _data.market
       )
     ]).then((response){
       BaseAPIResponse _baseApiResponse = response.first as BaseAPIResponse;
@@ -67,7 +68,7 @@ class InvestmentDetailsListCell extends StatelessWidget {
       _data.price = price;
     }
 
-    _assetLogProvider.editAssetLog(_data, isAmountChanged).then((response){
+    _assetLogProvider.editAssetLog(_data, isAmountChanged).then((response) {
       try {
         if (response.error != null) {
           showDialog(
@@ -77,7 +78,8 @@ class InvestmentDetailsListCell extends StatelessWidget {
         } else {
           _assetProvider.getAssetStats(
             toAsset: _data.toAsset, 
-            fromAsset: _data.fromAsset
+            fromAsset: _data.fromAsset,
+            assetMarket: _data.market
           ).whenComplete(() => _detailsStateProvider.setState(EditState.view));
         } 
       } catch (error) {

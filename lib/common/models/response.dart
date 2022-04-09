@@ -163,6 +163,7 @@ class _TypeConverter<T> {
         response["amount"], 
         DateTime.parse(response["created_at"]),
         response["price"],
+        response["asset_market"],
       ) as T;
     } else if (T == AssetStats) {
       return AssetStats(

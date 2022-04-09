@@ -1,6 +1,7 @@
 import 'package:asset_flutter/content/models/responses/subscription.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class SDEditBillCycle extends StatefulWidget {
   final List<String> billCycleList = ["Day", "Month", "Year"];
   BillCycle billCycle;

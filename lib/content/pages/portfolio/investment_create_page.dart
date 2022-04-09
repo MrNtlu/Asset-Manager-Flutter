@@ -1,7 +1,5 @@
 import 'dart:io';
-
 import 'package:asset_flutter/common/models/state.dart';
-import 'package:asset_flutter/common/widgets/dropdown.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/success_view.dart';

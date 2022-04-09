@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:asset_flutter/auth/pages/login_page.dart';
 import 'package:asset_flutter/auth/pages/register_page.dart';
 import 'package:asset_flutter/static/purchase_api.dart';
@@ -18,6 +17,7 @@ import 'package:asset_flutter/content/providers/subscriptions.dart';
 import 'package:asset_flutter/static/token.dart';
 import 'package:flutter/material.dart';
 import 'package:desktop_window/desktop_window.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -27,6 +27,7 @@ FirebaseCrashlytics crashlytics = FirebaseCrashlytics.instance;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   await PurchaseApi().init();
   
   setWindowForPC();

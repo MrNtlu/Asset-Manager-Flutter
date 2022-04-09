@@ -1,6 +1,7 @@
 import 'package:asset_flutter/static/markets.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class InvestmentCreateDropdowns extends StatefulWidget {
   late String typeDropdownValue;
   late String marketDropdownValue;

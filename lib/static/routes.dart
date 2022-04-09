@@ -84,6 +84,7 @@ class AssetRoutes {
   late final String assetStatsByUserID;
   late final String assetStatsByAssetAndUserID;
   late final String createAsset;
+  late final String createAssetLog;
   late final String updateAssetLogByAssetID;
   late final String deleteAllAssetsByUserID;
   late final String deleteAssetLogsByUserID;
@@ -103,6 +104,7 @@ class AssetRoutes {
     assetStatsByAssetAndUserID = _baseAssetURL + '/details';
 
     createAsset = _baseAssetURL;
+    createAssetLog = _baseAssetURL + '/log';
     updateAssetLogByAssetID = _baseAssetURL;
     deleteAllAssetsByUserID = _baseAssetURL;
     deleteAssetLogsByUserID = _baseAssetURL + '/logs';

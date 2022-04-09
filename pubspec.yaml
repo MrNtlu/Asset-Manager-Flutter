@@ -43,6 +43,7 @@ dependencies:
   country_icons: ^2.0.2
   sliver_tools: ^0.2.5
   purchases_flutter: ^3.9.5
+  flutter_dotenv: ^5.0.2
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
@@ -87,11 +88,13 @@ flutter:
     - assets/lottie/no_item.json
     - assets/lottie/error.json
     - assets/lottie/error_dialog.json
+    - assets/lottie/premium.json
     - assets/images/investment.png
     - assets/policies/privacy_policy.md
     - assets/policies/terms_conditions.md
     - assets/images/gold.png
     - assets/images/markets.png
+    - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

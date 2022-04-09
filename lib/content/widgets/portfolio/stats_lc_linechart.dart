@@ -1,8 +1,8 @@
 import 'package:asset_flutter/common/models/state.dart';
-import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/content/providers/portfolio/daily_stats.dart';
 import 'package:asset_flutter/content/providers/portfolio/stats_toggle_state.dart';
+import 'package:asset_flutter/content/widgets/portfolio/stats_lc_premium.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +23,6 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
   late List<double> assetList;
 
   ViewState _state = ViewState.init;
-  String? _error;
   late final DailyStatsProvider _dailyStatsProvider;
   late final StatsToggleSelectionStateProvider _statsSelectionProvider;
 
@@ -33,7 +32,6 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
     });
 
     _dailyStatsProvider.getDailyStats(interval: interval).then((response){
-      _error = response.message != "" ? response.message : null;
       if (_state != ViewState.disposed) { 
         setState(() {
           _state = (response.message != "" || response.data == null)
@@ -171,7 +169,7 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
       case ViewState.loading:
         return const LoadingView("Fetcing stats", textColor: Colors.white);
       case ViewState.error:
-        return ErrorView(_error ?? "Unknown error!", _getDailyStats);
+        return const StatsLineChartPremiumView();
       case ViewState.empty:
         return Center(
           child: Text(

@@ -25,18 +25,19 @@ class AssetProvider with ChangeNotifier {
   Future<BaseItemResponse<Asset>> getAssetStats({
     required String toAsset,
     required String fromAsset,
+    required String assetMarket,
   }) async {
     try {
       final response = await http.get(
         Uri.parse(
-          APIRoutes().assetRoutes.assetStatsByAssetAndUserID + "?to_asset=$toAsset&from_asset=$fromAsset"
+          APIRoutes().assetRoutes.assetStatsByAssetAndUserID + "?to_asset=$toAsset&from_asset=$fromAsset&asset_market=$assetMarket"
         ),
         headers: UserToken().getBearerToken()
       );
 
       var baseItemResponse = response.getBaseItemResponse<Asset>();
       var data = baseItemResponse.data;
-
+      
       if (data != null) {
         asset = data;
 

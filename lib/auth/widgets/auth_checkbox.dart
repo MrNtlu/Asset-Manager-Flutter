@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class AuthCheckbox extends StatefulWidget {
   final String title;
   bool _value = false;

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:asset_flutter/content/models/requests/subscription.dart';
 import 'package:asset_flutter/content/models/responses/subscription.dart';
 import 'package:asset_flutter/content/providers/subscription.dart';
@@ -11,6 +10,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+// ignore: must_be_immutable
 class SubscriptionDetailsEdit extends StatefulWidget {
   final Subscription? _data;
   late final bool isEditing;
@@ -113,7 +113,7 @@ class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
       ),
       showClearButton: true,
       isFilteredOnline: true,
-      searchDelay: const Duration(seconds: 2),
+      searchDelay: const Duration(milliseconds: 600),
       onFind: (String? filter) async {
         List<String> _itemList = [];
         if (filter == null || (filter.trim() == '')) {

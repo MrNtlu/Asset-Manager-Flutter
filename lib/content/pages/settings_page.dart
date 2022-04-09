@@ -247,7 +247,14 @@ class _SettingsPageState extends State<SettingsPage> {
                       _userInfoText("Subscription Usage", _userInfo!.subscriptionLimit),
                       TextButton(
                         onPressed: () => showModalBottomSheet(
-                          context: context, 
+                          context: context,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: const BorderRadius.only(
+                              topRight: Radius.circular(12),
+                              topLeft: Radius.circular(12)
+                            ),
+                          ),
+                          enableDrag: true,
                           builder: (_) => const OffersSheet()
                         ), 
                         child: Text('See Membership Plans'),

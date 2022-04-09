@@ -3,9 +3,11 @@ import 'package:asset_flutter/common/widgets/error_dialog.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
 import 'package:asset_flutter/common/widgets/success_view.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/purchase_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lottie/lottie.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 class OffersSheet extends StatefulWidget {
@@ -15,11 +17,6 @@ class OffersSheet extends StatefulWidget {
   State<OffersSheet> createState() => OffersSheetState();
 }
 
-//TODO:
-// 1- https://youtu.be/h-jOMh2KXTA?t=1331
-// 2- https://app.revenuecat.com/projects
-// 3- https://play.google.com/console/
-// 4- https://docs.revenuecat.com/docs/getting-started#section-configure-purchases
 class OffersSheetState extends State<OffersSheet> {
   ListState _state = ListState.init;
   late final List<Package> _packages;
@@ -64,80 +61,125 @@ class OffersSheetState extends State<OffersSheet> {
   Widget _portraitBody() {
     switch (_state) {
       case ListState.done:
-        return ListView.builder(
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            final package = _packages[index];
-            final product = package.product;
-
-            return GestureDetector(
-              onTap: () async {
-                try {
-                  await Purchases.purchasePackage(package);
-                  showDialog(
-                    context: context,
-                    builder: (_) => SuccessView("purchased. Thank you for becoming a premium member")
-                  );
-                } on PlatformException catch (e) {
-                  var errorCode = PurchasesErrorHelper.getErrorCode(e);
-                  if (errorCode == PurchasesErrorCode.purchaseCancelledError) {
-                    showDialog(
-                      context: context,
-                      builder: (_) => ErrorDialog("Purchase cancelled.")
-                    );
-                  } else {
-                    showDialog(
-                      context: context,
-                      builder: (_) => ErrorDialog(e.message ?? "Failed to purchase.")
-                    );
-                  }
-                }
-              },
-              child: Card(
-                child: Row(
+        return Container(
+          decoration: BoxDecoration(
+            color: AppColors().primaryColor,
+            borderRadius: const BorderRadius.only(
+                topRight: Radius.circular(12),
+                topLeft: Radius.circular(12)),
+          ),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 8, bottom: 8),
+                child: Column(
                   children: [
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(4),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                product.title.split('(')[0],
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16
-                                ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(4),
-                            child: Text(
-                              product.description,
-                              style: const TextStyle(
-                                fontSize: 14,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Center(
-                        child: Text(
-                          product.priceString,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Lottie.asset(
+                          "assets/lottie/premium.json",
+                          height: 32,
+                          width: 32
                         ),
-                      ),
-                    )
+                        Padding(
+                          padding: const EdgeInsets.only(left: 4),
+                          child: const Text(
+                            "Premium Plans",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ],
                 ),
               ),
-            );
-          },
-          itemCount: _packages.length,
+              ListView.builder(
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  final package = _packages[index];
+                  final product = package.product;
+
+                  return GestureDetector(
+                    onTap: () async {
+                      try {
+                        await Purchases.purchasePackage(package);
+                        showDialog(
+                          context: context,
+                          builder: (_) => SuccessView("purchased. Thank you for becoming a premium member")
+                        );
+                      } on PlatformException catch (e) {
+                        var errorCode = PurchasesErrorHelper.getErrorCode(e);
+                        if (errorCode == PurchasesErrorCode.purchaseCancelledError) {
+                          showDialog(
+                            context: context,
+                            builder: (_) => ErrorDialog("Purchase cancelled.")
+                          );
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (_) => ErrorDialog(e.message ?? "Failed to purchase.")
+                          );
+                        }
+                      }
+                    },
+                    child: Card(
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(4),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(4),
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        product.title.split('(')[0],
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold, fontSize: 16
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(4),
+                                    child: Text(
+                                      product.description,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Center(
+                                child: Text(
+                                  product.priceString,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                itemCount: _packages.length,
+              ),
+            ],
+          ),
         );
       case ListState.empty:
         return const NoItemView('No offer found');

@@ -44,10 +44,24 @@ class AssetLogProvider with ChangeNotifier {
     }
   }
 
-  Future<BaseAPIResponse> addAssetLog(AssetCreate assetCreate) async {
+  Future<BaseAPIResponse> createAsset(AssetCreate assetCreate) async {
     try {
       final response = await http.post(
         Uri.parse(APIRoutes().assetRoutes.createAsset),
+        body: json.encode(assetCreate.convertToJson()),
+        headers: UserToken().getBearerToken(),
+      );
+      
+      return response.getBaseResponse();
+    } catch (error) {
+      return BaseAPIResponse(error.toString());
+    }
+  }
+
+  Future<BaseAPIResponse> addAssetLog(AssetCreate assetCreate) async {
+    try {
+      final response = await http.post(
+        Uri.parse(APIRoutes().assetRoutes.createAssetLog),
         body: json.encode(assetCreate.convertToJson()),
         headers: UserToken().getBearerToken(),
       );

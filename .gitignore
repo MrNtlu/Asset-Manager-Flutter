@@ -10,7 +10,6 @@
 .buildlog/
 .history
 .svn/
-lib/static/purchase_api.dart
 
 # IntelliJ related
 *.iml

@@ -4,6 +4,7 @@ import 'package:asset_flutter/content/models/requests/subscription.dart';
 import 'package:asset_flutter/static/currencies.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class SDEditHeader extends StatelessWidget {
   late String name;
   late num price;

@@ -46,7 +46,8 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
   void _getStats() {
     Provider.of<AssetProvider>(context, listen: false).getAssetStats(
       toAsset: widget._data.toAsset, 
-      fromAsset: widget._data.fromAsset
+      fromAsset: widget._data.fromAsset,
+      assetMarket: widget._data.market
     ).then((response) {
       if (_state != EditState.disposed) {
         if (_state == EditState.init) {

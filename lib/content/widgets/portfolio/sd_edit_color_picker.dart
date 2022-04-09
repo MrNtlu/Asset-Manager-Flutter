@@ -1,6 +1,7 @@
 import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class SDEditColorPicker extends StatefulWidget {
   late Color selectedColor;
 
