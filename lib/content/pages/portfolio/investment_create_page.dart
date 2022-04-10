@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
+import 'package:asset_flutter/common/widgets/premium_dialog.dart';
 import 'package:asset_flutter/common/widgets/success_view.dart';
 import 'package:asset_flutter/common/widgets/textformfield.dart';
 import 'package:asset_flutter/content/models/requests/asset.dart';
@@ -88,16 +89,25 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
 
     _assetsProvider.createAsset(_assetCreate).then((value) {
       if (_state != CreateState.disposed) {
-        setState(() {
-          if (value.error == null) {
+        if (value.error == null) {
+          setState(() {
             _state = CreateState.success;
+          });
+        } else {
+          if (value.error!.startsWith("free members")) {
+            showDialog(
+              context: context, 
+              builder: (ctx) => PremiumErrorDialog(value.error!)
+            );
           } else {
             showDialog(
-                context: context,
-                builder: (ctx) => ErrorDialog(value.error!.toString()));
-            _state = CreateState.editing;
+              context: context,
+              builder: (ctx) => ErrorDialog(value.error!.toString()));
           }
-        });
+          setState(() {
+            _state = CreateState.editing;
+          });
+        }
       }
     });
   }
