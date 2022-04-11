@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+//TODO: Implement sorting for investments
 class PortfolioPage extends StatefulWidget {
   @override
   State<PortfolioPage> createState() => _PortfolioPageState();

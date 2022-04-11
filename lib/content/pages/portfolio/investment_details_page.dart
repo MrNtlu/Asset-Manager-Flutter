@@ -17,6 +17,7 @@ import 'package:asset_flutter/content/providers/asset_logs.dart';
 import 'package:asset_flutter/content/models/requests/asset.dart';
 import 'package:asset_flutter/utils/stock_handler.dart';
 
+//TODO: Change design
 class InvestmentDetailsPage extends StatefulWidget {
   final Asset _data;
   late final String image;

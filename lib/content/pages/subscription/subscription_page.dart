@@ -12,6 +12,7 @@ import 'package:asset_flutter/content/widgets/subscription/subscription_list.dar
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+//TODO: Implement sort for subscriptions
 class SubscriptionPage extends StatefulWidget {
   @override
   State<SubscriptionPage> createState() => _SubscriptionPageState();
