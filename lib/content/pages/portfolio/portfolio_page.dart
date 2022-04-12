@@ -3,12 +3,15 @@ import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
+import 'package:asset_flutter/common/widgets/sort_list.dart';
+import 'package:asset_flutter/common/widgets/sort_toggle.dart';
 import 'package:asset_flutter/content/providers/assets.dart';
 import 'package:asset_flutter/content/providers/portfolio/portfolio_state.dart';
 import 'package:asset_flutter/content/widgets/portfolio/add_investment_button.dart';
 import 'package:asset_flutter/content/widgets/portfolio/investment_list.dart';
 import 'package:asset_flutter/content/widgets/portfolio/portfolio_stats_header.dart';
 import 'package:asset_flutter/content/widgets/portfolio/section_title.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -123,7 +126,81 @@ class _PortfolioPageState extends State<PortfolioPage> {
                         SectionTitle("Investments", ""),
                         NoItemView("Couldn't find investment.")
                       ])
-                    : const PortfolioInvestmentList(),
+                    : Container(
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 6,
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8),
+                                    child: Text(
+                                      "Investments",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 4,
+                                child: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                                    child: TextButton(
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          Text("Name"),
+                                          Icon(
+                                            Icons.arrow_upward_rounded,
+                                            size: 16,
+                                          )
+                                        ],
+                                      ),
+                                      onPressed: () => showModalBottomSheet(
+                                        context: context,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: const BorderRadius.only(
+                                            topRight: Radius.circular(12),
+                                            topLeft: Radius.circular(12)
+                                          ),
+                                        ),
+                                        enableDrag: true,
+                                        builder: (_) => Container(
+                                          height: 350,
+                                          decoration: BoxDecoration(
+                                            borderRadius: const BorderRadius.only(
+                                                topRight: Radius.circular(12),
+                                                topLeft: Radius.circular(12)),
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              SizedBox(height: 16),
+                                              SortToggleButton(),
+                                              SizedBox(height: 250, child: SortList(["Name", "Value", "Amount", "Profit"]))
+                                            ],
+                                          ),
+                                        )
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          //const SectionTitle("Investments", ""),
+                          const PortfolioInvestmentList(),
+                        ],
+                      ),
+                    ),
                   Container(
                     alignment: Alignment.bottomCenter,
                     child: const AddInvestmentButton(edgeInsets: EdgeInsets.only(left: 8, right: 8, bottom: 8))

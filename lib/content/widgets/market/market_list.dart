@@ -48,6 +48,8 @@ class _MarketListState extends State<MarketList> {
 
   @override
   void dispose() {
+    _marketSelectionProvider.type = null;
+    _marketSelectionProvider.market = null;
     _state = ListState.disposed;
     super.dispose();
   }

@@ -245,6 +245,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       _userInfoText("Currency", _userInfo!.currency),
                       _userInfoText("Investment Usage", _userInfo!.investingLimit),
                       _userInfoText("Subscription Usage", _userInfo!.subscriptionLimit),
+                      if(!_userInfo!.isPremium)
                       TextButton(
                         onPressed: () => showModalBottomSheet(
                           context: context,

@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:asset_flutter/content/providers/asset.dart';
 import 'package:asset_flutter/content/providers/assets.dart';
 import 'package:asset_flutter/content/widgets/portfolio/il_cell.dart';
-import 'package:asset_flutter/content/widgets/portfolio/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,17 +13,9 @@ class PortfolioInvestmentList extends StatelessWidget {
     var _data = Provider.of<AssetsProvider>(context).items;
     var _isPortrait = MediaQuery.of(context).orientation == Orientation.portrait  || Platform.isMacOS || Platform.isWindows;
 
-    return Container(
-      color: Colors.white,
-      child: Column(
-        children: [
-          const SectionTitle("Investments", ""),
-          _isPortrait
-            ? _portraitListView(_data)
-            : _landscapeListView(_data),
-        ]
-      )
-    );
+    return _isPortrait
+      ? _portraitListView(_data)
+      : _landscapeListView(_data);
   }
 
   Widget _portraitListView(List<Asset> _data) => Expanded(
