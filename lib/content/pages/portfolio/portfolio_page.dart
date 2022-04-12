@@ -4,19 +4,17 @@ import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
 import 'package:asset_flutter/common/widgets/sort_list.dart';
-import 'package:asset_flutter/common/widgets/sort_toggle.dart';
 import 'package:asset_flutter/content/providers/assets.dart';
 import 'package:asset_flutter/content/providers/portfolio/portfolio_state.dart';
 import 'package:asset_flutter/content/widgets/portfolio/add_investment_button.dart';
 import 'package:asset_flutter/content/widgets/portfolio/investment_list.dart';
 import 'package:asset_flutter/content/widgets/portfolio/portfolio_stats_header.dart';
 import 'package:asset_flutter/content/widgets/portfolio/section_title.dart';
-import 'package:asset_flutter/static/colors.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-//TODO: Implement sorting for investments
 class PortfolioPage extends StatefulWidget {
   @override
   State<PortfolioPage> createState() => _PortfolioPageState();
@@ -26,6 +24,8 @@ class _PortfolioPageState extends State<PortfolioPage> {
   ListState _state = ListState.init;
   late final AssetsProvider _assetsProvider;
   String? _error;
+  late final SortList _sortList;
+  late final SortList _sortTypeList;
 
   void _getAssets() {
     setState(() {
@@ -63,6 +63,9 @@ class _PortfolioPageState extends State<PortfolioPage> {
     if (_state == ListState.init) {
       _assetsProvider = Provider.of<AssetsProvider>(context);
       _getAssets();
+
+      _sortList = SortList(["Name", "Value", "Amount", "Profit"]);
+      _sortTypeList = SortList(["Ascending", "Descending"]);
 
       var _refreshListener = Provider.of<PortfolioStateProvider>(context);
       _refreshListener.addListener(() {
@@ -173,7 +176,8 @@ class _PortfolioPageState extends State<PortfolioPage> {
                                             topLeft: Radius.circular(12)
                                           ),
                                         ),
-                                        enableDrag: true,
+                                        enableDrag: false,
+                                        isDismissible: false,
                                         builder: (_) => Container(
                                           height: 350,
                                           decoration: BoxDecoration(
@@ -183,9 +187,46 @@ class _PortfolioPageState extends State<PortfolioPage> {
                                           ),
                                           child: Column(
                                             children: [
-                                              SizedBox(height: 16),
-                                              SortToggleButton(),
-                                              SizedBox(height: 250, child: SortList(["Name", "Value", "Amount", "Profit"]))
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: _sortList
+                                                  ),
+                                                  Expanded(
+                                                    child: _sortTypeList
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                children: [
+                                                  Platform.isIOS || Platform.isMacOS
+                                                  ? CupertinoButton(
+                                                    child: Text('Cancel'), 
+                                                    onPressed: () => Navigator.pop(context)
+                                                  )
+                                                  : TextButton(
+                                                    onPressed: () => Navigator.pop(context), 
+                                                    child: Text('Cancel')
+                                                  ),
+                                                  Platform.isIOS || Platform.isMacOS
+                                                  ? CupertinoButton.filled(
+                                                    child: Text('Apply'), 
+                                                    onPressed: () {
+                                                      //TODO: Make query request again.
+                                                      print(_sortList.getSelectedItem());
+                                                      print(_sortTypeList.getSelectedItem());
+                                                    }
+                                                  )
+                                                  : ElevatedButton(
+                                                    onPressed: () {
+                                                      //TODO: Make query request again.
+                                                    }, 
+                                                    child: Text('Apply')
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(height: 16)
                                             ],
                                           ),
                                         )
