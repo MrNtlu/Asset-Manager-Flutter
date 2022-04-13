@@ -5,14 +5,15 @@ import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
 import 'package:asset_flutter/content/pages/subscription/subscription_create_page.dart';
+import 'package:asset_flutter/content/providers/portfolio/stats_sheet_state.dart';
 import 'package:asset_flutter/content/providers/subscriptions.dart';
+import 'package:asset_flutter/content/widgets/portfolio/section_sort_title.dart';
 import 'package:asset_flutter/content/widgets/portfolio/section_title.dart';
 import 'package:asset_flutter/content/widgets/subscription/currency_bar.dart';
 import 'package:asset_flutter/content/widgets/subscription/subscription_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-//TODO: Implement sort for subscriptions
 class SubscriptionPage extends StatefulWidget {
   @override
   State<SubscriptionPage> createState() => _SubscriptionPageState();
@@ -20,15 +21,18 @@ class SubscriptionPage extends StatefulWidget {
 
 class _SubscriptionPageState extends State<SubscriptionPage> {
   ListState _state = ListState.init;
-  late final SubscriptionsProvider _subscriptionsProvider;
+  String sort = "name";
+  int sortType = 1;
   String? _error;
+  late final SubscriptionsProvider _subscriptionsProvider;
+  late final StatsSheetSelectionStateProvider _statsSheetProvider;
 
   void _getSubscriptions(){
     setState(() {
       _state = ListState.loading;
     });
     
-    _subscriptionsProvider.getSubscriptions().then((response){
+    _subscriptionsProvider.getSubscriptions(sort: sort, type: sortType).then((response){
       _error = response.error;
       if (_state != ListState.disposed) {
         setState(() {
@@ -59,6 +63,15 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
     if (_state == ListState.init) {
       _subscriptionsProvider = Provider.of<SubscriptionsProvider>(context);
       _getSubscriptions();
+
+      _statsSheetProvider = Provider.of<StatsSheetSelectionStateProvider>(context);
+      _statsSheetProvider.addListener(() {      
+        if (_state != ListState.disposed && _statsSheetProvider.sort != null) {
+          sort = _statsSheetProvider.sort!.toLowerCase();
+          sortType = _statsSheetProvider.sortType! == "Ascending" ? 1 : -1;
+          _getSubscriptions();
+        }
+      });
     }
     super.didChangeDependencies();
   }
@@ -110,7 +123,20 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                         SectionTitle("Investments", ""),
                         NoItemView("Couldn't find subscription.")
                       ])
-                    : const SubscriptionList(),
+                    : SizedBox(
+                        child: Column(
+                          children: [
+                            SectionSortTitle(
+                              "Subscriptions",
+                              ["Name", "Currency", "Price"],
+                              ["Ascending", "Descending"],
+                              sortTitle: sort,
+                              sortType: sortType,
+                            ),
+                            const SubscriptionList(),
+                          ],
+                        )
+                      ),
                   Container(
                     alignment: Alignment.bottomCenter,
                     child: AddElevatedButton("Add Subscription", (){
@@ -153,7 +179,20 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                             SectionTitle("Investments", ""),
                             NoItemView("Couldn't find subscription.")
                           ])
-                        : const SubscriptionList(),
+                        : SizedBox(
+                          child: Column(
+                            children: [
+                              SectionSortTitle(
+                                "Subscriptions",
+                                ["Name", "Currency", "Price"],
+                                ["Ascending", "Descending"],
+                                sortTitle: sort,
+                                sortType: sortType,
+                              ),
+                              const SubscriptionList(),
+                            ],
+                          )
+                        ),
                       Container(
                         alignment: Alignment.bottomCenter,
                         child: AddElevatedButton("Add Subscription", (){

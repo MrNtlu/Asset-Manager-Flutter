@@ -11,11 +11,11 @@ class ChartAttributes {
   ];
 
   List<Color> chartStatsColor = [
+    AppColors().primaryDarkestColor,
     AppColors().primaryColor,
-    AppColors().orangeColor,
-    Colors.red,
+    AppColors().primaryLightishColor,
     AppColors().primaryLightColor,
-    Colors.yellow
+    Colors.yellow,
   ];
 
   ChartAttributes._privateConstructor();

@@ -3,14 +3,14 @@ import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
-import 'package:asset_flutter/common/widgets/sort_list.dart';
 import 'package:asset_flutter/content/providers/assets.dart';
 import 'package:asset_flutter/content/providers/portfolio/portfolio_state.dart';
+import 'package:asset_flutter/content/providers/portfolio/stats_sheet_state.dart';
 import 'package:asset_flutter/content/widgets/portfolio/add_investment_button.dart';
 import 'package:asset_flutter/content/widgets/portfolio/investment_list.dart';
 import 'package:asset_flutter/content/widgets/portfolio/portfolio_stats_header.dart';
+import 'package:asset_flutter/content/widgets/portfolio/section_sort_title.dart';
 import 'package:asset_flutter/content/widgets/portfolio/section_title.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -22,17 +22,18 @@ class PortfolioPage extends StatefulWidget {
 
 class _PortfolioPageState extends State<PortfolioPage> {
   ListState _state = ListState.init;
-  late final AssetsProvider _assetsProvider;
+  String sort = "name";
+  int sortType = 1;
   String? _error;
-  late final SortList _sortList;
-  late final SortList _sortTypeList;
+  late final AssetsProvider _assetsProvider;
+  late final StatsSheetSelectionStateProvider _statsSheetProvider;
 
   void _getAssets() {
     setState(() {
       _state = ListState.loading;
     });
 
-    _assetsProvider.getAssets().then((response){
+    _assetsProvider.getAssets(sort: sort, type: sortType).then((response){
       _error = response.error;
       if (_state != ListState.disposed) {
         setState(() {
@@ -64,12 +65,18 @@ class _PortfolioPageState extends State<PortfolioPage> {
       _assetsProvider = Provider.of<AssetsProvider>(context);
       _getAssets();
 
-      _sortList = SortList(["Name", "Value", "Amount", "Profit"]);
-      _sortTypeList = SortList(["Ascending", "Descending"]);
-
       var _refreshListener = Provider.of<PortfolioStateProvider>(context);
       _refreshListener.addListener(() {
         if (_state != ListState.disposed && _refreshListener.shouldRefresh) {
+          _getAssets();
+        }
+      });
+
+      _statsSheetProvider = Provider.of<StatsSheetSelectionStateProvider>(context);
+      _statsSheetProvider.addListener(() {      
+        if (_state != ListState.disposed && _statsSheetProvider.sort != null) {
+          sort = _statsSheetProvider.sort!.toLowerCase();
+          sortType = _statsSheetProvider.sortType! == "Ascending" ? 1 : -1;
           _getAssets();
         }
       });
@@ -129,115 +136,16 @@ class _PortfolioPageState extends State<PortfolioPage> {
                         SectionTitle("Investments", ""),
                         NoItemView("Couldn't find investment.")
                       ])
-                    : Container(
+                    : SizedBox(
                       child: Column(
                         children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                flex: 6,
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: Text(
-                                      "Investments",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 4,
-                                child: Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                                    child: TextButton(
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                          Text("Name"),
-                                          Icon(
-                                            Icons.arrow_upward_rounded,
-                                            size: 16,
-                                          )
-                                        ],
-                                      ),
-                                      onPressed: () => showModalBottomSheet(
-                                        context: context,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: const BorderRadius.only(
-                                            topRight: Radius.circular(12),
-                                            topLeft: Radius.circular(12)
-                                          ),
-                                        ),
-                                        enableDrag: false,
-                                        isDismissible: false,
-                                        builder: (_) => Container(
-                                          height: 350,
-                                          decoration: BoxDecoration(
-                                            borderRadius: const BorderRadius.only(
-                                                topRight: Radius.circular(12),
-                                                topLeft: Radius.circular(12)),
-                                          ),
-                                          child: Column(
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Expanded(
-                                                    child: _sortList
-                                                  ),
-                                                  Expanded(
-                                                    child: _sortTypeList
-                                                  ),
-                                                ],
-                                              ),
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                children: [
-                                                  Platform.isIOS || Platform.isMacOS
-                                                  ? CupertinoButton(
-                                                    child: Text('Cancel'), 
-                                                    onPressed: () => Navigator.pop(context)
-                                                  )
-                                                  : TextButton(
-                                                    onPressed: () => Navigator.pop(context), 
-                                                    child: Text('Cancel')
-                                                  ),
-                                                  Platform.isIOS || Platform.isMacOS
-                                                  ? CupertinoButton.filled(
-                                                    child: Text('Apply'), 
-                                                    onPressed: () {
-                                                      //TODO: Make query request again.
-                                                      print(_sortList.getSelectedItem());
-                                                      print(_sortTypeList.getSelectedItem());
-                                                    }
-                                                  )
-                                                  : ElevatedButton(
-                                                    onPressed: () {
-                                                      //TODO: Make query request again.
-                                                    }, 
-                                                    child: Text('Apply')
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: 16)
-                                            ],
-                                          ),
-                                        )
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
+                          SectionSortTitle(
+                            "Investments",
+                            ["Name", "Amount", "Profit", "Type"],
+                            ["Ascending", "Descending"],
+                            sortTitle: sort,
+                            sortType: sortType,
                           ),
-                          //const SectionTitle("Investments", ""),
                           const PortfolioInvestmentList(),
                         ],
                       ),
@@ -278,11 +186,24 @@ class _PortfolioPageState extends State<PortfolioPage> {
                         const PortfolioStatsHeader(),
                         _state == ListState.empty
                           ? Column(
-                            children: const[
-                              SectionTitle("Investments", ""),
-                              NoItemView("Couldn't find investment.")
-                            ])
-                          : const PortfolioInvestmentList(),
+                              children: const[
+                                SectionTitle("Investments", ""),
+                                NoItemView("Couldn't find investment.")
+                              ])
+                          : SizedBox(
+                              child: Column(
+                                children: [
+                                  SectionSortTitle(
+                                    "Investments",
+                                    ["Name", "Amount", "Profit", "Type"],
+                                    ["Ascending", "Descending"],
+                                    sortTitle: sort,
+                                    sortType: sortType,
+                                  ),
+                                  const PortfolioInvestmentList(),
+                                ],
+                              )
+                            ),
                         Container(
                           alignment: Alignment.bottomCenter,
                           child: const AddInvestmentButton(edgeInsets: EdgeInsets.all(8))

@@ -184,15 +184,17 @@ class _SettingsPageState extends State<SettingsPage> {
         Uri.parse(APIRoutes().userRoutes.info),
         headers: UserToken().getBearerToken()
       ).then((response){
-        _userInfo = response.getBaseItemResponse<UserInfo>().data;
-        error = _userInfo == null ? response.getBaseItemResponse<UserInfo>().message : null;
-        if (_userInfo != null) {
-          PurchaseApi().userInfo = _userInfo;
-        }
+        if (_state != DetailState.disposed) {
+          _userInfo = response.getBaseItemResponse<UserInfo>().data;
+          error = _userInfo == null ? response.getBaseItemResponse<UserInfo>().message : null;
+          if (_userInfo != null) {
+            PurchaseApi().userInfo = _userInfo;
+          }
 
-        setState(() {
-          _state = _userInfo == null ? DetailState.error : DetailState.view;
-        });
+          setState(() {
+            _state = _userInfo == null ? DetailState.error : DetailState.view;
+          }); 
+        }
       });
     } catch(error) {
       this.error = error.toString();

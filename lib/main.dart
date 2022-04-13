@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:asset_flutter/auth/pages/login_page.dart';
 import 'package:asset_flutter/auth/pages/register_page.dart';
+import 'package:asset_flutter/content/providers/portfolio/stats_sheet_state.dart';
 import 'package:asset_flutter/static/purchase_api.dart';
 import 'package:asset_flutter/content/pages/tabs_page.dart';
 import 'package:asset_flutter/content/providers/asset.dart';
@@ -61,6 +62,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: PricesProvider()),
         ChangeNotifierProvider.value(value: StatsToggleSelectionStateProvider()),
         ChangeNotifierProvider.value(value: DailyStatsProvider()),
+        ChangeNotifierProvider.value(value: StatsSheetSelectionStateProvider()),
       ],
       child: MaterialApp(
         title: 'Kantan',

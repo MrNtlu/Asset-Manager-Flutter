@@ -11,14 +11,14 @@ class SortListCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final selectedColor = AppColors().primaryLightColor;
+    final selectedColor = Colors.black;
     final style = isSelected
       ? TextStyle(
           fontSize: 18,
           color: selectedColor,
           fontWeight: FontWeight.bold
         )
-      : TextStyle(fontSize: 18);
+      : TextStyle(fontSize: 18, color: AppColors().lightBlack);
 
     return ListTile(
       onTap: () => _selectionHandler(_index),      

@@ -2,7 +2,6 @@ import 'package:asset_flutter/content/pages/portfolio/investment_details_page.da
 import 'package:asset_flutter/content/providers/asset.dart';
 import 'package:asset_flutter/content/widgets/portfolio/il_cell_image.dart';
 import 'package:asset_flutter/content/widgets/portfolio/pl_text.dart';
-import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/images.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:asset_flutter/utils/stock_handler.dart';
@@ -32,8 +31,8 @@ class PortfolioInvestmentListCell extends StatelessWidget {
               MaterialPageRoute(builder: ((context) => InvestmentDetailsPage(data))));
       },
       child: Card(
-        elevation: 4,
-        color: AppColors().primaryLightishColor,
+        elevation: 7,
+        color: Colors.white,
         margin: const EdgeInsets.only(left: 8, bottom: 8, right: 8),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(18),
@@ -47,7 +46,7 @@ class PortfolioInvestmentListCell extends StatelessWidget {
                 data.toAsset,
                 style: const TextStyle(
                   fontSize: 18,
-                  color: Colors.white,
+                  color: Colors.black,
                   fontWeight: FontWeight.bold
                 ),
               ),
@@ -63,7 +62,7 @@ class PortfolioInvestmentListCell extends StatelessWidget {
                       data.currentValue.numToString() + ' ' + data.fromAsset,
                       style: const TextStyle(
                         fontSize: 18,
-                        color: Colors.white,
+                        color: Colors.black,
                         fontWeight: FontWeight.bold
                       ),
                     ),

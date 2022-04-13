@@ -27,7 +27,7 @@ class Portfolio extends StatelessWidget {
         Container(
           margin: const EdgeInsets.only(left: 8, right: 8),
           child: Card(
-            color: AppColors().primaryLightishColor,
+            color: AppColors().primaryColor,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
             child: Padding(
               padding: const EdgeInsets.fromLTRB(8, 8, 12, 8),

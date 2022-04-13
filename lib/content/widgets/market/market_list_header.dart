@@ -12,6 +12,12 @@ class MarketListHeader extends StatelessWidget {
       margin: const EdgeInsets.all(0),
       elevation: 4,
       color: AppColors().primaryColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: const BorderRadius.only(
+          bottomRight: Radius.circular(8),
+          bottomLeft: Radius.circular(8)
+        ),
+      ),
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
         child: Row(

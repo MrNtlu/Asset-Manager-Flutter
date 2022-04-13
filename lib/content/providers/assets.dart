@@ -20,8 +20,8 @@ class AssetsProvider with ChangeNotifier {
   }
 
   Future<AssetResponse> getAssets({
-    String sort = "name", //name value amount profit
-    int type = 1
+    required String sort, //name amount profit type
+    required int type
   }) async {
     _items.clear();
     try {

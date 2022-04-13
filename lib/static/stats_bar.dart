@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 
 class StatsBar {
   List<Color> statsColor = [
-    Colors.white,
-    Colors.black,
-    Colors.orange,
+    AppColors().primaryColor,
+    AppColors().primaryLightColor,
     AppColors().primaryDarkestColor,
+    AppColors().primaryLightishColor,
   ];
 
   StatsBar._privateConstructor();

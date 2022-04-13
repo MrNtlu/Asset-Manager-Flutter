@@ -7,7 +7,6 @@ import 'package:asset_flutter/content/providers/asset_details.dart';
 import 'package:asset_flutter/content/providers/asset_logs.dart';
 import 'package:asset_flutter/content/providers/portfolio/portfolio_state.dart';
 import 'package:asset_flutter/content/widgets/portfolio/id_log_bottom_sheet.dart';
-import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -102,12 +101,13 @@ class InvestmentDetailsListCell extends StatelessWidget {
     );
 
     return Card(
+      elevation: 6,
       margin: const EdgeInsets.only(top: 8, right: 4, left: 4),
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
         side: BorderSide(
-          color: _data.type == "buy" ? AppColors().primaryLightColor : Colors.red.shade600,
+          color: _data.type == "buy" ? Colors.green.shade600 : Colors.red.shade600,
           width: 1
         )
       ),
@@ -155,14 +155,25 @@ class InvestmentDetailsListCell extends StatelessWidget {
             children: [
               Container(
                 alignment: Alignment.topRight,
-                margin: const EdgeInsets.only(bottom: 12),
-                child: Text(
-                  _data.createdAt.dateToDaysAgo(),
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold
-                  ),
+                margin: const EdgeInsets.only(bottom: 12, left: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "${_data.type[0].toUpperCase()}${_data.type.substring(1)}",
+                      style: TextStyle(
+                        color: _data.type == "buy" ? Colors.green.shade600 : Colors.red.shade600
+                      ),
+                    ),
+                    Text(
+                      _data.createdAt.dateToDaysAgo(),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold
+                      ),
+                    ),
+                  ],
                 ),
               ),
               InvestmentDetailsLogListCellText(

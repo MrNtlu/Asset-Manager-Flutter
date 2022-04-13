@@ -23,8 +23,8 @@ class SubscriptionsProvider with ChangeNotifier {
   }
 
   Future<SubscriptionResponse> getSubscriptions({
-    String sort = "name", //name currency price
-    int type = 1
+    required String sort, //name currency price
+    required int type
   }) async {
     _items.clear();
     _stats.clear();
