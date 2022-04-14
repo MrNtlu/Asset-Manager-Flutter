@@ -181,7 +181,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     InkWell(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-                          return PolicyPage(false);
+                          return const PolicyPage(false);
                         }));
                       },
                       child: Container(
@@ -193,7 +193,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     InkWell(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-                          return PolicyPage(true);
+                          return const PolicyPage(true);
                         }));
                       },
                       child: Container(

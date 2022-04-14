@@ -19,7 +19,7 @@ class StatsLineChartPremiumView extends StatelessWidget {
         ),
         Container(
           margin: const EdgeInsets.fromLTRB(8, 16, 8, 16),
-          child: Text(
+          child: const Text(
             "Sorry, this function requires premium membership.",
             textAlign: TextAlign.center,
             style: TextStyle(
@@ -31,8 +31,8 @@ class StatsLineChartPremiumView extends StatelessWidget {
         TextButton(
           onPressed: () => showModalBottomSheet(
             context: context, 
-            shape: RoundedRectangleBorder(
-              borderRadius: const BorderRadius.only(
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
                 topRight: Radius.circular(12),
                 topLeft: Radius.circular(12)
               ),
@@ -40,9 +40,9 @@ class StatsLineChartPremiumView extends StatelessWidget {
             enableDrag: true,
             builder: (_) => const OffersSheet()
           ), 
-          child: Text('See Membership Plans'),
+          child: const Text('See Membership Plans'),
           style: ElevatedButton.styleFrom(
-            minimumSize: Size.fromHeight(50)
+            minimumSize: const Size.fromHeight(50)
           )
         )
       ],

@@ -21,7 +21,7 @@ class InvestmentListCellImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: this.margin,
+      margin: margin,
       padding: const EdgeInsets.all(0.2),
       decoration: BoxDecoration(
           color: const Color(0x40000000), borderRadius: borderRadius ?? imageBorderRadius),
@@ -56,7 +56,7 @@ class ILNetworkImage extends StatelessWidget {
         package: _type == "stock" ? 'country_icons': null,
         width: 48,
         height: 48,
-        fit: this._boxfit,
+        fit: _boxfit,
         frameBuilder: (context, child, int? frame, bool? wasSynchronouslyLoaded) {
           if (frame == null) {
             return CircularProgressIndicator(
@@ -85,7 +85,7 @@ class ILNetworkImage extends StatelessWidget {
       _image,
       width: 48,
       height: 48,
-      fit: this._boxfit,
+      fit: _boxfit,
       frameBuilder: (context, child, int? frame, bool? wasSynchronouslyLoaded) {
         if (frame == null) {
           return CircularProgressIndicator(

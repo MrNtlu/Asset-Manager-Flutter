@@ -27,8 +27,8 @@ class PolicyPage extends StatelessWidget {
           if (mdSnapshot.connectionState == ConnectionState.done) {
             return Markdown(data: mdSnapshot.data as String);
           } else {
-            return Center(
-              child: const CircularProgressIndicator(),
+            return const Center(
+              child: CircularProgressIndicator(),
             );
           }
         },

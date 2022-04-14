@@ -21,9 +21,9 @@ class MarketsPage extends StatelessWidget {
                     topLeft: Radius.circular(24)),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 6),
-              child: MarketDropdowns()
+              child: const MarketDropdowns()
             ),
-            MarketList(),
+            const MarketList(),
           ],
         ),
       )

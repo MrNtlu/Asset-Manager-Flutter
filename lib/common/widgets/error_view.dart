@@ -34,7 +34,7 @@ class ErrorView extends StatelessWidget {
             _text,
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: this.textColor,
+              color: textColor,
               fontSize: 18,
             ),
           ),

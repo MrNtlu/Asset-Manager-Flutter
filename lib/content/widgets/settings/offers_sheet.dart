@@ -82,9 +82,9 @@ class OffersSheetState extends State<OffersSheet> {
                           height: 32,
                           width: 32
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 4),
-                          child: const Text(
+                        const Padding(
+                          padding: EdgeInsets.only(left: 4),
+                          child: Text(
                             "Premium Plans",
                             style: TextStyle(
                               fontSize: 18,
@@ -110,14 +110,14 @@ class OffersSheetState extends State<OffersSheet> {
                         await Purchases.purchasePackage(package);
                         showDialog(
                           context: context,
-                          builder: (_) => SuccessView("purchased. Thank you for becoming a premium member")
+                          builder: (_) => const SuccessView("purchased. Thank you for becoming a premium member")
                         );
                       } on PlatformException catch (e) {
                         var errorCode = PurchasesErrorHelper.getErrorCode(e);
                         if (errorCode == PurchasesErrorCode.purchaseCancelledError) {
                           showDialog(
                             context: context,
-                            builder: (_) => ErrorDialog("Purchase cancelled.")
+                            builder: (_) => const ErrorDialog("Purchase cancelled.")
                           );
                         } else {
                           showDialog(

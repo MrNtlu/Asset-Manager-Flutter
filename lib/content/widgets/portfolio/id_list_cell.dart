@@ -1,6 +1,7 @@
 import 'package:asset_flutter/common/models/response.dart';
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/check_dialog.dart';
+import 'package:asset_flutter/common/widgets/error_dialog.dart';
 import 'package:asset_flutter/content/models/responses/asset.dart';
 import 'package:asset_flutter/content/providers/asset.dart';
 import 'package:asset_flutter/content/providers/asset_details.dart';
@@ -13,8 +14,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:asset_flutter/content/widgets/portfolio/id_list_cell_text.dart';
 import 'package:provider/provider.dart';
 
-import '../../../common/widgets/error_dialog.dart';
-
+// ignore_for_file: prefer_const_constructors_in_immutables
 class InvestmentDetailsListCell extends StatelessWidget {
   final AssetLog _data;
   late final AssetDetailsStateProvider _detailsStateProvider;
@@ -41,7 +41,7 @@ class InvestmentDetailsListCell extends StatelessWidget {
           builder: (ctx) => ErrorDialog(_baseApiResponse.error!)
         );
       } else {
-        if(_assetLogProvider.items.length == 0) {
+        if(_assetLogProvider.items.isEmpty) {
           Provider.of<PortfolioStateProvider>(context, listen: false).setRefresh(true);
           Navigator.pop(context);
           return;

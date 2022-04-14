@@ -12,12 +12,12 @@ class PortfolioStatsLineChart extends StatelessWidget {
       child: Column(
         children: [
           Row(
-            children: [
+            children: const [
               Expanded(
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Padding(
-                    padding: const EdgeInsets.all(8),
+                    padding: EdgeInsets.all(8),
                     child: Text(
                       "Daily Stats",
                       style: TextStyle(
@@ -30,12 +30,12 @@ class PortfolioStatsLineChart extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8),
+                padding: EdgeInsets.all(8),
                 child: StatsLineChartToggleButton(),
               ),
             ],
           ),
-          StatsLCLineChart()
+          const StatsLCLineChart()
         ],
       ),
     );

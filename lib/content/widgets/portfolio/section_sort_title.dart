@@ -36,7 +36,7 @@ class SectionSortTitle extends StatelessWidget {
               padding: const EdgeInsets.all(8),
               child: Text(
                 _title,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -65,8 +65,8 @@ class SectionSortTitle extends StatelessWidget {
                 onPressed: () => showModalBottomSheet(
                   context: context,
                   shape: Platform.isIOS || Platform.isMacOS
-                  ? RoundedRectangleBorder(
-                    borderRadius: const BorderRadius.only(
+                  ? const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
                       topRight: Radius.circular(16),
                       topLeft: Radius.circular(16)
                     ),

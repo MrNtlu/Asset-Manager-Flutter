@@ -68,7 +68,7 @@ class _InvestmentCreateDropdownsState extends State<InvestmentCreateDropdowns> {
               },
             ),
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           const Text(
             "Investment Market",
             textAlign: TextAlign.start,

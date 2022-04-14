@@ -141,8 +141,8 @@ class _PortfolioPageState extends State<PortfolioPage> {
                         children: [
                           SectionSortTitle(
                             "Investments",
-                            ["Name", "Amount", "Profit", "Type"],
-                            ["Ascending", "Descending"],
+                            const ["Name", "Amount", "Profit", "Type"],
+                            const ["Ascending", "Descending"],
                             sortTitle: sort,
                             sortType: sortType,
                           ),
@@ -195,8 +195,8 @@ class _PortfolioPageState extends State<PortfolioPage> {
                                 children: [
                                   SectionSortTitle(
                                     "Investments",
-                                    ["Name", "Amount", "Profit", "Type"],
-                                    ["Ascending", "Descending"],
+                                    const ["Name", "Amount", "Profit", "Type"],
+                                    const ["Ascending", "Descending"],
                                     sortTitle: sort,
                                     sortType: sortType,
                                   ),

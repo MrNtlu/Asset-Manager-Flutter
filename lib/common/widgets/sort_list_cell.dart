@@ -11,9 +11,9 @@ class SortListCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final selectedColor = Colors.black;
+    const selectedColor = Colors.black;
     final style = isSelected
-      ? TextStyle(
+      ? const TextStyle(
           fontSize: 18,
           color: selectedColor,
           fontWeight: FontWeight.bold
@@ -26,7 +26,7 @@ class SortListCell extends StatelessWidget {
         _sort,
         style: style,
       ),
-      trailing: isSelected ? Icon(Icons.check, color: selectedColor, size: 26) : null
+      trailing: isSelected ? const Icon(Icons.check, color: selectedColor, size: 26) : null
     );
   }
 }

@@ -23,9 +23,9 @@ class AddElevatedButton extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 12),
-                child: const Icon(Icons.add_circle, size: 22),
+              const Padding(
+                padding: EdgeInsets.only(right: 12),
+                child: Icon(Icons.add_circle, size: 22),
               ),
               Text(_label, style: const TextStyle(fontSize: 18)),
             ],

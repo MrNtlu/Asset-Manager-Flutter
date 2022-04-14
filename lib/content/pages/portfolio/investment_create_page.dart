@@ -284,7 +284,7 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
         child: Column(
           children: [
             _investingsDropdown,
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             _investingCurrenciesDropdown
           ],
         ),
@@ -302,7 +302,7 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
               "Buy/Sell Price",
               const TextInputType.numberWithOptions(
                   decimal: true, signed: true),
-              initialText: _price != null ? _price.toString() : null,
+              initialText: _price.toString(),
               textInputAction: TextInputAction.next,
               edgeInsets: const EdgeInsets.symmetric(vertical: 8),
               onSaved: (value) {
@@ -417,7 +417,7 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
             return tempList;
           case "commodity":
           case "crypto":
-            tempList.add(Investings("American Dollar", "USD"));
+            tempList.add(const Investings("American Dollar", "USD"));
             return tempList;
         }
       }

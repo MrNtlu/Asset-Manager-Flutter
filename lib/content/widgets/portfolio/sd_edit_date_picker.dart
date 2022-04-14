@@ -53,12 +53,12 @@ class SDEditDatePickerState extends State<SDEditDatePicker> {
               }, 
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+                children: const [
                   Padding(
-                    padding: const EdgeInsets.only(right: 12),
-                    child: const Icon(Icons.more_time_rounded, size: 20),
+                    padding: EdgeInsets.only(right: 12),
+                    child: Icon(Icons.more_time_rounded, size: 20),
                   ),
-                  const Text("Pick Date", style: TextStyle(fontSize: 16))
+                  Text("Pick Date", style: TextStyle(fontSize: 16))
                 ],
               ),
             )

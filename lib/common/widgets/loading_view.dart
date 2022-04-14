@@ -38,7 +38,7 @@ class LoadingView extends StatelessWidget {
         child: Text(
           _text,
           style: TextStyle(
-              color: this.textColor, fontSize: 16, fontWeight: FontWeight.bold),
+              color: textColor, fontSize: 16, fontWeight: FontWeight.bold),
         ),
       )
     ]

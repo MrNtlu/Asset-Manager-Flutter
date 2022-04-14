@@ -12,8 +12,8 @@ class MarketListHeader extends StatelessWidget {
       margin: const EdgeInsets.all(0),
       elevation: 4,
       color: AppColors().primaryColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: const BorderRadius.only(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
           bottomRight: Radius.circular(8),
           bottomLeft: Radius.circular(8)
         ),
@@ -25,7 +25,7 @@ class MarketListHeader extends StatelessWidget {
           children: [
             const Text(
               "Name/Symbol",
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: Colors.white

@@ -35,7 +35,7 @@ class _MarketDropdownsState extends State<MarketDropdowns> {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
       elevation: 6,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(12))
       ),
       child: Row(
@@ -70,7 +70,7 @@ class _MarketDropdownsState extends State<MarketDropdowns> {
               ),
             ),
           ),
-          SizedBox(width: 16),
+          const SizedBox(width: 16),
           Expanded(
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(

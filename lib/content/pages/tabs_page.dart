@@ -29,7 +29,7 @@ class _TabsPage extends State<TabsPage> {
   }
 
   final List<Widget> _pages = [
-    MarketsPage(),
+    const MarketsPage(),
     PortfolioPage(),
     SubscriptionPage(),
     SettingsPage()

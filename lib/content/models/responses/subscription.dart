@@ -2,26 +2,10 @@ import 'package:asset_flutter/common/models/json_convert.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 
 class SubscriptionDetails {
-  // final String? cardID;
-  // final String name;
-  // final String? description;
-  // final DateTime billDate;
-  // final BillCycle billCycle;
-  // final double price;
-  // final String currency;
   final num monthlyPayment;
   final num totalpayment;
-  // final String? image;
-  // final int color;
 
   SubscriptionDetails(this.monthlyPayment, this.totalpayment);
-
-  // SubscriptionDetails(
-  //   this.name, this.billDate, this.billCycle, 
-  //   this.price, this.currency, this.monthlyPayment, 
-  //   this.totalpayment, this.image, this.color,
-  //   {this.cardID, this.description}
-  // );
 }
 
 class BillCycle implements JSONConverter{
@@ -32,14 +16,14 @@ class BillCycle implements JSONConverter{
   BillCycle({this.day = 0, this.month = 0, this.year = 0});
   
   @override
-  bool operator ==(Object other) =>
+  // ignore: hash_and_equals
+  bool operator == (Object other) =>
     other is BillCycle &&
     runtimeType == other.runtimeType &&
     day == other.day &&
     month == other.month && 
     year == other.year;
 
-  @override
   BillCycle copyWith({
     int? day,
     int? month,

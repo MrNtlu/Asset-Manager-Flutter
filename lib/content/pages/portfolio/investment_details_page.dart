@@ -141,7 +141,7 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
         actions: [
           IconButton(
             onPressed: () => _deleteLogs(context), 
-            icon: Icon(Icons.delete_rounded),
+            icon: const Icon(Icons.delete_rounded),
             tooltip: "Delete Investment",
           )
         ],

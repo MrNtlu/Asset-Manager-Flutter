@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class StatsLineChartToggleButton extends StatefulWidget {
-  StatsLineChartToggleButton({Key? key}) : super(key: key);
+  const StatsLineChartToggleButton({Key? key}) : super(key: key);
 
   @override
   State<StatsLineChartToggleButton> createState() => _StatsLineChartToggleButtonState();
@@ -12,7 +12,7 @@ class StatsLineChartToggleButton extends StatefulWidget {
 
 class _StatsLineChartToggleButtonState extends State<StatsLineChartToggleButton> {
   bool isInit = false;
-  List<bool> _selectedList = [true, false, false];
+  final List<bool> _selectedList = [true, false, false];
   late final StatsToggleSelectionStateProvider _statsSelectionProvider;
 
   @override
@@ -27,18 +27,18 @@ class _StatsLineChartToggleButtonState extends State<StatsLineChartToggleButton>
   @override
   Widget build(BuildContext context) {
     return ToggleButtons(
-      children: [
+      children: const [
         Padding(
-          padding: const EdgeInsets.all(2),
-          child: Text("7 Days", style: const TextStyle(fontSize: 12)),
+          padding: EdgeInsets.all(2),
+          child: Text("7 Days", style: TextStyle(fontSize: 12)),
         ),
         Padding(
-          padding: const EdgeInsets.all(2),
-          child: Text("Month", style: const TextStyle(fontSize: 12)),
+          padding: EdgeInsets.all(2),
+          child: Text("Month", style: TextStyle(fontSize: 12)),
         ),
         Padding(
-          padding: const EdgeInsets.all(2),
-          child: Text("3 Months", style: const TextStyle(fontSize: 12)),
+          padding: EdgeInsets.all(2),
+          child: Text("3 Months", style: TextStyle(fontSize: 12)),
         ),
       ],
       borderRadius: BorderRadius.circular(8),

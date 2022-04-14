@@ -238,8 +238,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 6),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 6),
                         child: SectionTitle("User Information", '', mainFontSize: 18),
                       ),
                       _userInfoText("Email", _userInfo!.email),
@@ -251,8 +251,8 @@ class _SettingsPageState extends State<SettingsPage> {
                       TextButton(
                         onPressed: () => showModalBottomSheet(
                           context: context,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: const BorderRadius.only(
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
                               topRight: Radius.circular(12),
                               topLeft: Radius.circular(12)
                             ),
@@ -260,12 +260,12 @@ class _SettingsPageState extends State<SettingsPage> {
                           enableDrag: true,
                           builder: (_) => const OffersSheet()
                         ), 
-                        child: Text('See Membership Plans'),
+                        child: const Text('See Membership Plans'),
                         style: ElevatedButton.styleFrom(
-                          minimumSize: Size.fromHeight(50)
+                          minimumSize: const Size.fromHeight(50)
                         )
                       ),
-                      Divider()
+                      const Divider()
                     ],
                   ),
                 ),

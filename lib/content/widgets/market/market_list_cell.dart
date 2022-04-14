@@ -68,7 +68,7 @@ class MarketListCell extends StatelessWidget {
             ],
           ),
         ),
-        Divider()
+        const Divider()
       ],
     );
   }

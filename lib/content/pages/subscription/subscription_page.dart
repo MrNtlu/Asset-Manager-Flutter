@@ -128,8 +128,8 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                           children: [
                             SectionSortTitle(
                               "Subscriptions",
-                              ["Name", "Currency", "Price"],
-                              ["Ascending", "Descending"],
+                              const ["Name", "Currency", "Price"],
+                              const ["Ascending", "Descending"],
                               sortTitle: sort,
                               sortType: sortType,
                             ),
@@ -184,8 +184,8 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                             children: [
                               SectionSortTitle(
                                 "Subscriptions",
-                                ["Name", "Currency", "Price"],
-                                ["Ascending", "Descending"],
+                                const ["Name", "Currency", "Price"],
+                                const ["Ascending", "Descending"],
                                 sortTitle: sort,
                                 sortType: sortType,
                               ),

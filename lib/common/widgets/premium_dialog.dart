@@ -34,7 +34,7 @@ class PremiumErrorDialog extends StatelessWidget {
               child: Text(
                 "${_message[0].toUpperCase()}${_message.substring(1)}.",
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black,
                   fontSize: 16,
                 ),
@@ -46,11 +46,11 @@ class PremiumErrorDialog extends StatelessWidget {
                 isApple
                 ? CupertinoButton.filled(
                   padding: const EdgeInsets.all(12),
-                  child: Text('Membership Plans'), 
+                  child: const Text('Membership Plans'), 
                   onPressed: () => showModalBottomSheet(
                     context: context, 
-                    shape: RoundedRectangleBorder(
-                      borderRadius: const BorderRadius.only(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
                         topRight: Radius.circular(12),
                         topLeft: Radius.circular(12)
                       ),
@@ -62,8 +62,8 @@ class PremiumErrorDialog extends StatelessWidget {
                 : ElevatedButton(
                   onPressed: () => showModalBottomSheet(
                     context: context, 
-                    shape: RoundedRectangleBorder(
-                      borderRadius: const BorderRadius.only(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
                         topRight: Radius.circular(12),
                         topLeft: Radius.circular(12)
                       ),
@@ -71,7 +71,7 @@ class PremiumErrorDialog extends StatelessWidget {
                     enableDrag: true,
                     builder: (_) => const OffersSheet()
                   ), 
-                  child: Text('Membership Plans'),
+                  child: const Text('Membership Plans'),
                 ),
                 isApple
                 ? CupertinoButton(

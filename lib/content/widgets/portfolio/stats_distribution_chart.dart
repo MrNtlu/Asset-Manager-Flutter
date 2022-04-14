@@ -18,8 +18,8 @@ class PortfolioStatsDistributionChart extends StatelessWidget {
       ? Container()
       : Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 8),
+          const Padding(
+            padding: EdgeInsets.only(top: 8),
             child: SectionTitle("Profit/Loss Distribution", ""),
           ),
           Card(
@@ -55,7 +55,7 @@ class PortfolioStatsDistributionChart extends StatelessWidget {
                   titlesData: FlTitlesData(
                     topTitles: SideTitles(
                       showTitles: true,
-                      getTextStyles: (context, value) => TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
+                      getTextStyles: (context, value) => const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
                       getTitles: (id) => ChartAttributes().chartStatsText[id.toInt()],
                     ),
                     bottomTitles: SideTitles(

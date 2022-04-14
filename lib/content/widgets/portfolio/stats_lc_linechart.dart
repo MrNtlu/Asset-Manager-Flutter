@@ -12,7 +12,7 @@ import 'dart:math';
 import 'package:provider/provider.dart';
 
 class StatsLCLineChart extends StatefulWidget{
-  StatsLCLineChart({Key? key}) : super(key: key);
+  const StatsLCLineChart({Key? key}) : super(key: key);
 
   @override
   State<StatsLCLineChart> createState() => _StatsLCLineChartState();

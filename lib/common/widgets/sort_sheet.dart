@@ -27,8 +27,8 @@ class SortSheet extends StatelessWidget {
       child: Container(
         height: (50 * _sortList.length).toDouble() + 100,
         decoration: Platform.isIOS || Platform.isMacOS
-        ? BoxDecoration(
-          borderRadius: const BorderRadius.only(
+        ? const BoxDecoration(
+          borderRadius: BorderRadius.only(
             topRight: Radius.circular(16),
             topLeft: Radius.circular(16)
           ),
@@ -54,7 +54,7 @@ class SortSheet extends StatelessWidget {
               children: [
                 Platform.isIOS || Platform.isMacOS
                 ? CupertinoButton(
-                  child: Text('Cancel'), 
+                  child: const Text('Cancel'), 
                   onPressed: () => Navigator.pop(context)
                 )
                 : Expanded(
@@ -62,13 +62,13 @@ class SortSheet extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: TextButton(
                       onPressed: () => Navigator.pop(context), 
-                      child: Text('Cancel')
+                      child: const Text('Cancel')
                     ),
                   ),
                 ),
                 Platform.isIOS || Platform.isMacOS
                 ? CupertinoButton.filled(
-                  child: Text('Apply'), 
+                  child: const Text('Apply'), 
                   onPressed: () {
                     _statsSheetProvider.sortSelectionChanged(sortListView.getSelectedItem(), sortTypeListView.getSelectedItem());
                     Navigator.pop(context);
@@ -82,7 +82,7 @@ class SortSheet extends StatelessWidget {
                         _statsSheetProvider.sortSelectionChanged(sortListView.getSelectedItem(), sortTypeListView.getSelectedItem());
                         Navigator.pop(context);
                       }, 
-                      child: Text('Apply')
+                      child: const Text('Apply')
                     ),
                   ),
                 ),

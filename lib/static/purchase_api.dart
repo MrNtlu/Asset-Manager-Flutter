@@ -25,7 +25,7 @@ class PurchaseApi {
       Uri.parse(APIRoutes().userRoutes.info),
       headers: UserToken().getBearerToken()
     ).then((response) async {
-      this.userInfo = response.getBaseItemResponse<UserInfo>().data;
+      userInfo = response.getBaseItemResponse<UserInfo>().data;
       if (userInfo != null) {
         await Purchases.logIn(userInfo!.email);
       }
