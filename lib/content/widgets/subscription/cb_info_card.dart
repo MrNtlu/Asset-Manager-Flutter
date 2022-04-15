@@ -23,15 +23,15 @@ class CurrencyBarInfoCard extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(18)),
         boxShadow: [
           BoxShadow(
-            color: AppColors().primaryDarkestColor.withAlpha(40),
-            spreadRadius: 2, //extend
-            blurRadius: 7, //soften
-            offset: const Offset(0, -3),
+            color: AppColors().primaryDarkestColor.withAlpha(20),
+            spreadRadius: 0, //extend
+            blurRadius: 4, //soften
+            offset: const Offset(0, 0),
           ),
         ],
       ),
       child: Card(
-        elevation: 8,
+        elevation: 2,
         shadowColor: AppColors().primaryDarkestColor,
         color: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),

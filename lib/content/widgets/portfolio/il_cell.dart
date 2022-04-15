@@ -31,7 +31,8 @@ class PortfolioInvestmentListCell extends StatelessWidget {
               MaterialPageRoute(builder: ((context) => InvestmentDetailsPage(data))));
       },
       child: Card(
-        elevation: 7,
+        clipBehavior: Clip.antiAlias,
+        elevation: 4,
         color: Colors.white,
         margin: const EdgeInsets.only(left: 8, bottom: 8, right: 8),
         shape: RoundedRectangleBorder(

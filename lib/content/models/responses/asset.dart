@@ -98,7 +98,7 @@ class AssetStats {
       var absValue = double.parse((value.toDouble()).abs().toStringAsFixed(2));
       list.add(BarChartGroupData(x: i, barRods: [
         BarChartRodData(
-          y: absValue.toDouble(),
+          toY: absValue.toDouble(),
           width: 25,
           borderRadius: absValue > 0
               ? const BorderRadius.only(
