@@ -29,11 +29,13 @@ class InvestingRoutes {
   late String _baseInvestingURL;
 
   late String prices;
+  late String investings;
   
   InvestingRoutes({baseURL}) {
     _baseInvestingURL = baseURL + '/investings';
 
     prices = _baseInvestingURL + '/prices';
+    investings = _baseInvestingURL;
   }
 }
 

@@ -1,31 +1,24 @@
 import 'dart:io';
-import 'package:asset_flutter/common/widgets/sort_list.dart';
-import 'package:asset_flutter/content/providers/common/stats_sheet_state.dart';
+import 'package:asset_flutter/common/widgets/currency_list.dart';
+import 'package:asset_flutter/content/providers/common/currency_sheet_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-class SortSheet extends StatelessWidget {
-  final List<String> _sortList;
-  final List<String> _sortTypeList; 
-  final int selectedSort;
-  final int selectedSortType;
-
-  const SortSheet(this._sortList, this._sortTypeList, {
-    Key? key,
-    this.selectedSort = 0,
-    this.selectedSortType = 0,
-  }) : super(key: key);
+class CurrencySheet extends StatelessWidget {
+  final String selectedSymbol;
+  
+  const CurrencySheet({this.selectedSymbol = "USD", Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var _statsSheetProvider = Provider.of<StatsSheetSelectionStateProvider>(context, listen: false);
-    var sortListView = SortList(_sortList, selectedIndex: selectedSort);
-    var sortTypeListView = SortList(_sortTypeList, selectedIndex: selectedSortType);
+    var _currencySheetProvider = Provider.of<CurrencySheetSelectionStateProvider>(context, listen: false);
+    var _currencyList = CurrencyList(selectedSymbol);
 
     return SafeArea(
       child: Container(
-        height: (50 * _sortList.length).toDouble() + 100,
+        height: 325,
+        padding: const EdgeInsets.all(4),
         decoration: Platform.isIOS || Platform.isMacOS
         ? const BoxDecoration(
           borderRadius: BorderRadius.only(
@@ -36,18 +29,8 @@ class SortSheet extends StatelessWidget {
         : null,
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: sortListView
-                  ),
-                  Expanded(
-                    child: sortTypeListView
-                  ),
-                ],
-              ),
+            Expanded(
+              child: _currencyList,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -70,7 +53,7 @@ class SortSheet extends StatelessWidget {
                 ? CupertinoButton.filled(
                   child: const Text('Apply'), 
                   onPressed: () {
-                    _statsSheetProvider.sortSelectionChanged(sortListView.getSelectedItem(), sortTypeListView.getSelectedItem());
+                    _currencySheetProvider.currencySelectionChanged(_currencyList.selectedSymbol);
                     Navigator.pop(context);
                   }
                 )
@@ -79,18 +62,18 @@ class SortSheet extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: ElevatedButton(
                       onPressed: () {
-                        _statsSheetProvider.sortSelectionChanged(sortListView.getSelectedItem(), sortTypeListView.getSelectedItem());
+                        _currencySheetProvider.currencySelectionChanged(_currencyList.selectedSymbol);
                         Navigator.pop(context);
                       }, 
                       child: const Text('Apply')
                     ),
                   ),
-                ),
+                )
               ],
             )
           ],
         ),
-      ),
+      )
     );
   }
 }

@@ -3,22 +3,22 @@ import 'package:flutter/material.dart';
 
 class SortList extends StatefulWidget {
   final List<String> sortList;
-  late final List<bool> selectedList;
+  late final List<bool> selectionList;
 
   SortList(this.sortList, {
     Key? key,
     int selectedIndex = 0,
   }) : super(key: key) {
-    selectedList = [];
+    selectionList = [];
     for (var i = 0; i < sortList.length; i++) {
-      selectedList.insert(i, selectedIndex == i ? true : false);
+      selectionList.insert(i, selectedIndex == i ? true : false);
     }
   }
 
   @override
   State<SortList> createState() => _SortListState();
 
-  String getSelectedItem() => sortList[selectedList.indexOf(true)];
+  String getSelectedItem() => sortList[selectionList.indexOf(true)];
 }
 
 class _SortListState extends State<SortList> {
@@ -27,7 +27,7 @@ class _SortListState extends State<SortList> {
     return ListView.builder(
       itemBuilder: ((context, index) {
         final sort = widget.sortList[index];
-        final sortSelection = widget.selectedList[index];
+        final sortSelection = widget.selectionList[index];
 
         return SortListCell(sort, sortSelection, index, handleSelection);
       }),
@@ -38,14 +38,14 @@ class _SortListState extends State<SortList> {
   }
 
   void handleSelection(int index) {
-    for (var i = 0; i < widget.selectedList.length; i++) {
+    for (var i = 0; i < widget.selectionList.length; i++) {
       if (index != i) {
-        widget.selectedList[i] = false;
+        widget.selectionList[i] = false;
       }
     }
 
     setState(() {
-      widget.selectedList[index] = true;
+      widget.selectionList[index] = true;
     });
   }
 }

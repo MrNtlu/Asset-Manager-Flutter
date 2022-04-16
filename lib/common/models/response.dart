@@ -5,7 +5,7 @@ import 'package:asset_flutter/content/models/responses/user.dart';
 import 'package:asset_flutter/content/providers/asset.dart';
 import 'package:asset_flutter/content/providers/market/prices.dart';
 import 'package:asset_flutter/content/providers/portfolio/daily_stats.dart';
-import 'package:asset_flutter/content/providers/subscription.dart';
+import 'package:asset_flutter/content/providers/subscription/subscription.dart';
 
 class BaseAPIResponse {
   final String? error;
@@ -243,6 +243,11 @@ class _TypeConverter<T> {
         response["currency"],
         response["investing_limit"],
         response["subscription_limit"],
+      ) as T;
+    }else if (T == Investings) {
+      return Investings(
+        response["name"],
+        response["symbol"],
       ) as T;
     } else{
       return response as T;

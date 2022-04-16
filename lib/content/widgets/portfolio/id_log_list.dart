@@ -40,7 +40,7 @@ class _InvestmentDetailsLogListState extends State<InvestmentDetailsLogList> {
       _isPaginating = true;
     }
 
-    Provider.of<AssetLogProvider>(context, listen: false).getAssetLogs(
+    _provider.getAssetLogs(
       toAsset: widget._asset.toAsset, 
       fromAsset: widget._asset.fromAsset,
       page: _page,

@@ -1,4 +1,4 @@
-import 'package:asset_flutter/content/providers/subscription.dart';
+import 'package:asset_flutter/content/providers/subscription/subscription.dart';
 import 'package:asset_flutter/content/pages/subscription/subscription_details_page.dart';
 import 'package:asset_flutter/content/widgets/subscription/sl_cell_image.dart';
 import 'package:auto_size_text/auto_size_text.dart';

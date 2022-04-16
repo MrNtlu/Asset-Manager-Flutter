@@ -1,7 +1,7 @@
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/content/providers/portfolio/daily_stats.dart';
-import 'package:asset_flutter/content/providers/portfolio/stats_toggle_state.dart';
+import 'package:asset_flutter/content/providers/common/stats_toggle_state.dart';
 import 'package:asset_flutter/content/widgets/portfolio/stats_lc_premium.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/utils/extensions.dart';

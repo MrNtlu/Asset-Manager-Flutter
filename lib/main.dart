@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:asset_flutter/auth/pages/login_page.dart';
 import 'package:asset_flutter/auth/pages/register_page.dart';
-import 'package:asset_flutter/content/providers/portfolio/stats_sheet_state.dart';
+import 'package:asset_flutter/content/providers/common/currencies.dart';
+import 'package:asset_flutter/content/providers/common/currency_sheet_state.dart';
+import 'package:asset_flutter/content/providers/common/stats_sheet_state.dart';
 import 'package:asset_flutter/static/purchase_api.dart';
 import 'package:asset_flutter/content/pages/tabs_page.dart';
 import 'package:asset_flutter/content/providers/asset.dart';
@@ -12,9 +14,9 @@ import 'package:asset_flutter/content/providers/market/market_selection_state.da
 import 'package:asset_flutter/content/providers/market/prices.dart';
 import 'package:asset_flutter/content/providers/portfolio/daily_stats.dart';
 import 'package:asset_flutter/content/providers/portfolio/portfolio_state.dart';
-import 'package:asset_flutter/content/providers/portfolio/stats_toggle_state.dart';
-import 'package:asset_flutter/content/providers/subscription_details.dart';
-import 'package:asset_flutter/content/providers/subscriptions.dart';
+import 'package:asset_flutter/content/providers/common/stats_toggle_state.dart';
+import 'package:asset_flutter/content/providers/subscription/subscription_details.dart';
+import 'package:asset_flutter/content/providers/subscription/subscriptions.dart';
 import 'package:asset_flutter/static/token.dart';
 import 'package:flutter/material.dart';
 import 'package:desktop_window/desktop_window.dart';
@@ -63,6 +65,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: StatsToggleSelectionStateProvider()),
         ChangeNotifierProvider.value(value: DailyStatsProvider()),
         ChangeNotifierProvider.value(value: StatsSheetSelectionStateProvider()),
+        ChangeNotifierProvider.value(value: CurrenciesProvider()),
+        ChangeNotifierProvider.value(value: CurrencySheetSelectionStateProvider()),
       ],
       child: MaterialApp(
         title: 'Kantan',

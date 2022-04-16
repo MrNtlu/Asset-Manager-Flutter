@@ -1,4 +1,4 @@
-import 'package:asset_flutter/content/providers/portfolio/stats_toggle_state.dart';
+import 'package:asset_flutter/content/providers/common/stats_toggle_state.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

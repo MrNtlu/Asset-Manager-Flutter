@@ -23,7 +23,7 @@ class SDEditDatePickerState extends State<SDEditDatePicker> {
       child: Row(
         children: [
           Expanded(
-            flex: 2,
+            flex: 3,
             child: Text(
               widget.billDate.dateToFormatDate(),
               style: const TextStyle(
@@ -33,7 +33,7 @@ class SDEditDatePickerState extends State<SDEditDatePicker> {
             ),
           ),
           Expanded(
-            flex: 1,
+            flex: 2,
             child: isApple 
             ? CupertinoButton.filled(
               padding: const EdgeInsets.all(12),

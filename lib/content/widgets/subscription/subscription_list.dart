@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'package:asset_flutter/content/providers/subscription.dart';
-import 'package:asset_flutter/content/providers/subscriptions.dart';
+import 'package:asset_flutter/content/providers/subscription/subscription.dart';
+import 'package:asset_flutter/content/providers/subscription/subscriptions.dart';
 import 'package:asset_flutter/content/widgets/subscription/sl_cell.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

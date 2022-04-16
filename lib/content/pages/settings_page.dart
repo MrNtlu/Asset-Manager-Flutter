@@ -29,6 +29,7 @@ class SettingsPage extends StatefulWidget {
   State<SettingsPage> createState() => _SettingsPageState();
 }
 
+// ignore_for_file: avoid_init_to_null
 class _SettingsPageState extends State<SettingsPage> {  
   DetailState _state = DetailState.init;
   final bool isApple = Platform.isIOS || Platform.isMacOS;

@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:asset_flutter/common/models/response.dart';
 import 'package:asset_flutter/content/models/requests/subscription.dart';
 import 'package:asset_flutter/content/models/responses/subscription.dart';
-import 'package:asset_flutter/content/providers/subscription.dart';
+import 'package:asset_flutter/content/providers/subscription/subscription.dart';
 import 'package:asset_flutter/static/routes.dart';
 import 'package:asset_flutter/static/token.dart';
 import 'package:asset_flutter/utils/extensions.dart';

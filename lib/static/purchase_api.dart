@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:asset_flutter/content/models/responses/user.dart';
 import 'package:asset_flutter/static/routes.dart';
 import 'package:asset_flutter/static/token.dart';
@@ -9,6 +8,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:http/http.dart' as http;
 
+// ignore_for_file: avoid_init_to_null
 class PurchaseApi {
   UserInfo? userInfo = null;
 
