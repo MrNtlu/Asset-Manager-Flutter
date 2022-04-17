@@ -3,6 +3,7 @@ import 'package:asset_flutter/common/widgets/error_dialog.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/premium_dialog.dart';
 import 'package:asset_flutter/common/widgets/success_view.dart';
+import 'package:asset_flutter/content/providers/subscription/subscription_state.dart';
 import 'package:asset_flutter/content/providers/subscription/subscriptions.dart';
 import 'package:asset_flutter/content/widgets/subscription/sd_edit.dart';
 import 'package:asset_flutter/static/colors.dart';
@@ -18,6 +19,7 @@ class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
   CreateState _state = CreateState.init;
   late final SubscriptionDetailsEdit _subscriptionDetailsEdit;
   late final SubscriptionsProvider _subscriptionsProvider;
+  late final SubscriptionStateProvider _subscriptionStateProvider;
 
   void _setCreateData(){
     _subscriptionDetailsEdit.createData!.billDate = _subscriptionDetailsEdit.datePicker.billDate;
@@ -41,6 +43,7 @@ class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
     _subscriptionsProvider.addSubscription(_subscriptionDetailsEdit.createData!).then((value){
       if (_state != CreateState.disposed) {
         if (value.error == null) {
+          _subscriptionStateProvider.setRefresh(true);
           setState(() {
             _state = CreateState.success;
           });
@@ -74,6 +77,7 @@ class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
   void didChangeDependencies() {
     if (_state == CreateState.init) {
       _subscriptionsProvider = Provider.of<SubscriptionsProvider>(context, listen: false);
+      _subscriptionStateProvider = Provider.of<SubscriptionStateProvider>(context, listen: false);
       _subscriptionDetailsEdit = SubscriptionDetailsEdit(null);
     }
     _state = CreateState.editing;
@@ -106,7 +110,7 @@ class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
       case CreateState.success:
         return Container(
           color: Colors.black54, 
-          child: const SuccessView("created")
+          child: const SuccessView("created", shouldJustPop: true)
         );
       case CreateState.editing:
         return SingleChildScrollView(

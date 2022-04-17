@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/currency_list_cell.dart';
 import 'package:asset_flutter/common/widgets/error_view.dart';

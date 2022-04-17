@@ -8,6 +8,7 @@ import 'package:asset_flutter/common/widgets/success_view.dart';
 import 'package:asset_flutter/content/models/responses/subscription.dart';
 import 'package:asset_flutter/content/providers/subscription/subscription.dart';
 import 'package:asset_flutter/content/providers/subscription/subscription_details.dart';
+import 'package:asset_flutter/content/providers/subscription/subscription_state.dart';
 import 'package:asset_flutter/content/providers/subscription/subscriptions.dart';
 import 'package:asset_flutter/content/widgets/subscription/sd_view_text.dart';
 import 'package:asset_flutter/utils/extensions.dart';
@@ -41,6 +42,7 @@ class _SubscriptionDetailsViewState extends State<SubscriptionDetailsView> {
     Provider.of<SubscriptionsProvider>(context, listen: false).deleteSubscription(widget._data.id).then((response){
       if (_state != DetailState.disposed) {
         if (response.error == null) {
+          Provider.of<SubscriptionStateProvider>(context, listen: false).setRefresh(true);
           setState(() {
             _state = DetailState.view;
           });
@@ -48,7 +50,7 @@ class _SubscriptionDetailsViewState extends State<SubscriptionDetailsView> {
             barrierDismissible: false,
             barrierColor: Colors.black54,
             context: context,
-            builder: (ctx) => const SuccessView("deleted")
+            builder: (ctx) => const SuccessView("deleted", isNonTabView: true)
           );
         } else {
           setState(() {

@@ -3,6 +3,7 @@ import 'package:asset_flutter/common/widgets/error_dialog.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/success_view.dart';
 import 'package:asset_flutter/content/providers/subscription/subscription.dart';
+import 'package:asset_flutter/content/providers/subscription/subscription_state.dart';
 import 'package:asset_flutter/content/providers/subscription/subscriptions.dart';
 import 'package:asset_flutter/content/widgets/subscription/sd_edit.dart';
 import 'package:asset_flutter/content/widgets/subscription/sd_view.dart';
@@ -26,6 +27,7 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
   late final Subscription _data;
   late final SubscriptionDetailsEdit _updateView;
   late final SubscriptionDetailsView _detailsView;
+  late final SubscriptionStateProvider _subscriptionStateProvider;
 
   void _setUpdateData(){
     if (_data.billDate.compareTo(_updateView.datePicker.billDate) != 0) {
@@ -55,6 +57,7 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
     _data.updateSubscription(_updateView.updateData!).then((value) {
       if (_state != EditState.disposed) {
         if (value.error == null) {
+          _subscriptionStateProvider.setRefresh(true);
           setState(() {
             _state = EditState.view;
           });
@@ -83,6 +86,7 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
   void didChangeDependencies() {
     if(_state == EditState.init){
       _data = Provider.of<SubscriptionsProvider>(context, listen: false).findById(widget._subscriptionID);
+      _subscriptionStateProvider = Provider.of<SubscriptionStateProvider>(context, listen: false);
       _updateView = SubscriptionDetailsEdit(_data);
       _detailsView = SubscriptionDetailsView(_data);
     }

@@ -6,6 +6,7 @@ import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
 import 'package:asset_flutter/content/pages/subscription/subscription_create_page.dart';
 import 'package:asset_flutter/content/providers/common/stats_sheet_state.dart';
+import 'package:asset_flutter/content/providers/subscription/subscription_state.dart';
 import 'package:asset_flutter/content/providers/subscription/subscriptions.dart';
 import 'package:asset_flutter/content/widgets/portfolio/section_sort_title.dart';
 import 'package:asset_flutter/content/widgets/portfolio/section_title.dart';
@@ -26,6 +27,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   String? _error;
   late final SubscriptionsProvider _subscriptionsProvider;
   late final StatsSheetSelectionStateProvider _statsSheetProvider;
+  late final SubscriptionStateProvider _subscriptionStateProvider;
 
   void _getSubscriptions(){
     setState(() {
@@ -63,6 +65,13 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
     if (_state == ListState.init) {
       _subscriptionsProvider = Provider.of<SubscriptionsProvider>(context);
       _getSubscriptions();
+
+      _subscriptionStateProvider = Provider.of<SubscriptionStateProvider>(context);
+      _subscriptionStateProvider.addListener(() {
+        if (_state != ListState.disposed && _subscriptionStateProvider.shouldRefresh) {
+          _getSubscriptions();
+        }
+      });
 
       _statsSheetProvider = Provider.of<StatsSheetSelectionStateProvider>(context);
       _statsSheetProvider.addListener(() {      

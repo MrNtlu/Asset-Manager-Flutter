@@ -1,3 +1,4 @@
+import 'package:asset_flutter/content/models/responses/subscription.dart';
 import 'package:asset_flutter/content/providers/subscription/subscriptions.dart';
 import 'package:asset_flutter/content/widgets/subscription/cb_container.dart';
 import 'package:asset_flutter/content/widgets/subscription/cb_info_text.dart';
@@ -40,20 +41,7 @@ class CurrencyBarInfoCard extends StatelessWidget {
           child: Column(
             children: [
               Row(
-                children: [
-                  for (var index = 0; index < subscriptionStats.length; index++)
-                    SubscriptionCurrencyBarContainer(
-                      StatsBar().subscriptionStatsPercentageCalculator(
-                        subscriptionStats, 
-                        _isFirstDropdownSelected ? 
-                        subscriptionStats[index].monthlyPayment : 
-                        subscriptionStats[index].totalPayment
-                      ), 
-                      index, 
-                      StatsBar().statsColor[index%4],
-                      subscriptionStats.length
-                    )
-                ],
+                children: _currencyBarWidgetList(subscriptionStats),
               ),
               SizedBox(
                 height: 70,
@@ -62,18 +50,7 @@ class CurrencyBarInfoCard extends StatelessWidget {
                   alignment: WrapAlignment.start,
                   spacing: 1,
                   direction: Axis.vertical,
-                  children: [
-                    for (var i = 0; i < subscriptionStats.length; i++)
-                    SubscriptionCurrencyBarInfoText(
-                      StatsBar().statsColor[i],
-                      (_isFirstDropdownSelected ? 
-                      subscriptionStats[i].monthlyPayment.numToString() 
-                      :
-                      subscriptionStats[i].totalPayment.numToString())
-                      + ' ' 
-                      + subscriptionStats[i].currency
-                    )
-                  ],
+                  children: _currencyBarTitleList(subscriptionStats),
                 ),
               )
             ],
@@ -81,5 +58,57 @@ class CurrencyBarInfoCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  List<Widget> _currencyBarTitleList(List<SubscriptionStats> subscriptionStats) {
+    final List<Widget> _widgetList = [];
+
+    for (var i = 0; i < subscriptionStats.length; i++){
+      final payment = _isFirstDropdownSelected 
+        ? subscriptionStats[i].monthlyPayment 
+        : subscriptionStats[i].totalPayment;
+      
+      if (payment > 0) {
+        _widgetList.add(
+          SubscriptionCurrencyBarInfoText(
+            StatsBar().statsColor[_widgetList.length%4],
+            "${payment.numToString()} ${subscriptionStats[i].currency}"
+          )
+        );
+      }
+    }
+
+    return _widgetList;
+  }
+
+  List<Widget> _currencyBarWidgetList(List<SubscriptionStats> subscriptionStats) {
+    final List<int> percentageList = [];
+    final List<Widget> _widgetList = [];
+
+    for (var index = 0; index < subscriptionStats.length; index++){
+      final percentage = StatsBar().subscriptionStatsPercentageCalculator(
+        subscriptionStats, 
+        _isFirstDropdownSelected 
+          ? subscriptionStats[index].monthlyPayment 
+          : subscriptionStats[index].totalPayment
+      );
+      if (percentage > 0) {
+        percentageList.add(percentage);
+      }
+    }
+
+
+    for (var i = 0; i < percentageList.length; i++) {
+      _widgetList.add(
+        SubscriptionCurrencyBarContainer(
+          percentageList[i], 
+          i, 
+          StatsBar().statsColor[i%4],
+          percentageList.length
+        )
+      );
+    }
+
+    return _widgetList;
   }
 }
