@@ -106,7 +106,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
           floatHeaderSlivers: false,
           headerSliverBuilder: ((context, innerBoxIsScrolled) => [
               const SliverAppBar(
-                expandedHeight: 210,
+                expandedHeight: 175,
                 floating: true,
                 snap: false,
                 backgroundColor: Colors.white,
