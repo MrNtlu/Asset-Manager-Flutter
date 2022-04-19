@@ -6,6 +6,7 @@ class APIRoutes {
 
   late final AssetRoutes assetRoutes;
   late final SubscriptionRoutes subscriptionRoutes;
+  late final CardRoutes cardRoutes;
   late final AuthRoutes authRoutes;
   late final UserRoutes userRoutes;
   late final InvestingRoutes investingRoutes;
@@ -13,6 +14,7 @@ class APIRoutes {
   APIRoutes._privateConstructor() {
     assetRoutes = AssetRoutes(baseURL: baseURL);
     subscriptionRoutes = SubscriptionRoutes(baseURL: baseURL);
+    cardRoutes = CardRoutes(baseURL: baseURL);
     authRoutes = AuthRoutes(baseURL: baseURL);
     userRoutes = UserRoutes(baseURL: baseURL);
     investingRoutes = InvestingRoutes(baseURL: baseURL);
@@ -138,5 +140,29 @@ class SubscriptionRoutes {
     updateSubscription = _baseSubscriptionURL;
     deleteSubscriptionBySubscriptionID = _baseSubscriptionURL;
     deleteSubscriptionsByUserID = _baseSubscriptionURL + '/all';
+  }
+}
+
+class CardRoutes {
+  late final String _baseCardURL;
+
+  late final String cardsByUserID;
+  late final String cardStatsByUserID;
+  late final String createCard;
+  late final String updateCard;
+
+  late final String deleteCardByCardID;
+  late final String deleteCardsByUserID;
+
+  CardRoutes({baseURL}) {
+    _baseCardURL = baseURL + '/card';
+
+    cardStatsByUserID = _baseCardURL + '/stats';
+
+    cardsByUserID = _baseCardURL;
+    createCard = _baseCardURL;
+    updateCard = _baseCardURL;
+    deleteCardByCardID = _baseCardURL;
+    deleteCardsByUserID = _baseCardURL + '/all';
   }
 }

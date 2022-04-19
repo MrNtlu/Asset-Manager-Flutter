@@ -49,11 +49,13 @@ class _TabsPage extends State<TabsPage> {
       body: _pages[_selectedPageIndex],
       backgroundColor: Colors.white,
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.shifting,
         onTap: _selectPage,
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.grey,
         currentIndex: _selectedPageIndex,
-        elevation: 5,
+        elevation: 8,
+        enableFeedback: true,
         showUnselectedLabels: true,
         items: const [
           BottomNavigationBarItem(

@@ -4,14 +4,15 @@ import 'package:asset_flutter/common/widgets/add_elevated_button.dart';
 import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
+import 'package:asset_flutter/common/widgets/sort_sheet.dart';
+import 'package:asset_flutter/content/pages/subscription/card_page.dart';
 import 'package:asset_flutter/content/pages/subscription/subscription_create_page.dart';
 import 'package:asset_flutter/content/providers/common/stats_sheet_state.dart';
 import 'package:asset_flutter/content/providers/subscription/subscription_state.dart';
 import 'package:asset_flutter/content/providers/subscription/subscriptions.dart';
-import 'package:asset_flutter/content/widgets/portfolio/section_sort_title.dart';
 import 'package:asset_flutter/content/widgets/portfolio/section_title.dart';
-import 'package:asset_flutter/content/widgets/subscription/currency_bar.dart';
 import 'package:asset_flutter/content/widgets/subscription/subscription_list.dart';
+import 'package:asset_flutter/content/widgets/subscription/subscription_stats_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -50,10 +51,6 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
     });
   }
 
-  Future<void> _onRefresh(BuildContext ctx) async {
-    _getSubscriptions();
-  }
-
   @override
   void dispose() {
     _state = ListState.disposed;
@@ -87,11 +84,76 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: MediaQuery.of(context).orientation == Orientation.portrait || Platform.isMacOS || Platform.isWindows
-      ? _portraitBody()
-      : _landscapeBody()
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: const Text(
+          "Subscriptions", 
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)
+        ),
+        backgroundColor: Colors.white,
+        actions: _iconButtons(),
+      ),
+      body: SafeArea(
+        child: MediaQuery.of(context).orientation == Orientation.portrait || Platform.isMacOS || Platform.isWindows
+        ? _portraitBody()
+        : _landscapeBody()
+      ),
     );
+  }
+
+  List<Widget> _iconButtons() {
+    return [
+      IconButton(
+        onPressed: () => showModalBottomSheet(
+          context: context,
+          shape: Platform.isIOS || Platform.isMacOS
+          ? const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(16),
+              topLeft: Radius.circular(16)
+            ),
+          )
+          : null,
+          enableDrag: true,
+          isDismissible: true,
+          builder: (_) => SubscriptionStatsSheet(_subscriptionsProvider.stats)
+        ),
+        icon: const Icon(Icons.bar_chart_rounded, color: Colors.black),
+        tooltip: 'Statistics',
+      ),
+      IconButton(
+        icon: const Icon(Icons.credit_card_rounded, color: Colors.black),
+        tooltip: 'Credit Cards',
+        onPressed: () => Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => const CardPage()) 
+        ),
+      ),
+      IconButton(
+        icon: const Icon(Icons.filter_alt_rounded, color: Colors.black),
+        tooltip: 'Sort',
+        onPressed: () => showModalBottomSheet(
+          context: context,
+          shape: Platform.isIOS || Platform.isMacOS
+          ? const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(16),
+              topLeft: Radius.circular(16)
+            ),
+          )
+          : null,
+          enableDrag: false,
+          isDismissible: false,
+          isScrollControlled: true,
+          builder: (_) => SortSheet(
+            const ["Name", "Currency", "Price"],
+            const ["Ascending", "Descending"],
+            selectedSort: const ["Name", "Currency", "Price"].indexOf("${sort[0].toUpperCase()}${sort.substring(1)}"),
+            selectedSortType: sortType == 1 ? 0 : 1,
+          )
+        ),
+      )
+    ];
   }
 
   Widget _portraitBody() {
@@ -102,62 +164,26 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
         return ErrorView(_error ?? "Unknown error!", _getSubscriptions);
       case ListState.empty:
       case ListState.done:
-        return NestedScrollView(
-          floatHeaderSlivers: false,
-          headerSliverBuilder: ((context, innerBoxIsScrolled) => [
-              const SliverAppBar(
-                expandedHeight: 175,
-                floating: true,
-                snap: false,
-                backgroundColor: Colors.white,
-                elevation: 5,
-                flexibleSpace: FlexibleSpaceBar(
-                  collapseMode: CollapseMode.parallax,
-                  background: Center(
-                    child: SubscriptionCurrencyBar(),
-                  ),
+        return SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: Stack(
+            children: [
+              _state == ListState.empty
+                ? const NoItemView("Couldn't find subscription.")
+                : const Padding(
+                  padding: EdgeInsets.only(top: 8),
+                  child: SubscriptionList(),
                 ),
+              Container(
+                alignment: Alignment.bottomCenter,
+                child: AddElevatedButton("Add Subscription", (){
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: ((context) => SubscriptionCreatePage()))
+                  );
+                },
+                edgeInsets: const EdgeInsets.only(left: 8, right: 8, bottom: 8)),
               ),
-            ]
-          ),
-          body: RefreshIndicator(
-            onRefresh: () => _onRefresh(context),
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height,
-              child: Stack(
-                children: [
-                  _state == ListState.empty
-                    ? Column(
-                      children: const [
-                        SectionTitle("Investments", ""),
-                        NoItemView("Couldn't find subscription.")
-                      ])
-                    : SizedBox(
-                        child: Column(
-                          children: [
-                            SectionSortTitle(
-                              "Subscriptions",
-                              const ["Name", "Currency", "Price"],
-                              const ["Ascending", "Descending"],
-                              sortTitle: sort,
-                              sortType: sortType,
-                            ),
-                            const SubscriptionList(),
-                          ],
-                        )
-                      ),
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    child: AddElevatedButton("Add Subscription", (){
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: ((context) => SubscriptionCreatePage()))
-                      );
-                    },
-                    edgeInsets: const EdgeInsets.only(left: 8, right: 8, bottom: 8)),
-                  ),
-              ])
-            ),
-          ),
+          ])
         );
       default:
         return const LoadingView("Loading");
@@ -172,51 +198,33 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
         return ErrorView(_error ?? "Unknown error!", _getSubscriptions);
       case ListState.empty:
       case ListState.done:
-        return RefreshIndicator(
-          onRefresh: () => _onRefresh(context),
-          child: CustomScrollView(
-            physics: const ScrollPhysics(),
-            slivers: [
-              SliverToBoxAdapter(
-                child: Center(
-                  child: Column(
-                    children: [
-                      const SubscriptionCurrencyBar(),
-                      _state == ListState.empty
-                        ? Column(
-                          children: const [
-                            SectionTitle("Investments", ""),
-                            NoItemView("Couldn't find subscription.")
-                          ])
-                        : SizedBox(
-                          child: Column(
-                            children: [
-                              SectionSortTitle(
-                                "Subscriptions",
-                                const ["Name", "Currency", "Price"],
-                                const ["Ascending", "Descending"],
-                                sortTitle: sort,
-                                sortType: sortType,
-                              ),
-                              const SubscriptionList(),
-                            ],
-                          )
-                        ),
-                      Container(
-                        alignment: Alignment.bottomCenter,
-                        child: AddElevatedButton("Add Subscription", (){
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: ((context) => SubscriptionCreatePage()))
-                          );
-                        },
-                        edgeInsets: const EdgeInsets.all(8)),
+        return CustomScrollView(
+          physics: const ScrollPhysics(),
+          slivers: [
+            SliverToBoxAdapter(
+              child: Center(
+                child: Column(
+                  children: [
+                    _state == ListState.empty
+                      ? const NoItemView("Couldn't find subscription.")
+                      : const Padding(
+                        padding: EdgeInsets.only(top: 8),
+                        child: SubscriptionList()
                       ),
-                    ],
-                  ),
+                    Container(
+                      alignment: Alignment.bottomCenter,
+                      child: AddElevatedButton("Add Subscription", (){
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: ((context) => SubscriptionCreatePage()))
+                        );
+                      },
+                      edgeInsets: const EdgeInsets.all(8)),
+                    ),
+                  ],
                 ),
               ),
-            ]
-          ),
+            ),
+          ]
         );
       default:
         return const LoadingView("Loading");

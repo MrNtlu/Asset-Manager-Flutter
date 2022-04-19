@@ -7,7 +7,6 @@ import 'package:asset_flutter/content/providers/subscription/subscription_state.
 import 'package:asset_flutter/content/providers/subscription/subscriptions.dart';
 import 'package:asset_flutter/content/widgets/subscription/sd_edit.dart';
 import 'package:asset_flutter/content/widgets/subscription/sd_view.dart';
-import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -99,9 +98,13 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text((_state == EditState.editing) ? "Edit" : ''),
-        backgroundColor: AppColors().primaryLightishColor,
+        iconTheme: const IconThemeData(
+          color: Colors.black,
+        ),
+        title: Text((_state == EditState.editing) ? "Edit" : '', style: const TextStyle(color: Colors.black)),
+        backgroundColor: Colors.white,
         actions: _iconButtons(),
+        
       ),
       body: SafeArea(
         child: _body()
@@ -116,7 +119,7 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
           onPressed: () => setState(() {
             _state = EditState.view;
           }),
-          icon: const Icon(Icons.cancel_rounded),
+          icon: const Icon(Icons.cancel_rounded, color: Colors.black),
           tooltip: 'Discard Changes',
         ),
         IconButton(
@@ -128,7 +131,7 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
     } else {
       return [
         IconButton(
-          icon: const Icon(Icons.edit_rounded),
+          icon: const Icon(Icons.edit_rounded, color: Colors.black),
           tooltip: 'Enter Edit State',
           onPressed: () {
             if (_detailsView.canEnterEditMode) {

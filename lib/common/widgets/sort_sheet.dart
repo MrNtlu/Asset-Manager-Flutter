@@ -18,7 +18,7 @@ class SortSheet extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {    
     var _statsSheetProvider = Provider.of<StatsSheetSelectionStateProvider>(context, listen: false);
     var sortListView = SortList(_sortList, selectedIndex: selectedSort);
     var sortTypeListView = SortList(_sortTypeList, selectedIndex: selectedSortType);

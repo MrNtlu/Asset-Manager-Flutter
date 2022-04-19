@@ -18,21 +18,19 @@ class SubscriptionList extends StatelessWidget{
       : _landscapeListView(_data);
   }
 
-  Widget _portraitListView(List<Subscription> _data) => Expanded(
-    child: ListView.builder(itemBuilder: ((context, index) {
-      if(index == _data.length) {
-        return const SizedBox(height: 75);
-      }
-      final data = _data[index];
-      return ChangeNotifierProvider.value(
-        value: data,
-        child: SubscriptionListCell()
-      );
-    }),
-    itemCount: _data.length + 1,
-    physics: const ClampingScrollPhysics(),
-    shrinkWrap: true,
-    ),
+  Widget _portraitListView(List<Subscription> _data) => ListView.builder(itemBuilder: ((context, index) {
+    if(index == _data.length) {
+      return const SizedBox(height: 75);
+    }
+    final data = _data[index];
+    return ChangeNotifierProvider.value(
+      value: data,
+      child: SubscriptionListCell()
+    );
+  }),
+  itemCount: _data.length + 1,
+  physics: const ClampingScrollPhysics(),
+  shrinkWrap: true,
   );
 
   Widget _landscapeListView(List<Subscription> _data) => SizedBox(

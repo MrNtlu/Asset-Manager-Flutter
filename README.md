@@ -32,6 +32,7 @@ Scraper: [Asset Scraper](https://github.com/MrNtlu/Asset-Scraper)
     <li> Country Icons
     <li> Sliver Tools
     <li> Dotenv
+    <li> AwesomeCard
 </ul>
 
 &nbsp;
