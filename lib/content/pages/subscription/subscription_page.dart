@@ -10,7 +10,6 @@ import 'package:asset_flutter/content/pages/subscription/subscription_create_pag
 import 'package:asset_flutter/content/providers/common/stats_sheet_state.dart';
 import 'package:asset_flutter/content/providers/subscription/subscription_state.dart';
 import 'package:asset_flutter/content/providers/subscription/subscriptions.dart';
-import 'package:asset_flutter/content/widgets/portfolio/section_title.dart';
 import 'package:asset_flutter/content/widgets/subscription/subscription_list.dart';
 import 'package:asset_flutter/content/widgets/subscription/subscription_stats_sheet.dart';
 import 'package:flutter/material.dart';
@@ -143,7 +142,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
           )
           : null,
           enableDrag: false,
-          isDismissible: false,
+          isDismissible: true,
           isScrollControlled: true,
           builder: (_) => SortSheet(
             const ["Name", "Currency", "Price"],
@@ -169,7 +168,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
           child: Stack(
             children: [
               _state == ListState.empty
-                ? const NoItemView("Couldn't find subscription.")
+                ? const Center(child: NoItemView("Couldn't find subscription."))
                 : const Padding(
                   padding: EdgeInsets.only(top: 8),
                   child: SubscriptionList(),
@@ -206,7 +205,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                 child: Column(
                   children: [
                     _state == ListState.empty
-                      ? const NoItemView("Couldn't find subscription.")
+                      ? const Center(child: NoItemView("Couldn't find subscription."))
                       : const Padding(
                         padding: EdgeInsets.only(top: 8),
                         child: SubscriptionList()

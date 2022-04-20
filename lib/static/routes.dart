@@ -145,7 +145,7 @@ class SubscriptionRoutes {
 
 class CardRoutes {
   late final String _baseCardURL;
-
+  
   late final String cardsByUserID;
   late final String cardStatsByUserID;
   late final String createCard;

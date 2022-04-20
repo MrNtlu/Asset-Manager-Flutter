@@ -3,6 +3,8 @@ import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
+import 'package:asset_flutter/content/pages/subscription/card_create_page.dart';
+import 'package:asset_flutter/content/pages/subscription/subscription_create_page.dart';
 import 'package:asset_flutter/content/providers/subscription/cards.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:awesome_card/awesome_card.dart';
@@ -45,6 +47,7 @@ class _CardPageState extends State<CardPage> {
 
   @override
   void dispose() {
+    _cardProvider.removeListener((){});
     _state = ListState.disposed;
     super.dispose();
   }
@@ -53,14 +56,20 @@ class _CardPageState extends State<CardPage> {
   void didChangeDependencies() {
     if (_state == ListState.init) {
       _cardProvider = Provider.of<CardProvider>(context);
+      _cardProvider.addListener((){
+        if (_state != ListState.disposed) {
+          if (_cardProvider.items.isEmpty && _state == ListState.done) {
+            setState(() {
+              _state = ListState.empty;
+            });
+          } else if (_cardProvider.items.isNotEmpty && _state == ListState.empty) {
+            setState(() {
+              _state = ListState.done;
+            });
+          } 
+        }
+      });
       _getCreditCards();
-
-      // _cardStateProvider = Provider.of<CardStateProvider>(context);
-      // _cardStateProvider.addListener(() {
-      //   if (_state != ListState.disposed && _cardStateProvider.shouldRefresh) {
-      //     _getSubscriptions();
-      //   }
-      // });
     }
     super.didChangeDependencies();
   }
@@ -78,11 +87,19 @@ class _CardPageState extends State<CardPage> {
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)
         ),
         backgroundColor: Colors.white,
+        actions: [
+          IconButton(
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const CardCreatePage(true))
+            ), 
+            icon: const Icon(Icons.add_rounded, size: 28)
+          )
+        ],
       ),
       body: SafeArea(
         child: MediaQuery.of(context).orientation == Orientation.portrait || Platform.isMacOS || Platform.isWindows
         ? _portraitBody()
-        : Container()
+        : Container() //TODO: Implement
       )
     );
   }
@@ -100,7 +117,7 @@ class _CardPageState extends State<CardPage> {
           child: Stack(
             children: [
               _state == ListState.empty
-                ? const NoItemView("Couldn't find credit card.")
+                ? const Center(child: NoItemView("Couldn't find credit card."))
                 : Padding(
                   padding: const EdgeInsets.only(top: 8),
                   child: ListView.builder(
@@ -109,19 +126,30 @@ class _CardPageState extends State<CardPage> {
                     shrinkWrap: true,
                     itemBuilder: ((context, index) {
                       var _creditCard = _cardProvider.items[index];
-                      return CreditCard(
-                        cardNumber: "XXXX XXXX XXXX ${_creditCard.lastDigits}",
-                        cardHolderName: "Burak Fidan", //TODO: Implement name
-                        bankName: _creditCard.name,
-                        cardType: CardType.masterCard,
-                        showBackSide: false,
-                        frontBackground: Container(
-                          width: double.maxFinite,
-                          height: double.maxFinite,
-                          color: Colors.black,
+
+                      return GestureDetector(
+                        onTap: () {
+                          print("$index");
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                          child: CreditCard(
+                            cardNumber: "XXXX XXXX XXXX ${_creditCard.lastDigits}",
+                            cardHolderName: _creditCard.cardHolder,
+                            bankName: _creditCard.name,
+                            cardType: _cardTypeMapper(_creditCard.cardType),
+                            showBackSide: false,
+                            frontBackground: Container(
+                              width: double.maxFinite,
+                              height: double.maxFinite,
+                              color: Color(int.parse(_creditCard.color)),
+                            ),
+                            backBackground: CardBackgrounds.white,
+                            frontTextColor: index % 4 == 3 ? Colors.black : Colors.white,
+                            showShadow: true,
+                            horizontalMargin: 8,
+                          ),
                         ),
-                        backBackground: CardBackgrounds.white,
-                        showShadow: true,
                       );
                     })
                   ),
@@ -131,6 +159,20 @@ class _CardPageState extends State<CardPage> {
       default:
         return const LoadingView("Loading");
     }
-    
+  }
+
+  CardType _cardTypeMapper(String cardType) {
+    switch (cardType) {
+      case "AmericanExpress":
+        return CardType.americanExpress;
+      case "MasterCard":
+        return CardType.masterCard;
+      case "Visa":
+        return CardType.visa;
+      case "Maestro":
+        return CardType.maestro;
+      default:
+        return CardType.masterCard;
+    }
   }
 }

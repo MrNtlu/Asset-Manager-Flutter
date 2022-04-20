@@ -255,6 +255,9 @@ class _TypeConverter<T> {
         response["_id"],
         response["name"],
         response["last_digit"],
+        response["card_holder"],
+        response["color"],
+        response["type"],
       ) as T;
     } else{
       return response as T;

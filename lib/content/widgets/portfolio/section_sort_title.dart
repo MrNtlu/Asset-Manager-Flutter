@@ -73,7 +73,7 @@ class SectionSortTitle extends StatelessWidget {
                   )
                   : null,
                   enableDrag: false,
-                  isDismissible: false,
+                  isDismissible: true,
                   isScrollControlled: true,
                   builder: (_) => SortSheet(
                     _sortList,

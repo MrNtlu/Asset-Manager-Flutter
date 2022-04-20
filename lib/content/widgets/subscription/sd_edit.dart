@@ -28,7 +28,7 @@ class SubscriptionDetailsEdit extends StatefulWidget {
   SubscriptionDetailsEdit(this._data, {Key? key}) : super(key: key) {
     isEditing = _data != null;
     colorPicker = SDEditColorPicker(
-      color: _data!= null ? Color(_data!.color) : null,
+      color: _data != null ? Color(_data!.color) : null,
     );
     datePicker = SDEditDatePicker(billDate: _data?.billDate ?? DateTime.now());
     billCyclePicker = SDEditBillCycle(billCycle: _data?.billCycle.copyWith() ?? BillCycle(month: 1));
