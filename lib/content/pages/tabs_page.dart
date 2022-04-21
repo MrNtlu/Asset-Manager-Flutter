@@ -1,4 +1,3 @@
-import 'package:asset_flutter/content/pages/market/markets_page.dart';
 import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
 import 'package:asset_flutter/content/pages/settings_page.dart';
 import 'package:asset_flutter/content/pages/subscription/subscription_page.dart';
@@ -29,13 +28,12 @@ class _TabsPage extends State<TabsPage> {
   }
 
   final List<Widget> _pages = [
-    const MarketsPage(),
     PortfolioPage(),
     SubscriptionPage(),
     SettingsPage()
   ];
 
-  int _selectedPageIndex = 1;
+  int _selectedPageIndex = 0;
 
   void _selectPage(int index) {
     setState(() {
@@ -58,8 +56,6 @@ class _TabsPage extends State<TabsPage> {
         enableFeedback: true,
         showUnselectedLabels: true,
         items: const [
-          BottomNavigationBarItem(
-              icon: ImageIcon(AssetImage("assets/images/markets.png")), label: "Markets"),
           BottomNavigationBarItem(
               icon: Icon(Icons.attach_money_rounded), label: "Portfolio"),
           BottomNavigationBarItem(

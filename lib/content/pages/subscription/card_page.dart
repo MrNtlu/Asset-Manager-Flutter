@@ -4,9 +4,9 @@ import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
 import 'package:asset_flutter/content/pages/subscription/card_create_page.dart';
-import 'package:asset_flutter/content/pages/subscription/subscription_create_page.dart';
+import 'package:asset_flutter/content/pages/subscription/card_details_page.dart';
+import 'package:asset_flutter/content/providers/subscription/card_state.dart';
 import 'package:asset_flutter/content/providers/subscription/cards.dart';
-import 'package:asset_flutter/static/colors.dart';
 import 'package:awesome_card/awesome_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +22,7 @@ class _CardPageState extends State<CardPage> {
   ListState _state = ListState.init;
   String? _error;
   late final CardProvider _cardProvider;
-  //late final CardStateProvider _cardStateProvider;
+  late final CardStateProvider _cardStateProvider;
 
   void _getCreditCards(){
     setState(() {
@@ -45,9 +45,30 @@ class _CardPageState extends State<CardPage> {
     });
   }
 
+  void _cardListener() {
+    if (_state != ListState.disposed) {
+      if (_cardProvider.items.isEmpty && _state == ListState.done) {
+        setState(() {
+          _state = ListState.empty;
+        });
+      } else if (_cardProvider.items.isNotEmpty && _state == ListState.empty) {
+        setState(() {
+          _state = ListState.done;
+        });
+      } 
+    }
+  }
+
+  void _cardStateListener() {
+    if (_state != ListState.disposed && _cardStateProvider.shouldRefresh) {
+      _getCreditCards();
+    }
+  }
+
   @override
   void dispose() {
-    _cardProvider.removeListener((){});
+    _cardProvider.removeListener(_cardListener);
+    _cardStateProvider.removeListener(_cardStateListener);
     _state = ListState.disposed;
     super.dispose();
   }
@@ -56,19 +77,11 @@ class _CardPageState extends State<CardPage> {
   void didChangeDependencies() {
     if (_state == ListState.init) {
       _cardProvider = Provider.of<CardProvider>(context);
-      _cardProvider.addListener((){
-        if (_state != ListState.disposed) {
-          if (_cardProvider.items.isEmpty && _state == ListState.done) {
-            setState(() {
-              _state = ListState.empty;
-            });
-          } else if (_cardProvider.items.isNotEmpty && _state == ListState.empty) {
-            setState(() {
-              _state = ListState.done;
-            });
-          } 
-        }
-      });
+      _cardProvider.addListener(_cardListener);
+
+      _cardStateProvider = Provider.of<CardStateProvider>(context);
+      _cardStateProvider.addListener(_cardStateListener);
+
       _getCreditCards();
     }
     super.didChangeDependencies();
@@ -97,14 +110,13 @@ class _CardPageState extends State<CardPage> {
         ],
       ),
       body: SafeArea(
-        child: MediaQuery.of(context).orientation == Orientation.portrait || Platform.isMacOS || Platform.isWindows
-        ? _portraitBody()
-        : Container() //TODO: Implement
+        child: _portraitBody()
       )
     );
   }
 
   Widget _portraitBody() {
+    final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait || Platform.isMacOS || Platform.isWindows;
     switch (_state) {
       case ListState.loading:
         return const LoadingView("Fetching credit cards");
@@ -129,7 +141,9 @@ class _CardPageState extends State<CardPage> {
 
                       return GestureDetector(
                         onTap: () {
-                          print("$index");
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) => CardDetailsPage(_creditCard.id))
+                          );
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
@@ -148,6 +162,8 @@ class _CardPageState extends State<CardPage> {
                             frontTextColor: index % 4 == 3 ? Colors.black : Colors.white,
                             showShadow: true,
                             horizontalMargin: 8,
+                            height: isPortrait ? null : 250,
+                            width: isPortrait ? null : 500,
                           ),
                         ),
                       );

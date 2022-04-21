@@ -50,8 +50,24 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
     });
   }
 
+  void _subscriptionStateListener() {
+    if (_state != ListState.disposed && _subscriptionStateProvider.shouldRefresh) {
+      _getSubscriptions();
+    }
+  }
+
+  void _statsSheetListener() {
+    if (_state != ListState.disposed && _statsSheetProvider.sort != null) {
+      sort = _statsSheetProvider.sort!.toLowerCase();
+      sortType = _statsSheetProvider.sortType! == "Ascending" ? 1 : -1;
+      _getSubscriptions();
+    }
+  }
+
   @override
   void dispose() {
+    _subscriptionStateProvider.removeListener(_subscriptionStateListener);
+    _statsSheetProvider.removeListener(_statsSheetListener);
     _state = ListState.disposed;
     super.dispose();
   }
@@ -63,20 +79,10 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
       _getSubscriptions();
 
       _subscriptionStateProvider = Provider.of<SubscriptionStateProvider>(context);
-      _subscriptionStateProvider.addListener(() {
-        if (_state != ListState.disposed && _subscriptionStateProvider.shouldRefresh) {
-          _getSubscriptions();
-        }
-      });
+      _subscriptionStateProvider.addListener(_subscriptionStateListener);
 
       _statsSheetProvider = Provider.of<StatsSheetSelectionStateProvider>(context);
-      _statsSheetProvider.addListener(() {      
-        if (_state != ListState.disposed && _statsSheetProvider.sort != null) {
-          sort = _statsSheetProvider.sort!.toLowerCase();
-          sortType = _statsSheetProvider.sortType! == "Ascending" ? 1 : -1;
-          _getSubscriptions();
-        }
-      });
+      _statsSheetProvider.addListener(_statsSheetListener);
     }
     super.didChangeDependencies();
   }
@@ -86,6 +92,9 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        iconTheme: const IconThemeData(
+          color: Colors.black,
+        ),
         title: const Text(
           "Subscriptions", 
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)

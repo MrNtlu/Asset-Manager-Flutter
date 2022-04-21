@@ -1,6 +1,5 @@
 import 'package:asset_flutter/content/providers/assets.dart';
 import 'package:asset_flutter/content/widgets/portfolio/pl_text.dart';
-import 'package:asset_flutter/content/widgets/portfolio/section_title.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -23,7 +22,6 @@ class Portfolio extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.only(top: 12, bottom: 8),
       child: Column(children: [
-        if(!isDetailed) const SectionTitle("Your Portfolio", "", mainFontSize: 22),
         Container(
           margin: const EdgeInsets.only(left: 8, right: 8),
           child: Card(

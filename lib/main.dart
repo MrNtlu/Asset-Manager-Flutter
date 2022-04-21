@@ -4,6 +4,7 @@ import 'package:asset_flutter/auth/pages/register_page.dart';
 import 'package:asset_flutter/content/providers/common/currencies.dart';
 import 'package:asset_flutter/content/providers/common/currency_sheet_state.dart';
 import 'package:asset_flutter/content/providers/common/stats_sheet_state.dart';
+import 'package:asset_flutter/content/providers/subscription/card_state.dart';
 import 'package:asset_flutter/content/providers/subscription/cards.dart';
 import 'package:asset_flutter/content/providers/subscription/subscription_state.dart';
 import 'package:asset_flutter/static/purchase_api.dart';
@@ -71,6 +72,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: CurrencySheetSelectionStateProvider()),
         ChangeNotifierProvider.value(value: SubscriptionStateProvider()),
         ChangeNotifierProvider.value(value: CardProvider()),
+        ChangeNotifierProvider.value(value: CardStateProvider()),
       ],
       child: MaterialApp(
         title: 'Kantan',

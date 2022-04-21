@@ -3,6 +3,7 @@ import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
+import 'package:asset_flutter/content/pages/market/markets_page.dart';
 import 'package:asset_flutter/content/providers/assets.dart';
 import 'package:asset_flutter/content/providers/portfolio/portfolio_state.dart';
 import 'package:asset_flutter/content/providers/common/stats_sheet_state.dart';
@@ -90,11 +91,32 @@ class _PortfolioPageState extends State<PortfolioPage> {
       value: SystemUiOverlayStyle.dark.copyWith(
           statusBarIconBrightness: Brightness.dark,
           statusBarBrightness: Brightness.light),
-      child: SafeArea(
-        child: MediaQuery.of(context).orientation == Orientation.portrait || Platform.isMacOS || Platform.isWindows 
-          ? _portraitBody()
-          : _landscapeBody()
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          iconTheme: const IconThemeData(
+            color: Colors.black,
+          ),
+          title: const Text(
+            "Your Portfolio", 
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)
+          ),
+          backgroundColor: Colors.white,
+          actions: [
+            IconButton(
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const MarketsPage())
+              ),
+              icon: const ImageIcon(AssetImage("assets/images/markets.png"))
+            )
+          ],
         ),
+        body: SafeArea(
+          child: MediaQuery.of(context).orientation == Orientation.portrait || Platform.isMacOS || Platform.isWindows 
+            ? _portraitBody()
+            : _landscapeBody()
+          ),
+      ),
     );
   }
 
@@ -110,7 +132,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
           floatHeaderSlivers: false,
           headerSliverBuilder: ((context, innerBoxIsScrolled) => [
               SliverAppBar(
-                expandedHeight: MediaQuery.of(context).size.height > 600 ? 420 : 400,
+                expandedHeight: MediaQuery.of(context).size.height > 600 ? 380 : 360,
                 floating: true,
                 snap: false,
                 backgroundColor: Colors.white,

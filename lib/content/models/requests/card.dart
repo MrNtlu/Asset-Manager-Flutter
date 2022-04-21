@@ -31,6 +31,7 @@ class CreditCardUpdate implements JSONConverter {
 
   @override
   Map<String, Object> convertToJson() => {
+    "id": id,
     if(name != null)
     "name": name!,
     if(lastDigits != null)

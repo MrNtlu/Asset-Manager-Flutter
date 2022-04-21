@@ -3,15 +3,17 @@ import 'package:asset_flutter/content/widgets/portfolio/stats.dart';
 import 'package:asset_flutter/content/widgets/portfolio/stats_detailed_table.dart';
 import 'package:asset_flutter/content/widgets/portfolio/stats_distribution_chart.dart';
 import 'package:asset_flutter/content/widgets/portfolio/stats_line_chart.dart';
-import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/material.dart';
 
 class PortfolioStatsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppBar appBar = AppBar(
-      title: const Text('Statistics'),
-      backgroundColor: AppColors().primaryLightishColor,
+      iconTheme: const IconThemeData(
+        color: Colors.black,
+      ),
+      title: const Text('Statistics', style: TextStyle(color: Colors.black)),
+      backgroundColor: Colors.white,
     );
     return Scaffold(
       resizeToAvoidBottomInset: false,

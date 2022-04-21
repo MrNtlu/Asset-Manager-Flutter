@@ -24,7 +24,6 @@ class SubscriptionDetailsEdit extends StatefulWidget {
   late final SDEditColorPicker colorPicker;
   String? selectedDomain;
 
-
   SubscriptionDetailsEdit(this._data, {Key? key}) : super(key: key) {
     isEditing = _data != null;
     colorPicker = SDEditColorPicker(
