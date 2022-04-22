@@ -98,9 +98,10 @@ class _PortfolioPageState extends State<PortfolioPage> {
             color: Colors.black,
           ),
           title: const Text(
-            "Your Portfolio", 
+            "Your Portfolio",
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)
           ),
+          centerTitle: false,
           backgroundColor: Colors.white,
           actions: [
             IconButton(
@@ -146,39 +147,36 @@ class _PortfolioPageState extends State<PortfolioPage> {
               ),
             ]
           ),
-          body: RefreshIndicator(
-            onRefresh: () => _onRefresh(context),
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height,
-              child: Stack(
-                children: [
-                  _state == ListState.empty
-                    ? Column(
-                      children: const[
-                        SectionTitle("Investments", ""),
-                        NoItemView("Couldn't find investment.")
-                      ])
-                    : SizedBox(
-                      child: Column(
-                        children: [
-                          SectionSortTitle(
-                            "Investments",
-                            const ["Name", "Amount", "Profit", "Type"],
-                            const ["Ascending", "Descending"],
-                            sortTitle: sort,
-                            sortType: sortType,
-                          ),
-                          const PortfolioInvestmentList(),
-                        ],
-                      ),
+          body: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Stack(
+              children: [
+                _state == ListState.empty
+                  ? Column(
+                    children: const[
+                      SectionTitle("Investments", ""),
+                      NoItemView("Couldn't find investment.")
+                    ])
+                  : SizedBox(
+                    child: Column(
+                      children: [
+                        SectionSortTitle(
+                          "Investments",
+                          const ["Name", "Amount", "Profit", "Type"],
+                          const ["Ascending", "Descending"],
+                          sortTitle: sort,
+                          sortType: sortType,
+                        ),
+                        const PortfolioInvestmentList(),
+                      ],
                     ),
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    child: const AddInvestmentButton(edgeInsets: EdgeInsets.only(left: 8, right: 8, bottom: 8))
                   ),
-                ],
-              )
-            ),
+                Container(
+                  alignment: Alignment.bottomCenter,
+                  child: const AddInvestmentButton(edgeInsets: EdgeInsets.only(left: 8, right: 8, bottom: 8))
+                ),
+              ],
+            )
           )
         );
       default:

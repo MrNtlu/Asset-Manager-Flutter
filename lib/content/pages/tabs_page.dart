@@ -47,7 +47,7 @@ class _TabsPage extends State<TabsPage> {
       body: _pages[_selectedPageIndex],
       backgroundColor: Colors.white,
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.shifting,
+        type: BottomNavigationBarType.fixed,
         onTap: _selectPage,
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.grey,
@@ -55,6 +55,7 @@ class _TabsPage extends State<TabsPage> {
         elevation: 8,
         enableFeedback: true,
         showUnselectedLabels: true,
+        showSelectedLabels: true,
         items: const [
           BottomNavigationBarItem(
               icon: Icon(Icons.attach_money_rounded), label: "Portfolio"),

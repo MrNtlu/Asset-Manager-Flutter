@@ -99,6 +99,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
           "Subscriptions", 
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)
         ),
+        centerTitle: false,
         backgroundColor: Colors.white,
         actions: _iconButtons(),
       ),

@@ -12,7 +12,10 @@ class PortfolioStatsPage extends StatelessWidget {
       iconTheme: const IconThemeData(
         color: Colors.black,
       ),
-      title: const Text('Statistics', style: TextStyle(color: Colors.black)),
+      title: const Text(
+        'Statistics', 
+        style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)
+      ),
       backgroundColor: Colors.white,
     );
     return Scaffold(

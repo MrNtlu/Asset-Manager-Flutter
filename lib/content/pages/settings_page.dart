@@ -196,6 +196,11 @@ class _SettingsPageState extends State<SettingsPage> {
             _state = _userInfo == null ? DetailState.error : DetailState.view;
           }); 
         }
+      }).onError((error, stackTrace) {
+        this.error = error.toString();
+        setState(() {
+          _state = DetailState.error;
+        });
       });
     } catch(error) {
       this.error = error.toString();
@@ -221,8 +226,22 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: _body(),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        iconTheme: const IconThemeData(
+          color: Colors.black,
+        ),
+        title: const Text(
+          "Settings",
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)
+        ),
+        centerTitle: false,
+        backgroundColor: Colors.white,
+      ),
+      body: SafeArea(
+        child: _body(),
+      ),
     );
   }
 
@@ -239,10 +258,6 @@ class _SettingsPageState extends State<SettingsPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 6),
-                        child: SectionTitle("User Information", '', mainFontSize: 18),
-                      ),
                       _userInfoText("Email", _userInfo!.email),
                       _userInfoText("Membership", _userInfo!.isPremium ? "Premium" : "Free"),
                       _userInfoText("Currency", _userInfo!.currency),
@@ -482,7 +497,7 @@ class _SettingsPageState extends State<SettingsPage> {
           ],
         );
       default:
-        return const LoadingView("Please wait...");
+        return const LoadingView("Please wait");
     }
   }
 
