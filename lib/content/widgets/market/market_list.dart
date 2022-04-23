@@ -46,10 +46,17 @@ class _MarketListState extends State<MarketList> {
     });
   }
 
+  void _marketSelectionListener() {
+    if (_state != ListState.disposed && _marketSelectionProvider.market != null && _marketSelectionProvider.type != null) {
+      _getMarketPrices(type: _marketSelectionProvider.type, market: _marketSelectionProvider.market);
+    }
+  }
+
   @override
   void dispose() {
     _marketSelectionProvider.type = null;
     _marketSelectionProvider.market = null;
+    _marketSelectionProvider.removeListener(_marketSelectionListener);
     _state = ListState.disposed;
     super.dispose();
   }
@@ -61,11 +68,7 @@ class _MarketListState extends State<MarketList> {
       _getMarketPrices();
 
       _marketSelectionProvider = Provider.of<MarketSelectionStateProvider>(context);
-      _marketSelectionProvider.addListener(() {
-        if (_state != ListState.disposed && _marketSelectionProvider.market != null && _marketSelectionProvider.type != null) {
-          _getMarketPrices(type: _marketSelectionProvider.type, market: _marketSelectionProvider.market);
-        }
-      });
+      _marketSelectionProvider.addListener(_marketSelectionListener);
     }
     super.didChangeDependencies();
   }

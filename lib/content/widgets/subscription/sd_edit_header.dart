@@ -38,8 +38,15 @@ class _SDEditHeaderState extends State<SDEditHeader> {
   EditState _state = EditState.init;
   late final CurrencySheetSelectionStateProvider _provider;
 
+  void _currencySheetListener() {
+    if (_state != ListState.disposed && _provider.symbol != null) {
+      widget.currency = _provider.symbol!;
+    }
+  }
+
   @override
   void dispose() {
+    _provider.removeListener(_currencySheetListener);
     _state = EditState.disposed;
     super.dispose();
   }
@@ -48,11 +55,7 @@ class _SDEditHeaderState extends State<SDEditHeader> {
   void didChangeDependencies() {
     if (_state == EditState.init) {
       _provider = Provider.of<CurrencySheetSelectionStateProvider>(context);
-      _provider.addListener(() {      
-        if (_state != ListState.disposed && _provider.symbol != null) {
-          widget.currency = _provider.symbol!;
-        }
-      });
+      _provider.addListener(_currencySheetListener);
       _state = EditState.view;
     }
     super.didChangeDependencies();

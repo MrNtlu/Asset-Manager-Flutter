@@ -41,6 +41,7 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
   EditState _state = EditState.init;
   late final AppBar _appBar;
   late final AssetProvider _assetProvider;
+  late final AssetDetailsStateProvider _stateListener;
   bool isDataChanged = false;
 
   void _getStats() {
@@ -123,8 +124,22 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
     );
   }
 
+  void _assetDetailsStateListener() {
+    if (_state != EditState.disposed) {
+      if (_state == EditState.editing) {
+        isDataChanged = true;
+        _getStats();
+      } else {
+        setState(() {
+          _state = _stateListener.state;
+        });
+      }
+    }
+  }
+
   @override
   void dispose() {
+    _stateListener.removeListener(_assetDetailsStateListener);
     _state = EditState.disposed;
     super.dispose();
   }
@@ -147,19 +162,8 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
         ],
       );
 
-      var _stateListener = Provider.of<AssetDetailsStateProvider>(context);
-      _stateListener.addListener(() {
-        if (_state != EditState.disposed) {
-          if (_state == EditState.editing) {
-            isDataChanged = true;
-            _getStats();
-          } else {
-            setState(() {
-              _state = _stateListener.state;
-            });
-          }
-        }
-      });
+      _stateListener = Provider.of<AssetDetailsStateProvider>(context);
+      _stateListener.addListener(_assetDetailsStateListener);
     }
     super.didChangeDependencies();
   }

@@ -77,6 +77,7 @@ class _InvestmentDetailsLogListState extends State<InvestmentDetailsLogList> {
 
   @override
   void dispose() {
+    _scrollController.removeListener(_scrollHandler);
     _state = ListState.disposed;
     _scrollController.dispose();
     super.dispose();

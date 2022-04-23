@@ -75,8 +75,17 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
     return flSpotList;
   }
 
+  void _statsSelectionListener() {
+    if (_state != ViewState.disposed && _statsSelectionProvider.interval != null) {
+      setState(() {
+        _getDailyStats(interval: _statsSelectionProvider.interval);
+      });
+    }
+  }
+
   @override
   void dispose() {
+    _statsSelectionProvider.removeListener(_statsSelectionListener);
     _state = ViewState.disposed;
     super.dispose();
   }
@@ -88,13 +97,7 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
       _getDailyStats();
 
       _statsSelectionProvider = Provider.of<StatsToggleSelectionStateProvider>(context);
-      _statsSelectionProvider.addListener(() {
-        if (_state != ViewState.disposed && _statsSelectionProvider.interval != null) {
-          setState(() {
-            _getDailyStats(interval: _statsSelectionProvider.interval);
-          });
-        }
-      });
+      _statsSelectionProvider.addListener(_statsSelectionListener);
     }
     super.didChangeDependencies();
   }

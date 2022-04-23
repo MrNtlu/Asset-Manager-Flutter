@@ -27,6 +27,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
   int sortType = 1;
   String? _error;
   late final AssetsProvider _assetsProvider;
+  late final PortfolioStateProvider _refreshListener;
   late final StatsSheetSelectionStateProvider _statsSheetProvider;
 
   void _getAssets() {
@@ -50,12 +51,24 @@ class _PortfolioPageState extends State<PortfolioPage> {
     });
   }
 
-  Future<void> _onRefresh(BuildContext ctx) async {
-    _getAssets();
+  void _statsSheetListener() {
+    if (_state != ListState.disposed && _statsSheetProvider.sort != null) {
+      sort = _statsSheetProvider.sort!.toLowerCase();
+      sortType = _statsSheetProvider.sortType! == "Ascending" ? 1 : -1;
+      _getAssets();
+    }
+  }
+  
+  void _refreshStateListener() {
+    if (_state != ListState.disposed && _refreshListener.shouldRefresh) {
+      _getAssets();
+    }
   }
 
   @override
   void dispose() {
+    _refreshListener.removeListener(_refreshStateListener);
+    _statsSheetProvider.removeListener(_statsSheetListener);
     _state = ListState.disposed;
     super.dispose();
   }
@@ -66,21 +79,11 @@ class _PortfolioPageState extends State<PortfolioPage> {
       _assetsProvider = Provider.of<AssetsProvider>(context);
       _getAssets();
 
-      var _refreshListener = Provider.of<PortfolioStateProvider>(context);
-      _refreshListener.addListener(() {
-        if (_state != ListState.disposed && _refreshListener.shouldRefresh) {
-          _getAssets();
-        }
-      });
+      _refreshListener = Provider.of<PortfolioStateProvider>(context);
+      _refreshListener.addListener(_refreshStateListener);
 
       _statsSheetProvider = Provider.of<StatsSheetSelectionStateProvider>(context);
-      _statsSheetProvider.addListener(() {      
-        if (_state != ListState.disposed && _statsSheetProvider.sort != null) {
-          sort = _statsSheetProvider.sort!.toLowerCase();
-          sortType = _statsSheetProvider.sortType! == "Ascending" ? 1 : -1;
-          _getAssets();
-        }
-      });
+      _statsSheetProvider.addListener(_statsSheetListener);
     }
     super.didChangeDependencies();
   }
@@ -192,49 +195,46 @@ class _PortfolioPageState extends State<PortfolioPage> {
         return ErrorView(_error ?? "Unknown error!", _getAssets);
       case ListState.empty:
       case ListState.done:
-        return RefreshIndicator(
-          onRefresh: () => _onRefresh(context), 
-          child: CustomScrollView(
-            physics: const ScrollPhysics(),
-            slivers: [
-              SliverToBoxAdapter(
-                child: Container(
-                  color: Colors.white,
-                  child: Center(
-                    child: Column(
-                      children: [
-                        const PortfolioStatsHeader(),
-                        _state == ListState.empty
-                          ? Column(
-                              children: const[
-                                SectionTitle("Investments", ""),
-                                NoItemView("Couldn't find investment.")
-                              ])
-                          : SizedBox(
-                              child: Column(
-                                children: [
-                                  SectionSortTitle(
-                                    "Investments",
-                                    const ["Name", "Amount", "Profit", "Type"],
-                                    const ["Ascending", "Descending"],
-                                    sortTitle: sort,
-                                    sortType: sortType,
-                                  ),
-                                  const PortfolioInvestmentList(),
-                                ],
-                              )
-                            ),
-                        Container(
-                          alignment: Alignment.bottomCenter,
-                          child: const AddInvestmentButton(edgeInsets: EdgeInsets.all(8))
-                        ),
-                      ],
-                    ),
+        return CustomScrollView(
+          physics: const ScrollPhysics(),
+          slivers: [
+            SliverToBoxAdapter(
+              child: Container(
+                color: Colors.white,
+                child: Center(
+                  child: Column(
+                    children: [
+                      const PortfolioStatsHeader(),
+                      _state == ListState.empty
+                        ? Column(
+                            children: const[
+                              SectionTitle("Investments", ""),
+                              NoItemView("Couldn't find investment.")
+                            ])
+                        : SizedBox(
+                            child: Column(
+                              children: [
+                                SectionSortTitle(
+                                  "Investments",
+                                  const ["Name", "Amount", "Profit", "Type"],
+                                  const ["Ascending", "Descending"],
+                                  sortTitle: sort,
+                                  sortType: sortType,
+                                ),
+                                const PortfolioInvestmentList(),
+                              ],
+                            )
+                          ),
+                      Container(
+                        alignment: Alignment.bottomCenter,
+                        child: const AddInvestmentButton(edgeInsets: EdgeInsets.all(8))
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         );
       default:
         return const LoadingView("Loading");
