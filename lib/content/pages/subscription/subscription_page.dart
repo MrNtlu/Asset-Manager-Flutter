@@ -8,6 +8,7 @@ import 'package:asset_flutter/common/widgets/sort_sheet.dart';
 import 'package:asset_flutter/content/pages/subscription/card_page.dart';
 import 'package:asset_flutter/content/pages/subscription/subscription_create_page.dart';
 import 'package:asset_flutter/content/providers/common/stats_sheet_state.dart';
+import 'package:asset_flutter/content/providers/subscription/cards.dart';
 import 'package:asset_flutter/content/providers/subscription/subscription_state.dart';
 import 'package:asset_flutter/content/providers/subscription/subscriptions.dart';
 import 'package:asset_flutter/content/widgets/subscription/subscription_list.dart';
@@ -75,14 +76,19 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   @override
   void didChangeDependencies() {
     if (_state == ListState.init) {
+
       _subscriptionsProvider = Provider.of<SubscriptionsProvider>(context);
-      _getSubscriptions();
 
       _subscriptionStateProvider = Provider.of<SubscriptionStateProvider>(context);
       _subscriptionStateProvider.addListener(_subscriptionStateListener);
 
       _statsSheetProvider = Provider.of<StatsSheetSelectionStateProvider>(context);
       _statsSheetProvider.addListener(_statsSheetListener);
+
+      Provider.of<CardProvider>(context).getCreditCards().whenComplete(() {
+        _getSubscriptions();
+      });
+
     }
     super.didChangeDependencies();
   }

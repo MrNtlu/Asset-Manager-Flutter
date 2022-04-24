@@ -60,7 +60,7 @@ class SubscriptionsProvider with ChangeNotifier {
         _items.add(Subscription(
           Random().nextInt(9999).toString(), subsCreate.name, subsCreate.description, 
           DateTime.now(), subsCreate.billCycle, subsCreate.price, 
-          subsCreate.currency, subsCreate.image, subsCreate.color.toString())
+          subsCreate.currency, subsCreate.image, subsCreate.color.toString(), subsCreate.cardID)
         );
         notifyListeners();
       }

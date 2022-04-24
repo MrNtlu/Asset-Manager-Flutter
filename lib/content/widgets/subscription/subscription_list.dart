@@ -25,7 +25,7 @@ class SubscriptionList extends StatelessWidget{
     final data = _data[index];
     return ChangeNotifierProvider.value(
       value: data,
-      child: SubscriptionListCell()
+      child: SubscriptionListCell(data)
     );
   }),
   itemCount: _data.length + 1,
@@ -39,7 +39,7 @@ class SubscriptionList extends StatelessWidget{
       final data = _data[index];
       return ChangeNotifierProvider.value(
         value: data,
-        child: SubscriptionListCell()
+        child: SubscriptionListCell(data)
       );
     }),
     itemCount: _data.length,

@@ -1,7 +1,13 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/content/models/requests/subscription.dart';
 import 'package:asset_flutter/content/models/responses/subscription.dart';
+import 'package:asset_flutter/content/providers/subscription/card.dart';
+import 'package:asset_flutter/content/providers/subscription/card_sheet_state.dart';
+import 'package:asset_flutter/content/providers/subscription/cards.dart';
 import 'package:asset_flutter/content/providers/subscription/subscription.dart';
+import 'package:asset_flutter/content/widgets/subscription/card_sheet.dart';
 import 'package:asset_flutter/content/widgets/subscription/sd_edit_bill_cycle.dart';
 import 'package:asset_flutter/content/widgets/subscription/sd_edit_color_picker.dart';
 import 'package:asset_flutter/content/widgets/subscription/sd_edit_date_picker.dart';
@@ -9,6 +15,7 @@ import 'package:asset_flutter/content/widgets/subscription/sd_edit_header.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class SubscriptionDetailsEdit extends StatefulWidget {
@@ -23,6 +30,7 @@ class SubscriptionDetailsEdit extends StatefulWidget {
   late final SDEditBillCycle billCyclePicker;
   late final SDEditColorPicker colorPicker;
   String? selectedDomain;
+  CreditCard? selectedCard;
 
   SubscriptionDetailsEdit(this._data, {Key? key}) : super(key: key) {
     isEditing = _data != null;
@@ -31,6 +39,7 @@ class SubscriptionDetailsEdit extends StatefulWidget {
     );
     datePicker = SDEditDatePicker(billDate: _data?.billDate ?? DateTime.now());
     billCyclePicker = SDEditBillCycle(billCycle: _data?.billCycle.copyWith() ?? BillCycle(month: 1));
+    selectedCard = (_data != null && _data!.cardID != null) ? CreditCard(_data!.cardID!, '', '', '', '', '') :  null;
 
     if (isEditing) {
       updateData = SubscriptionUpdate(_data!.id);
@@ -44,6 +53,37 @@ class SubscriptionDetailsEdit extends StatefulWidget {
 }
 
 class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
+  EditState _state = EditState.init;
+  late final CardSheetSelectionStateProvider _cardSelectionProvider;
+
+  void _cardSheetSelectionListener() {
+    if (_state != EditState.disposed) {
+      setState(() {
+        widget.selectedCard = _cardSelectionProvider.selectedCard;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _cardSelectionProvider.removeListener(_cardSheetSelectionListener);
+    _state = EditState.disposed;
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_state == EditState.init) {
+      if(widget.isEditing && widget.selectedCard != null) {
+        widget.selectedCard = Provider.of<CardProvider>(context).findById(widget.selectedCard!.id);
+      }
+      _cardSelectionProvider = Provider.of<CardSheetSelectionStateProvider>(context);
+      _cardSelectionProvider.addListener(_cardSheetSelectionListener);
+      _state = EditState.view;
+    }
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -68,32 +108,40 @@ class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
         const Divider(thickness: 1),
         widget.datePicker,
         const Divider(thickness: 1),
-        Container(
-          margin: const EdgeInsets.fromLTRB(12, 8, 8, 4),
-          alignment: Alignment.centerLeft,
-          child: const Text(
-            "Bill Cycle",
-            style: TextStyle(
-                color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-        ),
+        _subSectionTitle("Bill Cycle"),
         widget.billCyclePicker,
         const Divider(thickness: 1),
-        Container(
-          margin: const EdgeInsets.fromLTRB(12, 8, 8, 4),
-          alignment: Alignment.centerLeft,
-          child: const Text(
-            "Pick Color",
-            style: TextStyle(
-              color: Colors.black, 
-              fontSize: 16, 
-              fontWeight: FontWeight.bold
-            ),
-          ),
-        ),
+        _subSectionTitle("Pick Color"),
         Container(
           margin: const EdgeInsets.fromLTRB(12, 8, 8, 4),
           child: widget.colorPicker
+        ),
+        const Divider(thickness: 1),
+        _subSectionTitle("Credit Card (Optional)"),
+        Container(
+          margin: const EdgeInsets.fromLTRB(12, 8, 8, 4),
+          child: TextButton(
+            child: Text(
+              widget.selectedCard != null
+              ? "${widget.selectedCard!.name} ${widget.selectedCard!.lastDigits}"
+              : "No Card Selected",
+              style: const TextStyle(fontSize: 16),
+            ),
+            onPressed: () => showModalBottomSheet(
+              context: context,
+              shape: Platform.isIOS || Platform.isMacOS
+              ? const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(16),
+                  topLeft: Radius.circular(16)
+                ),
+              )
+              : null,
+              enableDrag: false,
+              isDismissible: true,
+              builder: (_) => CardSelectionSheet(widget.selectedCard)
+            ),
+          ),
         ),
         const Divider(thickness: 1),
       ],
@@ -112,7 +160,7 @@ class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
       ),
       showClearButton: true,
       isFilteredOnline: true,
-      searchDelay: const Duration(milliseconds: 600),
+      searchDelay: const Duration(milliseconds: 500),
       onFind: (String? filter) async {
         List<String> _itemList = [];
         if (filter == null || (filter.trim() == '')) {
@@ -129,6 +177,19 @@ class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
       },
       onChanged: (String? item) => widget.selectedDomain = item,
       itemAsString: (String? item) => item ?? '',
+    ),
+  );
+
+  Widget _subSectionTitle(String title) => Container(
+    margin: const EdgeInsets.fromLTRB(12, 8, 8, 4),
+    alignment: Alignment.centerLeft,
+    child: Text(
+      title,
+      style: const TextStyle(
+        color: Colors.black, 
+        fontSize: 16, 
+        fontWeight: FontWeight.bold
+      ),
     ),
   );
 }

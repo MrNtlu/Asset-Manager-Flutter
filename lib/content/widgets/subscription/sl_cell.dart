@@ -3,13 +3,14 @@ import 'package:asset_flutter/content/pages/subscription/subscription_details_pa
 import 'package:asset_flutter/content/widgets/subscription/sl_cell_image.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class SubscriptionListCell extends StatelessWidget {
+  final Subscription subscription;
+
+  const SubscriptionListCell(this.subscription);
+
   @override
   Widget build(BuildContext context) {
-    final subscription = Provider.of<Subscription>(context);
-
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(

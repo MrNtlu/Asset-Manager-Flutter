@@ -26,6 +26,7 @@ class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
     _subscriptionDetailsEdit.createData!.billCycle = _subscriptionDetailsEdit.billCyclePicker.billCycle;
     _subscriptionDetailsEdit.createData!.color = _subscriptionDetailsEdit.colorPicker.selectedColor.value;
     _subscriptionDetailsEdit.createData!.image = _subscriptionDetailsEdit.selectedDomain;
+    _subscriptionDetailsEdit.createData!.cardID = _subscriptionDetailsEdit.selectedCard?.id;
   }
 
   void _createSubscription(BuildContext context) {

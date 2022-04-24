@@ -1,4 +1,5 @@
 import 'package:asset_flutter/content/models/responses/asset.dart';
+import 'package:asset_flutter/content/models/responses/card.dart';
 import 'package:asset_flutter/content/models/responses/investings.dart';
 import 'package:asset_flutter/content/models/responses/subscription.dart';
 import 'package:asset_flutter/content/models/responses/user.dart';
@@ -205,7 +206,8 @@ class _TypeConverter<T> {
         response["price"],
         response["currency"],
         response["image"],
-        response["color"]
+        response["color"],
+        response["card_id"]
       ) as T;
     } else if (T == SubscriptionDetails) {
       return SubscriptionDetails(
@@ -258,6 +260,14 @@ class _TypeConverter<T> {
         response["card_holder"],
         response["color"],
         response["type"],
+      ) as T;
+    } else if (T == CardStats) {
+      return CardStats(
+        response["currency"],
+        response["total_monthly_payment"],
+        response["total_payment"],
+        response["most_expensive_name"],
+        response["most_expensive"]
       ) as T;
     } else{
       return response as T;

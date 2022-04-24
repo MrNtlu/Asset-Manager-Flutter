@@ -28,6 +28,8 @@ class SubscriptionCreate implements JSONConverter{
     "currency": currency,
     if(image != null)
     "image": image!,
+    if (cardID != null)
+    "card_id": cardID!, 
     "color": color.toString()
   };
 }
@@ -70,6 +72,8 @@ class SubscriptionUpdate implements JSONConverter {
     "price": price!,
     if(currency != null)
     "currency": currency!,
+    if(cardID != null)
+    "card_id": cardID!,
     if(image != null)
     "image": image!,
     if(color != null)
