@@ -42,8 +42,6 @@ class _CardDetailsStatsSheetState extends State<CardDetailsStatsSheet> {
           ) 
           : null;
 
-          print("Stats $_cardStats");
-
           setState(() {
             _state = _cardStats == null ? DetailState.error : DetailState.view;
           }); 
@@ -143,10 +141,10 @@ class _CardDetailsStatsSheetState extends State<CardDetailsStatsSheet> {
                   Text(_cardStats!.currency, style: const TextStyle(fontWeight: FontWeight.bold))
                 ),
                 DataCell(
-                  Text(_cardStats!.monthlyPayment.numToString())
+                  Text(_cardStats!.monthlyPayment.numToString() + ' ' + _cardStats!.currency)
                 ),
                 DataCell(
-                  Text(_cardStats!.totalPayment.numToString())
+                  Text(_cardStats!.totalPayment.numToString() + ' ' + _cardStats!.currency)
                 ),
               ]
             )

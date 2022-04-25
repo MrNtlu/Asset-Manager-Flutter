@@ -116,7 +116,7 @@ class _SubscriptionDetailsViewState extends State<SubscriptionDetailsView> {
                       margin: const EdgeInsets.fromLTRB(8, 8, 8, 4),
                       alignment: Alignment.bottomCenter,
                       child: AutoSizeText(
-                        widget._data.name,
+                        widget._data.price.toString() + ' ' + widget._data.currency,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           color: Colors.white,
@@ -131,7 +131,7 @@ class _SubscriptionDetailsViewState extends State<SubscriptionDetailsView> {
                       margin: const EdgeInsets.only(top: 6),
                       alignment: Alignment.topCenter,
                       child: Text(
-                        widget._data.price.toString() + ' ' + widget._data.currency,
+                        widget._data.nextBillDate.dateToDaysLeft(),
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -146,6 +146,7 @@ class _SubscriptionDetailsViewState extends State<SubscriptionDetailsView> {
             if(widget._data.description != null)
             SDViewText("Description", widget._data.description!),
             SDViewText("Initial Bill Date", widget._data.billDate.dateToFormatDate()),
+            SDViewText("Next Bill Date", widget._data.nextBillDate.dateToFormatDate()),
             SDViewText("Bill Cycle", widget._data.billCycle.handleBillCycleString()),
             if(_subscriptionDetails != null)
             SDViewText(

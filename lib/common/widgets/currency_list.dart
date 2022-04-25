@@ -9,6 +9,7 @@ import 'package:asset_flutter/content/providers/common/currencies.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+// ignore_for_file: must_be_immutable
 class CurrencyList extends StatefulWidget {
   String selectedSymbol;
   

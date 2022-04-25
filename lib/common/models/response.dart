@@ -18,10 +18,12 @@ class BaseAPIResponse {
 class BaseItemResponse<T> {
   late T? data;
   final String message;
+  final String? error;
 
   BaseItemResponse({
     Map<String, dynamic>? response,
-    required this.message
+    required this.message,
+    this.error
   }){
     if (response != null) {
       var _typeConverter = _TypeConverter<T>();
@@ -198,6 +200,7 @@ class _TypeConverter<T> {
         response["name"],
         response["description"],
         DateTime.parse(response["bill_date"]),
+        DateTime.parse(response["next_bill_date"]),
         BillCycle(
           day: response["bill_cycle"]["day"],
           month: response["bill_cycle"]["month"],
@@ -260,14 +263,13 @@ class _TypeConverter<T> {
         response["card_holder"],
         response["color"],
         response["type"],
+        response["currency"]
       ) as T;
     } else if (T == CardStats) {
       return CardStats(
         response["currency"],
         response["total_monthly_payment"],
         response["total_payment"],
-        response["most_expensive_name"],
-        response["most_expensive"]
       ) as T;
     } else{
       return response as T;

@@ -1,8 +1,12 @@
 import 'dart:convert';
-
 import 'package:asset_flutter/common/models/response.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
+
+extension ColorExt on Color {
+  Color getThemeColor() => ThemeData.estimateBrightnessForColor(this) == Brightness.light ? Colors.black : Colors.white;
+}
 
 extension DoubleExt on double {
   double revertValue() {
@@ -39,7 +43,7 @@ extension DateTimeExt on DateTime {
       }
       return (months.toString() + " months ago.");
 
-    }else if (dayDiff >= 365) {
+    } else if (dayDiff >= 365) {
       if ((dayDiff - 365) / 30 != 0) {
         final months = ((dayDiff - 365) / 30).floor();
         return (years.dateDifferencePluralString('year') + ' ' + months.dateDifferencePluralString('month') + " ago.");
@@ -48,6 +52,33 @@ extension DateTimeExt on DateTime {
       return (years.dateDifferencePluralString('year') + " ago.");
     }
     return dayDiff.dateDifferencePluralString('day') + ' ago.';
+  }
+
+  String dateToDaysLeft() {
+    final dayDiff = difference(DateTime.now()).inDays;
+    final days = (dayDiff % 30);
+    final months = (dayDiff / 30).floor();
+    final years = (dayDiff / 365).floor();
+
+    if (dayDiff >= 30 && dayDiff < 365) {
+      if (dayDiff % 30 != 0) {
+        return (months.dateDifferencePluralString('month') + " left");
+      }
+      return (months.toString() + " months ago.");
+
+    } else if (dayDiff >= 365) {
+      if ((dayDiff - 365) / 30 != 0) {
+        final months = ((dayDiff - 365) / 30).floor();
+        return (years.dateDifferencePluralString('year') + ' ' + months.dateDifferencePluralString('month') + " left");
+      }
+
+      return (years.dateDifferencePluralString('year') + " left");
+    } else if (dayDiff == 1) {
+      return "Tomorrow";
+    } else if (dayDiff == 0) {
+      return "Today";
+    }
+    return dayDiff.dateDifferencePluralString('day') + ' left';
   }
 
   String dateToFormatDate() {
@@ -96,6 +127,7 @@ extension ResponseExt on Response {
 
   BaseItemResponse<T> getBaseItemResponse<T>() => BaseItemResponse<T>(
     message: json.decode(body)["message"] ?? '',
+    error: json.decode(body)["error"],
     response: json.decode(body)["data"],
   );
 

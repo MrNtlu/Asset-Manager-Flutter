@@ -6,8 +6,9 @@ class CreditCardCreate implements JSONConverter {
   String cardHolder;
   String color;
   String cardType;
+  String currency;
 
-  CreditCardCreate(this.name, this.lastDigits, this.cardHolder, this.color, this.cardType);
+  CreditCardCreate(this.name, this.lastDigits, this.cardHolder, this.color, this.cardType, this.currency);
 
   @override
   Map<String, Object> convertToJson() => {
@@ -16,6 +17,7 @@ class CreditCardCreate implements JSONConverter {
     "card_holder": cardHolder,
     "color": color,
     "type": cardType,
+    "currency": currency
   };
 }
 
@@ -26,8 +28,9 @@ class CreditCardUpdate implements JSONConverter {
   String? cardHolder;
   String? color;
   String? cardType;
+  String? currency;
 
-  CreditCardUpdate(this.id,{this.name, this.lastDigits, this.cardHolder, this.color, this.cardType});
+  CreditCardUpdate(this.id,{this.name, this.lastDigits, this.cardHolder, this.color, this.cardType, this.currency});
 
   @override
   Map<String, Object> convertToJson() => {
@@ -42,5 +45,7 @@ class CreditCardUpdate implements JSONConverter {
     "color": color!,
     if(cardType != null)
     "type": cardType!,
+    if(currency != null)
+    "currency": currency!,
   };
 }

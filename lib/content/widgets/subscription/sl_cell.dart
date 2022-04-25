@@ -1,6 +1,7 @@
 import 'package:asset_flutter/content/providers/subscription/subscription.dart';
 import 'package:asset_flutter/content/pages/subscription/subscription_details_page.dart';
 import 'package:asset_flutter/content/widgets/subscription/sl_cell_image.dart';
+import 'package:asset_flutter/utils/extensions.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
@@ -41,10 +42,14 @@ class SubscriptionListCell extends StatelessWidget {
                     margin: const EdgeInsets.fromLTRB(12, 0, 12, 8),
                     child: Row(
                       children: [
-                        SLSubText(subscription.billCycle.handleBillCycleString(),
-                            Alignment.bottomLeft),
-                        SLSubText(subscription.price.toString() + ' ' + subscription.currency,
-                            Alignment.bottomRight)
+                        SLSubText(
+                          subscription.nextBillDate.dateToDaysLeft(),
+                          Alignment.bottomLeft
+                        ),
+                        SLSubText(
+                          subscription.price.toString() + ' ' + subscription.currency,
+                          Alignment.bottomRight
+                        )
                       ],
                     ),
                   ),

@@ -4,7 +4,6 @@ import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
 import 'package:asset_flutter/content/providers/subscription/card_subscriptions.dart';
 import 'package:asset_flutter/content/widgets/subscription/sl_cell.dart';
-import 'package:asset_flutter/content/widgets/subscription/subscription_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

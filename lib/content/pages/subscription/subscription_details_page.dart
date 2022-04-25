@@ -8,6 +8,7 @@ import 'package:asset_flutter/content/providers/subscription/subscription_state.
 import 'package:asset_flutter/content/providers/subscription/subscriptions.dart';
 import 'package:asset_flutter/content/widgets/subscription/sd_edit.dart';
 import 'package:asset_flutter/content/widgets/subscription/sd_view.dart';
+import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -68,7 +69,7 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
             context: context, 
             builder: (ctx) => const SuccessView("updated", shouldJustPop: true)
           );
-        }else {
+        } else {
           showDialog(context: context, builder: (ctx) => ErrorDialog(value.error!));
           setState(() {
             _state = EditState.editing;
@@ -101,13 +102,18 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        iconTheme: const IconThemeData(
-          color: Colors.black,
+        iconTheme: IconThemeData(
+          color: _state == EditState.editing ? Colors.black : Colors.white,
         ),
-        title: Text((_state == EditState.editing) ? "Edit" : '', style: const TextStyle(color: Colors.black)),
-        backgroundColor: Colors.white,
+        title: Text(
+          _state == EditState.editing ? "Edit" : _data.name, 
+          style: TextStyle(
+            color: _state == EditState.editing ? Colors.black : Colors.white,
+            fontWeight: _state == EditState.editing ? FontWeight.normal : FontWeight.bold
+          )
+        ),
+        backgroundColor: _state == EditState.editing ? Colors.white : Color(_data.color),
         actions: _iconButtons(),
-        
       ),
       body: SafeArea(
         child: _body()
@@ -122,7 +128,7 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
           onPressed: () => setState(() {
             _state = EditState.view;
           }),
-          icon: const Icon(Icons.cancel_rounded, color: Colors.black),
+          icon: const Icon(Icons.cancel_rounded),
           tooltip: 'Discard Changes',
         ),
         IconButton(
@@ -135,14 +141,14 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
       return [
         if (_data.cardID != null)
         IconButton(
-          icon: const Icon(Icons.credit_card_rounded, color: Colors.black),
+          icon: const Icon(Icons.credit_card_rounded),
           tooltip: 'Credit Cards',
           onPressed: () => Navigator.of(context).push(
             MaterialPageRoute(builder: (_) => CardDetailsPage(_data.cardID!)) 
           ),
         ),
         IconButton(
-          icon: const Icon(Icons.edit_rounded, color: Colors.black),
+          icon: const Icon(Icons.edit_rounded),
           tooltip: 'Enter Edit State',
           onPressed: () {
             if (_detailsView.canEnterEditMode) {

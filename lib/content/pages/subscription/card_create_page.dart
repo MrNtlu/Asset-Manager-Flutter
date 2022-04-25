@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'package:asset_flutter/common/models/state.dart';
+import 'package:asset_flutter/common/widgets/currency_sheet.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/premium_dialog.dart';
 import 'package:asset_flutter/common/widgets/success_view.dart';
 import 'package:asset_flutter/content/models/requests/card.dart';
+import 'package:asset_flutter/content/providers/common/currency_sheet_state.dart';
 import 'package:asset_flutter/content/providers/subscription/card_state.dart';
 import 'package:asset_flutter/content/providers/subscription/cards.dart';
 import 'package:asset_flutter/static/colors.dart';
@@ -35,12 +37,14 @@ class _CardCreatePageState extends State<CardCreatePage> {
   late final card.CreditCard? _creditCard;
   late final CardProvider _cardProvider;
   late final CardStateProvider _cardStateProvider;
+  late final CurrencySheetSelectionStateProvider _currencySheetSelectionStateProvider;
 
   late String cardNumber;
   late String cardHolderName;
   late String cardName;
   late String cardColor;
   late String cardType;
+  late String currency;
 
   void _createCreditCard() {
     final isValid = form.currentState?.validate();
@@ -97,6 +101,10 @@ class _CardCreatePageState extends State<CardCreatePage> {
       updateData!.cardType = _creditCard!.cardType;
     }
 
+    if (currency != _creditCard!.currency) {
+      updateData!.currency = currency;
+    }
+
     _creditCard!.updateCard(updateData!).then((value) {
       if (_state != CreateState.disposed) {
         if (value.error == null) {
@@ -118,8 +126,18 @@ class _CardCreatePageState extends State<CardCreatePage> {
     });
   }
 
+  void _currencySheetListener() {
+    if (_state != ListState.disposed && _currencySheetSelectionStateProvider.symbol != null) {
+      if (widget.isCreate) {
+        createData!.currency = _currencySheetSelectionStateProvider.symbol!;
+      }
+      currency = widget.isCreate ? createData!.currency : _currencySheetSelectionStateProvider.symbol!;
+    }
+  }
+
   @override
   void dispose() {
+    _currencySheetSelectionStateProvider.removeListener(_currencySheetListener);
     _state = CreateState.disposed;
     super.dispose();
   }
@@ -130,8 +148,11 @@ class _CardCreatePageState extends State<CardCreatePage> {
       _cardProvider = Provider.of<CardProvider>(context, listen: false);
       _cardStateProvider = Provider.of<CardStateProvider>(context, listen: false);
 
+      _currencySheetSelectionStateProvider = Provider.of<CurrencySheetSelectionStateProvider>(context);
+      _currencySheetSelectionStateProvider.addListener(_currencySheetListener);
+
       if (widget.isCreate) {
-        createData = CreditCardCreate("Card Name", "XXXX", "Card Holder", CardColors().cardColors[0].value.toString(), "MasterCard");
+        createData = CreditCardCreate("Card Name", "XXXX", "Card Holder", CardColors().cardColors[0].value.toString(), "MasterCard", 'USD');
       } else {
         _creditCard = _cardProvider.findById(widget.creditCardID!);
         updateData = CreditCardUpdate(widget.creditCardID!);
@@ -142,9 +163,10 @@ class _CardCreatePageState extends State<CardCreatePage> {
       cardName = widget.isCreate ? createData!.name : _creditCard!.name;
       cardColor = widget.isCreate ? createData!.color : _creditCard!.color;
       cardType = widget.isCreate ? createData!.cardType : _creditCard!.cardType;
+      currency = widget.isCreate ? createData!.currency : _creditCard!.currency;
 
+      _state = CreateState.editing;
     }
-    _state = CreateState.editing;
     super.didChangeDependencies();
   }
 
@@ -281,44 +303,84 @@ class _CardCreatePageState extends State<CardCreatePage> {
                         ),
                       ),
                     ),
-                    Container(
-                      width: double.infinity,
-                      margin: const EdgeInsets.fromLTRB(12, 16, 12, 0),
-                      child: TextFormField(
-                        maxLength: 4,
-                        keyboardType: const TextInputType.numberWithOptions(signed: true, decimal: true),
-                        textInputAction: TextInputAction.done,
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        onChanged: (value) {
-                          setState(() {
-                            cardNumber = value;
-                          });
-                        },
-                        onSaved: (value) {
-                          if (value != null) {
-                            if (!widget.isCreate && _creditCard!.lastDigits != value){
-                              updateData!.lastDigits = value;
-                            } else if (widget.isCreate) {
-                              createData!.lastDigits = value;
-                            }
-                          }
-                        },
-                        validator: (value) {
-                          if (value != null) {
-                            if (value.isEmpty) {
-                              return "Please don't leave this empty.";
-                            }
-                          }
-
-                          return null;
-                        },
-                        initialValue: widget.isCreate ? null : cardNumber,
-                        decoration: const InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(),
-                          labelText: "Last 4 Digits",
-                        ),
+                    SizedBox(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: Container(
+                              width: double.infinity,
+                              margin: const EdgeInsets.fromLTRB(12, 16, 12, 0),
+                              child: TextFormField(
+                                maxLength: 4,
+                                keyboardType: const TextInputType.numberWithOptions(signed: true, decimal: true),
+                                textInputAction: TextInputAction.done,
+                                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                onChanged: (value) {
+                                  setState(() {
+                                    cardNumber = value;
+                                  });
+                                },
+                                onSaved: (value) {
+                                  if (value != null) {
+                                    if (!widget.isCreate && _creditCard!.lastDigits != value){
+                                      updateData!.lastDigits = value;
+                                    } else if (widget.isCreate) {
+                                      createData!.lastDigits = value;
+                                    }
+                                  }
+                                },
+                                validator: (value) {
+                                  if (value != null) {
+                                    if (value.isEmpty) {
+                                      return "Please don't leave this empty.";
+                                    }
+                                  }
+                          
+                                  return null;
+                                },
+                                initialValue: widget.isCreate ? null : cardNumber,
+                                decoration: const InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  border: OutlineInputBorder(),
+                                  labelText: "Last 4 Digits",
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            flex: 1,
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 6),
+                              child: TextButton(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(currency, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                    const Icon(Icons.arrow_drop_down_rounded, size: 30)
+                                  ],
+                                ),
+                                onPressed: () => showModalBottomSheet(
+                                  context: context, 
+                                  shape: Platform.isIOS || Platform.isMacOS
+                                  ? const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(16),
+                                      topLeft: Radius.circular(16)
+                                    ),
+                                  )
+                                  : null,
+                                  enableDrag: false,
+                                  isDismissible: true,
+                                  isScrollControlled: true,
+                                  builder: (_) => CurrencySheet(selectedSymbol: currency)
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                     ),
                   ],

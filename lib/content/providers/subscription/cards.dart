@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
-
 import 'package:asset_flutter/common/models/response.dart';
 import 'package:asset_flutter/content/models/requests/card.dart';
 import 'package:asset_flutter/content/providers/subscription/card.dart';
@@ -39,7 +37,7 @@ class CardProvider with ChangeNotifier {
     }
   }
 
-  Future<BaseAPIResponse> addCreditCard(CreditCardCreate cardCreate) async {
+  Future<BaseItemResponse<CreditCard>> addCreditCard(CreditCardCreate cardCreate) async {
     try {
       final response = await http.post(
         Uri.parse(APIRoutes().cardRoutes.createCard),
@@ -47,22 +45,17 @@ class CardProvider with ChangeNotifier {
         headers: UserToken().getBearerToken(),
       );
 
-      if (response.getBaseResponse().error == null) {  
-        _items.add(CreditCard(
-            Random().nextInt(9999).toString(),
-            cardCreate.name,
-            cardCreate.lastDigits,
-            cardCreate.cardHolder,
-            cardCreate.color,
-            cardCreate.cardType
-          )
-        );
+      var baseItemResponse = response.getBaseItemResponse<CreditCard>();
+      var data = baseItemResponse.data;
+
+      if (baseItemResponse.error == null && data != null) {  
+        _items.add(data);
         notifyListeners();
       }
 
-      return response.getBaseResponse();
+      return baseItemResponse;
     }catch(error){
-      return BaseAPIResponse(error.toString());
+      return BaseItemResponse(error: error.toString(), message: error.toString());
     }
   }
 

@@ -14,10 +14,11 @@ class CreditCard with ChangeNotifier {
   late String cardHolder;
   late String color;
   late String cardType;
+  late String currency;
 
-  CreditCard(this.id, this.name, this.lastDigits, this.cardHolder, this.color, this.cardType);
+  CreditCard(this.id, this.name, this.lastDigits, this.cardHolder, this.color, this.cardType, this.currency);
 
-  Future<BaseAPIResponse> updateCard(CreditCardUpdate cardUpdate) async {
+  Future<BaseItemResponse<CreditCard>> updateCard(CreditCardUpdate cardUpdate) async {
     try {
       final response = await http.put(
         Uri.parse(APIRoutes().cardRoutes.updateCard),
@@ -25,19 +26,23 @@ class CreditCard with ChangeNotifier {
         headers: UserToken().getBearerToken(),
       );
 
-      if (response.getBaseResponse().error == null) {
-        name = cardUpdate.name ?? name;
-        lastDigits = cardUpdate.lastDigits ?? lastDigits;
-        cardHolder = cardUpdate.cardHolder ?? cardHolder;
-        color = cardUpdate.color ?? color;
-        cardType = cardUpdate.cardType ?? cardType;
+      var baseItemResponse = response.getBaseItemResponse<CreditCard>();
+      var data = baseItemResponse.data;
+
+      if (baseItemResponse.error == null && data != null) {
+        name = data.name;
+        lastDigits = data.lastDigits;
+        cardHolder = data.cardHolder;
+        color = data.color;
+        cardType = data.cardType;
+        currency = data.currency;
 
         notifyListeners();
       }
 
-      return response.getBaseResponse();
+      return baseItemResponse;
     } catch (error) {
-      return BaseAPIResponse(error.toString());
+      return BaseItemResponse(message: error.toString(), error: error.toString());
     }
   }
 }

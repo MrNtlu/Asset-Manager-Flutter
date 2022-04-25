@@ -39,7 +39,7 @@ class SubscriptionDetailsEdit extends StatefulWidget {
     );
     datePicker = SDEditDatePicker(billDate: _data?.billDate ?? DateTime.now());
     billCyclePicker = SDEditBillCycle(billCycle: _data?.billCycle.copyWith() ?? BillCycle(month: 1));
-    selectedCard = (_data != null && _data!.cardID != null) ? CreditCard(_data!.cardID!, '', '', '', '', '') :  null;
+    selectedCard = (_data != null && _data!.cardID != null) ? CreditCard(_data!.cardID!, '', '', '', '', '', '') :  null;
 
     if (isEditing) {
       updateData = SubscriptionUpdate(_data!.id);

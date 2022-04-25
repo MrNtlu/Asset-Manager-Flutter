@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:asset_flutter/common/models/response.dart';
 import 'package:asset_flutter/content/models/requests/subscription.dart';
 import 'package:asset_flutter/content/models/responses/subscription.dart';
@@ -48,7 +47,7 @@ class SubscriptionsProvider with ChangeNotifier {
     }
   }
 
-  Future<BaseAPIResponse> addSubscription(SubscriptionCreate subsCreate) async {
+  Future<BaseItemResponse<Subscription>> addSubscription(SubscriptionCreate subsCreate) async {
     try {
       final response = await http.post(
         Uri.parse(APIRoutes().subscriptionRoutes.createSubscription),
@@ -56,18 +55,17 @@ class SubscriptionsProvider with ChangeNotifier {
         headers: UserToken().getBearerToken(),
       );
 
-      if (response.getBaseResponse().error == null) {  
-        _items.add(Subscription(
-          Random().nextInt(9999).toString(), subsCreate.name, subsCreate.description, 
-          DateTime.now(), subsCreate.billCycle, subsCreate.price, 
-          subsCreate.currency, subsCreate.image, subsCreate.color.toString(), subsCreate.cardID)
-        );
+      var baseItemResponse = response.getBaseItemResponse<Subscription>();
+      var data = baseItemResponse.data;
+
+      if (baseItemResponse.error == null && data != null) {  
+        _items.add(data);
         notifyListeners();
       }
 
-      return response.getBaseResponse();
+      return baseItemResponse;
     }catch(error){
-      return BaseAPIResponse(error.toString());
+      return BaseItemResponse(error: error.toString(), message: error.toString());
     }
   }
 

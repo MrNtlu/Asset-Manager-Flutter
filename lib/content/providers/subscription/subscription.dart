@@ -14,6 +14,7 @@ class Subscription with ChangeNotifier {
   late String name;
   late String? description;
   late DateTime billDate;
+  late DateTime nextBillDate;
   late BillCycle billCycle;
   late num price;
   late String currency;
@@ -32,14 +33,14 @@ class Subscription with ChangeNotifier {
 
   String? get rawImage => _image;
 
-  Subscription(this.id, this.name, this.description, this.billDate,
+  Subscription(this.id, this.name, this.description, this.billDate, this.nextBillDate,
       this.billCycle, this.price, this.currency, this._image, this._color, this.cardID);
 
   String _subscriptionImage(String company) {
     return "https://logo.clearbit.com/$company";
   }
 
-  Future<BaseAPIResponse> updateSubscription(SubscriptionUpdate update) async {
+  Future<BaseItemResponse<Subscription>> updateSubscription(SubscriptionUpdate update) async {
     try {
       final response = await http.put(
         Uri.parse(APIRoutes().subscriptionRoutes.updateSubscription),
@@ -47,23 +48,27 @@ class Subscription with ChangeNotifier {
         headers: UserToken().getBearerToken(),
       );
 
-      if (response.getBaseResponse().error == null) {
-        name = update.name ?? name;
-        description = update.description ?? description;
-        billDate = update.billDate ?? billDate;
-        billCycle = update.billCycle ?? billCycle;
-        price = update.price ?? price;
-        currency = update.currency ?? currency;
-        _image = update.image ?? _image;
-        _color = (update.color ?? _color).toString();
-        cardID = update.cardID ?? cardID;
+      var baseItemResponse = response.getBaseItemResponse<Subscription>();
+      var data = baseItemResponse.data;
+
+      if (baseItemResponse.error == null && data != null) {
+        name = data.name;
+        description = data.description;
+        billDate = data.billDate;
+        nextBillDate = data.nextBillDate;
+        billCycle = data.billCycle;
+        price = data.price;
+        currency = data.currency;
+        _image = data.image;
+        _color = (data.color).toString();
+        cardID = data.cardID;
 
         notifyListeners();
       }
 
-      return response.getBaseResponse();
+      return baseItemResponse;
     } catch (error) {
-      return BaseAPIResponse(error.toString());
+      return BaseItemResponse(message: error.toString(), error: error.toString());
     }
   }
 }

@@ -4,6 +4,7 @@ import 'package:asset_flutter/content/pages/subscription/card_create_page.dart';
 import 'package:asset_flutter/content/providers/subscription/cards.dart';
 import 'package:asset_flutter/content/widgets/subscription/cd_stats_sheet.dart';
 import 'package:asset_flutter/content/widgets/subscription/cd_subscription_list.dart';
+import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,14 +19,14 @@ class CardDetailsPage extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        iconTheme: const IconThemeData(
-          color: Colors.black,
+        iconTheme: IconThemeData(
+          color: Color(int.parse(_creditCard.color)).getThemeColor(),
         ),
         title: Text(
           _creditCard.name, 
-          style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)
+          style: TextStyle(color: _getThemeColor(_creditCard.color), fontWeight: FontWeight.bold)
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Color(int.parse(_creditCard.color)),
         actions: [
           IconButton(
             onPressed: () => showModalBottomSheet(
@@ -58,4 +59,6 @@ class CardDetailsPage extends StatelessWidget {
       ),
     );
   }
+
+  Color _getThemeColor(String color) => ThemeData.estimateBrightnessForColor(Color(int.parse(color))) == Brightness.light ? Colors.black : Colors.white;
 }
