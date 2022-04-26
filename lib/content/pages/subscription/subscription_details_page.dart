@@ -8,15 +8,18 @@ import 'package:asset_flutter/content/providers/subscription/subscription_state.
 import 'package:asset_flutter/content/providers/subscription/subscriptions.dart';
 import 'package:asset_flutter/content/widgets/subscription/sd_edit.dart';
 import 'package:asset_flutter/content/widgets/subscription/sd_view.dart';
-import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SubscriptionDetailsPage extends StatefulWidget {
   final String _subscriptionID;
+  final bool isCardDetails;
 
   const SubscriptionDetailsPage(
-    this._subscriptionID, {Key? key}
+    this._subscriptionID, {
+      this.isCardDetails = false,
+      Key? key
+    }
   ): super(key: key);
 
   @override
@@ -91,7 +94,7 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
       _data = Provider.of<SubscriptionsProvider>(context, listen: false).findById(widget._subscriptionID);
       _subscriptionStateProvider = Provider.of<SubscriptionStateProvider>(context, listen: false);
       _updateView = SubscriptionDetailsEdit(_data);
-      _detailsView = SubscriptionDetailsView(_data);
+      _detailsView = SubscriptionDetailsView(_data, isCardDetails: widget.isCardDetails);
     }
     _state = EditState.view;
     super.didChangeDependencies();
@@ -113,7 +116,7 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
           )
         ),
         backgroundColor: _state == EditState.editing ? Colors.white : Color(_data.color),
-        actions: _iconButtons(),
+        actions: widget.isCardDetails ? null : _iconButtons(),
       ),
       body: SafeArea(
         child: _body()

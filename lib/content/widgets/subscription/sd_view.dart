@@ -20,9 +20,14 @@ import 'package:provider/provider.dart';
 // ignore: must_be_immutable
 class SubscriptionDetailsView extends StatefulWidget {
   final Subscription _data;
+  final bool isCardDetails;
+
   bool canEnterEditMode = true;
 
-  SubscriptionDetailsView(this._data, {Key? key}) : super(key: key);
+  SubscriptionDetailsView(this._data, {
+    this.isCardDetails = false,
+    Key? key
+  }) : super(key: key);
 
   @override
   State<SubscriptionDetailsView> createState() => _SubscriptionDetailsViewState();
@@ -121,7 +126,7 @@ class _SubscriptionDetailsViewState extends State<SubscriptionDetailsView> {
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 24
+                          fontSize: 26
                         ),
                       ),
                     )
@@ -135,7 +140,7 @@ class _SubscriptionDetailsViewState extends State<SubscriptionDetailsView> {
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 16
+                          fontSize: 14
                         ),
                       ),
                     )
@@ -158,6 +163,7 @@ class _SubscriptionDetailsViewState extends State<SubscriptionDetailsView> {
               "Paid in Total",
               _subscriptionDetails!.totalpayment.numToString() + ' ' + widget._data.currency
             ),
+            if(!widget.isCardDetails)
             Padding(
               padding: const EdgeInsets.all(12),
               child: isApple

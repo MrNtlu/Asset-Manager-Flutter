@@ -82,7 +82,7 @@ class _CardDetailsSubscriptionListState extends State<CardDetailsSubscriptionLis
                   
                   return ChangeNotifierProvider.value(
                     value: _data,
-                    child: SubscriptionListCell(_data)
+                    child: SubscriptionListCell(_data, isCardDetails: true)
                   );
                 }),
                 itemCount: _cardSubscriptionsProvider.items.length,

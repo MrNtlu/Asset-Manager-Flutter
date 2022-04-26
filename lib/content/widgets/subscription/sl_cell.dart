@@ -7,15 +7,17 @@ import 'package:flutter/material.dart';
 
 class SubscriptionListCell extends StatelessWidget {
   final Subscription subscription;
+  final bool isCardDetails;
 
-  const SubscriptionListCell(this.subscription);
+  const SubscriptionListCell(this.subscription, {this.isCardDetails = false});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: ((context) => SubscriptionDetailsPage(subscription.id))));
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: ((context) => SubscriptionDetailsPage(subscription.id, isCardDetails: isCardDetails)))
+        );
       },
       child: SizedBox(
         height: 105,

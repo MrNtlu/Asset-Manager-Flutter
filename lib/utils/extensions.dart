@@ -56,7 +56,6 @@ extension DateTimeExt on DateTime {
 
   String dateToDaysLeft() {
     final dayDiff = difference(DateTime.now()).inDays;
-    final days = (dayDiff % 30);
     final months = (dayDiff / 30).floor();
     final years = (dayDiff / 365).floor();
 

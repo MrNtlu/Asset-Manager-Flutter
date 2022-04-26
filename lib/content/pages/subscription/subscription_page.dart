@@ -76,7 +76,6 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   @override
   void didChangeDependencies() {
     if (_state == ListState.init) {
-
       _subscriptionsProvider = Provider.of<SubscriptionsProvider>(context);
 
       _subscriptionStateProvider = Provider.of<SubscriptionStateProvider>(context);
