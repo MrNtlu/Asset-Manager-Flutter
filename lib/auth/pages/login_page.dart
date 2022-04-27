@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'dart:ui';
 import 'package:asset_flutter/auth/models/requests/user.dart';
 import 'package:asset_flutter/auth/pages/register_page.dart';
 import 'package:asset_flutter/auth/widgets/auth_bottom_sheet.dart';
@@ -16,6 +16,7 @@ import 'package:asset_flutter/common/widgets/textformfield.dart';
 import 'package:asset_flutter/common/widgets/password_textformfield.dart';
 import 'package:asset_flutter/auth/widgets/auth_button.dart';
 import 'package:asset_flutter/auth/widgets/auth_checkbox.dart';
+import 'package:lottie/lottie.dart';
 
 class LoginPage extends StatefulWidget {
   static const routeName = "/login";
@@ -103,131 +104,173 @@ class _LoginPageState extends State<LoginPage> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: const Text('Login'),
-        backgroundColor: AppColors().primaryColor,
-      ),
-      body: SafeArea(
-        child: _isLoading
-            ? const LoadingView("Please wait while logging in")
-            : CustomScrollView(
-                physics: const ScrollPhysics(),
-                keyboardDismissBehavior:
-                    ScrollViewKeyboardDismissBehavior.onDrag,
-                slivers: [
-                  SliverFillRemaining(
-                    hasScrollBody: false,
-                    fillOverscroll: false,
-                    child: Center(
-                      child: Form(
-                        key: widget._form,
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                                margin: const EdgeInsets.all(32),
-                                child: Image.asset("assets/images/investment.png", height: 128, width: 128)),
-                            CustomTextFormField(
-                              'Email',
-                              TextInputType.emailAddress,
-                              initialText: widget._loginModel.emailAddress.trim() != '' 
-                                ? widget._loginModel.emailAddress 
-                                : null,
-                              prefixIcon: Icon(
-                                Icons.email,
-                                color: AppColors().primaryColor,
+      body: Container(
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/auth_bg.jpeg"),
+            fit: BoxFit.cover
+          ),
+        ),
+        child: SafeArea(
+          child: _isLoading
+              ? const LoadingView("Please wait while logging in", textColor: Colors.white)
+              : CustomScrollView(
+                  physics: const ScrollPhysics(),
+                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                  slivers: [
+                    SliverFillRemaining(
+                      hasScrollBody: false,
+                      fillOverscroll: false,
+                      child: Center(
+                        child: Form(
+                          key: widget._form,
+                          child: Column(
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                                child: Lottie.asset(
+                                  "assets/lottie/auth.json", 
+                                  fit: BoxFit.cover,
+                                  height: MediaQuery.of(context).size.height / 3.3
+                                )
                               ),
-                              onSaved: (value) {
-                                if (value != null) {
-                                  widget._loginModel.emailAddress = value;
-                                }
-                              },
-                              validator: (value) {
-                                if (value != null) {
-                                  if (value.isEmpty) {
-                                    return "Please don't leave this empty.";
-                                  } else if (!value.isEmailValid()) {
-                                    return "Email is not valid.";
-                                  }
-                                }
-
-                                return null;
-                              },
-                            ),
-                            PasswordTextFormField(
-                              initialText: widget._loginModel.password.trim() != '' 
-                                ? widget._loginModel.password 
-                                : null,
-                              prefixIcon: Icon(
-                                Icons.password,
-                                color: AppColors().primaryColor,
-                              ),
-                              textInputAction: TextInputAction.done,
-                              onSaved: (value) {
-                                if (value != null) {
-                                  widget._loginModel.password = value;
-                                }
-                              },
-                              validator: (value) {
-                                if (value != null) {
-                                  if (value.isEmpty) {
-                                    return "Please don't leave this empty.";
-                                  }
-                                }
-
-                                return null;
-                              },
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                left: (Platform.isMacOS || Platform.isWindows) ? 26 : 18,
-                                top: (Platform.isMacOS || Platform.isWindows) ? 8 : 4),
-                              child: _checkbox
-                            ),
-                            AuthButton((BuildContext ctx){
-                              _onSigninPressed(context);
-                            }, 'Sign In', AppColors().primaryLightColor),
-                            Padding(
-                              padding: const EdgeInsets.all(6.0),
-                              child: Row(
-                                children: const [
-                                  ExpandedDivider(10, 20, 24),
-                                  Text("OR"),
-                                  ExpandedDivider(20, 10, 24),
-                                ],
-                              ),
-                            ),
-                            AuthButton((BuildContext ctx){
-                              Navigator.of(ctx).pushNamed(RegisterPage.routeName);
-                            }, 'Register', AppColors().primaryColor),
-                            Expanded(
-                              child: Container(
-                                margin: const EdgeInsetsDirectional.only(
-                                    bottom: 32, end: 32),
-                                child: Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: isApple
-                                  ? CupertinoButton(
-                                    padding: const EdgeInsets.all(12),
-                                    onPressed: () =>
-                                        _openForgotPasswordBottomSheet(
-                                            context),
-                                    child: const Text('Forgot Password'))
-                                  : TextButton(
-                                    onPressed: () =>
-                                        _openForgotPasswordBottomSheet(
-                                            context),
-                                    child: const Text('Forgot Password')),
+                              ClipRRect(
+                                child: BackdropFilter(
+                                  filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.3),
+                                      borderRadius: BorderRadius.circular(18),
+                                      border: Border.all(width: 2, color: Colors.white30)
+                                    ),
+                                    margin: const EdgeInsets.symmetric(horizontal: 12),
+                                    child: Column(
+                                      children: [
+                                        CustomTextFormField(
+                                          'Email',
+                                          TextInputType.emailAddress,
+                                          initialText: widget._loginModel.emailAddress.trim() != '' 
+                                            ? widget._loginModel.emailAddress 
+                                            : null,
+                                          prefixIcon: Icon(
+                                            Icons.email,
+                                            color: AppColors().primaryDarkestColor,
+                                          ),
+                                          onSaved: (value) {
+                                            if (value != null) {
+                                              widget._loginModel.emailAddress = value;
+                                            }
+                                          },
+                                          validator: (value) {
+                                            if (value != null) {
+                                              if (value.isEmpty) {
+                                                return "Please don't leave this empty.";
+                                              } else if (!value.isEmailValid()) {
+                                                return "Email is not valid.";
+                                              }
+                                            }
+                                                                    
+                                            return null;
+                                          },
+                                          defaultBorder: _textFieldInputBorder(),
+                                          enabledBorder: _textFieldInputBorder(),
+                                          focusedBorder: _textFieldInputBorder(),
+                                        ),
+                                        PasswordTextFormField(
+                                          initialText: widget._loginModel.password.trim() != '' 
+                                            ? widget._loginModel.password 
+                                            : null,
+                                          prefixIcon: Icon(
+                                            Icons.password,
+                                            color: AppColors().primaryDarkestColor,
+                                          ),
+                                          textInputAction: TextInputAction.done,
+                                          onSaved: (value) {
+                                            if (value != null) {
+                                              widget._loginModel.password = value;
+                                            }
+                                          },
+                                          validator: (value) {
+                                            if (value != null) {
+                                              if (value.isEmpty) {
+                                                return "Please don't leave this empty.";
+                                              }
+                                            }
+                                                                    
+                                            return null;
+                                          },
+                                          defaultBorder: _textFieldInputBorder(),
+                                          enabledBorder: _textFieldInputBorder(),
+                                          focusedBorder: _textFieldInputBorder(),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                            left: (Platform.isMacOS || Platform.isWindows || Platform.isIOS) ? 26 : 18,
+                                            top: (Platform.isMacOS || Platform.isWindows || Platform.isIOS) ? 8 : 4,
+                                            bottom: (Platform.isMacOS || Platform.isWindows || Platform.isIOS) ? 4 : 0
+                                          ),
+                                          child: _checkbox
+                                        ),
+                                        AuthButton((BuildContext ctx){
+                                          _onSigninPressed(context);
+                                        }, 'Sign In', AppColors().primaryLightColor),
+                                        Padding(
+                                          padding: const EdgeInsets.all(6.0),
+                                          child: Row(
+                                            children: const [
+                                              ExpandedDivider(10, 20, 24, color: Colors.white),
+                                              Text("OR", style: TextStyle(color: Colors.white)),
+                                              ExpandedDivider(20, 10, 24, color: Colors.white),
+                                            ],
+                                          ),
+                                        ),
+                                        AuthButton((BuildContext ctx){
+                                          Navigator.of(ctx).pushNamed(RegisterPage.routeName);
+                                        }, 'Register', AppColors().primaryColor),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                              Expanded(
+                                child: Container(
+                                  margin: const EdgeInsetsDirectional.only(bottom: 16, end: 16),
+                                  child: Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: isApple
+                                    ? CupertinoButton(
+                                      padding: const EdgeInsets.all(12),
+                                      onPressed: () => _openForgotPasswordBottomSheet(context),
+                                      child: const Text(
+                                        'Forgot Password', 
+                                        style: TextStyle(color: Colors.white, fontSize: 14)
+                                      )
+                                    )
+                                    : TextButton(
+                                      onPressed: () =>_openForgotPasswordBottomSheet(context),
+                                      child: const Text(
+                                        'Forgot Password', 
+                                        style: TextStyle(color: Colors.white, fontSize: 14)
+                                      )
+                                    )
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
+        ),
       ),
     );
   }
+
+  InputBorder _textFieldInputBorder() => UnderlineInputBorder(
+    borderRadius: BorderRadius.circular(6),
+    borderSide: const BorderSide(color: Colors.white)
+  );
 }

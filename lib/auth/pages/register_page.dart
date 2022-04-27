@@ -32,7 +32,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void _onRegisterPressed(BuildContext context) {  
     if (_termsConditionsCheck.getValue() && _privacyPolicyCheck.getValue()) {
-      widget._registerModel.currency = _currencyDropdown.dropdown.dropdownValue;
+      widget._registerModel.currency = _currencyDropdown.currency;
       final isValid = widget._form.currentState?.validate();
       if (isValid != null && !isValid) {
         return;
@@ -83,7 +83,7 @@ class _RegisterPageState extends State<RegisterPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (!_isInit) {
-      _currencyDropdown = RegisterCurrencyDropdown();
+      _currencyDropdown = RegisterCurrencyDropdown(textColor: Colors.white);
       _termsConditionsCheck = AuthCheckbox("Terms & Conditions");
       _privacyPolicyCheck = AuthCheckbox("Privacy & Policy");
 
@@ -95,121 +95,152 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         title: const Text('Register'),
-        backgroundColor: AppColors().primaryColor,
       ),
-      body: SafeArea(
-        child: _isLoading
-        ? const LoadingView("Please wait while registering") 
-        : SingleChildScrollView(
-            physics: const ScrollPhysics(),
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            child: Center(
-              child: Container(
-                margin: const EdgeInsets.only(top: 36),
-                child: Form(
-                  key: widget._form,
-                  child: Column(children: [
-                    CustomTextFormField(
-                      "Email",
-                      TextInputType.emailAddress,
-                      initialText: widget._registerModel.emailAddress.trim() != '' 
-                        ? widget._registerModel.emailAddress 
-                        : null,
-                      prefixIcon:
-                          Icon(Icons.email, color: AppColors().primaryColor),
-                      onSaved: (value) {
-                        if (value != null) {
-                          widget._registerModel.emailAddress = value;
-                        }
-                      },
-                      validator: (value) {
-                        if (value != null) {
-                          if (value.isEmpty) {
-                            return "Please don't leave this empty.";
-                          } else if (!value.isEmailValid()) {
-                            return "Email is not valid.";
-                          }
-                        }
+      body: Container(
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/auth_bg.jpeg"),
+            fit: BoxFit.cover
+          ),
+        ),
+        child: SafeArea(
+          child: _isLoading
+          ? const LoadingView("Please wait while registering", textColor: Colors.white) 
+          : SingleChildScrollView(
+              physics: const ScrollPhysics(),
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              child: Center(
+                child: Container(
+                  margin: const EdgeInsets.only(top: 36),
+                  child: Form(
+                    key: widget._form,
+                    child: Column(
+                      children: [
+                        CustomTextFormField(
+                          "Email",
+                          TextInputType.emailAddress,
+                          initialText: widget._registerModel.emailAddress.trim() != '' 
+                            ? widget._registerModel.emailAddress 
+                            : null,
+                          prefixIcon: Icon(
+                            Icons.email, 
+                            color: AppColors().primaryDarkestColor
+                          ),
+                          onSaved: (value) {
+                            if (value != null) {
+                              widget._registerModel.emailAddress = value;
+                            }
+                          },
+                          validator: (value) {
+                            if (value != null) {
+                              if (value.isEmpty) {
+                                return "Please don't leave this empty.";
+                              } else if (!value.isEmailValid()) {
+                                return "Email is not valid.";
+                              }
+                            }
 
-                        return null;
-                      },
-                    ),
-                    PasswordTextFormField(
-                      initialText: widget._registerModel.password.trim() != '' 
-                        ? widget._registerModel.password 
-                        : null,
-                      prefixIcon:
-                          Icon(Icons.password, color: AppColors().primaryColor),
-                      onSaved: (value) {
-                        if (value != null) {
-                          widget._registerModel.password = value;
-                        }
-                      },
-                      validator: (value) {
-                        if (value != null) {
-                          if (value.isEmpty) {
-                            return "Please don't leave this empty.";
-                          }
-                        }
+                            return null;
+                          },
+                          defaultBorder: _textFieldInputBorder(),
+                          enabledBorder: _textFieldInputBorder(),
+                          focusedBorder: _textFieldInputBorder(),
+                        ),
+                        PasswordTextFormField(
+                          initialText: widget._registerModel.password.trim() != '' 
+                            ? widget._registerModel.password 
+                            : null,
+                          prefixIcon: Icon(
+                            Icons.password, 
+                            color: AppColors().primaryDarkestColor
+                          ),
+                          onSaved: (value) {
+                            if (value != null) {
+                              widget._registerModel.password = value;
+                            }
+                          },
+                          validator: (value) {
+                            if (value != null) {
+                              if (value.isEmpty) {
+                                return "Please don't leave this empty.";
+                              }
+                            }
 
-                        return null;
-                      },
+                            return null;
+                          },
+                          defaultBorder: _textFieldInputBorder(),
+                          enabledBorder: _textFieldInputBorder(),
+                          focusedBorder: _textFieldInputBorder(),
+                        ),
+                        PasswordTextFormField(
+                          initialText: _rePassword.trim() != '' 
+                            ? _rePassword 
+                            : null,
+                          label: "Password Again",
+                          textInputAction: TextInputAction.done,
+                          onSaved: (value){
+                            if (value != null) {
+                              _rePassword = value;
+                            }
+                          },
+                          validator: (value) {
+                            if (value != null) {
+                              if (value.isEmpty) {
+                                return "Please don't leave this empty.";
+                              }
+                            }
+                            return null;
+                          },
+                          defaultBorder: _textFieldInputBorder(),
+                          enabledBorder: _textFieldInputBorder(),
+                          focusedBorder: _textFieldInputBorder(),
+                        ),
+                        _currencyDropdown,
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+                              return const PolicyPage(false);
+                            }));
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            margin: const EdgeInsets.fromLTRB(32, 4, 32, 0),
+                            child: _termsConditionsCheck,
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+                              return const PolicyPage(true);
+                            }));
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            margin: const EdgeInsets.fromLTRB(32, 4, 32, 0),
+                            child: _privacyPolicyCheck,
+                          ),
+                        ),
+                        AuthButton((BuildContext ctx){
+                          _onRegisterPressed(context);
+                        }, "Register",AppColors().primaryColor),
+                      ]
                     ),
-                    PasswordTextFormField(
-                      initialText: _rePassword.trim() != '' 
-                        ? _rePassword 
-                        : null,
-                      label: "Password Again",
-                      textInputAction: TextInputAction.done,
-                      onSaved: (value){
-                        if (value != null) {
-                          _rePassword = value;
-                        }
-                      },
-                      validator: (value) {
-                        if (value != null) {
-                          if (value.isEmpty) {
-                            return "Please don't leave this empty.";
-                          }
-                        }
-                        return null;
-                      },
-                    ),
-                    _currencyDropdown,
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-                          return const PolicyPage(false);
-                        }));
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        margin: const EdgeInsets.fromLTRB(32, 4, 32, 0),
-                        child: _termsConditionsCheck,
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-                          return const PolicyPage(true);
-                        }));
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        margin: const EdgeInsets.fromLTRB(32, 4, 32, 0),
-                        child: _privacyPolicyCheck,
-                      ),
-                    ),
-                    AuthButton((BuildContext ctx){
-                      _onRegisterPressed(context);
-                    }, "Register",AppColors().primaryColor),
-                  ]),
+                  ),
                 ),
-              ),
-            )),
+              )),
+        ),
       ),
     );
   }
+
+  InputBorder _textFieldInputBorder() => UnderlineInputBorder(
+    borderRadius: BorderRadius.circular(6),
+    borderSide: const BorderSide(color: Colors.white)
+  );
 }

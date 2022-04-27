@@ -194,6 +194,11 @@ class InvestmentDetailsListCell extends StatelessWidget {
                     fontSize: 18,
                     fontWeight: FontWeight.bold),
                 ),
+              ),
+              Container(
+                width: double.infinity,
+                alignment: Alignment.centerRight,
+                child: const Icon(Icons.swipe_left_rounded, size: 14)
               )
             ],
           ),

@@ -69,11 +69,15 @@ class PortfolioInvestmentListCell extends StatelessWidget {
                     ),
                   ),
                   Container(
-                      padding: const EdgeInsets.only(right: 12, top: 4),
-                      child: PortfolioPLText(data.pl.toDouble(), null,
-                          fontSize: 13,
-                          iconSize: 15,
-                          plPrefix: data.fromAsset))
+                    padding: const EdgeInsets.only(right: 12, top: 4),
+                    child: PortfolioPLText(
+                      data.pl.toDouble(), 
+                      null,
+                      fontSize: 13,
+                      iconSize: 15,
+                      plPrefix: data.fromAsset
+                    )
+                  ),
                 ],
               ),
             )

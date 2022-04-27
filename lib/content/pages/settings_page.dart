@@ -314,14 +314,15 @@ class _SettingsPageState extends State<SettingsPage> {
                                     padding: const EdgeInsets.all(12),
                                     onPressed: (){
                                       Navigator.pop(context);
-                                      _changeCurrency(_currencyDropdown.dropdown.dropdownValue);
+                                      //TODO: Implement sheet
+                                      //_changeCurrency(_currencyDropdown.dropdown.dropdownValue);
                                     }, 
                                     child: const Text('Save', style: TextStyle(fontSize: 16))
                                   )
                                   : ElevatedButton(
                                     onPressed: (){
                                       Navigator.pop(context);
-                                      _changeCurrency(_currencyDropdown.dropdown.dropdownValue);
+                                      //_changeCurrency(_currencyDropdown.dropdown.dropdownValue);
                                     }, 
                                     child: const Text('Save', style: TextStyle(fontSize: 16))
                                   )

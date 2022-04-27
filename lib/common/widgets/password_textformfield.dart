@@ -8,15 +8,24 @@ class PasswordTextFormField extends StatefulWidget {
   final Function(String?)? onSaved;
   final String? Function(String?)? validator;
   final Icon? prefixIcon;
+  final InputBorder? focusedBorder;
+  final InputBorder? enabledBorder;
+  final InputBorder? defaultBorder;
 
   const PasswordTextFormField(
-      {this.passwordController,
+    {
+      this.passwordController,
       this.label = 'Password',
       this.onSaved,
       this.validator,
       this.prefixIcon,
       this.initialText,
-      this.textInputAction = TextInputAction.next});
+      this.textInputAction = TextInputAction.next,
+      this.focusedBorder = const OutlineInputBorder(),
+      this.enabledBorder = const OutlineInputBorder(),
+      this.defaultBorder = const OutlineInputBorder(),
+    }
+  );
 
   @override
   _PasswordTextFormFieldState createState() => _PasswordTextFormFieldState();
@@ -47,7 +56,9 @@ class _PasswordTextFormFieldState extends State<PasswordTextFormField> {
         decoration: InputDecoration(
           filled: true,
           fillColor: Colors.white,
-          border: const OutlineInputBorder(),
+          enabledBorder: widget.enabledBorder,
+          focusedBorder: widget.focusedBorder,
+          border: widget.defaultBorder,
           labelText: widget.label,
           prefixIcon: widget.prefixIcon,
           suffixIcon: Padding(

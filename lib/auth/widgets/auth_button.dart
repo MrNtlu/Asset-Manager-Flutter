@@ -20,7 +20,8 @@ class AuthButton extends StatelessWidget {
       width: double.infinity,
       margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
       child: isApple
-        ? CupertinoButton.filled(
+        ? CupertinoButton(
+          color: color,
           padding: const EdgeInsets.all(12),
           child: Text(
             text,
@@ -40,7 +41,7 @@ class AuthButton extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               primary: color,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18)
+                borderRadius: BorderRadius.circular(8)
               ),
             ),
           )

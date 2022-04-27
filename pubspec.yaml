@@ -91,11 +91,13 @@ flutter:
     - assets/lottie/error.json
     - assets/lottie/error_dialog.json
     - assets/lottie/premium.json
-    - assets/images/investment.png
+    - assets/lottie/auth.json
     - assets/policies/privacy_policy.md
     - assets/policies/terms_conditions.md
+    - assets/images/investment.png
     - assets/images/gold.png
     - assets/images/markets.png
+    - assets/images/auth_bg.jpeg
     - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see

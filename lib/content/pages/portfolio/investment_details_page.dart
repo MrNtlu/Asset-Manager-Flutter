@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/add_elevated_button.dart';
 import 'package:asset_flutter/common/widgets/check_dialog.dart';
@@ -11,6 +13,7 @@ import 'package:asset_flutter/content/widgets/portfolio/id_log_list.dart';
 import 'package:asset_flutter/content/widgets/portfolio/id_top_bar.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/images.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:asset_flutter/content/providers/asset_logs.dart';
@@ -98,29 +101,41 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
     });
   }
 
+  Widget _deleteDialog(BuildContext context) => AreYouSureDialog("delete investment", (){
+    Navigator.pop(context);
+    setState(() {
+      _state = EditState.editing;
+    });
+    
+    Provider.of<AssetLogProvider>(context, listen: false)
+      .deleteAllAssetLogs(widget._data.toAsset, widget._data.fromAsset, widget._data.market)
+      .then((response){
+        if (_state != EditState.disposed) {
+          if (response.error != null) {
+            setState(() {
+              _state = EditState.view;
+            });
+            showDialog(
+              context: context, 
+              builder: (ctx) => ErrorDialog(response.error!)
+            );
+          } else {
+            isDataChanged = true;
+            Navigator.maybePop(context);
+          } 
+        }
+    });
+  });
+
   void _deleteLogs(BuildContext context) {
-    showDialog(
+    Platform.isMacOS || Platform.isIOS
+    ? showCupertinoDialog(
       context: context, 
-      builder: (ctx) => AreYouSureDialog("delete investment", (){
-        Navigator.pop(context);
-        setState(() {
-          _state = EditState.editing;
-        });
-        
-        Provider.of<AssetLogProvider>(context, listen: false)
-          .deleteAllAssetLogs(widget._data.toAsset, widget._data.fromAsset)
-          .then((response){
-            if (response.error != null) {
-              showDialog(
-                context: context, 
-                builder: (ctx) => ErrorDialog(response.error!)
-              );
-            } else {
-              isDataChanged = true;
-              Navigator.maybePop(context);
-            }
-        });
-      })
+      builder: (_) => _deleteDialog(context)
+    )
+    : showDialog(
+      context: context, 
+      builder: (_) => _deleteDialog(context)
     );
   }
 

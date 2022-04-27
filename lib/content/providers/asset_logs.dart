@@ -93,13 +93,14 @@ class AssetLogProvider with ChangeNotifier {
     }
   }
 
-  Future<BaseAPIResponse> deleteAllAssetLogs(String toAsset, String fromAsset) async {
+  Future<BaseAPIResponse> deleteAllAssetLogs(String toAsset, String fromAsset, String assetMarket) async {
     try {
       final response = await http.delete(
         Uri.parse(APIRoutes().assetRoutes.deleteAssetLogsByUserID),
         body: json.encode({
           "to_asset": toAsset,
-          "from_asset": fromAsset
+          "from_asset": fromAsset,
+          "asset_market": assetMarket
         }),
         headers: UserToken().getBearerToken()
       );
