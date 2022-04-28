@@ -21,6 +21,7 @@ class StatsLCLineChart extends StatefulWidget{
 class _StatsLCLineChartState extends State<StatsLCLineChart> {
   late List<double> plList;
   late List<double> assetList;
+  late List<DateTime> dateList;
 
   ViewState _state = ViewState.init;
   late final DailyStatsProvider _dailyStatsProvider;
@@ -45,6 +46,7 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
             if (_state == ViewState.done) {
               plList = response.data!.totalPL.map((e) => e.toDouble().revertValue()).toList();
               assetList = response.data!.totalAssets.map((e) => e.toDouble()).toList();
+              dateList = response.data!.dates;
             }
         });
       }
@@ -264,45 +266,13 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
       ),
       getTitles: (value) {
         var listLength = isProfit ? plList.length : assetList.length;
-        if (value < 1) {
+        final String formatType = (isProfit ? plList.length : assetList.length) <= 75 ? 'dd MM' : 'MMM yy';
+        if(value < 1 || (listLength < 75 && value == listLength - 1)) {
           return '';
-        } else if (listLength < 75 && value == listLength - 1) {
-          return '';
-        }
-
-        if (listLength <= 10) {
-          return getBottomTitleList("weekly", isProfit: isProfit)[value.toInt()];
-        } else if (listLength > 10 && listLength <= 20 && value % 2 == 0) {
-          return getBottomTitleList("monthly", isProfit: isProfit)[value.toInt()];
-        } else if (listLength > 20 && listLength <= 24 && value % 4 == 2) {
-          return getBottomTitleList("monthly", isProfit: isProfit)[value.toInt()];
-        } else if (listLength > 24 && listLength <= 45 && value % 5 == 0) {
-          return getBottomTitleList("monthly", isProfit: isProfit)[value.toInt()];
-        } else if (listLength > 45 && listLength <= 75 && value % 10 == 0) {
-          return getBottomTitleList("monthly", isProfit: isProfit)[value.toInt()];
-        } else if (listLength > 75 && listLength <= 90 && value % 30 == 0) {
-          return getBottomTitleList("3monthly", isProfit: isProfit)[value.toInt()];
-        }
-        return '';
+        } 
+        return DateFormat(formatType).format(dateList[value.toInt()]);
       },
       margin: 8,
     ),
   );
-
-  List<String> getBottomTitleList(String interval, {bool isProfit = true}) {
-    final List<String> titleList = [];
-    final String formatType = (isProfit ? plList.length : assetList.length) <= 75 ? 'dd MM' : 'MMM yy';
-
-    for (var i = 0; i < (isProfit ? plList.length : assetList.length); i++) {
-      late String title;
-      if (i == 0) {
-        title = DateFormat(formatType).format(DateTime.now());
-      } else { 
-        var date = DateTime.now().add(Duration(days: -i));
-        title = DateFormat(formatType).format(date);
-      }
-      titleList.insert(0, title);
-    }
-    return titleList;
-  }
 }

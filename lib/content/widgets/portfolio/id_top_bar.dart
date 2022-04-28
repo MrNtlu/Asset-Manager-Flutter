@@ -53,12 +53,16 @@ class InvestmentDetailsTopBar extends StatelessWidget {
                       ),
                     ),
                     Container(
-                        padding:
-                            const EdgeInsets.only(right: 12, top: 4),
-                        child: PortfolioPLText(_data.pl.toDouble(), null,
-                            fontSize: 15,
-                            iconSize: 17,
-                            plPrefix: _data.fromAsset))
+                      padding: const EdgeInsets.only(right: 12, top: 4),
+                      child: PortfolioPLText(
+                        _data.pl.toDouble(), 
+                        _data.plPercentage.toDouble(),
+                        null,
+                        fontSize: 15,
+                        iconSize: 17,
+                        plPrefix: _data.fromAsset
+                      )
+                    )
                   ],
                 ),
               )

@@ -9,8 +9,9 @@ class DailyAssetStats {
   final String currency;
   final List<num> totalAssets;
   final List<num> totalPL;
+  final List<DateTime> dates;
 
-  const DailyAssetStats(this.currency, this.totalAssets, this.totalPL);
+  const DailyAssetStats(this.currency, this.totalAssets, this.totalPL, this.dates);
 }
 
 class DailyStatsProvider with ChangeNotifier {

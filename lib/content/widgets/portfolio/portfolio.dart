@@ -63,7 +63,9 @@ class Portfolio extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.only(top: 16),
                     child: PortfolioPLText(
-                      assetStats.totalPL.toDouble(), null, 
+                      assetStats.totalPL.toDouble(),
+                      assetStats.totalPLPercentage.toDouble(),
+                      null, 
                       fontSize: MediaQuery.of(context).size.width > 350 ? 20 : 16, 
                       iconSize: MediaQuery.of(context).size.width > 350 ? 22 : 18,
                       plPrefix: currencySymbol,

@@ -13,10 +13,11 @@ class Asset {
   final String type;
   final String market;
   num pl;
+  num plPercentage;
   num amount;
 
 
-  Asset(this.currentValue, this.name, this.toAsset, this.fromAsset, this.type, this.market, this.pl, this.amount);
+  Asset(this.currentValue, this.name, this.toAsset, this.fromAsset, this.type, this.market, this.pl, this.plPercentage, this.amount);
 }
 
 class AssetProvider with ChangeNotifier {

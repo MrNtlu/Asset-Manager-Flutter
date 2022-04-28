@@ -47,6 +47,7 @@ class _SettingsPageState extends State<SettingsPage> {
         }),
         headers: UserToken().getBearerToken()
       ).then((response){
+        _userInfo!.currency = currency;
         setState(() {
           _state = DetailState.view;
         });
@@ -297,7 +298,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       context: context, 
                       builder: (ctx) => AreYouSureDialog("change currency", (){
                         Navigator.pop(ctx);
-                        final RegisterCurrencyDropdown _currencyDropdown = RegisterCurrencyDropdown(); 
+                        final RegisterCurrencyDropdown _currencyDropdown = RegisterCurrencyDropdown(currency: _userInfo!.currency); 
                         showModalBottomSheet(
                           context: context, 
                           isScrollControlled: true,
@@ -314,15 +315,14 @@ class _SettingsPageState extends State<SettingsPage> {
                                     padding: const EdgeInsets.all(12),
                                     onPressed: (){
                                       Navigator.pop(context);
-                                      //TODO: Implement sheet
-                                      //_changeCurrency(_currencyDropdown.dropdown.dropdownValue);
+                                      _changeCurrency(_currencyDropdown.currency);
                                     }, 
                                     child: const Text('Save', style: TextStyle(fontSize: 16))
                                   )
                                   : ElevatedButton(
                                     onPressed: (){
                                       Navigator.pop(context);
-                                      //_changeCurrency(_currencyDropdown.dropdown.dropdownValue);
+                                      _changeCurrency(_currencyDropdown.currency);
                                     }, 
                                     child: const Text('Save', style: TextStyle(fontSize: 16))
                                   )

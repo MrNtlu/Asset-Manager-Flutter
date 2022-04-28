@@ -155,6 +155,7 @@ class _TypeConverter<T> {
         response["asset_type"],
         response["asset_market"],
         response["p/l"],
+        response["pl_percentage"],
         response["remaining_amount"],
       ) as T;
     } else if (T == AssetLog) {
@@ -184,6 +185,7 @@ class _TypeConverter<T> {
         response["exchange_p/l"],
         response["commodity_p/l"],
         response["total_p/l"],
+        response["total_pl_percentage"],
         response["stock_percentage"],
         response["crypto_percentage"],
         response["exchange_percentage"],
@@ -241,6 +243,7 @@ class _TypeConverter<T> {
         response["currency"],
         response["total_assets"] != null ? ((response["total_assets"]) as List).map((e) => e as num).toList() : [],
         response["total_p/l"] != null ? ((response["total_p/l"]) as List).map((e) => e as num).toList() : [],
+        response["dates"] != null ? ((response["dates"]) as List).map((e) => DateTime.parse(e)).toList() : [],
       ) as T;
     } else if (T == UserInfo) {
       return UserInfo(

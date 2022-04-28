@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 
 class PortfolioPLText extends StatelessWidget {
   final double _pl;
+  final double _plPercentage;
   final double fontSize;
   final double iconSize;
   final String? _subText;
   final String? plPrefix;
 
-  const PortfolioPLText(this._pl, this._subText, {this.fontSize = 16, this.iconSize = 18, this.plPrefix});
+  const PortfolioPLText(this._pl, this._plPercentage, this._subText, {this.fontSize = 16, this.iconSize = 18, this.plPrefix});
 
   @override
   Widget build(BuildContext context) {
@@ -38,14 +39,15 @@ class PortfolioPLText extends StatelessWidget {
             ),
           ),
         Text(
-          _pl.abs().toStringAsFixed(2),
+          _pl.abs().toStringAsFixed(2) 
+          + (_pl == 0 ? ' ': (_pl < 0 ? ' +' : ' -')) 
+          + _plPercentage.abs().toStringAsFixed(1) + '%',
           style: TextStyle(
             fontSize: fontSize,
             color:_pl == 0 
             ? Colors.grey
             : (_pl < 0 ? AppColors().greenColor : AppColors().redColor),
             fontWeight: FontWeight.bold
-
           ),
         ),
         if (_subText != null)

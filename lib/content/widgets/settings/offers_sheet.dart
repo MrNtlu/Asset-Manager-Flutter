@@ -1,3 +1,8 @@
+import 'dart:convert';
+
+import 'package:asset_flutter/static/routes.dart';
+import 'package:asset_flutter/static/token.dart';
+import 'package:http/http.dart' as http;
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
@@ -64,9 +69,14 @@ class OffersSheetState extends State<OffersSheet> {
         return Container(
           decoration: BoxDecoration(
             color: AppColors().primaryColor,
+            image: const DecorationImage(
+              image: AssetImage("assets/images/auth_bg.jpeg"),
+              fit: BoxFit.cover
+            ),
             borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(12),
-                topLeft: Radius.circular(12)),
+              topRight: Radius.circular(12),
+              topLeft: Radius.circular(12)
+            ),
           ),
           child: Column(
             children: [
@@ -108,6 +118,8 @@ class OffersSheetState extends State<OffersSheet> {
                     onTap: () async {
                       try {
                         await Purchases.purchasePackage(package);
+                        _createLog("${product.title} purchased.");
+
                         showDialog(
                           context: context,
                           builder: (_) => const SuccessView("purchased. Thank you for becoming a premium member")
@@ -115,11 +127,15 @@ class OffersSheetState extends State<OffersSheet> {
                       } on PlatformException catch (e) {
                         var errorCode = PurchasesErrorHelper.getErrorCode(e);
                         if (errorCode == PurchasesErrorCode.purchaseCancelledError) {
+                          _createLog("${product.title} purchase cancelled.");
+                          
                           showDialog(
                             context: context,
                             builder: (_) => const ErrorDialog("Purchase cancelled.")
                           );
                         } else {
+                          _createLog("${product.title} failed to purchase.");
+
                           showDialog(
                             context: context,
                             builder: (_) => ErrorDialog(e.message ?? "Failed to purchase.")
@@ -127,10 +143,14 @@ class OffersSheetState extends State<OffersSheet> {
                         }
                       }
                     },
-                    child: Card(
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
-                      child: Padding(
+                    child: ClipRRect(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.7),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(width: 2, color: Colors.white30)
+                        ),
+                        margin: const EdgeInsets.all(6),
                         padding: const EdgeInsets.all(4),
                         child: Row(
                           children: [
@@ -145,7 +165,8 @@ class OffersSheetState extends State<OffersSheet> {
                                       child: Text(
                                         product.title.split('(')[0],
                                         style: const TextStyle(
-                                          fontWeight: FontWeight.bold, fontSize: 16
+                                          fontWeight: FontWeight.bold, 
+                                          fontSize: 16
                                         ),
                                       ),
                                     ),
@@ -154,6 +175,7 @@ class OffersSheetState extends State<OffersSheet> {
                                     padding: const EdgeInsets.all(4),
                                     child: Text(
                                       product.description,
+                                      textAlign: TextAlign.start,
                                       style: const TextStyle(
                                         fontSize: 14,
                                       ),
@@ -167,6 +189,10 @@ class OffersSheetState extends State<OffersSheet> {
                               child: Center(
                                 child: Text(
                                   product.priceString,
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold
+                                  ),
                                 ),
                               ),
                             )
@@ -186,5 +212,16 @@ class OffersSheetState extends State<OffersSheet> {
       default:
         return const LoadingView("Loading");
     }
+  }
+
+  void _createLog(String message) async {
+    http.post(
+      Uri.parse(APIRoutes().logRoutes.createLog),
+      body: json.encode({
+        "log": message,
+        "log_type": 1
+      }),
+      headers: UserToken().getBearerToken()
+    );
   }
 }

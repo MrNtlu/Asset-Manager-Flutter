@@ -89,7 +89,7 @@ class _RegisterCurrencyDropdownState extends State<RegisterCurrencyDropdown> {
     );
   }
 
-  Widget _buttonText() =>Row(
+  Widget _buttonText() => Row(
     mainAxisAlignment: MainAxisAlignment.center,
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [

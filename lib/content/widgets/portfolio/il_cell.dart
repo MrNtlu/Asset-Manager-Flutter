@@ -72,6 +72,7 @@ class PortfolioInvestmentListCell extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 12, top: 4),
                     child: PortfolioPLText(
                       data.pl.toDouble(), 
+                      data.plPercentage.toDouble(),
                       null,
                       fontSize: 13,
                       iconSize: 15,

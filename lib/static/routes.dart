@@ -10,6 +10,7 @@ class APIRoutes {
   late final AuthRoutes authRoutes;
   late final UserRoutes userRoutes;
   late final InvestingRoutes investingRoutes;
+  late final LogRoutes logRoutes;
 
   APIRoutes._privateConstructor() {
     assetRoutes = AssetRoutes(baseURL: baseURL);
@@ -18,12 +19,26 @@ class APIRoutes {
     authRoutes = AuthRoutes(baseURL: baseURL);
     userRoutes = UserRoutes(baseURL: baseURL);
     investingRoutes = InvestingRoutes(baseURL: baseURL);
+    logRoutes = LogRoutes(baseURL: baseURL);
   }
 
   static final APIRoutes _instance = APIRoutes._privateConstructor();
 
   factory APIRoutes() {
     return _instance;
+  }
+}
+
+class LogRoutes {
+  late String _baseLogURL;
+
+  late String createLog;
+  late String investings;
+  
+  LogRoutes({baseURL}) {
+    _baseLogURL = baseURL + '/log';
+
+    createLog = _baseLogURL;
   }
 }
 

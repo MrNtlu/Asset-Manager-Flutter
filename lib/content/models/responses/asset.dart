@@ -32,6 +32,7 @@ class AssetStats {
   final num exchangePL;
   final num commodityPL;
   final num totalPL;
+  final num totalPLPercentage;
   final num stockPercentage;
   final num cryptoPercentage;
   final num exchangePercentage;
@@ -51,6 +52,7 @@ class AssetStats {
     this.exchangePL,
     this.commodityPL,
     this.totalPL,
+    this.totalPLPercentage,
     this.stockPercentage,
     this.cryptoPercentage,
     this.exchangePercentage,

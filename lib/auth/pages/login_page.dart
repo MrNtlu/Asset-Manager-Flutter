@@ -144,6 +144,7 @@ class _LoginPageState extends State<LoginPage> {
                                       borderRadius: BorderRadius.circular(18),
                                       border: Border.all(width: 2, color: Colors.white30)
                                     ),
+                                    padding: const EdgeInsets.symmetric(vertical: 4),
                                     margin: const EdgeInsets.symmetric(horizontal: 12),
                                     child: Column(
                                       children: [
