@@ -1,3 +1,6 @@
 flutter build appbundle // Building release app for android
 
 arch -x86_64 pod install --repo-update //Update cocoapods
+
+//Key Alias 
+android/key.properties

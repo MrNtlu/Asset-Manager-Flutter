@@ -33,6 +33,8 @@ Scraper: [Asset Scraper](https://github.com/MrNtlu/Asset-Scraper)
     <li> Sliver Tools
     <li> Dotenv
     <li> AwesomeCard
+    <li> GoogleSignIn
+    <li> Signin Button
 </ul>
 
 &nbsp;

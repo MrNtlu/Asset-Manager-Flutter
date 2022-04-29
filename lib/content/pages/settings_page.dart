@@ -12,6 +12,7 @@ import 'package:asset_flutter/common/widgets/success_view.dart';
 import 'package:asset_flutter/content/widgets/settings/offers_sheet.dart';
 import 'package:asset_flutter/content/models/responses/user.dart';
 import 'package:asset_flutter/static/colors.dart';
+import 'package:asset_flutter/static/google_signin_api.dart';
 import 'package:asset_flutter/static/purchase_api.dart';
 import 'package:asset_flutter/static/routes.dart';
 import 'package:asset_flutter/static/shared_pref.dart';
@@ -126,6 +127,7 @@ class _SettingsPageState extends State<SettingsPage> {
         } else {
           Purchases.logOut();
           SharedPref().deleteLoginCredentials();
+          GoogleSignInApi().signOut();
           Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (_) => LoginPage()));
         }
@@ -159,6 +161,8 @@ class _SettingsPageState extends State<SettingsPage> {
             builder: (ctx) => ErrorDialog(response.getBaseResponse().error!)
           );
         } else {
+          Purchases.logOut();
+          GoogleSignInApi().signOut();
           SharedPref().deleteLoginCredentials();
           Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (_) => LoginPage()));

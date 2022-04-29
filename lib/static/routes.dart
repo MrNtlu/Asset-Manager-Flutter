@@ -8,6 +8,7 @@ class APIRoutes {
   late final SubscriptionRoutes subscriptionRoutes;
   late final CardRoutes cardRoutes;
   late final AuthRoutes authRoutes;
+  late final OAuthRoutes oauthRoutes;
   late final UserRoutes userRoutes;
   late final InvestingRoutes investingRoutes;
   late final LogRoutes logRoutes;
@@ -17,6 +18,7 @@ class APIRoutes {
     subscriptionRoutes = SubscriptionRoutes(baseURL: baseURL);
     cardRoutes = CardRoutes(baseURL: baseURL);
     authRoutes = AuthRoutes(baseURL: baseURL);
+    oauthRoutes = OAuthRoutes(baseURL: baseURL);
     userRoutes = UserRoutes(baseURL: baseURL);
     investingRoutes = InvestingRoutes(baseURL: baseURL);
     logRoutes = LogRoutes(baseURL: baseURL);
@@ -69,6 +71,18 @@ class AuthRoutes {
     login = _baseAuthURL + '/login';
     register = _baseAuthURL + '/register';
     logout = _baseAuthURL + '/logout';
+  }
+}
+
+class OAuthRoutes {
+  late String _baseOAuthURL;
+
+  late String google;
+
+  OAuthRoutes({baseURL}) {
+    _baseOAuthURL = baseURL + '/oauth';
+
+    google = _baseOAuthURL + '/google';
   }
 }
 

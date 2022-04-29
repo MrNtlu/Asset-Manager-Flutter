@@ -1,4 +1,5 @@
 .env
+build_assets/upload-keystore.jks
 
 # Miscellaneous
 *.class

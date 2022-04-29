@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 import 'package:asset_flutter/auth/models/requests/user.dart';
+import 'package:asset_flutter/auth/models/responses/user.dart';
 import 'package:asset_flutter/auth/pages/register_page.dart';
 import 'package:asset_flutter/auth/widgets/auth_bottom_sheet.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
@@ -8,15 +10,20 @@ import 'package:asset_flutter/common/widgets/expanded_divider.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/content/pages/tabs_page.dart';
 import 'package:asset_flutter/static/colors.dart';
+import 'package:asset_flutter/static/routes.dart';
 import 'package:asset_flutter/static/shared_pref.dart';
 import 'package:asset_flutter/utils/extensions.dart';
+import 'package:asset_flutter/static/google_signin_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:asset_flutter/common/widgets/textformfield.dart';
 import 'package:asset_flutter/common/widgets/password_textformfield.dart';
 import 'package:asset_flutter/auth/widgets/auth_button.dart';
 import 'package:asset_flutter/auth/widgets/auth_checkbox.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lottie/lottie.dart';
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   static const routeName = "/login";
@@ -73,6 +80,65 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
+  void _onOAuth2Login(String token) async {
+    try {
+      var response = await http.post(
+        Uri.parse(APIRoutes().oauthRoutes.google),
+        body: json.encode({
+          "token": token
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        }
+      );
+
+      var tokenResponse = TokenResponse(
+        code: json.decode(response.body)["code"],
+        message: json.decode(response.body)["message"],
+        token: json.decode(response.body)["access_token"],
+      );
+
+      if (tokenResponse.message != null) {
+        _onErrorDialog(true, error: tokenResponse.message!);
+      } else {
+        widget.token = tokenResponse.token!;
+
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) {
+          return TabsPage(widget.token);
+        }));
+      }
+    } catch (err) {
+      _onErrorDialog(true, error: err.toString());
+    }
+  }
+
+  Future _authenticate(GoogleSignInAccount user) async {
+    setState(() {
+      _isLoading = true;
+    });
+    user.authentication.then((response){
+      if (response.accessToken != null) {
+        _onOAuth2Login(response.accessToken!);
+      } else {
+        _onErrorDialog(true);
+      }
+    }).catchError((err) {
+      _onErrorDialog(true, error: err);
+    });
+  }
+
+  Future _onGoogleSignInPressed() async {
+    GoogleSignInApi().login().then((response) {
+      if (response != null) {
+        _authenticate(response);
+      } else {
+        _onErrorDialog(false);
+      }
+    }).catchError((err) {
+      _onErrorDialog(false, error: err);
+    });
+  }
+
   void _openForgotPasswordBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -91,6 +157,12 @@ class _LoginPageState extends State<LoginPage> {
 
         if (loginCreds.keys.first) {
           _onSigninPressed(context, login: loginCreds.values.first);
+        }
+      });
+
+      GoogleSignInApi().signInSilently().then((user) {
+        if (user != null) {
+          _authenticate(user);
         }
       });
 
@@ -216,6 +288,19 @@ class _LoginPageState extends State<LoginPage> {
                                         AuthButton((BuildContext ctx){
                                           _onSigninPressed(context);
                                         }, 'Sign In', AppColors().primaryLightColor),
+                                        Container(
+                                          width: double.infinity,
+                                          height: 45,
+                                          margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 3),
+                                          child: SignInButton(
+                                            Buttons.Google,
+                                            text: "Sign In with Google",
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(8)
+                                            ),
+                                            onPressed: _onGoogleSignInPressed,
+                                          ),
+                                        ),
                                         Padding(
                                           padding: const EdgeInsets.all(6.0),
                                           child: Row(
@@ -274,4 +359,17 @@ class _LoginPageState extends State<LoginPage> {
     borderRadius: BorderRadius.circular(6),
     borderSide: const BorderSide(color: Colors.white)
   );
+
+  void _onErrorDialog(bool _setState, {String error = "Failed to login"}) {
+    if (_setState) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+
+    showDialog(
+      context: context, 
+      builder: (ctx) => ErrorDialog(error)
+    );
+  }
 }
