@@ -18,31 +18,31 @@ class AddElevatedButton extends StatelessWidget {
       margin: edgeInsets,
       width: double.infinity,
       child: isApple 
-        ? CupertinoButton.filled(
-          padding: const EdgeInsets.all(12),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(right: 12),
-                child: Icon(Icons.add_circle, size: 22),
-              ),
-              Text(_label, style: const TextStyle(fontSize: 18)),
-            ],
-          ), 
-          onPressed: _onPressed,
-        )
-        : ElevatedButton.icon(
-          onPressed: _onPressed,
-          label: Text(_label, style: const TextStyle(fontSize: 18)),
-          icon: const Icon(Icons.add_circle, size: 22),
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.all(12),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12)
+      ? CupertinoButton.filled(
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(right: 12),
+              child: Icon(Icons.add_circle, size: 22),
             ),
+            Text(_label, style: const TextStyle(fontSize: 18)),
+          ],
+        ), 
+        onPressed: _onPressed,
+      )
+      : ElevatedButton.icon(
+        onPressed: _onPressed,
+        label: Text(_label, style: const TextStyle(fontSize: 18)),
+        icon: const Icon(Icons.add_circle, size: 22),
+        style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.all(12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12)
           ),
-        )
+        ),
+      )
     );
   }
 }

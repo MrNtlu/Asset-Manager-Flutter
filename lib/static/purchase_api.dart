@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:asset_flutter/content/models/responses/user.dart';
+import 'package:asset_flutter/static/log.dart';
 import 'package:asset_flutter/static/routes.dart';
 import 'package:asset_flutter/static/token.dart';
 import 'package:asset_flutter/utils/extensions.dart';
@@ -46,11 +47,15 @@ class PurchaseApi {
         (entitlements.isEmpty ||
             (entitlements.isNotEmpty && !entitlements.first.isActive)) &&
         userInfo!.isPremium) {
+      if (entitlements.isNotEmpty) {
+        Log().createLog("${entitlements.first.identifier} ${entitlements.first.isActive} purchased failed/ended.");
+      }
       await setUserMembershipStatus(false);
       await setUserInfo();
     } else if (userInfo != null &&
         (entitlements.isNotEmpty && entitlements.first.isActive) &&
         !userInfo!.isPremium) {
+      Log().createLog("${entitlements.first.identifier} purchased.");
       await setUserMembershipStatus(true);
       await setUserInfo();
     }

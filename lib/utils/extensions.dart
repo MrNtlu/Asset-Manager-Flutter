@@ -51,6 +51,12 @@ extension DateTimeExt on DateTime {
 
       return (years.dateDifferencePluralString('year') + " ago.");
     }
+
+    if (dayDiff == 0) {
+      return 'Today';
+    } else if (dayDiff == 1) {
+      return "Yesterday";
+    }
     return dayDiff.dateDifferencePluralString('day') + ' ago.';
   }
 

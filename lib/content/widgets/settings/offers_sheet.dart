@@ -1,8 +1,4 @@
-import 'dart:convert';
-
-import 'package:asset_flutter/static/routes.dart';
-import 'package:asset_flutter/static/token.dart';
-import 'package:http/http.dart' as http;
+import 'package:asset_flutter/static/log.dart';
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
@@ -118,7 +114,7 @@ class OffersSheetState extends State<OffersSheet> {
                     onTap: () async {
                       try {
                         await Purchases.purchasePackage(package);
-                        _createLog("${product.title} purchased.");
+                        Log().createLog("${product.title} purchased.");
 
                         showDialog(
                           context: context,
@@ -127,14 +123,9 @@ class OffersSheetState extends State<OffersSheet> {
                       } on PlatformException catch (e) {
                         var errorCode = PurchasesErrorHelper.getErrorCode(e);
                         if (errorCode == PurchasesErrorCode.purchaseCancelledError) {
-                          _createLog("${product.title} purchase cancelled.");
-                          
-                          showDialog(
-                            context: context,
-                            builder: (_) => const ErrorDialog("Purchase cancelled.")
-                          );
+                          Log().createLog("${product.title} purchase cancelled.");
                         } else {
-                          _createLog("${product.title} failed to purchase.");
+                          Log().createLog("${product.title} failed to purchase.");
 
                           showDialog(
                             context: context,
@@ -212,16 +203,5 @@ class OffersSheetState extends State<OffersSheet> {
       default:
         return const LoadingView("Loading");
     }
-  }
-
-  void _createLog(String message) async {
-    http.post(
-      Uri.parse(APIRoutes().logRoutes.createLog),
-      body: json.encode({
-        "log": message,
-        "log_type": 1
-      }),
-      headers: UserToken().getBearerToken()
-    );
   }
 }

@@ -302,7 +302,7 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
               "Buy/Sell Price",
               const TextInputType.numberWithOptions(
                   decimal: true, signed: true),
-              initialText: _price.toString(),
+              initialText: _price?.toString(),
               textInputAction: TextInputAction.next,
               edgeInsets: const EdgeInsets.symmetric(vertical: 8),
               onSaved: (value) {

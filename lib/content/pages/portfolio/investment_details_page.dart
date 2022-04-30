@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/add_elevated_button.dart';
 import 'package:asset_flutter/common/widgets/check_dialog.dart';
@@ -173,7 +172,7 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
             onPressed: () => _deleteLogs(context), 
             icon: const Icon(Icons.delete_rounded),
             tooltip: "Delete Investment",
-          )
+          ),
         ],
       );
 
@@ -222,7 +221,7 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
                   )
                 );
               },
-              edgeInsets: const EdgeInsets.only(left: 8, right: 8, bottom: 8)),
+              edgeInsets: const EdgeInsets.only(left: 8, right: 6, bottom: 8)),
             )
           ],
         );

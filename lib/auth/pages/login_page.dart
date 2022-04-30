@@ -5,6 +5,7 @@ import 'package:asset_flutter/auth/models/requests/user.dart';
 import 'package:asset_flutter/auth/models/responses/user.dart';
 import 'package:asset_flutter/auth/pages/register_page.dart';
 import 'package:asset_flutter/auth/widgets/auth_bottom_sheet.dart';
+import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
 import 'package:asset_flutter/common/widgets/expanded_divider.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
@@ -36,8 +37,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool _isLoading = false;
-  bool _isInit = false;
+  DetailState _state = DetailState.init;
   late final AuthCheckbox _checkbox;
 
   void _onSigninPressed(BuildContext ctx, {Login? login}) {
@@ -49,33 +49,35 @@ class _LoginPageState extends State<LoginPage> {
       widget._form.currentState?.save();
     } 
     setState(() {
-      _isLoading = true;
+      _state = DetailState.loading;
     });
 
     var _login = login ?? widget._loginModel;
     _login.login().then((value) {
-      setState(() {
-        _isLoading = false;
-      });
+      if (_state != DetailState.disposed) {
+        setState(() {
+          _state = DetailState.loading;
+        });
 
-      if (value.message != null) {
-        showDialog(
-          context: context, 
-          builder: (ctx) => ErrorDialog(value.message!)
-        );
+        if (value.message != null) {
+          showDialog(
+            context: context, 
+            builder: (ctx) => ErrorDialog(value.message!)
+          );
 
-        if (login != null && value.code != null && value.code == 401) {
-          SharedPref().deleteLoginCredentials();
+          if (login != null && value.code != null && value.code == 401) {
+            SharedPref().deleteLoginCredentials();
+          }
+        }else {
+          widget.token = value.token!;
+          if (_checkbox.getValue()) {
+            SharedPref().setLoginCredentials(widget._loginModel.emailAddress, widget._loginModel.password);
+          }
+
+          Navigator.of(ctx).pushReplacement(MaterialPageRoute(builder: (_) {
+            return TabsPage(widget.token);
+          }));
         }
-      }else {
-        widget.token = value.token!;
-        if (_checkbox.getValue()) {
-          SharedPref().setLoginCredentials(widget._loginModel.emailAddress, widget._loginModel.password);
-        }
-
-        Navigator.of(ctx).pushReplacement(MaterialPageRoute(builder: (_) {
-          return TabsPage(widget.token);
-        }));
       }
     });
   }
@@ -98,44 +100,57 @@ class _LoginPageState extends State<LoginPage> {
         token: json.decode(response.body)["access_token"],
       );
 
-      if (tokenResponse.message != null) {
-        _onErrorDialog(true, error: tokenResponse.message!);
-      } else {
-        widget.token = tokenResponse.token!;
+      if (_state != DetailState.disposed) {
+        if (tokenResponse.message != null) {
+          _onErrorDialog(true, error: tokenResponse.message!);
+        } else {
+          try {
+            widget.token = tokenResponse.token!;
+          // ignore: empty_catches
+          } catch(err) {}
 
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) {
-          return TabsPage(widget.token);
-        }));
+          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) {
+            return TabsPage(widget.token);
+          }));
+        }
       }
     } catch (err) {
-      _onErrorDialog(true, error: err.toString());
+      if (_state != DetailState.disposed) {
+        _onErrorDialog(true, error: err.toString());
+      }
     }
   }
 
   Future _authenticate(GoogleSignInAccount user) async {
     setState(() {
-      _isLoading = true;
+      _state = DetailState.loading;
     });
     user.authentication.then((response){
-      if (response.accessToken != null) {
-        _onOAuth2Login(response.accessToken!);
-      } else {
-        _onErrorDialog(true);
+      if (_state != DetailState.disposed) {
+        if (response.accessToken != null) {
+          _onOAuth2Login(response.accessToken!);
+        } else {
+          _onErrorDialog(true);
+        }
       }
     }).catchError((err) {
-      _onErrorDialog(true, error: err);
+      if (_state != DetailState.disposed) {
+        _onErrorDialog(true, error: err);
+      }
     });
   }
 
   Future _onGoogleSignInPressed() async {
     GoogleSignInApi().login().then((response) {
-      if (response != null) {
-        _authenticate(response);
-      } else {
-        _onErrorDialog(false);
+      if (_state != DetailState.disposed) {
+        if (response != null) {
+          _authenticate(response);
+        }  
       }
     }).catchError((err) {
-      _onErrorDialog(false, error: err);
+      if (_state != DetailState.disposed) {
+        _onErrorDialog(false, error: err);
+      }
     });
   }
 
@@ -148,9 +163,15 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
+  void dispose() {
+    _state = DetailState.disposed;
+    super.dispose();
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (!_isInit) {
+    if (_state == DetailState.init) {
       _checkbox = AuthCheckbox('Remember Password');
       SharedPref().init().then((_) {
         var loginCreds = SharedPref().getLoginCredentials();
@@ -166,7 +187,7 @@ class _LoginPageState extends State<LoginPage> {
         }
       });
 
-      _isInit = true;
+      _state = DetailState.view;
     }
   }
 
@@ -185,7 +206,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
         child: SafeArea(
-          child: _isLoading
+          child: _state == DetailState.loading
               ? const LoadingView("Please wait while logging in", textColor: Colors.white)
               : CustomScrollView(
                   physics: const ScrollPhysics(),
@@ -200,11 +221,11 @@ class _LoginPageState extends State<LoginPage> {
                           child: Column(
                             children: [
                               Container(
-                                margin: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                                margin: const EdgeInsets.fromLTRB(16, 2, 16, 8),
                                 child: Lottie.asset(
                                   "assets/lottie/auth.json", 
                                   fit: BoxFit.cover,
-                                  height: MediaQuery.of(context).size.height / 3.3
+                                  height: MediaQuery.of(context).size.height / 3.42
                                 )
                               ),
                               ClipRRect(
@@ -363,9 +384,12 @@ class _LoginPageState extends State<LoginPage> {
   void _onErrorDialog(bool _setState, {String error = "Failed to login"}) {
     if (_setState) {
       setState(() {
-        _isLoading = false;
+        _state = DetailState.view;
       });
     }
+    
+    GoogleSignInApi().signOut();
+    SharedPref().deleteLoginCredentials();
 
     showDialog(
       context: context, 

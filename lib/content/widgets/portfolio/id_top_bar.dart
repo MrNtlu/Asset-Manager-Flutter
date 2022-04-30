@@ -17,8 +17,9 @@ class InvestmentDetailsTopBar extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors().primaryLightishColor,
         borderRadius: const BorderRadius.only(
-            bottomRight: Radius.circular(36),
-            bottomLeft: Radius.circular(36)),
+          bottomRight: Radius.circular(36),
+          bottomLeft: Radius.circular(36)
+        ),
       ),
       height: 105,
       padding: const EdgeInsets.fromLTRB(4, 4, 4, 6),
@@ -32,9 +33,10 @@ class InvestmentDetailsTopBar extends StatelessWidget {
                 child: Text(
                   _data.toAsset + '/' + _data.fromAsset,
                   style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
+                    fontSize: 18,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold
+                  ),
                 ),
               ),
               Expanded(
@@ -73,9 +75,10 @@ class InvestmentDetailsTopBar extends StatelessWidget {
             child: Text(
               _data.amount.numToString() + ' ' + _data.toAsset,
               style: const TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold),
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold
+              ),
             ),
           ),
         ],

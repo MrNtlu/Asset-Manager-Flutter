@@ -27,8 +27,7 @@ class PortfolioInvestmentListCell extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(
-              MaterialPageRoute(builder: ((context) => InvestmentDetailsPage(data))));
+        Navigator.of(context).push(MaterialPageRoute(builder: ((context) => InvestmentDetailsPage(data))));
       },
       child: Card(
         clipBehavior: Clip.antiAlias,

@@ -13,15 +13,17 @@ class PortfolioPLText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isNeutral = _pl.abs() <= 0.01;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Icon(
-          _pl == 0 
-          ? Icons.remove_rounded
+          isNeutral
+          ? null
           : (_pl < 0 ? Icons.arrow_upward_rounded : Icons.arrow_downward_rounded),
-          color: _pl == 0 
+          color: isNeutral
           ? Colors.grey
           : (_pl < 0 ? AppColors().greenColor : AppColors().redColor),
           size: iconSize,
@@ -31,7 +33,7 @@ class PortfolioPLText extends StatelessWidget {
             plPrefix!,
             style: TextStyle(
               fontSize: fontSize - 2,
-              color:_pl == 0 
+              color: isNeutral
               ? Colors.grey
               : (_pl < 0 ? AppColors().greenColor : AppColors().redColor),
               fontWeight: FontWeight.bold
@@ -40,11 +42,11 @@ class PortfolioPLText extends StatelessWidget {
           ),
         Text(
           _pl.abs().toStringAsFixed(2) 
-          + (_pl == 0 ? ' ': (_pl < 0 ? ' +' : ' -')) 
+          + (isNeutral ? ' ': (_pl < 0 ? ' +' : ' -')) 
           + _plPercentage.abs().toStringAsFixed(1) + '%',
           style: TextStyle(
             fontSize: fontSize,
-            color:_pl == 0 
+            color: isNeutral
             ? Colors.grey
             : (_pl < 0 ? AppColors().greenColor : AppColors().redColor),
             fontWeight: FontWeight.bold
@@ -57,7 +59,7 @@ class PortfolioPLText extends StatelessWidget {
             child: Text(
               _subText!, 
               style: TextStyle(
-                color: _pl == 0 
+                color: isNeutral
                 ? Colors.grey
                 : (_pl < 0 ? AppColors().greenColor : AppColors().redColor),
                 fontSize: fontSize - 6,
