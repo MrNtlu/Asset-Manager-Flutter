@@ -81,7 +81,7 @@ class PurchaseApi {
       final current = offerings.current;
 
       return current == null ? [] : [current];
-    } on PlatformException catch (e) {
+    } on PlatformException catch (_) {
       return [];
     }
   }
