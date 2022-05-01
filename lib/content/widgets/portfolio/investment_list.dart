@@ -19,7 +19,7 @@ class PortfolioInvestmentList extends StatelessWidget {
   }
 
   Widget _portraitListView(List<Asset> _data) => Expanded(
-    child: ListView.builder(
+    child: ListView.separated(
       itemBuilder: ((context, index) {
         if(index == _data.length) {
           return const SizedBox();
@@ -27,7 +27,7 @@ class PortfolioInvestmentList extends StatelessWidget {
         final data = _data[index];
         return PortfolioInvestmentListCell(data);
       }),
-      itemExtent: 75,
+      separatorBuilder: (_, __) => const Divider(thickness: 0.75),
       itemCount: _data.length + 1,
       padding: const EdgeInsets.only(top: 4),
       physics: const ClampingScrollPhysics(),

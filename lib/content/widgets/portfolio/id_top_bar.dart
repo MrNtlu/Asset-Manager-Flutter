@@ -3,6 +3,7 @@ import 'package:asset_flutter/content/widgets/portfolio/il_cell_image.dart';
 import 'package:asset_flutter/content/widgets/portfolio/pl_text.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/utils/extensions.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class InvestmentDetailsTopBar extends StatelessWidget {
@@ -28,30 +29,43 @@ class InvestmentDetailsTopBar extends StatelessWidget {
           Row(
             children: [
               InvestmentListCellImage(image, _data.type),
-              Container(
-                margin: const EdgeInsets.only(left: 8),
-                child: Text(
-                  _data.toAsset + '/' + _data.fromAsset,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold
+              Expanded(
+                flex: 1,
+                child: Container(
+                  margin: const EdgeInsets.only(left: 8),
+                  child: AutoSizeText(
+                    _data.type != "stock"
+                    ? _data.toAsset + '/' + _data.fromAsset
+                    : _data.toAsset,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    maxFontSize: 20,
+                    minFontSize: 16,
                   ),
                 ),
               ),
               Expanded(
+                flex: 2,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
                       padding: const EdgeInsets.only(right: 12),
-                      child: Text(
+                      child: AutoSizeText(
                         _data.currentValue.numToString() + ' ' + _data.fromAsset,
                         style: const TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        maxFontSize: 18,
+                        minFontSize: 16,
                       ),
                     ),
                     Container(
@@ -73,7 +87,9 @@ class InvestmentDetailsTopBar extends StatelessWidget {
           Container(
             margin: const EdgeInsets.only(bottom: 6),
             child: Text(
-              _data.amount.numToString() + ' ' + _data.toAsset,
+              _data.type != "stock"
+              ? _data.amount.numToString() + ' ' + _data.toAsset
+              : "${_data.amount.numToString()} shares",
               style: const TextStyle(
                 fontSize: 20,
                 color: Colors.white,

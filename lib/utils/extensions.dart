@@ -16,7 +16,7 @@ extension DoubleExt on double {
 
 extension NumExt on num {
   String numToString(){
-    if (this >= 1) {
+    if (abs() >= 1) {
       return toDouble().toStringAsFixed(2);
     } else if (this == 0) {
       return toDouble().toString();

@@ -82,7 +82,6 @@ class PurchaseApi {
 
       return current == null ? [] : [current];
     } on PlatformException catch (e) {
-      print(e);
       return [];
     }
   }

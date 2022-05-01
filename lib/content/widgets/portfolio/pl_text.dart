@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class PortfolioPLText extends StatelessWidget {
   final double _pl;
-  final double _plPercentage;
+  final double? _plPercentage;
   final double fontSize;
   final double iconSize;
   final String? _subText;
@@ -41,9 +41,13 @@ class PortfolioPLText extends StatelessWidget {
             ),
           ),
         Text(
-          _pl.abs().toStringAsFixed(2) 
-          + (isNeutral ? ' ': (_pl < 0 ? ' +' : ' -')) 
-          + _plPercentage.abs().toStringAsFixed(1) + '%',
+          _pl.abs().toStringAsFixed(2) +
+          (_plPercentage != null 
+            ? (isNeutral 
+              ? ' ': (_pl < 0 ? ' +' : ' -')) + 
+              _plPercentage!.abs().toStringAsFixed(1) + '%'
+            : ''
+          ),
           style: TextStyle(
             fontSize: fontSize,
             color: isNeutral

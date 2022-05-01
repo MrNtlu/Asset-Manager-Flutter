@@ -79,7 +79,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: CardSheetSelectionStateProvider()),
       ],
       child: MaterialApp(
-        title: 'Kantan',
+        title: 'Kanma',
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
         ),

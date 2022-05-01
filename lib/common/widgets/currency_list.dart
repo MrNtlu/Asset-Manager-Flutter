@@ -90,7 +90,7 @@ class _CurrencyListState extends State<CurrencyList> {
 
             return CurrencyListCell("${data.name}/${data.symbol}", currencySelection, index, handleSelection);
           }),
-          separatorBuilder: (_, __) => const Divider(), 
+          separatorBuilder: (_, __) => const Divider(),
           shrinkWrap: true,
           itemCount: _provider.items.length,
         );

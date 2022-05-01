@@ -115,7 +115,7 @@ class _SettingsPageState extends State<SettingsPage> {
       http.post(
         Uri.parse(APIRoutes().authRoutes.logout),
         headers: UserToken().getBearerToken()
-      ).then((response){
+      ).then((response) async {
         if (response.getBaseResponse().error != null) {
           setState(() {
             _state = DetailState.view;
@@ -127,7 +127,7 @@ class _SettingsPageState extends State<SettingsPage> {
         } else {
           Purchases.logOut();
           SharedPref().deleteLoginCredentials();
-          GoogleSignInApi().signOut();
+          await GoogleSignInApi().signOut();
           Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (_) => LoginPage()));
         }
