@@ -35,6 +35,7 @@ Scraper: [Asset Scraper](https://github.com/MrNtlu/Asset-Scraper)
     <li> AwesomeCard
     <li> GoogleSignIn
     <li> Signin Button
+    <li> Flutter Native Splash
 </ul>
 
 &nbsp;

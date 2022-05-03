@@ -9,6 +9,7 @@ import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/password_textformfield.dart';
 import 'package:asset_flutter/common/widgets/success_view.dart';
+import 'package:asset_flutter/content/pages/settings/feedback_page.dart';
 import 'package:asset_flutter/content/widgets/settings/offers_sheet.dart';
 import 'package:asset_flutter/content/models/responses/user.dart';
 import 'package:asset_flutter/static/colors.dart';
@@ -128,8 +129,7 @@ class _SettingsPageState extends State<SettingsPage> {
           Purchases.logOut();
           SharedPref().deleteLoginCredentials();
           await GoogleSignInApi().signOut();
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (_) => LoginPage()));
+          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => LoginPage()));
         }
       });
     } catch (error) {
@@ -438,6 +438,13 @@ class _SettingsPageState extends State<SettingsPage> {
                   },
                 ),
                 SettingsTile.navigation(
+                  leading: const Icon(Icons.feedback_rounded),
+                  title: const Text('Leave feedback'),
+                  onPressed: (ctx) {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => const FeedbackPage()));
+                  },
+                ),
+                SettingsTile.navigation(
                   leading: const Icon(Icons.logout_rounded),
                   title: const Text('Sign out'),
                   onPressed: (ctx) {
@@ -469,7 +476,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         padding: const EdgeInsets.all(32),
                         child: isApple
                         ? CupertinoButton(
-                          child: const Text('Delete Account', style: TextStyle(color: Color(0xFF777777))),
+                          child: const Text('Delete Account', style: TextStyle(color: Color(0xFF777777), fontSize: 12)),
                           onPressed: (){
                             showCupertinoDialog(
                             context: context, 
@@ -481,7 +488,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           },
                         )
                         : TextButton(
-                          child: const Text('Delete Account', style: TextStyle(color: Color(0xFF777777))),
+                          child: const Text('Delete Account', style: TextStyle(color: Color(0xFF777777), fontSize: 12)),
                           onPressed: (){
                             showDialog(
                             context: context, 

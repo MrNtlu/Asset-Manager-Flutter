@@ -44,7 +44,7 @@ class _RegisterPageState extends State<RegisterPage> {
           context: context, 
           builder: (ctx) => const ErrorDialog("Passwords don't match.")
         );
-      }else {
+      } else {
         setState(() {
           _isLoading = true;
         });
@@ -58,7 +58,7 @@ class _RegisterPageState extends State<RegisterPage> {
               context: context, 
               builder: (ctx) => ErrorDialog(value.error!)
             );
-          }else {
+          } else {
             showDialog(
               barrierColor: Colors.black87,
               context: context, 
@@ -71,7 +71,7 @@ class _RegisterPageState extends State<RegisterPage> {
           });
         });
       }
-    }else {
+    } else {
       showDialog(
         context: context, 
         builder: (ctx) => const ErrorDialog("Please accept Terms & Conditions and Privacy Policy")
@@ -228,7 +228,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                         AuthButton((BuildContext ctx){
                           _onRegisterPressed(context);
-                        }, "Register",AppColors().primaryColor),
+                        }, "Register", AppColors().primaryColor),
                       ]
                     ),
                   ),

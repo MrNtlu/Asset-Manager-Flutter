@@ -39,6 +39,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   DetailState _state = DetailState.init;
   late final AuthCheckbox _checkbox;
+  late AssetImage _assetImage;
 
   void _onSigninPressed(BuildContext ctx, {Login? login}) {
     if (login == null) {
@@ -169,6 +170,7 @@ class _LoginPageState extends State<LoginPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_state == DetailState.init) {
+      precacheImage(_assetImage, context);
       _checkbox = AuthCheckbox('Remember Password');
       SharedPref().init().then((_) {
         var loginCreds = SharedPref().getLoginCredentials();
@@ -189,6 +191,12 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _assetImage = const AssetImage("assets/images/auth_bg.jpeg");
+  }
+
+  @override
   Widget build(BuildContext context) {
     final bool isApple = Platform.isIOS || Platform.isMacOS;
 
@@ -196,9 +204,9 @@ class _LoginPageState extends State<LoginPage> {
       resizeToAvoidBottomInset: false,
       body: Container(
         height: double.infinity,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/images/auth_bg.jpeg"),
+            image: _assetImage,
             fit: BoxFit.cover
           ),
         ),

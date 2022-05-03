@@ -27,13 +27,18 @@ class PortfolioInvestmentListCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ListTile(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(builder: ((context) => InvestmentDetailsPage(data))));
       },
-      child: Row(
+      title: Row(
         children: [
-          InvestmentListCellImage(image, data.type, size: 22),
+          InvestmentListCellImage(
+            image, 
+            data.type, 
+            size: 22,
+            margin: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+          ),
           Expanded(
             flex: 1,
             child: Container(
@@ -92,7 +97,7 @@ class PortfolioInvestmentListCell extends StatelessWidget {
             ),
             width: 60,
             padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 12),
-            margin: const EdgeInsets.only(left: 2, right: 4),
+            margin: const EdgeInsets.only(left: 2),
             child: AutoSizeText(
               data.pl.abs() <= 0.01
               ? '' : (data.pl < 0 ? '+' : '-') +

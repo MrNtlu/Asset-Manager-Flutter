@@ -1,5 +1,6 @@
 flutter build appbundle // Building release app for android
 
+//Delete Pods & Podfile.lock
 arch -x86_64 pod install --repo-update //Update cocoapods
 
 //Key Alias 

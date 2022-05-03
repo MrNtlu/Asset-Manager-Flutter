@@ -27,7 +27,7 @@ class _AuthCheckboxState extends State<AuthCheckbox> {
           padding: const EdgeInsets.only(right: 4),
           child: CupertinoSwitch(
             activeColor: Colors.white,
-            thumbColor: AppColors().primaryDarkestColor,
+            thumbColor: widget._value ? AppColors().primaryDarkestColor : Colors.grey.shade300,
             value: widget._value,
             onChanged: (value) {
               setState(() {
