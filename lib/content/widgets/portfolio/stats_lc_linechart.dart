@@ -269,8 +269,13 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
         final String formatType = (isProfit ? plList.length : assetList.length) <= 75 ? 'dd MM' : 'MMM yy';
         if(value < 1 || (listLength < 75 && value == listLength - 1)) {
           return '';
-        } 
-        return DateFormat(formatType).format(dateList[value.toInt()]);
+        }
+
+        if((listLength <= 7 && value % 1 == 0) || listLength > 7){
+          return DateFormat(formatType).format(dateList[value.toInt()]);
+        } else {
+          return '';
+        }
       },
       margin: 8,
     ),

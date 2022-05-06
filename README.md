@@ -1,6 +1,6 @@
 ![ic_launcher_foreground](https://user-images.githubusercontent.com/25686023/155740270-208e9079-a139-4810-b02c-2977c602919d.png)
 
-# Kanma - Investment & Subscription Manager / Asset Manager - Flutter
+# Kanma - Personal Finance / Asset Manager - Flutter
 
 Backend: [Asset Manager Backend](https://github.com/MrNtlu/Asset-Manager)
 

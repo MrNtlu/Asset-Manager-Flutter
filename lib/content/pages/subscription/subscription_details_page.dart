@@ -45,6 +45,10 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
       _updateView.updateData!.color = _updateView.colorPicker.selectedColor.value;
     }
 
+    if (_data.image != _updateView.selectedDomain) {
+      _updateView.updateData!.image = _updateView.selectedDomain;
+    }
+
     _updateView.updateData!.cardID = _updateView.selectedCard?.id;
   }
 

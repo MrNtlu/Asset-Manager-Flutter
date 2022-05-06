@@ -59,7 +59,7 @@ class Subscription with ChangeNotifier {
         billCycle = data.billCycle;
         price = data.price;
         currency = data.currency;
-        _image = data.image;
+        _image = data._image;
         _color = (data.color).toString();
         cardID = data.cardID;
 
