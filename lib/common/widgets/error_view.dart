@@ -25,7 +25,8 @@ class ErrorView extends StatelessWidget {
           child: Lottie.asset(
             "assets/lottie/error.json",
             height: 125,
-            width: 125
+            width: 125,
+            frameRate: FrameRate(60)
           ),
         ),
         Container(

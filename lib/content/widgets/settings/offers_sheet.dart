@@ -86,7 +86,8 @@ class OffersSheetState extends State<OffersSheet> {
                         Lottie.asset(
                           "assets/lottie/premium.json",
                           height: 32,
-                          width: 32
+                          width: 32,
+                          frameRate: FrameRate(60)
                         ),
                         const Padding(
                           padding: EdgeInsets.only(left: 4),

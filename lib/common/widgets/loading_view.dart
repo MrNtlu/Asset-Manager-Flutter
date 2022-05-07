@@ -31,6 +31,7 @@ class LoadingView extends StatelessWidget {
         alignment: Alignment.center,
         child: Lottie.asset(
           "assets/lottie/loading.json",
+          frameRate: FrameRate(60)
         ),
       ),
       Align(

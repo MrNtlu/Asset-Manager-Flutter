@@ -24,7 +24,8 @@ class NoItemView extends StatelessWidget {
       Lottie.asset(
         "assets/lottie/no_item.json",
         height: 200,
-        width: 200
+        width: 200,
+        frameRate: FrameRate(60)
       ),
       Text(
         _text,

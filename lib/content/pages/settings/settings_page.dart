@@ -296,52 +296,59 @@ class _SettingsPageState extends State<SettingsPage> {
               tiles: [
                 SettingsTile.navigation(
                   leading: const Icon(Icons.monetization_on_rounded),
-                  title: const Text('Change currency'),
-                  onPressed: (ctx) {
-                    showDialog(
+                  title: const Text('Change Currency'),
+                  onPressed: (_) {
+                    final RegisterCurrencyDropdown _currencyDropdown = RegisterCurrencyDropdown(currency: _userInfo!.currency); 
+                    showModalBottomSheet(
                       context: context, 
-                      builder: (ctx) => AreYouSureDialog("change currency", (){
-                        Navigator.pop(ctx);
-                        final RegisterCurrencyDropdown _currencyDropdown = RegisterCurrencyDropdown(currency: _userInfo!.currency); 
-                        showModalBottomSheet(
-                          context: context, 
-                          isScrollControlled: true,
-                          builder: (ctx) => Padding(
-                            padding: MediaQuery.of(context).viewInsets,
-                            child: SizedBox(
-                              height: 175,
-                              child: Column(
-                                children: [
-                                  _currencyDropdown,
-                                  const SizedBox(height: 24),
-                                  isApple
-                                  ? CupertinoButton.filled(
-                                    padding: const EdgeInsets.all(12),
-                                    onPressed: (){
-                                      Navigator.pop(context);
+                      isScrollControlled: true,
+                      builder: (ctx) => Padding(
+                        padding: MediaQuery.of(context).viewInsets,
+                        child: SizedBox(
+                          height: 175,
+                          child: Column(
+                            children: [
+                              _currencyDropdown,
+                              const SizedBox(height: 24),
+                              isApple
+                              ? CupertinoButton.filled(
+                                padding: const EdgeInsets.all(12),
+                                onPressed: (){
+                                  Navigator.pop(context);
+
+                                  showCupertinoDialog(
+                                    context: context, 
+                                    builder: (dialogContext) => AreYouSureDialog("change currency to ${_currencyDropdown.currency}", (){
+                                      Navigator.pop(dialogContext);
                                       _changeCurrency(_currencyDropdown.currency);
-                                    }, 
-                                    child: const Text('Save', style: TextStyle(fontSize: 16))
-                                  )
-                                  : ElevatedButton(
-                                    onPressed: (){
-                                      Navigator.pop(context);
+                                    })
+                                  );
+                                }, 
+                                child: const Text('Save', style: TextStyle(fontSize: 16))
+                              )
+                              : ElevatedButton(
+                                onPressed: (){
+                                  Navigator.pop(context);
+                                  showDialog(
+                                    context: context, 
+                                    builder: (dialogContext) => AreYouSureDialog("change currency to ${_currencyDropdown.currency}", (){
+                                      Navigator.pop(dialogContext);
                                       _changeCurrency(_currencyDropdown.currency);
-                                    }, 
-                                    child: const Text('Save', style: TextStyle(fontSize: 16))
-                                  )
-                                ],
-                              ),
-                            ),
-                          )
-                        );
-                      })
+                                    })
+                                  );
+                                }, 
+                                child: const Text('Save', style: TextStyle(fontSize: 16))
+                              )
+                            ],
+                          ),
+                        ),
+                      )
                     );
                   },
                 ),
                 SettingsTile.navigation(
                   leading: const Icon(Icons.lock_rounded),
-                  title: const Text('Change password'),
+                  title: const Text('Change Password'),
                   onPressed: (ctx) {
                     showDialog(
                       context: context, 
@@ -439,14 +446,14 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
                 SettingsTile.navigation(
                   leading: const Icon(Icons.feedback_rounded),
-                  title: const Text('Leave feedback'),
+                  title: const Text('Leave Feedback'),
                   onPressed: (ctx) {
                     Navigator.of(context).push(MaterialPageRoute(builder: (_) => const FeedbackPage()));
                   },
                 ),
                 SettingsTile.navigation(
                   leading: const Icon(Icons.logout_rounded),
-                  title: const Text('Sign out'),
+                  title: const Text('Sign Out'),
                   onPressed: (ctx) {
                     isApple
                     ? showCupertinoDialog(
@@ -479,24 +486,77 @@ class _SettingsPageState extends State<SettingsPage> {
                           child: const Text('Delete Account', style: TextStyle(color: Color(0xFF777777), fontSize: 12)),
                           onPressed: (){
                             showCupertinoDialog(
-                            context: context, 
-                            builder: (ctx) => AreYouSureDialog("delete account", (){
-                              Navigator.pop(ctx);
-                              _deleteUserAccount();
-                            })
-                          );
+                              context: context, 
+                              builder: (ctx) => AreYouSureDialog("delete account", (){
+                                Navigator.pop(ctx);
+
+                                showCupertinoDialog(
+                                  context: context, 
+                                  builder: (innerContext) =>  CupertinoAlertDialog(
+                                    title: const Padding(
+                                      padding: EdgeInsets.only(bottom: 8),
+                                      child: Text("Attention!", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+                                    ),
+                                    content: const Text("You cannot undo this, everything will be deleted, are you sure?", style: TextStyle(fontWeight: FontWeight.w500)),
+                                    actions: [
+                                      CupertinoDialogAction(
+                                        onPressed: (){
+                                          Navigator.pop(innerContext);
+                                        },
+                                        child: const Text('NO', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold))
+                                      ),
+                                      CupertinoDialogAction(
+                                        onPressed: () {
+                                          Navigator.pop(innerContext);
+                                          _deleteUserAccount();
+                                        },
+                                        child: const Text('Delete', style: TextStyle(color: Colors.blueGrey, fontSize: 12))
+                                      )
+                                    ],
+                                  )
+                                );
+                              })
+                            );
                           },
                         )
                         : TextButton(
                           child: const Text('Delete Account', style: TextStyle(color: Color(0xFF777777), fontSize: 12)),
                           onPressed: (){
                             showDialog(
-                            context: context, 
-                            builder: (ctx) => AreYouSureDialog("delete account", (){
-                              Navigator.pop(ctx);
-                              _deleteUserAccount();
-                            })
-                          );
+                              context: context, 
+                              builder: (ctx) => AreYouSureDialog("delete account", (){
+                                Navigator.pop(ctx);
+                                
+                                showDialog(
+                                  context: context, 
+                                  builder: (innerContext) =>  AlertDialog(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12)
+                                    ),
+                                    title: const Padding(
+                                      padding: EdgeInsets.only(bottom: 8),
+                                      child: Text("Attention!", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+                                    ),
+                                    content: const Text("You cannot undo this, everything will be deleted, are you sure?", style: TextStyle(fontWeight: FontWeight.w500)),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: (){
+                                          Navigator.pop(innerContext);
+                                        },
+                                        child: const Text('NO', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold))
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(innerContext);
+                                          _deleteUserAccount();
+                                        },
+                                        child: const Text('Delete', style: TextStyle(color: Colors.blueGrey, fontSize: 12))
+                                      )
+                                    ],
+                                  )
+                                );
+                              })
+                            );
                           },
                         ),
                       ),

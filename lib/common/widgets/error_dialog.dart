@@ -26,7 +26,8 @@ class ErrorDialog extends StatelessWidget {
                 width: 125,
                 height: 125,
                 repeat: true,
-                fit: BoxFit.contain
+                fit: BoxFit.contain,
+                frameRate: FrameRate(60)
               ),
             ),
             Padding(

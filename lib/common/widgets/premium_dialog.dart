@@ -26,7 +26,8 @@ class PremiumErrorDialog extends StatelessWidget {
               child: Lottie.asset(
                 "assets/lottie/premium.json",
                 height: 90,
-                width: 90
+                width: 90,
+                frameRate: FrameRate(60)
               ),
             ),
             Container(

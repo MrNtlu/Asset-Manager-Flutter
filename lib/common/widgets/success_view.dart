@@ -30,7 +30,8 @@ class SuccessView extends StatelessWidget {
                 width: 125,
                 height: 125,
                 repeat: false,
-                fit: BoxFit.contain
+                fit: BoxFit.contain,
+                frameRate: FrameRate(60)
               ),
             ),
             Center(

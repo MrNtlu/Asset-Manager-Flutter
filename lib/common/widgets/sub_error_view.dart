@@ -19,7 +19,8 @@ class SubErrorView extends StatelessWidget {
               Lottie.asset(
                 "assets/lottie/error.json",
                 height: 50,
-                width: 50
+                width: 50,
+                frameRate: FrameRate(60)
               ),
               IconButton(
                 onPressed: _onPressed,

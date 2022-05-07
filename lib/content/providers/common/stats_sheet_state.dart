@@ -17,6 +17,8 @@ class StatsSheetSelectionStateProvider with ChangeNotifier {
 
     if (isChanged) {
       notifyListeners();
+      sort = null;
+      sortType = null;
     }
   }
 }

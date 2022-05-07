@@ -14,7 +14,8 @@ class StatsLineChartPremiumView extends StatelessWidget {
           child: Lottie.asset(
             "assets/lottie/premium.json",
             height: 100,
-            width: 100
+            width: 100,
+            frameRate: FrameRate(60)
           ),
         ),
         Container(

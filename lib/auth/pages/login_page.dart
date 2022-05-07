@@ -230,7 +230,8 @@ class _LoginPageState extends State<LoginPage> {
                             child: Lottie.asset(
                               "assets/lottie/auth.json", 
                               fit: BoxFit.cover,
-                              height: MediaQuery.of(context).size.height / 3.42
+                              height: MediaQuery.of(context).size.height / 3.42,
+                              frameRate: FrameRate(60)
                             )
                           ),
                           ClipRRect(

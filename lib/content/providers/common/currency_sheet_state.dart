@@ -7,6 +7,7 @@ class CurrencySheetSelectionStateProvider with ChangeNotifier {
     if (symbol != symbolSelection) {
       symbol = symbolSelection;
       notifyListeners();
+      symbol = null;
     }
   }
 }

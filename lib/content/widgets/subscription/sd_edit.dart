@@ -54,19 +54,9 @@ class SubscriptionDetailsEdit extends StatefulWidget {
 
 class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
   EditState _state = EditState.init;
-  late final CardSheetSelectionStateProvider _cardSelectionProvider;
-
-  void _cardSheetSelectionListener() {
-    if (_state != EditState.disposed) {
-      setState(() {
-        widget.selectedCard = _cardSelectionProvider.selectedCard;
-      });
-    }
-  }
 
   @override
   void dispose() {
-    _cardSelectionProvider.removeListener(_cardSheetSelectionListener);
     _state = EditState.disposed;
     super.dispose();
   }
@@ -77,8 +67,6 @@ class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
       if(widget.isEditing && widget.selectedCard != null) {
         widget.selectedCard = Provider.of<CardProvider>(context).findById(widget.selectedCard!.id);
       }
-      _cardSelectionProvider = Provider.of<CardSheetSelectionStateProvider>(context);
-      _cardSelectionProvider.addListener(_cardSheetSelectionListener);
       _state = EditState.view;
     }
     super.didChangeDependencies();
@@ -120,28 +108,31 @@ class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
         _subSectionTitle("Credit Card (Optional)"),
         Container(
           margin: const EdgeInsets.fromLTRB(12, 8, 8, 4),
-          child: TextButton(
-            child: Text(
-              widget.selectedCard != null
-              ? "${widget.selectedCard!.name} ${widget.selectedCard!.lastDigits}"
-              : "No Card Selected",
-              style: const TextStyle(fontSize: 16),
-            ),
-            onPressed: () => showModalBottomSheet(
-              context: context,
-              shape: Platform.isIOS || Platform.isMacOS
-              ? const RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(16),
-                  topLeft: Radius.circular(16)
-                ),
-              )
-              : null,
-              enableDrag: false,
-              isDismissible: true,
-              builder: (_) => CardSelectionSheet(widget.selectedCard)
-            ),
-          ),
+          child: Consumer<CardSheetSelectionStateProvider>(builder: (context, selection, _) {
+            widget.selectedCard = selection.selectedCard;
+            return TextButton(
+              child: Text(
+                widget.selectedCard != null
+                ? "${widget.selectedCard!.name} ${widget.selectedCard!.lastDigits}"
+                : "No Card Selected",
+                style: const TextStyle(fontSize: 16),
+              ),
+              onPressed: () => showModalBottomSheet(
+                context: context,
+                shape: Platform.isIOS || Platform.isMacOS
+                ? const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(16),
+                    topLeft: Radius.circular(16)
+                  ),
+                )
+                : null,
+                enableDrag: false,
+                isDismissible: true,
+                builder: (_) => CardSelectionSheet(widget.selectedCard)
+              ),
+            );
+          }),
         ),
         const Divider(thickness: 1),
       ],
