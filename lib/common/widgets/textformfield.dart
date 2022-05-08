@@ -11,7 +11,7 @@ class CustomTextFormField extends StatelessWidget {
   final InputBorder? focusedBorder;
   final InputBorder? enabledBorder;
   final InputBorder? defaultBorder;
-
+  final TextStyle? errorTextStyle;
 
   final Function(String?)? onSaved;
   final String? Function(String?)? validator;
@@ -27,6 +27,7 @@ class CustomTextFormField extends StatelessWidget {
       this.focusedBorder = const OutlineInputBorder(),
       this.enabledBorder = const OutlineInputBorder(),
       this.defaultBorder = const OutlineInputBorder(),
+      this.errorTextStyle,
     }
   );
 
@@ -45,6 +46,7 @@ class CustomTextFormField extends StatelessWidget {
         decoration: InputDecoration(
           filled: true,
           fillColor: Colors.white,
+          errorStyle: errorTextStyle,
           enabledBorder: enabledBorder,
           focusedBorder: focusedBorder,
           border: defaultBorder,

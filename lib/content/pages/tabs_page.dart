@@ -51,6 +51,7 @@ class _TabsPage extends State<TabsPage> {
         onTap: _selectPage,
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.grey,
+        backgroundColor: Colors.white,
         currentIndex: _selectedPageIndex,
         elevation: 8,
         enableFeedback: true,
@@ -64,7 +65,6 @@ class _TabsPage extends State<TabsPage> {
           BottomNavigationBarItem(
               icon: Icon(Icons.settings_rounded), label: "Settings"),
         ],
-        backgroundColor: Colors.white,
       ),
     );
   }

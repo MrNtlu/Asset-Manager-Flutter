@@ -126,10 +126,20 @@ class _SettingsPageState extends State<SettingsPage> {
             builder: (ctx) => ErrorDialog(response.getBaseResponse().error!)
           );
         } else {
-          Purchases.logOut();
-          SharedPref().deleteLoginCredentials();
-          await GoogleSignInApi().signOut();
-          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => LoginPage()));
+          try {
+            Purchases.logOut();
+            SharedPref().deleteLoginCredentials();
+            await GoogleSignInApi().signOut();
+            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => LoginPage()));
+          } catch (error) {
+            setState(() {
+              _state = DetailState.view;
+            });
+            showDialog(
+              context: context, 
+              builder: (ctx) => ErrorDialog(error.toString())
+            );
+          } 
         }
       });
     } catch (error) {

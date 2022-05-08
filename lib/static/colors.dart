@@ -13,6 +13,10 @@ class AppColors {
   final orangeColor = const Color(0xFFF57C00);
   final barCardColor = const Color(0xff020227);
 
+  final bgPrimary = const Color(0xFF051B74);
+  final bgSecondary = const Color(0xFF2E0BA0);
+  final bgAccent = const Color(0xFFF500BD);
+
   AppColors._privateConstructor();
 
   static final AppColors _instance = AppColors._privateConstructor();

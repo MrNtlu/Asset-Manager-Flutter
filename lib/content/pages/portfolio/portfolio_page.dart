@@ -24,7 +24,7 @@ class PortfolioPage extends StatefulWidget {
 class _PortfolioPageState extends State<PortfolioPage> {
   ListState _state = ListState.init;
   String sort = "name";
-  int sortType = 1;
+  int sortType = -1;
   String? _error;
   late final AssetsProvider _assetsProvider;
   late final PortfolioStateProvider _refreshListener;
@@ -54,7 +54,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
   void _statsSheetListener() {
     if (_state != ListState.disposed && _statsSheetProvider.sort != null) {
       sort = _statsSheetProvider.sort!.toLowerCase();
-      sortType = _statsSheetProvider.sortType! == "Ascending" ? 1 : -1;
+      sortType = _statsSheetProvider.sortType! == "Ascending" ? -1 : 1;
       _getAssets();
     }
   }

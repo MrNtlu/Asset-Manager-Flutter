@@ -24,7 +24,7 @@ class SubscriptionPage extends StatefulWidget {
 class _SubscriptionPageState extends State<SubscriptionPage> {
   ListState _state = ListState.init;
   String sort = "name";
-  int sortType = 1;
+  int sortType = -1;
   String? _error;
   late final SubscriptionsProvider _subscriptionsProvider;
   late final StatsSheetSelectionStateProvider _statsSheetProvider;
@@ -60,7 +60,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   void _statsSheetListener() {
     if (_state != ListState.disposed && _statsSheetProvider.sort != null) {
       sort = _statsSheetProvider.sort!.toLowerCase();
-      sortType = _statsSheetProvider.sortType! == "Ascending" ? 1 : -1;
+      sortType = _statsSheetProvider.sortType! == "Ascending" ? -1 : 1;
       _getSubscriptions();
     }
   }
@@ -163,7 +163,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
             const ["Name", "Currency", "Price"],
             const ["Ascending", "Descending"],
             selectedSort: const ["Name", "Currency", "Price"].indexOf("${sort[0].toUpperCase()}${sort.substring(1)}"),
-            selectedSortType: sortType == 1 ? 0 : 1,
+            selectedSortType: sortType == -1 ? 0 : 1,
           )
         ),
       )

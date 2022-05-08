@@ -151,6 +151,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           defaultBorder: _textFieldInputBorder(),
                           enabledBorder: _textFieldInputBorder(),
                           focusedBorder: _textFieldInputBorder(),
+                          errorTextStyle: TextStyle(color: Colors.grey.shade300, fontWeight: FontWeight.bold),
                         ),
                         PasswordTextFormField(
                           initialText: widget._registerModel.password.trim() != '' 
@@ -169,6 +170,8 @@ class _RegisterPageState extends State<RegisterPage> {
                             if (value != null) {
                               if (value.isEmpty) {
                                 return "Please don't leave this empty.";
+                              } else if (value.length < 6) {
+                                return "Password should be longer than 6.";
                               }
                             }
 
@@ -177,6 +180,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           defaultBorder: _textFieldInputBorder(),
                           enabledBorder: _textFieldInputBorder(),
                           focusedBorder: _textFieldInputBorder(),
+                          errorTextStyle: TextStyle(color: Colors.grey.shade300, fontWeight: FontWeight.bold),
                         ),
                         PasswordTextFormField(
                           initialText: _rePassword.trim() != '' 
@@ -193,6 +197,8 @@ class _RegisterPageState extends State<RegisterPage> {
                             if (value != null) {
                               if (value.isEmpty) {
                                 return "Please don't leave this empty.";
+                              } else if (value.length < 6) {
+                                return "Password should be longer than 6.";
                               }
                             }
                             return null;
@@ -200,6 +206,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           defaultBorder: _textFieldInputBorder(),
                           enabledBorder: _textFieldInputBorder(),
                           focusedBorder: _textFieldInputBorder(),
+                          errorTextStyle: TextStyle(color: Colors.grey.shade300, fontWeight: FontWeight.bold),
                         ),
                         _currencyDropdown,
                         InkWell(

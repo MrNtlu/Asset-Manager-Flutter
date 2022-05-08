@@ -11,6 +11,7 @@ class PasswordTextFormField extends StatefulWidget {
   final InputBorder? focusedBorder;
   final InputBorder? enabledBorder;
   final InputBorder? defaultBorder;
+  final TextStyle? errorTextStyle;
 
   const PasswordTextFormField(
     {
@@ -24,6 +25,7 @@ class PasswordTextFormField extends StatefulWidget {
       this.focusedBorder = const OutlineInputBorder(),
       this.enabledBorder = const OutlineInputBorder(),
       this.defaultBorder = const OutlineInputBorder(),
+      this.errorTextStyle,
     }
   );
 
@@ -58,6 +60,7 @@ class _PasswordTextFormFieldState extends State<PasswordTextFormField> {
           fillColor: Colors.white,
           enabledBorder: widget.enabledBorder,
           focusedBorder: widget.focusedBorder,
+          errorStyle: widget.errorTextStyle,
           border: widget.defaultBorder,
           labelText: widget.label,
           prefixIcon: widget.prefixIcon,
