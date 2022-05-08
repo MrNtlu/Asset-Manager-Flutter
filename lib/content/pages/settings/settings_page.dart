@@ -391,6 +391,8 @@ class _SettingsPageState extends State<SettingsPage> {
                                         if (value != null) {
                                           if (value.isEmpty) {
                                             return "Please don't leave this empty.";
+                                          } else if (value.length < 6) {
+                                            return "Password should be longer than 6.";
                                           }
                                         }
 
@@ -409,6 +411,8 @@ class _SettingsPageState extends State<SettingsPage> {
                                         if (value != null) {
                                           if (value.isEmpty) {
                                             return "Please don't leave this empty.";
+                                          } else if (value.length < 6) {
+                                            return "Password should be longer than 6.";
                                           }
                                         }
 

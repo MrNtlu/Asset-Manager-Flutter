@@ -92,8 +92,9 @@ class _PortfolioPageState extends State<PortfolioPage> {
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark.copyWith(
-          statusBarIconBrightness: Brightness.dark,
-          statusBarBrightness: Brightness.light),
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.light
+      ),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
