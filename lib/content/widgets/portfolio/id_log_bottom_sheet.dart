@@ -89,21 +89,23 @@ class InvestmentDetailsLogBottomSheet extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    isApple
-                    ? CupertinoButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text("Cancel",
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.bold)))
-                    : OutlinedButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text("Cancel",
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.bold))),
+                  isApple
+                  ? CupertinoButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      "Cancel",
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold))
+                    )
+                  : OutlinedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      "Cancel",
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold))
+                    ),
                     isApple
                     ? CupertinoButton.filled(
                       padding: const EdgeInsets.all(12),

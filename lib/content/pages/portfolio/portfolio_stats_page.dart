@@ -27,12 +27,12 @@ class PortfolioStatsPage extends StatelessWidget {
           slivers: [
             SliverToBoxAdapter(
               child: Column(
-                children: const [
-                  Portfolio(isDetailed: true),
-                  PortfolioStats(true),
-                  PortfolioStatsLineChart(),
-                  PortfolioStatsDistributionChart(),
-                  PortfolioStatsDetailedTable(),
+                children: [
+                  const Portfolio(isDetailed: true),
+                  const PortfolioStats(true),
+                  PortfolioStatsLineChart(MediaQuery.of(context).viewPadding.top),
+                  const PortfolioStatsDistributionChart(),
+                  const PortfolioStatsDetailedTable(),
                 ],
               ),
             ),

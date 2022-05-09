@@ -3,7 +3,8 @@ import 'package:asset_flutter/content/widgets/portfolio/stats_lc_toggle.dart';
 import 'package:flutter/material.dart';
 
 class PortfolioStatsLineChart extends StatelessWidget {
-  const PortfolioStatsLineChart();
+  final double _topPadding;
+  const PortfolioStatsLineChart(this._topPadding);
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,7 @@ class PortfolioStatsLineChart extends StatelessWidget {
               ),
             ],
           ),
-          const StatsLCLineChart()
+          StatsLCLineChart(_topPadding)
         ],
       ),
     );

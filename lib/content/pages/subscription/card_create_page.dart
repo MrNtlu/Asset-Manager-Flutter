@@ -67,7 +67,7 @@ class _CardCreatePageState extends State<CardCreatePage> {
           if (value.error!.startsWith("free members")) {
             showDialog(
               context: context, 
-              builder: (ctx) => PremiumErrorDialog(value.error!)
+              builder: (ctx) => PremiumErrorDialog(value.error!, MediaQuery.of(context).viewPadding.top)
             );
           } else {
             showDialog(

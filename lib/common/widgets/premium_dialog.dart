@@ -1,14 +1,16 @@
 import 'dart:io';
 
 import 'package:asset_flutter/content/widgets/settings/offers_sheet.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 class PremiumErrorDialog extends StatelessWidget {
   final String _message;
+  final double _topPadding;
 
-  const PremiumErrorDialog(this._message, {Key? key}) : super(key: key);
+  const PremiumErrorDialog(this._message, this._topPadding, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,28 +51,26 @@ class PremiumErrorDialog extends StatelessWidget {
                   padding: const EdgeInsets.all(12),
                   child: const Text('Membership Plans'), 
                   onPressed: () => showModalBottomSheet(
-                    context: context, 
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(12),
-                        topLeft: Radius.circular(12)
-                      ),
-                    ),
-                    enableDrag: true,
-                    builder: (_) => const OffersSheet()
+                    context: context,
+                    isScrollControlled: true,
+                    enableDrag: false,
+                    backgroundColor: AppColors().bgSecondary,
+                    builder: (_) => Padding(
+                      padding: EdgeInsets.only(top: _topPadding),
+                      child: const OffersSheet()
+                    )
                   )
                 )
                 : ElevatedButton(
                   onPressed: () => showModalBottomSheet(
-                    context: context, 
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(12),
-                        topLeft: Radius.circular(12)
-                      ),
-                    ),
-                    enableDrag: true,
-                    builder: (_) => const OffersSheet()
+                    context: context,
+                    isScrollControlled: true,
+                    enableDrag: false,
+                    backgroundColor: AppColors().bgSecondary,
+                    builder: (_) => Padding(
+                      padding: EdgeInsets.only(top: _topPadding),
+                      child: const OffersSheet()
+                    )
                   ), 
                   child: const Text('Membership Plans'),
                 ),

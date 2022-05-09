@@ -12,7 +12,8 @@ import 'dart:math';
 import 'package:provider/provider.dart';
 
 class StatsLCLineChart extends StatefulWidget{
-  const StatsLCLineChart({Key? key}) : super(key: key);
+  final double _topPadding;
+  const StatsLCLineChart(this._topPadding, {Key? key}) : super(key: key);
 
   @override
   State<StatsLCLineChart> createState() => _StatsLCLineChartState();
@@ -174,7 +175,7 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
       case ViewState.loading:
         return const LoadingView("Fetcing stats", textColor: Colors.white);
       case ViewState.error:
-        return const StatsLineChartPremiumView();
+        return StatsLineChartPremiumView(widget._topPadding);
       case ViewState.empty:
         return Center(
           child: Text(

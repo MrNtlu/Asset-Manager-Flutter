@@ -6,6 +6,7 @@ import 'package:asset_flutter/common/widgets/no_item_holder.dart';
 import 'package:asset_flutter/common/widgets/success_view.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/purchase_api.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
@@ -56,7 +57,53 @@ class OffersSheetState extends State<OffersSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return _portraitBody();
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: AppColors().bgSecondary,
+      appBar: AppBar(
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
+        automaticallyImplyLeading: false,
+        titleSpacing: 0,
+        title: Stack(
+          alignment: Alignment.center,
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: TextButton(
+                onPressed: () => Navigator.pop(context), 
+                child: const Text(
+                  "Close",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white
+                  )
+                )
+              )
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Lottie.asset(
+                  "assets/lottie/premium.json",
+                  height: 32,
+                  width: 32,
+                  frameRate: FrameRate(60)
+                ),
+                const Text(
+                  "Premium Plans",
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)
+                ),
+              ],
+            ),
+          ],
+        ),
+        centerTitle: true,
+        backgroundColor: AppColors().bgSecondary,
+      ),
+      body: _portraitBody()
+    );
   }
 
   Widget _portraitBody() {
@@ -64,42 +111,66 @@ class OffersSheetState extends State<OffersSheet> {
       case ListState.done:
         return Container(
           decoration: BoxDecoration(
-            color: AppColors().primaryColor,
+            color: AppColors().bgSecondary,
             image: const DecorationImage(
               image: AssetImage("assets/images/auth_bg.jpeg"),
               fit: BoxFit.cover
-            ),
-            borderRadius: const BorderRadius.only(
-              topRight: Radius.circular(12),
-              topLeft: Radius.circular(12)
             ),
           ),
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 8, bottom: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
                 child: Column(
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Lottie.asset(
-                          "assets/lottie/premium.json",
-                          height: 32,
-                          width: 32,
-                          frameRate: FrameRate(60)
+                      children: const [
+                        Padding(
+                          padding: EdgeInsets.only(right: 8),
+                          child: Icon(Icons.check_rounded, color: Colors.white),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 4),
-                          child: Text(
-                            "Premium Plans",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white
-                            ),
-                          ),
-                        )
+                        Text("Unlimited Investments", style: TextStyle(color: Colors.white, fontSize: 16))
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Padding(
+                          padding: EdgeInsets.only(right: 8),
+                          child: Icon(Icons.check_rounded, color: Colors.white),
+                        ),
+                        Text("Unlimited Subscriptions", style: TextStyle(color: Colors.white, fontSize: 16))
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Padding(
+                          padding: EdgeInsets.only(right: 8),
+                          child: Icon(Icons.check_rounded, color: Colors.white),
+                        ),
+                        Text("Unlimited Credit Cards", style: TextStyle(color: Colors.white, fontSize: 16))
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Padding(
+                          padding: EdgeInsets.only(right: 8),
+                          child: Icon(Icons.check_rounded, color: Colors.white),
+                        ),
+                        Text("Stats for Longer Periods", style: TextStyle(color: Colors.white, fontSize: 16))
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Padding(
+                          padding: EdgeInsets.only(right: 8),
+                          child: Icon(Icons.check_rounded, color: Colors.white),
+                        ),
+                        Text("More soon...", style: TextStyle(color: Colors.white, fontSize: 16))
                       ],
                     ),
                   ],
@@ -110,13 +181,13 @@ class OffersSheetState extends State<OffersSheet> {
                 itemBuilder: (context, index) {
                   final package = _packages[index];
                   final product = package.product;
-
+      
                   return GestureDetector(
                     onTap: () async {
                       try {
                         await Purchases.purchasePackage(package);
                         Log().createLog("${product.title} purchased.");
-
+      
                         showDialog(
                           context: context,
                           builder: (_) => const SuccessView("purchased. Thank you for becoming a premium member")
@@ -127,7 +198,7 @@ class OffersSheetState extends State<OffersSheet> {
                           Log().createLog("${product.title} purchase cancelled.");
                         } else {
                           Log().createLog("${product.title} failed to purchase.");
-
+      
                           showDialog(
                             context: context,
                             builder: (_) => ErrorDialog(e.message ?? "Failed to purchase.")
@@ -138,52 +209,77 @@ class OffersSheetState extends State<OffersSheet> {
                     child: ClipRRect(
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.7),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(width: 2, color: Colors.white30)
+                          color: AppColors().bgSecondary,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(width: 2, color: CupertinoColors.systemBlue)
                         ),
-                        margin: const EdgeInsets.all(6),
-                        padding: const EdgeInsets.all(4),
-                        child: Row(
+                        margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                        padding: const EdgeInsets.all(6),
+                        child: Column(
                           children: [
-                            Expanded(
-                              flex: 2,
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(4),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                                     child: Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        product.title.split('(')[0],
+                                        product.title.split('(')[0].split('-')[1].trimLeft(),
                                         style: const TextStyle(
-                                          fontWeight: FontWeight.bold, 
-                                          fontSize: 16
+                                          fontSize: 14,
+                                          color: Colors.white
                                         ),
                                       ),
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(4),
-                                    child: Text(
-                                      product.description,
-                                      textAlign: TextAlign.start,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                      ),
+                                ),
+                                if(product.identifier != "kantan_099_1m")
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: product.identifier == "kantan_749_1y"
+                                    ? AppColors().accentColor
+                                    : AppColors().greenColor,
+                                    borderRadius: const BorderRadius.all(Radius.circular(4)),
+                                  ),
+                                  padding: const EdgeInsets.all(4),
+                                  child: Text(
+                                    product.identifier == "kantan_749_1y"
+                                    ? "Better Price"
+                                    : "Best Offer",
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
                                     ),
                                   ),
-                                ],
+                                )
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  product.priceString + _identifierToString(product.identifier),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
                               ),
                             ),
-                            Expanded(
-                              flex: 1,
-                              child: Center(
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8, bottom: 4),
+                              child: Align(
+                                alignment: Alignment.centerRight,
                                 child: Text(
-                                  product.priceString,
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold
+                                  product.identifier != "kantan_11999_unlimited"
+                                  ? "Cancel anytime"
+                                  : "One-time payment, cannot be canceled",
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    color: Colors.grey.shade300
                                   ),
                                 ),
                               ),
@@ -200,9 +296,19 @@ class OffersSheetState extends State<OffersSheet> {
           ),
         );
       case ListState.empty:
-        return const NoItemView('No offer found');
+        return const Center(child: NoItemView('No offer found', textColor: Colors.white,));
       default:
-        return const LoadingView("Loading");
+        return const Center(child: LoadingView("Loading", textColor: Colors.white));
+    }
+  }
+
+  String _identifierToString(String identifier) {
+    if(identifier == "kantan_099_1m") {
+      return "/month";
+    } else if(identifier == "kantan_749_1y") {
+      return "/year";
+    } else {
+      return "";
     }
   }
 }

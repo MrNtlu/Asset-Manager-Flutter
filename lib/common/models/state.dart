@@ -1,3 +1,9 @@
+enum BaseState {
+  init,
+  loading,
+  disposed
+}
+
 enum ListState {
   init,
   loading,

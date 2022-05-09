@@ -4,8 +4,9 @@ import 'package:lottie/lottie.dart';
 class NoItemView extends StatelessWidget {
   final String _text;
   final double height;
+  final Color textColor;
 
-  const NoItemView(this._text, {Key? key, this.height = 250}) : super(key: key);
+  const NoItemView(this._text, {Key? key, this.height = 250, this.textColor = Colors.black,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +30,8 @@ class NoItemView extends StatelessWidget {
       ),
       Text(
         _text,
-        style: const TextStyle(
-          color: Colors.black,
+        style: TextStyle(
+          color: textColor,
           fontSize: 18,
         ),
       )

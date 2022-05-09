@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:asset_flutter/auth/pages/login_page.dart';
 import 'package:asset_flutter/auth/widgets/auth_currency_dropdown.dart';
 import 'package:asset_flutter/common/models/state.dart';
+import 'package:asset_flutter/common/widgets/base_button.dart';
 import 'package:asset_flutter/common/widgets/check_dialog.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
 import 'package:asset_flutter/common/widgets/error_view.dart';
@@ -281,14 +282,13 @@ class _SettingsPageState extends State<SettingsPage> {
                       TextButton(
                         onPressed: () => showModalBottomSheet(
                           context: context,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(12),
-                              topLeft: Radius.circular(12)
-                            ),
-                          ),
-                          enableDrag: true,
-                          builder: (_) => const OffersSheet()
+                          isScrollControlled: true,
+                          enableDrag: false,
+                          backgroundColor: AppColors().bgSecondary,
+                          builder: (_) => Padding(
+                            padding: EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top),
+                            child: const OffersSheet()
+                          )
                         ), 
                         child: const Text('See Membership Plans'),
                         style: ElevatedButton.styleFrom(
@@ -420,10 +420,9 @@ class _SettingsPageState extends State<SettingsPage> {
                                       },
                                     ),
                                     const SizedBox(height: 24),
-                                    isApple
-                                    ? CupertinoButton.filled(
-                                      padding: const EdgeInsets.all(12),
-                                      onPressed: (){
+                                    BaseButton(
+                                      "Change Password",
+                                      () {
                                         final isValid = _form.currentState?.validate();
                                         if (isValid != null && !isValid) {
                                           return;
@@ -432,21 +431,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
                                         Navigator.pop(context);
                                         _changePassword(oldPassword, newPassword);
-                                      }, 
-                                      child: const Text('Change Password', style: TextStyle(fontSize: 16))
-                                    )
-                                    : ElevatedButton(
-                                      onPressed: (){
-                                        final isValid = _form.currentState?.validate();
-                                        if (isValid != null && !isValid) {
-                                          return;
-                                        }
-                                        _form.currentState?.save();
-
-                                        Navigator.pop(context);
-                                        _changePassword(oldPassword, newPassword);
-                                      }, 
-                                      child: const Text('Change Password', style: TextStyle(fontSize: 16))
+                                      },
+                                      containerMargin: const EdgeInsets.symmetric(horizontal: 32, vertical: 4),
                                     )
                                   ],
                                 ),
@@ -460,7 +446,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
                 SettingsTile.navigation(
                   leading: const Icon(Icons.feedback_rounded),
-                  title: const Text('Leave Feedback'),
+                  title: const Text('Feedback/Suggestion'),
                   onPressed: (ctx) {
                     Navigator.of(context).push(MaterialPageRoute(builder: (_) => const FeedbackPage()));
                   },

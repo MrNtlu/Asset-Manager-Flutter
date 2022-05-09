@@ -97,7 +97,7 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
           if (value.error!.startsWith("free members")) {
             showDialog(
               context: context, 
-              builder: (ctx) => PremiumErrorDialog(value.error!)
+              builder: (ctx) => PremiumErrorDialog(value.error!, MediaQuery.of(context).viewPadding.top)
             );
           } else {
             showDialog(
