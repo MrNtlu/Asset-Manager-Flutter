@@ -53,7 +53,11 @@ class _PortfolioPageState extends State<PortfolioPage> {
 
   void _statsSheetListener() {
     if (_state != ListState.disposed && _statsSheetProvider.sort != null) {
-      sort = _statsSheetProvider.sort!.toLowerCase();
+      if (_statsSheetProvider.sort! == "Profit(%)") {
+        sort = "percentage";
+      } else {
+        sort = _statsSheetProvider.sort!.toLowerCase();
+      }
       sortType = _statsSheetProvider.sortType! == "Ascending" ? -1 : 1;
       _getAssets();
     }
@@ -166,7 +170,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
                       children: [
                         SectionSortTitle(
                           "Investments",
-                          const ["Name", "Amount", "Profit", "Type"],
+                          const ["Name", "Amount", "Profit", "Profit(%)"],
                           const ["Ascending", "Descending"],
                           sortTitle: sort,
                           sortType: sortType,
@@ -217,7 +221,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
                               children: [
                                 SectionSortTitle(
                                   "Investments",
-                                  const ["Name", "Amount", "Profit", "Type"],
+                                  const ["Name", "Amount", "Profit", "Profit(%)"],
                                   const ["Ascending", "Descending"],
                                   sortTitle: sort,
                                   sortType: sortType,

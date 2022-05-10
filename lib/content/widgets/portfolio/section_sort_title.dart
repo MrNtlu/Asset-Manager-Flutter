@@ -23,7 +23,12 @@ class SectionSortTitle extends StatelessWidget {
  
   @override
   Widget build(BuildContext context) {
-    var _sortTitle = "${sortTitle[0].toUpperCase()}${sortTitle.substring(1)}";
+    String _sortTitle;
+    if (sortTitle == "percentage") {
+      _sortTitle = "Profit(%)";
+    } else {
+      _sortTitle = "${sortTitle[0].toUpperCase()}${sortTitle.substring(1)}";
+    }
     var _sortTypeIcon = sortType == -1 ? Icons.arrow_upward_rounded : Icons.arrow_downward;
 
     return Row(

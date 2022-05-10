@@ -1,27 +1,57 @@
 import 'dart:convert';
-
+import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
+import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/success_view.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/routes.dart';
+import 'package:asset_flutter/utils/extensions.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'auth_button.dart';
 import 'package:asset_flutter/common/widgets/textformfield.dart';
 import 'package:http/http.dart' as http;
 
-class AuthBottomSheet extends StatelessWidget {
+class AuthBottomSheet extends StatefulWidget {
+  final _form = GlobalKey<FormState>();
   final _emailInput = TextEditingController();
 
-  void onSendEmailPressed(BuildContext context) {
-    Navigator.pop(context);
+  @override
+  State<AuthBottomSheet> createState() => _AuthBottomSheetState();
+}
+
+class _AuthBottomSheetState extends State<AuthBottomSheet> {
+  BaseState _state = BaseState.init;
+
+  void onSendEmailPressed(BuildContext _) async {
+    final isValid = widget._form.currentState?.validate();
+    if (isValid != null && !isValid) {
+      return;
+    }
+    setState(() {
+      _state = BaseState.loading;
+    });
+    
     try {
-      http.post(
+      final response = await http.post(
         Uri.parse(APIRoutes().userRoutes.forgotPassword),
         body: json.encode({
-          "email_address": _emailInput.text,
+          "email_address": widget._emailInput.text,
         }),
       );
 
+      if (response.getBaseResponse().error != null){
+        showDialog(
+          context: context, 
+          builder: (ctx) => ErrorDialog(response.getBaseResponse().error!)
+        );
+        setState(() {
+          _state = BaseState.init;
+        });
+        return;
+      }
+
+      Navigator.pop(context);
       showDialog(
         context: context, 
         builder: (ctx) => const SuccessView("sent email", shouldJustPop: true)
@@ -31,45 +61,76 @@ class AuthBottomSheet extends StatelessWidget {
         context: context, 
         builder: (ctx) => ErrorDialog(error.toString())
       );
+      setState(() {
+        _state = BaseState.init;
+      });
     }
   }
 
   @override
+  void dispose() {
+    _state = BaseState.disposed;
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: MediaQuery.of(context).viewInsets,
-      child: Container(
-        height: 250,
-        margin: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            CustomTextFormField(
-              'Email', 
-              TextInputType.emailAddress, 
-              textfieldController: _emailInput,
-              prefixIcon: Icon(
-                Icons.email,
-                color: AppColors().primaryColor
-              ),
-              textInputAction: TextInputAction.done,
-            ),
-            Container(
-              width: double.infinity,
-              margin: const EdgeInsets.fromLTRB(32, 8, 32, 16),
-              child: const Text(
-                "Please enter your email address. You'll receive password recet email if you have an account.",
-                softWrap: true,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 12,
+    switch (_state) {
+      case BaseState.init:
+        return Padding(
+          padding: MediaQuery.of(context).viewInsets,
+          child: Container(
+            height: 265,
+            margin: const EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Form(
+                  key: widget._form,
+                  child: CustomTextFormField(
+                    'Email', 
+                    TextInputType.emailAddress, 
+                    textfieldController: widget._emailInput,
+                    prefixIcon: Icon(
+                      Icons.email,
+                      color: AppColors().primaryColor
+                    ),
+                    textInputAction: TextInputAction.done,
+                    validator: (value) {
+                      if(value != null) {
+                        if (value.isEmpty){
+                          return "Please don't leave empty.";
+                        } else if (!value.isEmailValid()) {
+                          return "Email is not valid.";
+                        }
+                      }
+                
+                      return null;
+                    },
+                  ),
                 ),
-              )
+                Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.fromLTRB(32, 8, 32, 16),
+                  child: const Text(
+                    "Please enter your email address. You'll receive password recet email if you have an account.",
+                    softWrap: true,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 12,
+                    ),
+                  )
+                ),
+                AuthButton(onSendEmailPressed, 'Reset', CupertinoColors.systemBlue)
+              ],
             ),
-            AuthButton(onSendEmailPressed, 'Reset', AppColors().lightBlack)
-          ],
-        ),
-      ),
-    ); 
+          ),
+        );
+      default:
+        return const SizedBox(
+          height: 425,
+          child: LoadingView("Please wait")
+        );
+    }
   }
 }
