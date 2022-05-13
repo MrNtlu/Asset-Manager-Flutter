@@ -1,5 +1,6 @@
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
+import 'package:asset_flutter/common/widgets/error_snackbar.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/premium_dialog.dart';
 import 'package:asset_flutter/common/widgets/success_view.dart';
@@ -25,13 +26,22 @@ class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
     _subscriptionDetailsEdit.createData!.billDate = _subscriptionDetailsEdit.datePicker.billDate;
     _subscriptionDetailsEdit.createData!.billCycle = _subscriptionDetailsEdit.billCyclePicker.billCycle;
     _subscriptionDetailsEdit.createData!.color = _subscriptionDetailsEdit.colorPicker.selectedColor.value;
-    _subscriptionDetailsEdit.createData!.image = _subscriptionDetailsEdit.selectedDomain;
+    _subscriptionDetailsEdit.createData!.image = _subscriptionDetailsEdit.selectedDomain!;
     _subscriptionDetailsEdit.createData!.cardID = _subscriptionDetailsEdit.selectedCard?.id;
   }
 
   void _createSubscription(BuildContext context) {
     final isValid = _subscriptionDetailsEdit.form.currentState?.validate();
     if (isValid != null && !isValid) {
+      return;
+    }
+    if (_subscriptionDetailsEdit.selectedDomain == null) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: ErrorSnackbar("Please select subscription image."),
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ));
       return;
     }
     setState(() {

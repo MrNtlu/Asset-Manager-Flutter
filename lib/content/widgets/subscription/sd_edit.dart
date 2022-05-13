@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/content/models/requests/subscription.dart';
@@ -7,14 +6,15 @@ import 'package:asset_flutter/content/providers/subscription/card.dart';
 import 'package:asset_flutter/content/providers/subscription/card_sheet_state.dart';
 import 'package:asset_flutter/content/providers/subscription/cards.dart';
 import 'package:asset_flutter/content/providers/subscription/subscription.dart';
+import 'package:asset_flutter/content/providers/subscription/subscription_image_selection.dart';
 import 'package:asset_flutter/content/widgets/subscription/card_sheet.dart';
+import 'package:asset_flutter/content/widgets/subscription/sc_image_sheet.dart';
 import 'package:asset_flutter/content/widgets/subscription/sd_edit_bill_cycle.dart';
 import 'package:asset_flutter/content/widgets/subscription/sd_edit_color_picker.dart';
 import 'package:asset_flutter/content/widgets/subscription/sd_edit_date_picker.dart';
 import 'package:asset_flutter/content/widgets/subscription/sd_edit_header.dart';
-import 'package:dropdown_search/dropdown_search.dart';
+import 'package:asset_flutter/content/widgets/subscription/subscription_image.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
@@ -44,7 +44,7 @@ class SubscriptionDetailsEdit extends StatefulWidget {
     if (isEditing) {
       updateData = SubscriptionUpdate(_data!.id);
     } else {
-      createData = SubscriptionCreate('', BillCycle(), DateTime.now(), 0.0, '',  null, 0);
+      createData = SubscriptionCreate('', BillCycle(), DateTime.now(), 0.0, '',  '', 0);
     }
   }
 
@@ -54,9 +54,11 @@ class SubscriptionDetailsEdit extends StatefulWidget {
 
 class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
   EditState _state = EditState.init;
+  late final SubscriptionImageSelection _imageSelection;
 
   @override
   void dispose() {
+    _imageSelection.onDispose();
     _state = EditState.disposed;
     super.dispose();
   }
@@ -64,7 +66,8 @@ class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
   @override
   void didChangeDependencies() {
     if (_state == EditState.init) {
-      if(widget.isEditing && widget.selectedCard != null) {
+      _imageSelection = Provider.of<SubscriptionImageSelection>(context, listen: false);
+      if (widget.isEditing && widget.selectedCard != null) {
         widget.selectedCard = Provider.of<CardProvider>(context).findById(widget.selectedCard!.id);
       }
       _state = EditState.view;
@@ -76,7 +79,72 @@ class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _createSubscriptionDropdown(),
+        Consumer<SubscriptionImageSelection>(builder: (context, selection, _) {
+          widget.selectedDomain = selection.selectedImage;
+
+          return widget.selectedDomain == null && !widget.isEditing
+          ? Padding(
+            padding: const EdgeInsets.all(8),
+            child: TextButton(
+              onPressed: () => showModalBottomSheet(
+                context: context, 
+                enableDrag: false,
+                shape: Platform.isIOS || Platform.isMacOS
+                ? const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(16),
+                    topLeft: Radius.circular(16)
+                  ),
+                )
+                : null,
+                builder: (_) => const SubscriptionCreateImageSheet()
+              ),
+              child: const Text(
+                "Select Subscription Image",
+                style: TextStyle(
+                  fontSize: 14,
+                ),
+              ),
+            ),
+          )
+          : Padding(
+            padding: const EdgeInsets.fromLTRB(8, 16, 8, 8),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SubscriptionImage(
+                  widget.isEditing && widget.selectedDomain == null
+                  ? widget._data!.image
+                  : widget.selectedDomain!, 
+                  Colors.black,
+                  size: 52,
+                ),
+                TextButton(
+                  onPressed: () => showModalBottomSheet(
+                    context: context, 
+                    enableDrag: false,
+                    shape: Platform.isIOS || Platform.isMacOS
+                    ? const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(16),
+                        topLeft: Radius.circular(16)
+                      ),
+                    )
+                    : null,
+                    builder: (_) => const SubscriptionCreateImageSheet()
+                  ), 
+                  child: const Text(
+                    "Change",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold
+                    ),
+                  )
+                )
+              ],
+            ),
+          );
+        }),
         Form(
           key: widget.form,
           child: widget.isEditing ? 
@@ -138,38 +206,6 @@ class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
       ],
     );
   }
-
-  Widget _createSubscriptionDropdown() => Container(
-    margin:const EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 8),
-    child: DropdownSearch<String>(
-      showSearchBox: true,
-      selectedItem: widget._data?.rawImage,
-      dropdownSearchDecoration: const InputDecoration(
-        label: Text('Subscription Service'),
-        contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
-        border: OutlineInputBorder(),
-      ),
-      showClearButton: true,
-      isFilteredOnline: true,
-      searchDelay: const Duration(milliseconds: 500),
-      onFind: (String? filter) async {
-        List<String> _itemList = [];
-        if (filter == null || (filter.trim() == '')) {
-          filter = "netflix";
-        }
-        var response = await http.get(
-          Uri.parse("https://autocomplete.clearbit.com/v1/companies/suggest?query=$filter"),
-        );
-        (json.decode(response.body) as List).map((e) => e as Map<String, dynamic>).forEach((element) {
-            _itemList.add(element["domain"] as String);
-        }); 
-
-        return _itemList;
-      },
-      onChanged: (String? item) => widget.selectedDomain = item,
-      itemAsString: (String? item) => item ?? '',
-    ),
-  );
 
   Widget _subSectionTitle(String title) => Container(
     margin: const EdgeInsets.fromLTRB(12, 8, 8, 4),

@@ -8,8 +8,7 @@ import 'package:asset_flutter/content/providers/subscription/subscription_state.
 import 'package:asset_flutter/content/providers/subscription/subscriptions.dart';
 import 'package:asset_flutter/content/widgets/subscription/sd_edit.dart';
 import 'package:asset_flutter/content/widgets/subscription/sd_view.dart';
-import 'package:asset_flutter/static/colors.dart';
-import 'package:asset_flutter/static/images.dart';
+import 'package:asset_flutter/content/widgets/subscription/subscription_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -117,8 +116,8 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (_data.image != null && _state != EditState.editing)
-            _subscriptionImage(),
+            if (_state != EditState.editing)
+            SubscriptionImage(_data.image, Color(_data.color)),
             Text(
               _state == EditState.editing ? "Edit" : _data.name, 
               style: TextStyle(
@@ -191,46 +190,4 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
         return const LoadingView("Loading");
     }
   }
-
-  Widget _subscriptionImage() => Container(
-    padding: const EdgeInsets.all(1),
-    margin: const EdgeInsets.only(right: 6),
-    decoration: const BoxDecoration(
-      color: Colors.white, 
-      borderRadius: BorderRadius.all(Radius.circular(14))
-    ),
-    child: ClipRRect(
-      borderRadius: BorderRadius.circular(14),
-      child: SizedBox.fromSize(
-        size: const Size.fromRadius(14),
-        child: Image.network(
-          _data.image!,
-          width: 28,
-          height: 28,
-          fit: BoxFit.contain,
-          frameBuilder: (context, child, int? frame, bool? wasSynchronouslyLoaded) {
-            if (frame == null) {
-              return CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(AppColors().primaryLightColor),
-              );
-            }
-            return child;
-          },
-          loadingBuilder: ((context, child, loadingProgress) {
-            if (loadingProgress == null) {
-              return child;
-            }
-            return const CircularProgressIndicator();
-          }),
-          errorBuilder: ((context, error, stackTrace) {
-            return Icon(
-              PlaceholderImages().subscriptionFailIcon(),
-              color: Color(_data.color),
-              size: 28,
-            );
-          }),
-        )
-      ),
-    ),
-  );
 }

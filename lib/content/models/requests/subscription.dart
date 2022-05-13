@@ -10,7 +10,7 @@ class SubscriptionCreate implements JSONConverter{
   BillCycle billCycle;
   double price;
   String currency;
-  String? image;
+  String image;
   int color;
 
   SubscriptionCreate(this.name, this.billCycle, this.billDate, this.price,
@@ -26,8 +26,7 @@ class SubscriptionCreate implements JSONConverter{
     "bill_cycle": billCycle.convertToJson(),
     "price": price,
     "currency": currency,
-    if(image != null)
-    "image": image!,
+    "image": image,
     if (cardID != null)
     "card_id": cardID!, 
     "color": color.toString()

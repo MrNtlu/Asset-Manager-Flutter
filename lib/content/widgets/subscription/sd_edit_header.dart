@@ -69,7 +69,7 @@ class _SDEditHeaderState extends State<SDEditHeader> {
           "Name",
           TextInputType.name,
           initialText: widget.name,
-          edgeInsets: const EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 8),
+          edgeInsets: const EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 8),
           textInputAction: TextInputAction.next,
           onSaved: (value) {
             if (value != null) {

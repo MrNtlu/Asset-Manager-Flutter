@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
+import 'package:asset_flutter/common/widgets/error_snackbar.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/premium_dialog.dart';
 import 'package:asset_flutter/common/widgets/success_view.dart';
@@ -215,10 +216,12 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
                   }
 
                   if (_currentStep == 1 && (_selectedItem == null || _selectedCurrencyItem == null) && index != 0) {
-                    showDialog(
-                      context: context,
-                      builder: (ctx) => const ErrorDialog("Please select investment and currency.")
-                    );
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: ErrorSnackbar("Please select investment and currency."),
+                      behavior: SnackBarBehavior.floating,
+                      backgroundColor: Colors.transparent,
+                      elevation: 0,
+                    ));
                   } else {
                     setState(() {
                       _currentStep = index;
@@ -242,10 +245,12 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
                   }
 
                   if (_currentStep == 1 && (_selectedItem == null || _selectedCurrencyItem == null)) {
-                    showDialog(
-                      context: context,
-                      builder: (ctx) => const ErrorDialog("Please select investment and currency.")
-                    );
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: ErrorSnackbar("Please select investment and currency."),
+                      behavior: SnackBarBehavior.floating,
+                      backgroundColor: Colors.transparent,
+                      elevation: 0,
+                    ));
                   } else if (!(getSteps().length - 1 == _currentStep)) {
                     setState(() {
                       _currentStep += 1;

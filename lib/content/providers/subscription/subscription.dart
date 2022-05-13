@@ -18,20 +18,15 @@ class Subscription with ChangeNotifier {
   late BillCycle billCycle;
   late num price;
   late String currency;
-  late String? _image;
+  late String _image;
   late String _color;
   late String? cardID;
 
   int get color => int.parse(_color);
 
-  String? get image {
-    if (_image != null) {
-      return _subscriptionImage(_image!);
-    }
-    return null;
-  }
+  String get image => _subscriptionImage(_image);
 
-  String? get rawImage => _image;
+  String get rawImage => _image;
 
   Subscription(this.id, this.name, this.description, this.billDate, this.nextBillDate,
       this.billCycle, this.price, this.currency, this._image, this._color, this.cardID);

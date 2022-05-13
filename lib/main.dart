@@ -8,6 +8,7 @@ import 'package:asset_flutter/content/providers/subscription/card_sheet_state.da
 import 'package:asset_flutter/content/providers/subscription/card_state.dart';
 import 'package:asset_flutter/content/providers/subscription/card_subscriptions.dart';
 import 'package:asset_flutter/content/providers/subscription/cards.dart';
+import 'package:asset_flutter/content/providers/subscription/subscription_image_selection.dart';
 import 'package:asset_flutter/content/providers/subscription/subscription_state.dart';
 import 'package:asset_flutter/static/purchase_api.dart';
 import 'package:asset_flutter/content/pages/tabs_page.dart';
@@ -71,6 +72,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: SubscriptionStateProvider()),
         ChangeNotifierProvider.value(value: CardProvider()),
         ChangeNotifierProvider.value(value: CardSubscriptionsProvider()),
+        ChangeNotifierProvider.value(value: SubscriptionImageSelection()),
         ChangeNotifierProvider(create: (context) => CardStateProvider()),
         ChangeNotifierProvider(create: (context) => MarketSelectionStateProvider()),
         ChangeNotifierProvider(create: (context) => StatsToggleSelectionStateProvider()),
