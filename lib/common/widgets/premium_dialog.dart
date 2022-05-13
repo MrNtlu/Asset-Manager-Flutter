@@ -35,7 +35,7 @@ class PremiumErrorDialog extends StatelessWidget {
             Container(
               margin: const EdgeInsets.fromLTRB(8, 16, 8, 16),
               child: Text(
-                "${_message[0].toUpperCase()}${_message.substring(1)}.",
+                _message,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: Colors.black,

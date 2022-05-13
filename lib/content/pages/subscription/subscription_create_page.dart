@@ -49,7 +49,7 @@ class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
             _state = CreateState.success;
           });
         } else {
-          if (value.error!.startsWith("free members")) {
+          if (value.error!.startsWith("Free members")) {
             showDialog(
               context: context, 
               builder: (ctx) => PremiumErrorDialog(value.error!, MediaQuery.of(context).viewPadding.top)

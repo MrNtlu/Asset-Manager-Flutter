@@ -36,6 +36,7 @@ Android: [Download Kanma on Google Play](https://play.google.com/store/apps/deta
     <li> GoogleSignIn
     <li> Signin Button
     <li> Flutter Native Splash
+    <li> Flutter SVG
 </ul>
 
 &nbsp;

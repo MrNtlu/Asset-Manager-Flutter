@@ -6,7 +6,7 @@ import 'package:asset_flutter/auth/models/responses/user.dart';
 import 'package:asset_flutter/auth/pages/register_page.dart';
 import 'package:asset_flutter/auth/widgets/auth_bottom_sheet.dart';
 import 'package:asset_flutter/common/models/state.dart';
-import 'package:asset_flutter/common/widgets/error_dialog.dart';
+import 'package:asset_flutter/common/widgets/error_snackbar.dart';
 import 'package:asset_flutter/common/widgets/expanded_divider.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/content/pages/tabs_page.dart';
@@ -276,6 +276,7 @@ class _LoginPageState extends State<LoginPage> {
                                       defaultBorder: _textFieldInputBorder(),
                                       enabledBorder: _textFieldInputBorder(),
                                       focusedBorder: _textFieldInputBorder(),
+                                      errorTextStyle: TextStyle(color: Colors.red.shade600, fontWeight: FontWeight.bold),
                                     ),
                                     PasswordTextFormField(
                                       initialText: widget._loginModel.password.trim() != '' 
@@ -303,6 +304,7 @@ class _LoginPageState extends State<LoginPage> {
                                       defaultBorder: _textFieldInputBorder(),
                                       enabledBorder: _textFieldInputBorder(),
                                       focusedBorder: _textFieldInputBorder(),
+                                      errorTextStyle: TextStyle(color: Colors.grey.shade300, fontWeight: FontWeight.bold),
                                     ),
                                     Container(
                                       margin: EdgeInsets.only(
@@ -396,10 +398,13 @@ class _LoginPageState extends State<LoginPage> {
     
     GoogleSignInApi().signOut();
     SharedPref().deleteLoginCredentials();
-
-    showDialog(
-      context: context, 
-      builder: (ctx) => ErrorDialog(error)
-    );
+    
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      duration: const Duration(seconds: 5),
+      content: ErrorSnackbar(error),
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+    ));
   }
 }

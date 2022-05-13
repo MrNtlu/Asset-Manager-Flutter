@@ -53,6 +53,7 @@ dependencies:
   desktop_window: ^0.4.0
   firebase_crashlytics: ^2.5.3
   firebase_analytics: ^9.1.2
+  flutter_svg: ^1.0.3
 
 dev_dependencies:
   flutter_test:
@@ -107,6 +108,9 @@ flutter:
     - assets/images/gold.png
     - assets/images/markets.png
     - assets/images/auth_bg.jpeg
+    - assets/icons/bubbles.svg
+    - assets/icons/close.svg
+    - assets/icons/fail.svg
     - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see

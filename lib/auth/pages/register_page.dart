@@ -4,6 +4,7 @@ import 'package:asset_flutter/auth/widgets/auth_button.dart';
 import 'package:asset_flutter/auth/widgets/auth_checkbox.dart';
 import 'package:asset_flutter/auth/widgets/auth_currency_dropdown.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
+import 'package:asset_flutter/common/widgets/error_snackbar.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/password_textformfield.dart';
 import 'package:asset_flutter/common/widgets/success_view.dart';
@@ -54,10 +55,13 @@ class _RegisterPageState extends State<RegisterPage> {
             _isLoading = false;
           });
           if (value.error != null) {
-            showDialog(
-              context: context, 
-              builder: (ctx) => ErrorDialog(value.error!)
-            );
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              duration: const Duration(seconds: 5),
+              content: ErrorSnackbar(value.error.toString()),
+              behavior: SnackBarBehavior.floating,
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+            ));
           } else {
             showDialog(
               barrierColor: Colors.black87,
