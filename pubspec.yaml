@@ -54,6 +54,7 @@ dependencies:
   firebase_crashlytics: ^2.5.3
   firebase_analytics: ^9.1.2
   flutter_svg: ^1.0.3
+  syncfusion_flutter_charts: ^20.1.55
 
 dev_dependencies:
   flutter_test:

@@ -10,6 +10,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 import 'dart:math';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class StatsLCLineChart extends StatefulWidget{
   final double _topPadding;
@@ -66,16 +67,28 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
       : assetList.reduce((value, element) => max(value, element));
   }
 
-  List<FlSpot> _lineChartMapper({bool isProfit = true}) {
+  // List<FlSpot> _lineChartMapper({bool isProfit = true}) {
+  //   final List<double> tempList = isProfit ? plList : assetList;
+  //   List<FlSpot> flSpotList = [];
+  //   for (var i = 0; i < tempList.length; i++) {
+  //     flSpotList.add(
+  //       FlSpot(i.toDouble(), double.parse(tempList[i].toStringAsFixed(2)))
+  //     );
+  //   }
+
+  //   return flSpotList;
+  // }
+
+  List<ChartData> _lineChartMapper({bool isProfit = true}) {
     final List<double> tempList = isProfit ? plList : assetList;
-    List<FlSpot> flSpotList = [];
+    final String formatType = (isProfit ? plList.length : assetList.length) <= 75 ? 'dd MM' : 'MMM yy';
+    List<ChartData> chartList = [];
     for (var i = 0; i < tempList.length; i++) {
-      flSpotList.add(
-        FlSpot(i.toDouble(), double.parse(tempList[i].toStringAsFixed(2)))
+      chartList.add(
+        ChartData(double.parse(tempList[i].toStringAsFixed(2)), DateFormat(formatType).format(dateList[i]))
       );
     }
-
-    return flSpotList;
+    return chartList;
   }
 
   void _statsSelectionListener() {
@@ -192,61 +205,98 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
           ),
         );
       case ViewState.done:
-        return LineChart(
-          LineChartData(
-            lineTouchData: LineTouchData(
-              enabled: true,
-              touchTooltipData: LineTouchTooltipData(
-                fitInsideHorizontally: true
-              )
-            ),
-            minX: 0,
-            maxX: isProfit ? (plList.length - 1) : (assetList.length - 1),
-            minY: _getLowestValue(isProfit: isProfit),
-            maxY: _getMaxValue(isProfit: isProfit),
-            titlesData: getTitleData(isProfit: isProfit),
-            gridData: FlGridData(
-              show: true,
-              getDrawingHorizontalLine: (value) {
-                return FlLine(
-                  color: const Color(0xff37434d),
-                  strokeWidth: 1,
-                );
-              },
-              drawVerticalLine: true,
-              getDrawingVerticalLine: (value) {
-                return FlLine(
-                  color: const Color(0xff37434d),
-                  strokeWidth: 1,
-                );
-              },
-            ),
-            borderData: FlBorderData(
-              show: true,
-              border: Border.all(color: const Color(0xff37434d), width: 1),
-            ),
-            lineBarsData: [
-              LineChartBarData(
-                dotData: FlDotData(show: isProfit ? plList.length <= 75 : assetList.length <= 75),
-                spots: _lineChartMapper(isProfit: isProfit),
-                curveSmoothness: 0.25,
-                isCurved: true,
-                colors: [
-                  const Color(0xff23b6e6),
-                  const Color(0xff02d39a),
-                ],
-                barWidth: 2,
-                belowBarData: BarAreaData(
-                  show: true,
-                  colors: [
-                    const Color(0xff23b6e6),
-                    const Color(0xff02d39a),
-                  ].map((color) => color.withOpacity(0.3)).toList(),
-                ),
-              ),
-            ],
+        return SfCartesianChart(
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          zoomPanBehavior: ZoomPanBehavior(
+            enablePinching: true,
+            enablePanning: true,
+            enableSelectionZooming: true,
+                  selectionRectBorderColor: Colors.red,
+                  selectionRectBorderWidth: 1,
+                  selectionRectColor: Colors.grey
           ),
+          primaryXAxis: CategoryAxis(
+            majorGridLines: const MajorGridLines(width: 0),
+            labelPlacement: LabelPlacement.onTicks,
+            interval: _statsSelectionProvider.interval == null || _statsSelectionProvider.interval == 'weekly' 
+                ? 1
+                : (_statsSelectionProvider.interval == 'monthly' ? 2: 3)
+          ),
+          primaryYAxis: NumericAxis(
+            axisLine: const AxisLine(width: 0),
+            edgeLabelPlacement: EdgeLabelPlacement.shift,
+            majorTickLines: const MajorTickLines(size: 0),
+            isVisible: false
+          ),
+          tooltipBehavior: TooltipBehavior(enable: true),
+          
+          series: [
+            SplineSeries<ChartData, String>(
+              name: isProfit ? "Profit/Loss" : "Total Assets",
+              dataSource: _lineChartMapper(isProfit: isProfit),
+              markerSettings: const MarkerSettings(isVisible: true),
+              dataLabelSettings: DataLabelSettings(isVisible: true, color: Colors.white),
+              xValueMapper: (ChartData data, _) => data._date,
+              yValueMapper: (ChartData data, _) => data._stat,
+            )
+          ],
         );
+        
+        // LineChart(
+        //   LineChartData(
+        //     lineTouchData: LineTouchData(
+        //       enabled: true,
+        //       touchTooltipData: LineTouchTooltipData(
+        //         fitInsideHorizontally: true
+        //       )
+        //     ),
+        //     minX: 0,
+        //     maxX: isProfit ? (plList.length - 1) : (assetList.length - 1),
+        //     minY: _getLowestValue(isProfit: isProfit),
+        //     maxY: _getMaxValue(isProfit: isProfit),
+        //     titlesData: getTitleData(isProfit: isProfit),
+        //     gridData: FlGridData(
+        //       show: true,
+        //       getDrawingHorizontalLine: (value) {
+        //         return FlLine(
+        //           color: const Color(0xff37434d),
+        //           strokeWidth: 1,
+        //         );
+        //       },
+        //       drawVerticalLine: true,
+        //       getDrawingVerticalLine: (value) {
+        //         return FlLine(
+        //           color: const Color(0xff37434d),
+        //           strokeWidth: 1,
+        //         );
+        //       },
+        //     ),
+        //     borderData: FlBorderData(
+        //       show: true,
+        //       border: Border.all(color: const Color(0xff37434d), width: 1),
+        //     ),
+        //     lineBarsData: [
+        //       LineChartBarData(
+        //         dotData: FlDotData(show: isProfit ? plList.length <= 75 : assetList.length <= 75),
+        //         spots: _lineChartMapper(isProfit: isProfit),
+        //         curveSmoothness: 0.25,
+        //         isCurved: true,
+        //         colors: [
+        //           const Color(0xff23b6e6),
+        //           const Color(0xff02d39a),
+        //         ],
+        //         barWidth: 2,
+        //         belowBarData: BarAreaData(
+        //           show: true,
+        //           colors: [
+        //             const Color(0xff23b6e6),
+        //             const Color(0xff02d39a),
+        //           ].map((color) => color.withOpacity(0.3)).toList(),
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        // );
       default:
         return const LoadingView("Loading", textColor: Colors.white);
     }
@@ -281,4 +331,11 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
       margin: 8,
     ),
   );
+}
+
+class ChartData {
+  final double _stat;
+  final String _date;
+
+  const ChartData(this._stat, this._date);
 }
