@@ -1,5 +1,6 @@
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
+import 'package:asset_flutter/content/pages/portfolio/portfolio_fullscreen_stats_page.dart';
 import 'package:asset_flutter/content/providers/portfolio/daily_stats.dart';
 import 'package:asset_flutter/content/providers/common/stats_toggle_state.dart';
 import 'package:asset_flutter/content/widgets/portfolio/stats_lc_premium.dart';
@@ -8,7 +9,6 @@ import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
-import 'dart:math';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -54,30 +54,6 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
       }
     });
   }
-
-  double _getLowestValue({bool isProfit = true}) {
-    return isProfit 
-      ? plList.reduce((value, element) => min(value, element))
-      : assetList.reduce((value, element) => min(value, element));
-  }
-
-  double _getMaxValue({bool isProfit = true}) {
-    return isProfit
-      ? plList.reduce((value, element) => max(value, element))
-      : assetList.reduce((value, element) => max(value, element));
-  }
-
-  // List<FlSpot> _lineChartMapper({bool isProfit = true}) {
-  //   final List<double> tempList = isProfit ? plList : assetList;
-  //   List<FlSpot> flSpotList = [];
-  //   for (var i = 0; i < tempList.length; i++) {
-  //     flSpotList.add(
-  //       FlSpot(i.toDouble(), double.parse(tempList[i].toStringAsFixed(2)))
-  //     );
-  //   }
-
-  //   return flSpotList;
-  // }
 
   List<ChartData> _lineChartMapper({bool isProfit = true}) {
     final List<double> tempList = isProfit ? plList : assetList;
@@ -130,17 +106,33 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
           color: AppColors().barCardColor,
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: _chartHeaderText("Total Assets"),
-              ),
               SizedBox(
                 height: 320,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(6, 18, 6, 4),
-                  child: _portraitBody(isProfit: false),
+                  child: _portraitBody("Total Assets", isProfit: false),
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.only(right: 16, bottom: 2),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                    ),
+                    onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+                      return PortfolioFullscreenStatsPage(_lineChartMapper(isProfit: false), "Total Assets", _dailyStatsProvider.item!.currency);
+                    })),
+                    child: const Text(
+                      "Click to view fullscreen",
+                      style: TextStyle(
+                        fontSize: 12
+                      ),
+                    )
+                  ),
+                ),
+              )
             ],
           ),
         ),
@@ -152,38 +144,41 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
           color: AppColors().barCardColor,
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: _chartHeaderText("Profit/Loss")
-              ),
               SizedBox(
                 height: 320,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(6, 18, 6, 4),
-                  child: _portraitBody(),
+                  child: _portraitBody("Profit/Loss"),
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.only(right: 16, bottom: 2),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                    ),
+                    onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+                      return PortfolioFullscreenStatsPage(_lineChartMapper(isProfit: true), "Profit/Loss", _dailyStatsProvider.item!.currency);
+                    })),
+                    child: const Text(
+                      "Click to view fullscreen",
+                      style: TextStyle(
+                        fontSize: 12
+                      ),
+                    )
+                  ),
+                ),
+              )
             ],
           ),
-        )
+        ),
       ],
     );
   }
 
-  Text _chartHeaderText(String title) => Text(
-    "$title${
-        _dailyStatsProvider.item != null && _dailyStatsProvider.item!.currency != ''
-      ? '('+_dailyStatsProvider.item!.currency+')'
-      : ''
-    }",
-    style: const TextStyle(
-      color: Colors.white,
-      fontSize: 12,
-      fontWeight: FontWeight.bold
-    )
-  );
-
-  Widget _portraitBody({bool isProfit = true}) {
+  Widget _portraitBody(String title, {bool isProfit = true}) {
     switch (_state) {
       case ViewState.loading:
         return const LoadingView("Fetcing stats", textColor: Colors.white);
@@ -206,14 +201,27 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
         );
       case ViewState.done:
         return SfCartesianChart(
-          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          title: ChartTitle(
+            text: "$title${
+                _dailyStatsProvider.item != null && _dailyStatsProvider.item!.currency != ''
+              ? '('+_dailyStatsProvider.item!.currency+')'
+              : ''
+            }",
+            alignment: ChartAlignment.near,
+            textStyle: const TextStyle(
+              color: Colors.white,
+              fontSize: 12,
+              fontWeight: FontWeight.bold
+            )
+          ),
+          margin: const EdgeInsets.symmetric(horizontal: 16),
           zoomPanBehavior: ZoomPanBehavior(
             enablePinching: true,
             enablePanning: true,
             enableSelectionZooming: true,
-                  selectionRectBorderColor: Colors.red,
-                  selectionRectBorderWidth: 1,
-                  selectionRectColor: Colors.grey
+            selectionRectBorderColor: Colors.red,
+            selectionRectBorderWidth: 1,
+            selectionRectColor: Colors.grey
           ),
           primaryXAxis: CategoryAxis(
             majorGridLines: const MajorGridLines(width: 0),
@@ -228,16 +236,16 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
             majorTickLines: const MajorTickLines(size: 0),
             isVisible: false
           ),
-          tooltipBehavior: TooltipBehavior(enable: true),
+          tooltipBehavior: TooltipBehavior(enable: true, canShowMarker: true, format: 'point.x - point.y ${_dailyStatsProvider.item!.currency}'),
           
           series: [
             SplineSeries<ChartData, String>(
               name: isProfit ? "Profit/Loss" : "Total Assets",
               dataSource: _lineChartMapper(isProfit: isProfit),
               markerSettings: const MarkerSettings(isVisible: true),
-              dataLabelSettings: DataLabelSettings(isVisible: true, color: Colors.white),
-              xValueMapper: (ChartData data, _) => data._date,
-              yValueMapper: (ChartData data, _) => data._stat,
+              dataLabelSettings: const DataLabelSettings(isVisible: true, color: Colors.white),
+              xValueMapper: (ChartData data, _) => data.date,
+              yValueMapper: (ChartData data, _) => data.stat,
             )
           ],
         );
@@ -334,8 +342,8 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
 }
 
 class ChartData {
-  final double _stat;
-  final String _date;
+  final double stat;
+  final String date;
 
-  const ChartData(this._stat, this._date);
+  const ChartData(this.stat, this.date);
 }
