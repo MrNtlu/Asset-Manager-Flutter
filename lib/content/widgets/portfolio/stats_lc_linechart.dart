@@ -57,7 +57,9 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
 
   List<ChartData> _lineChartMapper({bool isProfit = true}) {
     final List<double> tempList = isProfit ? plList : assetList;
-    final String formatType = (isProfit ? plList.length : assetList.length) <= 75 ? 'dd MM' : 'MMM yy';
+    final String formatType = (isProfit ? plList.length : assetList.length) <= 15
+      ? 'dd MMM'
+      : (isProfit ? plList.length : assetList.length) <= 45 ? 'dd MMM yy' : 'MMM yy';
     List<ChartData> chartList = [];
     for (var i = 0; i < tempList.length; i++) {
       chartList.add(
@@ -109,7 +111,7 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
               SizedBox(
                 height: 320,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(6, 18, 6, 4),
+                  padding: const EdgeInsets.fromLTRB(14, 8, 14, 2),
                   child: _portraitBody("Total Assets", isProfit: false),
                 ),
               ),
@@ -147,7 +149,7 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
               SizedBox(
                 height: 320,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(6, 18, 6, 4),
+                  padding: const EdgeInsets.fromLTRB(14, 8, 14, 2),
                   child: _portraitBody("Profit/Loss"),
                 ),
               ),
@@ -226,24 +228,27 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
           primaryXAxis: CategoryAxis(
             majorGridLines: const MajorGridLines(width: 0),
             labelPlacement: LabelPlacement.onTicks,
+            labelStyle: const TextStyle(
+              color: Colors.white
+            ),
+            labelIntersectAction: AxisLabelIntersectAction.rotate45,
             interval: _statsSelectionProvider.interval == null || _statsSelectionProvider.interval == 'weekly' 
                 ? 1
-                : (_statsSelectionProvider.interval == 'monthly' ? 2: 3)
+                : (_statsSelectionProvider.interval == 'monthly' ? 2 : 3)
           ),
           primaryYAxis: NumericAxis(
             axisLine: const AxisLine(width: 0),
             edgeLabelPlacement: EdgeLabelPlacement.shift,
             majorTickLines: const MajorTickLines(size: 0),
-            isVisible: false
+            isVisible: false,
           ),
           tooltipBehavior: TooltipBehavior(enable: true, canShowMarker: true, format: 'point.x - point.y ${_dailyStatsProvider.item!.currency}'),
-          
           series: [
             SplineSeries<ChartData, String>(
               name: isProfit ? "Profit/Loss" : "Total Assets",
+              color: AppColors().accentColor,
               dataSource: _lineChartMapper(isProfit: isProfit),
               markerSettings: const MarkerSettings(isVisible: true),
-              dataLabelSettings: const DataLabelSettings(isVisible: true, color: Colors.white),
               xValueMapper: (ChartData data, _) => data.date,
               yValueMapper: (ChartData data, _) => data.stat,
             )

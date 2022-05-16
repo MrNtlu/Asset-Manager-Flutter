@@ -1,3 +1,4 @@
+import 'package:asset_flutter/content/pages/expense/wallet_page.dart';
 import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
 import 'package:asset_flutter/content/pages/settings/settings_page.dart';
 import 'package:asset_flutter/content/pages/subscription/subscription_page.dart';
@@ -30,6 +31,7 @@ class _TabsPage extends State<TabsPage> {
   final List<Widget> _pages = [
     PortfolioPage(),
     SubscriptionPage(),
+    WalletPage(),
     SettingsPage()
   ];
 
@@ -62,6 +64,8 @@ class _TabsPage extends State<TabsPage> {
               icon: Icon(Icons.attach_money_rounded), label: "Portfolio"),
           BottomNavigationBarItem(
               icon: Icon(Icons.subscriptions_rounded), label: "Subscriptions"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.account_balance_wallet_rounded), label: "Wallet"),
           BottomNavigationBarItem(
               icon: Icon(Icons.settings_rounded), label: "Settings"),
         ],

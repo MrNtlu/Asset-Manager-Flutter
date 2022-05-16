@@ -43,6 +43,7 @@ class PortfolioFullscreenStatsPage extends StatelessWidget {
                 zoomPanBehavior: ZoomPanBehavior(
                   enablePinching: true,
                   enablePanning: true,
+                  enableDoubleTapZooming: true,
                   enableSelectionZooming: true,
                   selectionRectBorderColor: Colors.red,
                   selectionRectBorderWidth: 1,
@@ -51,12 +52,18 @@ class PortfolioFullscreenStatsPage extends StatelessWidget {
                 primaryXAxis: CategoryAxis(
                   majorGridLines: const MajorGridLines(width: 0),
                   labelPlacement: LabelPlacement.onTicks,
+                  labelStyle: const TextStyle(
+                    color: Colors.white
+                  )
                 ),
                 primaryYAxis: NumericAxis(
                   axisLine: const AxisLine(width: 0),
                   edgeLabelPlacement: EdgeLabelPlacement.shift,
                   majorTickLines: const MajorTickLines(size: 0),
                   isVisible: true,
+                  labelStyle: const TextStyle(
+                    color: Colors.white
+                  )
                 ),
                 tooltipBehavior: TooltipBehavior(
                   enable: true, 
@@ -66,6 +73,7 @@ class PortfolioFullscreenStatsPage extends StatelessWidget {
                 series: [
                   SplineSeries<ChartData, String>(
                     name: _title,
+                    color: AppColors().accentColor,
                     dataSource: _chartData,
                     markerSettings: const MarkerSettings(isVisible: true),
                     dataLabelSettings: const DataLabelSettings(isVisible: true, color: Colors.white),
