@@ -254,62 +254,6 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
             )
           ],
         );
-        
-        // LineChart(
-        //   LineChartData(
-        //     lineTouchData: LineTouchData(
-        //       enabled: true,
-        //       touchTooltipData: LineTouchTooltipData(
-        //         fitInsideHorizontally: true
-        //       )
-        //     ),
-        //     minX: 0,
-        //     maxX: isProfit ? (plList.length - 1) : (assetList.length - 1),
-        //     minY: _getLowestValue(isProfit: isProfit),
-        //     maxY: _getMaxValue(isProfit: isProfit),
-        //     titlesData: getTitleData(isProfit: isProfit),
-        //     gridData: FlGridData(
-        //       show: true,
-        //       getDrawingHorizontalLine: (value) {
-        //         return FlLine(
-        //           color: const Color(0xff37434d),
-        //           strokeWidth: 1,
-        //         );
-        //       },
-        //       drawVerticalLine: true,
-        //       getDrawingVerticalLine: (value) {
-        //         return FlLine(
-        //           color: const Color(0xff37434d),
-        //           strokeWidth: 1,
-        //         );
-        //       },
-        //     ),
-        //     borderData: FlBorderData(
-        //       show: true,
-        //       border: Border.all(color: const Color(0xff37434d), width: 1),
-        //     ),
-        //     lineBarsData: [
-        //       LineChartBarData(
-        //         dotData: FlDotData(show: isProfit ? plList.length <= 75 : assetList.length <= 75),
-        //         spots: _lineChartMapper(isProfit: isProfit),
-        //         curveSmoothness: 0.25,
-        //         isCurved: true,
-        //         colors: [
-        //           const Color(0xff23b6e6),
-        //           const Color(0xff02d39a),
-        //         ],
-        //         barWidth: 2,
-        //         belowBarData: BarAreaData(
-        //           show: true,
-        //           colors: [
-        //             const Color(0xff23b6e6),
-        //             const Color(0xff02d39a),
-        //           ].map((color) => color.withOpacity(0.3)).toList(),
-        //         ),
-        //       ),
-        //     ],
-        //   ),
-        // );
       default:
         return const LoadingView("Loading", textColor: Colors.white);
     }

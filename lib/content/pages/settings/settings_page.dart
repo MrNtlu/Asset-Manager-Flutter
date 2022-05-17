@@ -19,6 +19,7 @@ import 'package:asset_flutter/static/purchase_api.dart';
 import 'package:asset_flutter/static/routes.dart';
 import 'package:asset_flutter/static/shared_pref.dart';
 import 'package:asset_flutter/static/token.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -268,41 +269,37 @@ class _SettingsPageState extends State<SettingsPage> {
         return SettingsList(
           sections: [
             SettingsSection(
+              title: const Text('Account Info'),
               tiles: [
-                CustomSettingsTile(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _userInfoText("Email", _userInfo!.email),
-                      _userInfoText("Membership", _userInfo!.isPremium ? "Premium" : "Free"),
-                      _userInfoText("Currency", _userInfo!.currency),
-                      _userInfoText("Investment Usage", _userInfo!.investingLimit),
-                      _userInfoText("Subscription Usage", _userInfo!.subscriptionLimit),
-                      if(!_userInfo!.isPremium)
-                      TextButton(
-                        onPressed: () => showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          enableDrag: false,
-                          backgroundColor: AppColors().bgSecondary,
-                          builder: (_) => Padding(
-                            padding: EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top),
-                            child: const OffersSheet()
-                          )
-                        ), 
-                        child: const Text('See Membership Plans'),
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(50)
-                        )
-                      ),
-                      const Divider()
-                    ],
+                _userInfoText("Email", _userInfo!.email),
+                _userInfoText("Membership", _userInfo!.isPremium ? "Premium" : "Free"),
+                _userInfoText("Currency", _userInfo!.currency),
+                _userInfoText("Investment Usage", _userInfo!.investingLimit),
+                _userInfoText("Subscription Usage", _userInfo!.subscriptionLimit),
+                if(!_userInfo!.isPremium)
+                SettingsTile(
+                  title: const Text(
+                    'See Membership Plans',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: CupertinoColors.systemBlue,
+                    ),
                   ),
-                ),
+                  onPressed: (_) => showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    enableDrag: false,
+                    backgroundColor: AppColors().bgSecondary,
+                    builder: (_) => Padding(
+                      padding: EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top),
+                      child: const OffersSheet()
+                    )
+                  ),
+                )
               ]
             ),
             SettingsSection(
-              title: const Text('Account'),
+              title: const Text('Account Settings'),
               tiles: [
                 SettingsTile.navigation(
                   leading: const Icon(Icons.monetization_on_rounded),
@@ -572,23 +569,20 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   }
 
-  Widget _userInfoText(String title, String data) => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+  SettingsTile _userInfoText(String title, String data) => SettingsTile(
+    title: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(title),
-        Padding(
-          padding: const EdgeInsets.only(top: 4),
-          child: Text(
-            data,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold
-            ),
+        AutoSizeText(
+          data,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold
           ),
+          maxFontSize: 16,
+          minFontSize: 12,
         ),
       ],
-    ),
+    )
   );
 }

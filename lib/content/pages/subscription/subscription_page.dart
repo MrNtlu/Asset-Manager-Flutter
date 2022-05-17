@@ -225,7 +225,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                         padding: EdgeInsets.only(top: 8),
                         child: SubscriptionList()
                       ),
-                    Container(
+                    Align(
                       alignment: Alignment.bottomCenter,
                       child: AddElevatedButton("Add Subscription", (){
                         Navigator.of(context).push(

@@ -208,7 +208,7 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
           children: [
             InvestmentDetailsLogList(_appBar.preferredSize.height, _assetProvider.asset!),
             InvestmentDetailsTopBar(_assetProvider.asset!, widget.image),
-            Container(
+            Align(
               alignment: Alignment.bottomCenter,
               child: AddElevatedButton(('Add ' + widget._data.toAsset), () {
                 showModalBottomSheet(

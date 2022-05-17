@@ -38,6 +38,8 @@ Android: [Download Kanma on Google Play](https://play.google.com/store/apps/deta
     <li> Flutter Native Splash
     <li> Flutter SVG
     <li> Syncfusion Flutter Charts
+    <li> TableCalendar
+    <li> Firebase Crashlytics/Analytics
 </ul>
 
 &nbsp;
