@@ -100,8 +100,8 @@ class PortfolioInvestmentListCell extends StatelessWidget {
             margin: const EdgeInsets.only(left: 2),
             child: AutoSizeText(
               data.pl.abs() <= 0.01
-              ? '' : (data.pl < 0 ? '+' : '-') +
-              "${data.plPercentage.abs().toStringAsFixed(1)}%", 
+              ? '${data.pl.abs().toStringAsFixed(1)}%' 
+              : (data.pl < 0 ? '+' : '-') + "${data.plPercentage.abs().toStringAsFixed(1)}%", 
               style: const TextStyle(
                 color: Colors.white,
               ),
