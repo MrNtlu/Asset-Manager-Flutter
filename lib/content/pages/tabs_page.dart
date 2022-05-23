@@ -1,4 +1,4 @@
-import 'package:asset_flutter/content/pages/expense/wallet_page.dart';
+import 'package:asset_flutter/content/pages/wallet/wallet_page.dart';
 import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
 import 'package:asset_flutter/content/pages/settings/settings_page.dart';
 import 'package:asset_flutter/content/pages/subscription/subscription_page.dart';

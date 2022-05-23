@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:asset_flutter/common/models/response.dart';
 import 'package:asset_flutter/content/models/requests/asset.dart';
 import 'package:asset_flutter/content/models/responses/asset.dart';

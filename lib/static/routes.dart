@@ -6,7 +6,9 @@ class APIRoutes {
 
   late final AssetRoutes assetRoutes;
   late final SubscriptionRoutes subscriptionRoutes;
+  late final TransactionRoutes transactionRoutes;
   late final CardRoutes cardRoutes;
+  late final BankAccountRoutes bankAccRoutes;
   late final AuthRoutes authRoutes;
   late final OAuthRoutes oauthRoutes;
   late final UserRoutes userRoutes;
@@ -16,7 +18,9 @@ class APIRoutes {
   APIRoutes._privateConstructor() {
     assetRoutes = AssetRoutes(baseURL: baseURL);
     subscriptionRoutes = SubscriptionRoutes(baseURL: baseURL);
+    transactionRoutes = TransactionRoutes(baseURL: baseURL);
     cardRoutes = CardRoutes(baseURL: baseURL);
+    bankAccRoutes = BankAccountRoutes(baseURL: baseURL);
     authRoutes = AuthRoutes(baseURL: baseURL);
     oauthRoutes = OAuthRoutes(baseURL: baseURL);
     userRoutes = UserRoutes(baseURL: baseURL);
@@ -174,6 +178,34 @@ class SubscriptionRoutes {
   }
 }
 
+class TransactionRoutes {
+  late final String _baseTransactionURL;
+
+  late final String transactionStats;
+  late final String totalTransactionByInterval;
+  late final String calendarTransactionCount;
+  late final String transactionByUserIDAndFilterSort;
+
+  late final String updateTransaction;
+  late final String createTransaction;
+  late final String deleteTransactionByTransactionID;
+  late final String deleteAllTransactionsByUserID;
+
+  TransactionRoutes({baseURL}) {
+    _baseTransactionURL = baseURL + "/transaction";
+
+    transactionStats = _baseTransactionURL + "/stats";
+    totalTransactionByInterval = _baseTransactionURL + "/total";
+    calendarTransactionCount = _baseTransactionURL + "/calendar";
+    transactionByUserIDAndFilterSort = _baseTransactionURL;
+
+    updateTransaction = _baseTransactionURL;
+    createTransaction = _baseTransactionURL;
+    deleteTransactionByTransactionID = _baseTransactionURL;
+    deleteAllTransactionsByUserID = _baseTransactionURL + "/all";
+  }
+}
+
 class CardRoutes {
   late final String _baseCardURL;
   
@@ -195,5 +227,29 @@ class CardRoutes {
     updateCard = _baseCardURL;
     deleteCardByCardID = _baseCardURL;
     deleteCardsByUserID = _baseCardURL + '/all';
+  }
+}
+
+class BankAccountRoutes {
+  late final String _baseBankAccountURL;
+  
+  late final String bankAccsByUserID;
+  late final String bankAccStatsByUserID;
+  late final String createBankAcc;
+  late final String updateBankAcc;
+
+  late final String deleteBankAccByBankAccID;
+  late final String deleteBankAccsByUserID;
+
+  BankAccountRoutes({baseURL}) {
+    _baseBankAccountURL = baseURL + '/ba';
+
+    bankAccStatsByUserID = _baseBankAccountURL + '/stats';
+
+    bankAccsByUserID = _baseBankAccountURL;
+    createBankAcc = _baseBankAccountURL;
+    updateBankAcc = _baseBankAccountURL;
+    deleteBankAccByBankAccID = _baseBankAccountURL;
+    deleteBankAccsByUserID = _baseBankAccountURL + '/all';
   }
 }

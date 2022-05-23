@@ -2,12 +2,15 @@ import 'package:asset_flutter/content/models/responses/asset.dart';
 import 'package:asset_flutter/content/models/responses/card.dart';
 import 'package:asset_flutter/content/models/responses/investings.dart';
 import 'package:asset_flutter/content/models/responses/subscription.dart';
+import 'package:asset_flutter/content/models/responses/transaction.dart';
 import 'package:asset_flutter/content/models/responses/user.dart';
 import 'package:asset_flutter/content/providers/asset.dart';
 import 'package:asset_flutter/content/providers/market/prices.dart';
 import 'package:asset_flutter/content/providers/portfolio/daily_stats.dart';
 import 'package:asset_flutter/content/providers/subscription/card.dart';
 import 'package:asset_flutter/content/providers/subscription/subscription.dart';
+import 'package:asset_flutter/content/providers/wallet/transaction.dart';
+import 'package:asset_flutter/content/providers/wallet/transaction_calendar.dart';
 
 class BaseAPIResponse {
   final String? error;
@@ -214,7 +217,28 @@ class _TypeConverter<T> {
         response["color"],
         response["card_id"]
       ) as T;
-    } else if (T == SubscriptionDetails) {
+    } else if (T == Transaction) {
+      return Transaction(
+        response["_id"], 
+        response["title"],
+        response["description"],
+        response["category"],
+        response["price"],
+        response["currency"],
+        DateTime.parse(response["transaction_date"]),
+        response["method"] != null
+        ? TransactionMethod(
+          methodID: response["method"]["method_id"],
+          type: response["method"]["type"],
+        )
+        : null,
+      ) as T;
+    } else if (T == TransactionCalendarCount) {
+      return TransactionCalendarCount(
+        DateTime.parse(response["_id"]), 
+        response["count"]
+      ) as T;
+    }  else if (T == SubscriptionDetails) {
       return SubscriptionDetails(
         response["monthly_payment"], 
         response["total_payment"]
