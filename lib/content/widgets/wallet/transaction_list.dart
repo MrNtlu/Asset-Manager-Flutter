@@ -4,8 +4,10 @@ import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
 import 'package:asset_flutter/content/models/requests/transaction.dart';
 import 'package:asset_flutter/content/providers/wallet/transactions.dart';
+import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class TransactionList extends StatefulWidget {
   const TransactionList({Key? key}) : super(key: key);
@@ -107,6 +109,17 @@ class _TransactionListState extends State<TransactionList> {
 
             final data = _data[index];
             //TODO: Test pagination, change design
+
+            if (index == 0 || (index != 0 && !isSameDay(data.transactionDate, _data[index - 1].transactionDate))){
+              return Column(
+                children: [
+                  Text(data.transactionDate.dateToFormatDate()),
+                  ListTile(
+                    title: Text(data.title),
+                  )
+                ],
+              );
+            } 
             return ListTile(
               title: Text(data.title),
             );

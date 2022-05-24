@@ -160,11 +160,14 @@ class _PortfolioPageState extends State<PortfolioPage> {
             child: Stack(
               children: [
                 _state == ListState.empty
-                  ? Column(
-                    children: const[
-                      SectionTitle("Investments", ""),
-                      NoItemView("Couldn't find investment.")
-                    ])
+                  ? SingleChildScrollView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    child: Column(
+                      children: const[
+                        SectionTitle("Investments", ""),
+                        NoItemView("Couldn't find investment.")
+                      ]),
+                  )
                   : SizedBox(
                     child: Column(
                       children: [
