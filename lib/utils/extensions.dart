@@ -91,6 +91,16 @@ extension DateTimeExt on DateTime {
     return formatter.format(this);
   }
 
+  String dateToHumanDate() {
+    final DateFormat formatter = DateFormat('dd MMM yy');
+    return formatter.format(this);
+  }
+
+  String dateToDateTime() {
+    final DateFormat formatter = DateFormat("dd MM yyyy hh:mm");
+    return formatter.format(this);
+  }
+
   String dateToJSONFormat(){
     final DateFormat formatter = DateFormat("yyyy-MM-dd'T'hh:mm:ss'Z'");
     return formatter.format(this);

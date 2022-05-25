@@ -4,6 +4,7 @@ import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
 import 'package:asset_flutter/content/models/requests/transaction.dart';
 import 'package:asset_flutter/content/providers/wallet/transactions.dart';
+import 'package:asset_flutter/content/widgets/wallet/tl_cell.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -106,23 +107,29 @@ class _TransactionListState extends State<TransactionList> {
             } else if (index == _data.length + ((_canPaginate || _isPaginating) ? 1 : 0)) {
               return const SizedBox(height: 75);
             }
-
-            final data = _data[index];
+            
             //TODO: Test pagination, change design
-
+            final data = _data[index];
             if (index == 0 || (index != 0 && !isSameDay(data.transactionDate, _data[index - 1].transactionDate))){
               return Column(
                 children: [
-                  Text(data.transactionDate.dateToFormatDate()),
-                  ListTile(
-                    title: Text(data.title),
-                  )
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Text(
+                      data.transactionDate.dateToHumanDate(),
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black
+                      ),
+                    ),
+                  ),
+                  Divider(),
+                  TransactionListCell(data)
                 ],
               );
-            } 
-            return ListTile(
-              title: Text(data.title),
-            );
+            }
+            return TransactionListCell(data);
           },
           separatorBuilder: (_, __) => const Divider(),
           itemCount:_data.length + (_canPaginate ? 2 : 1),

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/add_elevated_button.dart';
+import 'package:asset_flutter/content/widgets/portfolio/section_title.dart';
 import 'package:asset_flutter/content/widgets/wallet/transaction_calendar.dart';
 import 'package:asset_flutter/content/widgets/wallet/transaction_list.dart';
 import 'package:asset_flutter/static/colors.dart';
@@ -93,7 +94,7 @@ class _WalletPageState extends State<WalletPage> {
                 "List", 
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 18, color: isSelected[0] ? Colors.black : Colors.grey.shade400
+                  fontSize: 20, color: isSelected[0] ? Colors.black : Colors.grey.shade400
                 )
               )
             ),
@@ -103,7 +104,7 @@ class _WalletPageState extends State<WalletPage> {
                 "Calendar", 
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 18, color: isSelected[1] ? Colors.black : Colors.grey.shade400
+                  fontSize: 20, color: isSelected[1] ? Colors.black : Colors.grey.shade400
                 )
               )
             ),
@@ -122,6 +123,8 @@ class _WalletPageState extends State<WalletPage> {
       ),
       if (isSelected[1])
       const TransactionCalendar(),
+      if (isSelected[0])
+      SectionTitle('Transactions', ''),
       if (isSelected[0])
       Expanded(
         child: Container(
