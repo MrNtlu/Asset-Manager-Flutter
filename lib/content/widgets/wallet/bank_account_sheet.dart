@@ -1,47 +1,48 @@
 import 'dart:io';
+
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
-import 'package:asset_flutter/content/providers/subscription/card.dart';
-import 'package:asset_flutter/content/providers/subscription/card_sheet_state.dart';
-import 'package:asset_flutter/content/providers/subscription/cards.dart';
+import 'package:asset_flutter/content/providers/wallet/bank_account.dart';
+import 'package:asset_flutter/content/providers/wallet/bank_account_selection_state.dart';
+import 'package:asset_flutter/content/providers/wallet/bank_accounts.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-// ignore_for_file: must_be_immutable
-class CardSelectionSheet extends StatefulWidget {
-  CreditCard? selectedCard;
+// ignore: must_be_immutable
+class BankAccountSelectionSheet extends StatefulWidget {
+  BankAccount? selectedBankAcc;
 
-  CardSelectionSheet(this.selectedCard, {Key? key}) : super(key: key);
+  BankAccountSelectionSheet(this.selectedBankAcc, {Key? key}) : super(key: key);
 
   @override
-  State<CardSelectionSheet> createState() => _CardSelectionSheetState();
+  State<BankAccountSelectionSheet> createState() => _BankAccountSelectionSheetState();
 }
 
-class _CardSelectionSheetState extends State<CardSelectionSheet> {
+class _BankAccountSelectionSheetState extends State<BankAccountSelectionSheet> {
   ListState _state = ListState.init;
   String? _error;
   late final List<bool> _selectionList = [];
   late bool isPortraitOrDesktop;
-  late final CardProvider _cardProvider;
-  late final CardSheetSelectionStateProvider _cardSelectionProvider;
+  late final BankAccountProvider _bankAccountProvider;
+  late final BankAccountSelectionStateProvider _bankAccSelectionProvider;
 
-  void _getCreditCards(){
+  void _getBankAccounts(){
     setState(() {
       _state = ListState.loading;
     });
     
-    _cardProvider.getCreditCards().then((response){
+    _bankAccountProvider.getBankAccounts().then((response){
       _error = response.error;
       if (_state != ListState.disposed) {
         final _data = response.data;
         for (var i = 0; i < _data.length; i++) {
           _selectionList.insert(
             i,
-            (widget.selectedCard != null && _data[i].id == widget.selectedCard!.id)
+            (widget.selectedBankAcc != null && _data[i].id == widget.selectedBankAcc!.id)
             ? true 
             : false
           );
@@ -63,16 +64,16 @@ class _CardSelectionSheetState extends State<CardSelectionSheet> {
   @override
   void dispose() {
     _state = ListState.disposed;
-    _cardSelectionProvider.onDisposed();
+    _bankAccSelectionProvider.onDisposed();
     super.dispose();
   }
 
   @override
   void didChangeDependencies() {
     if (_state == ListState.init) {
-      _cardProvider = Provider.of<CardProvider>(context);
-      _cardSelectionProvider = Provider.of<CardSheetSelectionStateProvider>(context, listen: false);
-      _getCreditCards();
+      _bankAccountProvider = Provider.of<BankAccountProvider>(context);
+      _bankAccSelectionProvider = Provider.of<BankAccountSelectionStateProvider>(context, listen: false);
+      _getBankAccounts();
     }
     super.didChangeDependencies();
   }
@@ -103,13 +104,13 @@ class _CardSelectionSheetState extends State<CardSelectionSheet> {
             Expanded(
               child: ListView.separated(
                 itemBuilder: ((context, index) {
-                  final data = _cardProvider.items[index];
+                  final data = _bankAccountProvider.items[index];
                   final currencySelection = _selectionList[index];
             
                   return ListTile(
                     onTap: () => handleSelection(index),
                     title: Text(
-                      "${data.name} ${data.lastDigits}",
+                      "${data.iban} ${data.name}",
                       style: currencySelection 
                       ? const TextStyle(
                         fontSize: 18,
@@ -123,7 +124,7 @@ class _CardSelectionSheetState extends State<CardSelectionSheet> {
                 }),
                 separatorBuilder: (_, __) => const Divider(), 
                 shrinkWrap: true,
-                itemCount: _cardProvider.items.length,
+                itemCount: _bankAccountProvider.items.length,
               ),
             ),
             Row(
@@ -147,9 +148,9 @@ class _CardSelectionSheetState extends State<CardSelectionSheet> {
                 ? CupertinoButton.filled(
                   child: const Text('Apply'), 
                   onPressed: () {
-                    _cardSelectionProvider.cardSelectionChanged(
+                    _bankAccSelectionProvider.cardSelectionChanged(
                       _selectionList.contains(true)
-                      ? _cardProvider.items[_selectionList.indexOf(true)]
+                      ? _bankAccountProvider.items[_selectionList.indexOf(true)]
                       : null
                     );
                     Navigator.pop(context);
@@ -160,9 +161,9 @@ class _CardSelectionSheetState extends State<CardSelectionSheet> {
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: ElevatedButton(
                       onPressed: () {
-                        _cardSelectionProvider.cardSelectionChanged(
+                        _bankAccSelectionProvider.cardSelectionChanged(
                           _selectionList.contains(true)
-                          ? _cardProvider.items[_selectionList.indexOf(true)]
+                          ? _bankAccountProvider.items[_selectionList.indexOf(true)]
                           : null
                         );
                         Navigator.pop(context);
@@ -181,7 +182,7 @@ class _CardSelectionSheetState extends State<CardSelectionSheet> {
         );
       case ListState.error:
         return SingleChildScrollView(
-          child: ErrorView(_error ?? "Unknown error!", _getCreditCards),
+          child: ErrorView(_error ?? "Unknown error!", _getBankAccounts),
         );
       case ListState.loading:
         return const LoadingView("Fetching credit cards");
@@ -204,7 +205,7 @@ class _CardSelectionSheetState extends State<CardSelectionSheet> {
       }
 
       setState(() {
-        widget.selectedCard = _cardProvider.items[index];
+        widget.selectedBankAcc = _bankAccountProvider.items[index];
         _selectionList[index] = true;
       });
     }

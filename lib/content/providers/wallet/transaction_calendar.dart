@@ -1,5 +1,4 @@
 import 'package:asset_flutter/common/models/response.dart';
-import 'package:asset_flutter/content/providers/common/base_pagination_provider.dart';
 import 'package:asset_flutter/content/providers/common/base_provider.dart';
 import 'package:asset_flutter/static/routes.dart';
 

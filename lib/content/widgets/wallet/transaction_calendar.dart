@@ -53,9 +53,8 @@ class _TransactionCalendarState extends State<TransactionCalendar> {
       focusedDay: _focusedDay,
       availableGestures: AvailableGestures.horizontalSwipe,
       calendarFormat: CalendarFormat.month,
-      onDaySelected: (selectedDay, focusedDay) {
+      onDaySelected: (selectedDay, _) {
         print(selectedDay);
-        print(focusedDay);
       },
       availableCalendarFormats: const {
         CalendarFormat.month: 'Month',

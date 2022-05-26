@@ -5,9 +5,11 @@ class CardSheetSelectionStateProvider with ChangeNotifier {
   CreditCard? selectedCard;
 
   void cardSelectionChanged(CreditCard? creditCard) {
-    if (creditCard != selectedCard) {
+    if (creditCard != selectedCard || (creditCard == null && selectedCard == null)) {
       selectedCard = creditCard;
       notifyListeners();
     }
   }
+
+  void onDisposed() => selectedCard = null;
 }

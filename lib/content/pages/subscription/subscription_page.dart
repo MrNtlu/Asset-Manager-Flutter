@@ -5,7 +5,6 @@ import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
 import 'package:asset_flutter/common/widgets/sort_sheet.dart';
-import 'package:asset_flutter/content/pages/subscription/card_page.dart';
 import 'package:asset_flutter/content/pages/subscription/subscription_create_page.dart';
 import 'package:asset_flutter/content/providers/common/stats_sheet_state.dart';
 import 'package:asset_flutter/content/providers/subscription/cards.dart';
@@ -135,13 +134,6 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
         ),
         icon: const Icon(Icons.bar_chart_rounded, color: Colors.black),
         tooltip: 'Statistics',
-      ),
-      IconButton(
-        icon: const Icon(Icons.credit_card_rounded, color: Colors.black),
-        tooltip: 'Credit Cards',
-        onPressed: () => Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => const CardPage()) 
-        ),
       ),
       IconButton(
         icon: const Icon(Icons.filter_alt_rounded, color: Colors.black),

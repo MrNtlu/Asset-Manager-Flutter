@@ -1,8 +1,9 @@
 import 'dart:io';
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/add_elevated_button.dart';
-import 'package:asset_flutter/content/widgets/portfolio/section_title.dart';
+import 'package:asset_flutter/content/pages/subscription/card_page.dart';
 import 'package:asset_flutter/content/widgets/wallet/transaction_calendar.dart';
+import 'package:asset_flutter/content/widgets/wallet/transaction_filter_sheet.dart';
 import 'package:asset_flutter/content/widgets/wallet/transaction_list.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/cupertino.dart';
@@ -70,7 +71,7 @@ class _WalletPageState extends State<WalletPage> {
     children: [
       SizedBox(
         width: MediaQuery.of(context).size.width,
-        height: 150,
+        height: 125,
         child: PageView(
           controller: controller,
           scrollDirection: Axis.horizontal,
@@ -124,11 +125,10 @@ class _WalletPageState extends State<WalletPage> {
       if (isSelected[1])
       const TransactionCalendar(),
       if (isSelected[0])
-      SectionTitle('Transactions', ''),
-      if (isSelected[0])
       Expanded(
         child: Container(
           color: Colors.white,
+          margin: const EdgeInsets.only(top: 6),
           child: Stack(
             children: [
               const TransactionList(),
@@ -149,9 +149,10 @@ class _WalletPageState extends State<WalletPage> {
                         child: Platform.isIOS || Platform.isMacOS
                         ? CupertinoButton.filled(
                           child: const Icon(Icons.filter_alt_rounded, color: Colors.white),
-                          onPressed: () {
-
-                          },
+                          onPressed: () => showModalBottomSheet(
+                            context: context, 
+                            builder: (_) => const TransactionFilterSheet()
+                          ),
                           padding: const EdgeInsets.all(12)
                         )
                         : ElevatedButton(
@@ -194,46 +195,60 @@ class _WalletPageState extends State<WalletPage> {
 
   Widget _pageItem(int index) => Padding(
     padding: const EdgeInsets.all(8),
-    child: Stack(
-      fit: StackFit.expand,
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(12)),
-            color: AppColors().primaryColor,
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.black38,
-                offset: Offset(2.0, 2.0),
-                blurRadius: 5.0,
-                spreadRadius: 1.0
-              )
-            ]
+    child: InkWell(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: ((_) {
+            switch (index) {
+              case 0:
+                return const CardPage();
+              default:
+                return const CardPage();
+            }
+          }))
+        );
+      },
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(12)),
+              color: AppColors().primaryColor,
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black38,
+                  offset: Offset(2.0, 2.0),
+                  blurRadius: 5.0,
+                  spreadRadius: 1.0
+                )
+              ]
+            ),
           ),
-        ),
-        Positioned(
-          top: 8,
-          right: 8,
-          child: Icon(bannerIcons[index], size: 36, color: Colors.white)
-        ),
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                bannerMainTexts[index],
-                style: const TextStyle(fontSize: 26.0, color: Colors.white),
-              ),
-              Text(
-                bannerSubTexts[index],
-                style: const TextStyle(fontSize: 14.0, color: Colors.white),
-              )
-            ],
+          Positioned(
+            top: 8,
+            right: 8,
+            child: Icon(bannerIcons[index], size: 36, color: Colors.white)
           ),
-        )
-      ],
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  bannerMainTexts[index],
+                  style: const TextStyle(fontSize: 26.0, color: Colors.white),
+                ),
+                Text(
+                  bannerSubTexts[index],
+                  style: const TextStyle(fontSize: 14.0, color: Colors.white),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
     ),
   );
 }

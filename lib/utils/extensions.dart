@@ -97,7 +97,7 @@ extension DateTimeExt on DateTime {
   }
 
   String dateToDateTime() {
-    final DateFormat formatter = DateFormat("dd MM yyyy hh:mm");
+    final DateFormat formatter = DateFormat("dd MMM hh:mm");
     return formatter.format(this);
   }
 

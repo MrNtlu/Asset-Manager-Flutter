@@ -13,6 +13,7 @@ class BaseProvider<T> with ChangeNotifier {
   @protected
   Future<BaseListResponse<T>> getList<R>({required String url}) async {
     try {
+      pitems.clear();
       final response = await http.get(
         Uri.parse(url),
         headers: UserToken().getBearerToken()

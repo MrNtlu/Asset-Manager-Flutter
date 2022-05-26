@@ -9,6 +9,7 @@ import 'package:asset_flutter/content/providers/market/prices.dart';
 import 'package:asset_flutter/content/providers/portfolio/daily_stats.dart';
 import 'package:asset_flutter/content/providers/subscription/card.dart';
 import 'package:asset_flutter/content/providers/subscription/subscription.dart';
+import 'package:asset_flutter/content/providers/wallet/bank_account.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_calendar.dart';
 
@@ -291,6 +292,14 @@ class _TypeConverter<T> {
         response["card_holder"],
         response["color"],
         response["type"],
+        response["currency"]
+      ) as T;
+    } else if (T == BankAccount) {
+      return BankAccount(
+        response["_id"],
+        response["name"],
+        response["iban"],
+        response["account_holder"],
         response["currency"]
       ) as T;
     } else if (T == CardStats) {
