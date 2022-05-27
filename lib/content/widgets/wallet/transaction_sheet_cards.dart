@@ -18,12 +18,24 @@ class TransactionSheetCreditCards extends StatefulWidget {
 }
 
 class _TransactionSheetCreditCardsState extends State<TransactionSheetCreditCards> {
+  bool isInit = false;
+
+  @override
+  void dispose() {
+    isInit = false;
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final bool isApple = Platform.isIOS || Platform.isMacOS;
 
     return Consumer<CardSheetSelectionStateProvider>(builder: (context, selection, _) {
-      widget.selectedCard = selection.selectedCard;
+      if (isInit) {
+        widget.selectedCard = selection.selectedCard;
+      } else {
+        isInit = true;
+      }
       return isApple
       ? CupertinoButton(
         child: _buttonText(),

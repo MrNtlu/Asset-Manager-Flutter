@@ -2,12 +2,15 @@ import 'dart:io';
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/add_elevated_button.dart';
 import 'package:asset_flutter/content/pages/subscription/card_page.dart';
+import 'package:asset_flutter/content/providers/wallet/transaction_date_state.dart';
+import 'package:asset_flutter/content/providers/wallet/transaction_sheet_state.dart';
 import 'package:asset_flutter/content/widgets/wallet/transaction_calendar.dart';
 import 'package:asset_flutter/content/widgets/wallet/transaction_filter_sheet.dart';
 import 'package:asset_flutter/content/widgets/wallet/transaction_list.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class WalletPage extends StatefulWidget {
   const WalletPage({Key? key}) : super(key: key);
@@ -19,6 +22,8 @@ class WalletPage extends StatefulWidget {
 class _WalletPageState extends State<WalletPage> {
   BaseState _state = BaseState.init;
   final List<bool> isSelected = [true, false];
+  late final TransactionSheetSelectionStateProvider _provider;
+  late final TransactionDateRangeSelectionStateProvider _dateSelectionProvider;
 
   final bannerMainTexts = [
     "Credit Cards",
@@ -37,9 +42,18 @@ class _WalletPageState extends State<WalletPage> {
     Icons.bar_chart_rounded,
     Icons.account_balance_rounded
   ];
+
+  void onDateRangeSelectionListener() {
+    setState(() {
+      isSelected[0] = true;
+      isSelected[1] = false;
+    });
+  }
   
   @override
   void dispose() {
+    _provider.resetSelection(shouldNotify: false);
+    _dateSelectionProvider.removeListener(onDateRangeSelectionListener);
     _state = BaseState.disposed;
     super.dispose();
   }
@@ -47,7 +61,10 @@ class _WalletPageState extends State<WalletPage> {
   @override
   void didChangeDependencies() {
     if (_state == BaseState.init) {
-      
+      _provider = Provider.of<TransactionSheetSelectionStateProvider>(context, listen: false);
+      _dateSelectionProvider = Provider.of<TransactionDateRangeSelectionStateProvider>(context);
+      _dateSelectionProvider.addListener(onDateRangeSelectionListener);
+      _state = BaseState.loading;
     }
     super.didChangeDependencies();
   }

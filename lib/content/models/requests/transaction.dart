@@ -63,16 +63,16 @@ class TransactionUpdate implements JSONConverter {
 }
 
 class TransactionSortFilter {
-  final String? category;
-  final DateTime? startDate;
-  final DateTime? endDate;
-  final String? bankAccID;
-  final String? cardID;
-  final int page;
-  final String sort;
-  final int sortType;
+  String? category;
+  DateTime? startDate;
+  DateTime? endDate;
+  String? bankAccID;
+  String? cardID;
+  int page;
+  String sort;
+  int sortType;
 
-  const TransactionSortFilter(this.page, this.sort, this.sortType, {
+  TransactionSortFilter(this.page, this.sort, this.sortType, {
     this.category,
     this.startDate,
     this.endDate,

@@ -31,7 +31,7 @@ class _TabsPage extends State<TabsPage> {
   final List<Widget> _pages = [
     PortfolioPage(),
     SubscriptionPage(),
-    WalletPage(),
+    const WalletPage(),
     SettingsPage()
   ];
 

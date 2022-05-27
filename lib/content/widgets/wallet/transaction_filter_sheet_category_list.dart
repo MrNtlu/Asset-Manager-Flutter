@@ -32,9 +32,12 @@ class _TransactionFilterSheetCategoryListState extends State<TransactionFilterSh
               });
             },
             child: Card(
-              elevation: 3,
+              elevation: 2,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8)
+                borderRadius: BorderRadius.circular(8),
+                side: BorderSide(
+                  color: Category.values[index].iconColor
+                )
               ),
               color: isSelected ? Category.values[index].iconColor : Colors.white,
               child: Padding(

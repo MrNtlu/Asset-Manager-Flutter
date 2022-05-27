@@ -1,5 +1,10 @@
+import 'dart:io';
+
 import 'package:asset_flutter/common/models/state.dart';
+import 'package:asset_flutter/common/widgets/check_dialog.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_calendar.dart';
+import 'package:asset_flutter/content/providers/wallet/transaction_date_state.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +22,8 @@ class _TransactionCalendarState extends State<TransactionCalendar> {
   late final TransactionCalendarCountsProvider _provider;
   DateTime _focusedDay = DateTime.now();
   DateTime _viewedMonth = DateTime.now();
+  DateTime? _rangeStartDate;
+  DateTime? _rangeEndDate;
 
   void _getTransactionCalendarCounts() {
     _provider.getTransactionCalendarCounts(_viewedMonth).then((response) {
@@ -45,6 +52,8 @@ class _TransactionCalendarState extends State<TransactionCalendar> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isApple = Platform.isIOS || Platform.isMacOS;
+
     return TableCalendar(
       firstDay: DateTime(2021, 5, 1),
       currentDay: _viewedMonth,
@@ -53,9 +62,38 @@ class _TransactionCalendarState extends State<TransactionCalendar> {
       focusedDay: _focusedDay,
       availableGestures: AvailableGestures.horizontalSwipe,
       calendarFormat: CalendarFormat.month,
-      onDaySelected: (selectedDay, _) {
-        print(selectedDay);
+      rangeSelectionMode: RangeSelectionMode.enforced,
+      onRangeSelected: (fDate, sDate, _) {
+        setState(() {
+          _rangeStartDate = fDate;
+          _rangeEndDate = sDate;
+        });
+        if (_rangeStartDate != null && _rangeEndDate != null) {
+          isApple
+          ? showCupertinoDialog(
+            context: context, 
+            builder: (dialogContext) => AreYouSureDialog("confirm date selections", (){
+              Navigator.pop(dialogContext);
+              Provider.of<TransactionDateRangeSelectionStateProvider>(context, listen: false).selectionChanged(
+                _rangeStartDate!,
+                _rangeEndDate!
+              );
+            })
+          )
+          : showDialog(
+            context: context, 
+            builder: (dialogContext) => AreYouSureDialog("confirm date selections", (){
+              Navigator.pop(dialogContext);
+              Provider.of<TransactionDateRangeSelectionStateProvider>(context, listen: false).selectionChanged(
+                _rangeStartDate!,
+                _rangeEndDate!
+              );
+            })
+          );
+        }
       },
+      rangeStartDay: _rangeStartDate,
+      rangeEndDay: _rangeEndDate,
       availableCalendarFormats: const {
         CalendarFormat.month: 'Month',
       },
@@ -134,6 +172,7 @@ class _TransactionCalendarState extends State<TransactionCalendar> {
           shape: BoxShape.rectangle,
           borderRadius: BorderRadius.circular(6),
         ),
+        rangeHighlightColor: AppColors().bgAccent,
         selectedTextStyle: const TextStyle(color: Colors.white),
         defaultTextStyle: const TextStyle(color: Colors.black),
         weekendTextStyle: const TextStyle(color: Colors.black),
@@ -143,6 +182,7 @@ class _TransactionCalendarState extends State<TransactionCalendar> {
           shape: BoxShape.rectangle,
           borderRadius: BorderRadius.circular(6),
         ),
+        withinRangeTextStyle: const TextStyle(color: Colors.white),
         markerDecoration: BoxDecoration(
           shape: BoxShape.rectangle,
           borderRadius: BorderRadius.circular(6),
@@ -160,10 +200,12 @@ class _TransactionCalendarState extends State<TransactionCalendar> {
           borderRadius: BorderRadius.circular(6),
         ),
         rangeEndDecoration: BoxDecoration(
+          color: AppColors().bgAccent,
           shape: BoxShape.rectangle,
           borderRadius: BorderRadius.circular(6),
         ),
         rangeStartDecoration: BoxDecoration(
+          color: AppColors().bgAccent,
           shape: BoxShape.rectangle,
           borderRadius: BorderRadius.circular(6),
         ),

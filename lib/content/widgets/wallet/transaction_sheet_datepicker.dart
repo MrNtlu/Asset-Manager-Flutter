@@ -35,6 +35,7 @@ class _TransactionSheetDateRangePickerState extends State<TransactionSheetDateRa
       context: context, 
       firstDate: DateTime(2021, 5, 1), 
       lastDate: DateTime.now(),
+      initialDateRange: widget.dateTimeRange
     );
 
     setState(() {

@@ -4,11 +4,16 @@ import 'package:flutter/material.dart';
 class SortList extends StatefulWidget {
   final List<String> sortList;
   late final List<bool> selectionList;
+  final double fontSize;
 
-  SortList(this.sortList, {
-    Key? key,
-    int selectedIndex = 0,
-  }) : super(key: key) {
+  SortList(
+    this.sortList, 
+    {
+      Key? key,
+      int selectedIndex = 0,
+      this.fontSize = 18,
+    }
+  ) : super(key: key) {
     selectionList = [];
     for (var i = 0; i < sortList.length; i++) {
       selectionList.insert(i, selectedIndex == i ? true : false);
@@ -29,7 +34,7 @@ class _SortListState extends State<SortList> {
         final sort = widget.sortList[index];
         final sortSelection = widget.selectionList[index];
 
-        return SortListCell(sort, sortSelection, index, handleSelection);
+        return SortListCell(sort, sortSelection, index, handleSelection, widget.fontSize);
       }),
       itemCount: widget.sortList.length,
       shrinkWrap: true,

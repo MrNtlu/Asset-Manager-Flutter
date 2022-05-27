@@ -20,8 +20,8 @@ class TransactionsProvider extends BasePaginationProvider<Transaction> {
     String apiQuery = (
       "page=${sortFilter.page}&sort=${sortFilter.sort}&type=${sortFilter.sortType}" +
       (sortFilter.category != null ? "&category=${sortFilter.category}" : '') +
-      (sortFilter.startDate != null ? "&start_date=${sortFilter.startDate}" : '') +
-      (sortFilter.endDate != null ? "&end_date=${sortFilter.endDate}" : '') +
+      (sortFilter.startDate != null ? "&start_date=${sortFilter.startDate?.dateToSimpleJSONFormat()}" : '') +
+      (sortFilter.endDate != null ? "&end_date=${sortFilter.endDate?.dateToSimpleJSONFormat()}" : '') +
       (sortFilter.bankAccID != null ? "&bank_id=${sortFilter.bankAccID}" : '') +
       (sortFilter.cardID != null ? "&card_id=${sortFilter.cardID}" : '')
     );

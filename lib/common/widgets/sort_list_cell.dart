@@ -6,19 +6,20 @@ class SortListCell extends StatelessWidget {
   final String _sort;
   final int _index;
   final Function(int) _selectionHandler;
+  final double _fontSize;
 
-  const SortListCell(this._sort, this.isSelected, this._index, this._selectionHandler, {Key? key}) : super(key: key);
+  const SortListCell(this._sort, this.isSelected, this._index, this._selectionHandler, this._fontSize, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     const selectedColor = Colors.black;
     final style = isSelected
-      ? const TextStyle(
-          fontSize: 18,
+      ? TextStyle(
+          fontSize: _fontSize,
           color: selectedColor,
           fontWeight: FontWeight.bold
         )
-      : TextStyle(fontSize: 18, color: AppColors().lightBlack);
+      : TextStyle(fontSize: _fontSize, color: AppColors().lightBlack);
 
     return ListTile(
       onTap: () => _selectionHandler(_index),      

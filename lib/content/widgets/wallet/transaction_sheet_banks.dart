@@ -18,12 +18,24 @@ class TransactionSheetBankAccounts extends StatefulWidget {
 }
 
 class _TransactionSheetBankAccountsState extends State<TransactionSheetBankAccounts> {
+  bool isInit = false;
+
+  @override
+  void dispose() {
+    isInit = false;
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final bool isApple = Platform.isIOS || Platform.isMacOS;
 
     return Consumer<BankAccountSelectionStateProvider>(builder: (context, selection, _) {
-      widget.selectedBankAcc = selection.selectedBankAcc;
+      if (isInit) {
+        widget.selectedBankAcc = selection.selectedBankAcc;
+      } else {
+        isInit = true;
+      }
       return isApple
       ? CupertinoButton(
         child: _buttonText(),

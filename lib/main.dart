@@ -13,6 +13,8 @@ import 'package:asset_flutter/content/providers/subscription/subscription_state.
 import 'package:asset_flutter/content/providers/wallet/bank_account_selection_state.dart';
 import 'package:asset_flutter/content/providers/wallet/bank_accounts.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_calendar.dart';
+import 'package:asset_flutter/content/providers/wallet/transaction_date_state.dart';
+import 'package:asset_flutter/content/providers/wallet/transaction_sheet_state.dart';
 import 'package:asset_flutter/content/providers/wallet/transactions.dart';
 import 'package:asset_flutter/static/purchase_api.dart';
 import 'package:asset_flutter/content/pages/tabs_page.dart';
@@ -87,6 +89,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) =>  CurrencySheetSelectionStateProvider()),
         ChangeNotifierProvider(create: (context) => CardSheetSelectionStateProvider()),
         ChangeNotifierProvider(create: (context) => BankAccountSelectionStateProvider()),
+        ChangeNotifierProvider(create: (context) => TransactionSheetSelectionStateProvider()),
+        ChangeNotifierProvider(create: (context) => TransactionDateRangeSelectionStateProvider()),
       ],
       child: MaterialApp(
         title: 'Kanma',

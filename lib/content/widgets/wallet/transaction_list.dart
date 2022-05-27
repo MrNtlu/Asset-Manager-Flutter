@@ -3,6 +3,8 @@ import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
 import 'package:asset_flutter/content/models/requests/transaction.dart';
+import 'package:asset_flutter/content/providers/wallet/transaction_date_state.dart';
+import 'package:asset_flutter/content/providers/wallet/transaction_sheet_state.dart';
 import 'package:asset_flutter/content/providers/wallet/transactions.dart';
 import 'package:asset_flutter/content/widgets/wallet/tl_cell.dart';
 import 'package:asset_flutter/utils/extensions.dart';
@@ -21,6 +23,8 @@ class _TransactionListState extends State<TransactionList> {
   ListState _state = ListState.init;
   late final ScrollController _scrollController;
   late final TransactionsProvider _provider;
+  late final TransactionSheetSelectionStateProvider _selectionProvider;
+  final TransactionSortFilter _sortFilter = TransactionSortFilter(1, "date", -1);
   int _page = 1;
   bool _canPaginate = false;
   bool _isPaginating = false;
@@ -35,8 +39,6 @@ class _TransactionListState extends State<TransactionList> {
       _canPaginate = false;
       _isPaginating = true;
     }
-
-    final _sortFilter = TransactionSortFilter(_page, "date", -1);
 
     _provider.getTransactions(sortFilter: _sortFilter).then((response) {
       _error = response.error;
@@ -67,9 +69,24 @@ class _TransactionListState extends State<TransactionList> {
     }
   }
 
+  void onSelectionListener() {
+    _sortFilter.bankAccID = _selectionProvider.selectedBankAcc?.id;
+    _sortFilter.cardID = _selectionProvider.selectedCard?.id;
+    _sortFilter.category = _selectionProvider.selectedCategory?.value.toString();
+    _sortFilter.startDate = _selectionProvider.selectedTimeRange != null ? DateUtils.dateOnly(_selectionProvider.selectedTimeRange!.start): null;
+    _sortFilter.endDate = _selectionProvider.selectedTimeRange != null ? DateUtils.dateOnly(_selectionProvider.selectedTimeRange!.end): null;
+    _sortFilter.sort = _selectionProvider.sort != null ? _selectionProvider.sort!.toLowerCase() : "date";
+    _sortFilter.sortType = _selectionProvider.sortType != null 
+    ? (_selectionProvider.sortType! == "Ascending" ? 1 : -1)
+    : -1;
+    _sortFilter.page = 1;
+    _getTransactions();
+  }
+
   @override
   void dispose() {
     _scrollController.removeListener(_scrollHandler);
+    _selectionProvider.removeListener(onSelectionListener);
     _state = ListState.disposed;
     _scrollController.dispose();
     super.dispose();
@@ -79,8 +96,19 @@ class _TransactionListState extends State<TransactionList> {
   void didChangeDependencies() {
     if (_state == ListState.init) {
       _provider = Provider.of<TransactionsProvider>(context);
+      _selectionProvider = Provider.of<TransactionSheetSelectionStateProvider>(context);
+      _selectionProvider.addListener(onSelectionListener);
       _scrollController = ScrollController();
       _scrollController.addListener(_scrollHandler);
+
+      final _selectedTimeRangeProvider = Provider.of<TransactionDateRangeSelectionStateProvider>(context, listen: false);
+      if  (_selectedTimeRangeProvider.selectedTimeRange != null) {
+        _sortFilter.startDate = _selectedTimeRangeProvider.selectedTimeRange!.start;
+        _sortFilter.endDate = _selectedTimeRangeProvider.selectedTimeRange!.end;
+        _selectionProvider.selectedTimeRange = _selectedTimeRangeProvider.selectedTimeRange;
+        _selectedTimeRangeProvider.selectedTimeRange = null;
+      }
+
       _getTransactions();
     }
     super.didChangeDependencies();
@@ -110,7 +138,7 @@ class _TransactionListState extends State<TransactionList> {
             
             //TODO: Test pagination, change design
             final data = _data[index];
-            if (index == 0 || (index != 0 && !isSameDay(data.transactionDate, _data[index - 1].transactionDate))){
+            if (_sortFilter.sort == "date" && (index == 0 || (index != 0 && !isSameDay(data.transactionDate, _data[index - 1].transactionDate)))){
               return Column(
                 children: [
                   Padding(
@@ -124,7 +152,7 @@ class _TransactionListState extends State<TransactionList> {
                       ),
                     ),
                   ),
-                  Divider(),
+                  const Divider(),
                   TransactionListCell(data)
                 ],
               );
