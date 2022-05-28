@@ -30,7 +30,7 @@ class CreditCardUpdate implements JSONConverter {
   String? cardType;
   String? currency;
 
-  CreditCardUpdate(this.id,{this.name, this.lastDigits, this.cardHolder, this.color, this.cardType, this.currency});
+  CreditCardUpdate(this.id, {this.name, this.lastDigits, this.cardHolder, this.color, this.cardType, this.currency});
 
   @override
   Map<String, Object> convertToJson() => {

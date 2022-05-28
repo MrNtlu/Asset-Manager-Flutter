@@ -1,52 +1,47 @@
 import 'dart:io';
+
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/currency_sheet.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/premium_dialog.dart';
 import 'package:asset_flutter/common/widgets/success_view.dart';
-import 'package:asset_flutter/content/models/requests/card.dart';
+import 'package:asset_flutter/content/models/requests/bank_account.dart';
 import 'package:asset_flutter/content/providers/common/currency_sheet_state.dart';
-import 'package:asset_flutter/content/providers/subscription/card_state.dart';
-import 'package:asset_flutter/content/providers/subscription/cards.dart';
-import 'package:asset_flutter/static/colors.dart';
-import 'package:awesome_card/awesome_card.dart';
+import 'package:asset_flutter/content/providers/wallet/bank_account.dart';
+import 'package:asset_flutter/content/providers/wallet/bank_account_state.dart';
+import 'package:asset_flutter/content/providers/wallet/bank_accounts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:asset_flutter/content/providers/subscription/card.dart' as card;
 import 'package:provider/provider.dart';
 
-class CardCreatePage extends StatefulWidget {
+class BankCreatePage extends StatefulWidget {
   final bool isCreate;
-  final String? creditCardID;
+  final String? bankAccountID;
 
-  const CardCreatePage(this.isCreate, {this.creditCardID, Key? key}) : super(key: key);
+  const BankCreatePage(this.isCreate, {this.bankAccountID, Key? key}) : super(key: key);
 
   @override
-  State<CardCreatePage> createState() => _CardCreatePageState();
+  State<BankCreatePage> createState() => _BankCreatePageState();
 }
 
-class _CardCreatePageState extends State<CardCreatePage> {
+class _BankCreatePageState extends State<BankCreatePage> {
   CreateState _state = CreateState.init;
   final form = GlobalKey<FormState>();
-  final List<String> _cardTypes = ["MasterCard", "AmericanExpress", "Visa", "Maestro"];
 
-  late final CreditCardCreate? createData;
-  late final CreditCardUpdate? updateData;
-  late final card.CreditCard? _creditCard;
-  late final CardProvider _cardProvider;
-  late final CardStateProvider _cardStateProvider;
+  late final BankAccountCreate? createData;
+  late final BankAccountUpdate? updateData;
+  late final BankAccount? _bankAccount;
+  late final BankAccountProvider _bankAccProvider;
+  late final BankAccountStateProvider _bankAccStateProvider;
   late final CurrencySheetSelectionStateProvider _currencySheetSelectionStateProvider;
 
-  late String cardNumber;
-  late String cardHolderName;
-  late String cardName;
-  late String cardColor;
-  late String cardType;
-  late String currency;
+  late String bankAccName;
+  late String bankAccIban;
+  late String bankAccHolder;
+  late String bankAccCurrency;
 
-  void _createCreditCard() {
+  void _createBankAccount() {
     final isValid = form.currentState?.validate();
     if (isValid != null && !isValid) {
       return;
@@ -57,7 +52,7 @@ class _CardCreatePageState extends State<CardCreatePage> {
 
     form.currentState?.save();
 
-    _cardProvider.addCreditCard(createData!).then((value) {
+    _bankAccProvider.addBankAccount(createData!).then((value) {
       if (_state != CreateState.disposed) {
         if (value.error == null) {
           setState(() {
@@ -83,7 +78,7 @@ class _CardCreatePageState extends State<CardCreatePage> {
     });
   }
 
-  void _updateCreditCard() {
+  void _updateBankAccount() {
     final isValid = form.currentState?.validate();
     if (isValid != null && !isValid) {
       return;
@@ -93,22 +88,15 @@ class _CardCreatePageState extends State<CardCreatePage> {
     });
 
     form.currentState?.save();
-    if (cardColor != _creditCard!.color) {
-      updateData!.color = _creditCard!.color;
+
+    if (bankAccCurrency != _bankAccount!.currency) {
+      updateData!.currency = bankAccCurrency;
     }
 
-    if (cardType != _creditCard!.cardType) {
-      updateData!.cardType = _creditCard!.cardType;
-    }
-
-    if (currency != _creditCard!.currency) {
-      updateData!.currency = currency;
-    }
-
-    _creditCard!.updateCard(updateData!).then((value) {
+    _bankAccount!.updateBankAccount(updateData!).then((value) {
       if (_state != CreateState.disposed) {
         if (value.error == null) {
-          _cardStateProvider.setRefresh(true);
+          _bankAccStateProvider.setRefresh(true);
           setState(() {
             _state = CreateState.success;
           });
@@ -131,11 +119,11 @@ class _CardCreatePageState extends State<CardCreatePage> {
       if (widget.isCreate) {
         createData!.currency = _currencySheetSelectionStateProvider.symbol!;
       }
-      currency = widget.isCreate ? createData!.currency : _currencySheetSelectionStateProvider.symbol!;
+      bankAccCurrency = widget.isCreate ? createData!.currency : _currencySheetSelectionStateProvider.symbol!;
     }
   }
 
-  @override
+   @override
   void dispose() {
     _currencySheetSelectionStateProvider.removeListener(_currencySheetListener);
     _state = CreateState.disposed;
@@ -145,25 +133,23 @@ class _CardCreatePageState extends State<CardCreatePage> {
   @override
   void didChangeDependencies() {
     if (_state == CreateState.init) {
-      _cardProvider = Provider.of<CardProvider>(context, listen: false);
-      _cardStateProvider = Provider.of<CardStateProvider>(context, listen: false);
+      _bankAccProvider = Provider.of<BankAccountProvider>(context, listen: false);
+      _bankAccStateProvider = Provider.of<BankAccountStateProvider>(context, listen: false);
 
       _currencySheetSelectionStateProvider = Provider.of<CurrencySheetSelectionStateProvider>(context);
       _currencySheetSelectionStateProvider.addListener(_currencySheetListener);
 
       if (widget.isCreate) {
-        createData = CreditCardCreate("Card Name", "XXXX", "Card Holder", CardColors().cardColors[0].value.toString(), "MasterCard", 'USD');
+        createData = BankAccountCreate("", "", "", 'USD');
       } else {
-        _creditCard = _cardProvider.findById(widget.creditCardID!);
-        updateData = CreditCardUpdate(widget.creditCardID!);
+        _bankAccount = _bankAccProvider.findById(widget.bankAccountID!);
+        updateData = BankAccountUpdate(widget.bankAccountID!);
       }
 
-      cardNumber = widget.isCreate ? createData!.lastDigits : _creditCard!.lastDigits;
-      cardHolderName = widget.isCreate ? createData!.cardHolder : _creditCard!.cardHolder;
-      cardName = widget.isCreate ? createData!.name : _creditCard!.name;
-      cardColor = widget.isCreate ? createData!.color : _creditCard!.color;
-      cardType = widget.isCreate ? createData!.cardType : _creditCard!.cardType;
-      currency = widget.isCreate ? createData!.currency : _creditCard!.currency;
+      bankAccIban = widget.isCreate ? createData!.iban : _bankAccount!.iban;
+      bankAccHolder = widget.isCreate ? createData!.accountHolder : _bankAccount!.accountHolder;
+      bankAccName = widget.isCreate ? createData!.name : _bankAccount!.name;
+      bankAccCurrency = widget.isCreate ? createData!.currency : _bankAccount!.currency;
 
       _state = CreateState.editing;
     }
@@ -198,31 +184,9 @@ class _CardCreatePageState extends State<CardCreatePage> {
           child: SuccessView(widget.isCreate ? "created" : "updated", shouldJustPop: true)
         );
       case CreateState.editing:
-        final cardColorPick = widget.isCreate ? createData!.color : _creditCard!.color;
-        final cardTypePick = widget.isCreate ? createData!.cardType : _creditCard!.cardType;
-
         return SingleChildScrollView(
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: CreditCard(
-                  cardNumber: "XXXX XXXX XXXX ${cardNumber == "" ? 'XXXX' : cardNumber}",
-                  cardHolderName: cardHolderName == "" ? "Card Holder" : cardHolderName,
-                  bankName: cardName == "" ? "Card Name" : cardName,
-                  cardType: _cardTypeMapper(cardTypePick),
-                  showBackSide: false,
-                  frontTextColor: Colors.white,
-                  frontBackground: Container(
-                    width: double.maxFinite,
-                    height: double.maxFinite,
-                    color: Color(int.parse(cardColorPick)),
-                  ),
-                  backBackground: CardBackgrounds.white,
-                  showShadow: true,
-                  horizontalMargin: 12,
-                ),
-              ),
               Form(
                 key: form,
                 child: Column(
@@ -234,13 +198,13 @@ class _CardCreatePageState extends State<CardCreatePage> {
                         keyboardType: TextInputType.name,
                         onChanged: (value) {
                           setState(() {
-                            cardName = value;
+                            bankAccName = value;
                           });
                         },
                         textInputAction: TextInputAction.next,
                         onSaved: (value) {
                           if (value != null) {
-                            if (!widget.isCreate && _creditCard!.name != value){
+                            if (!widget.isCreate && _bankAccount!.name != value){
                               updateData!.name = value;
                             } else if (widget.isCreate) {
                               createData!.name = value;
@@ -256,12 +220,12 @@ class _CardCreatePageState extends State<CardCreatePage> {
 
                           return null;
                         },
-                        initialValue: widget.isCreate ? null : cardName,
+                        initialValue: widget.isCreate ? null : bankAccName,
                         decoration: const InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
                           border: OutlineInputBorder(),
-                          labelText: "Card Name",
+                          labelText: "Bank Account Name",
                         ),
                       ),
                     ),
@@ -272,16 +236,16 @@ class _CardCreatePageState extends State<CardCreatePage> {
                         keyboardType: TextInputType.name,
                         onChanged: (value) {
                           setState(() {
-                            cardHolderName = value;
+                            bankAccHolder = value;
                           });
                         },
                         textInputAction: TextInputAction.next,
                         onSaved: (value) {
                           if (value != null) {
-                            if (!widget.isCreate && _creditCard!.cardHolder != value){
-                              updateData!.cardHolder = value;
+                            if (!widget.isCreate && _bankAccount!.accountHolder != value){
+                              updateData!.accountHolder = value;
                             } else if (widget.isCreate) {
-                              createData!.cardHolder = value;
+                              createData!.accountHolder = value;
                             }
                           }
                         },
@@ -294,12 +258,12 @@ class _CardCreatePageState extends State<CardCreatePage> {
 
                           return null;
                         },
-                        initialValue: widget.isCreate ? null : cardHolderName,
+                        initialValue: widget.isCreate ? null : bankAccHolder,
                         decoration: const InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
                           border: OutlineInputBorder(),
-                          labelText: "Card Holder",
+                          labelText: "Account Holder",
                         ),
                       ),
                     ),
@@ -312,25 +276,25 @@ class _CardCreatePageState extends State<CardCreatePage> {
                               width: double.infinity,
                               margin: const EdgeInsets.fromLTRB(12, 16, 12, 0),
                               child: TextFormField(
-                                maxLength: 4,
                                 keyboardType: const TextInputType.numberWithOptions(signed: true, decimal: true),
                                 textInputAction: TextInputAction.done,
-                                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                                 onChanged: (value) {
                                   setState(() {
-                                    cardNumber = value;
+                                    bankAccIban = value;
                                   });
                                 },
                                 onSaved: (value) {
                                   if (value != null) {
-                                    if (!widget.isCreate && _creditCard!.lastDigits != value){
-                                      updateData!.lastDigits = value;
+                                    if (!widget.isCreate && _bankAccount!.iban != value){
+                                      updateData!.iban = value;
                                     } else if (widget.isCreate) {
-                                      createData!.lastDigits = value;
+                                      createData!.iban = value;
                                     }
                                   }
                                 },
                                 validator: (value) {
+                                  //TODO: IBAN Validator
+
                                   if (value != null) {
                                     if (value.isEmpty) {
                                       return "Please don't leave this empty.";
@@ -339,12 +303,12 @@ class _CardCreatePageState extends State<CardCreatePage> {
                           
                                   return null;
                                 },
-                                initialValue: widget.isCreate ? null : cardNumber,
+                                initialValue: widget.isCreate ? null : bankAccIban,
                                 decoration: const InputDecoration(
                                   filled: true,
                                   fillColor: Colors.white,
                                   border: OutlineInputBorder(),
-                                  labelText: "Last 4 Digits",
+                                  labelText: "IBAN",
                                 ),
                               ),
                             ),
@@ -358,7 +322,7 @@ class _CardCreatePageState extends State<CardCreatePage> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(currency, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                    Text(bankAccCurrency, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                                     const Icon(Icons.arrow_drop_down_rounded, size: 30)
                                   ],
                                 ),
@@ -375,7 +339,7 @@ class _CardCreatePageState extends State<CardCreatePage> {
                                   enableDrag: false,
                                   isDismissible: true,
                                   isScrollControlled: true,
-                                  builder: (_) => CurrencySheet(selectedSymbol: currency)
+                                  builder: (_) => CurrencySheet(selectedSymbol: bankAccCurrency)
                                 ),
                               ),
                             ),
@@ -386,89 +350,12 @@ class _CardCreatePageState extends State<CardCreatePage> {
                   ],
                 )
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16, left: 4, right: 4, bottom: 24),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      for(var color in CardColors().cardColors)
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            if (widget.isCreate) {
-                              createData!.color = color.value.toString(); 
-                            } else {
-                              _creditCard!.color = color.value.toString();
-                            }
-                          });
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                color: (cardColorPick == color.value.toString())
-                                    ? Colors.orangeAccent
-                                    : Colors.transparent),
-                            shape: BoxShape.circle,
-                          ),
-                          child: CircleAvatar(
-                            radius: 12,
-                            backgroundColor: color,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                ),
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    for(var type in _cardTypes)
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          if (widget.isCreate) {
-                            createData!.cardType = type; 
-                          } else {
-                            _creditCard!.cardType = type;
-                          }
-                        });
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                              color: (type == cardTypePick)
-                                  ? Colors.orangeAccent
-                                  : Colors.transparent),
-                          shape: BoxShape.circle,
-                        ),
-                        child: CircleAvatar(
-                          radius: 28,
-                          backgroundColor: Colors.black,
-                          child: Padding(
-                            padding: const EdgeInsets.all(6),
-                            child: getCardTypeIcon(cardType: _cardTypeMapper(type)),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-              ),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
                 width: double.infinity,
                 child: Platform.isIOS || Platform.isMacOS
                 ? CupertinoButton.filled(
-                  onPressed: () => widget.isCreate ? _createCreditCard() : _updateCreditCard(),
+                  onPressed: () => widget.isCreate ? _createBankAccount() : _updateBankAccount(),
                   padding: const EdgeInsets.all(12),
                   child: const Text(
                     "Save",
@@ -476,7 +363,7 @@ class _CardCreatePageState extends State<CardCreatePage> {
                   ), 
                 )
                 : ElevatedButton(
-                  onPressed: () => widget.isCreate ? _createCreditCard() : _updateCreditCard(),
+                  onPressed: () => widget.isCreate ? _createBankAccount() : _updateBankAccount(),
                   child: const Text("Save",
                     style: TextStyle(
                       fontSize: 16, 
@@ -492,21 +379,6 @@ class _CardCreatePageState extends State<CardCreatePage> {
         return LoadingView("${widget.isCreate ? 'Creating' : 'Updating'} Subscription");
       default:
         return const LoadingView("Loading");
-    }
-  }
-
-  CardType _cardTypeMapper(String cardType) {
-    switch (cardType) {
-      case "AmericanExpress":
-        return CardType.americanExpress;
-      case "MasterCard":
-        return CardType.masterCard;
-      case "Visa":
-        return CardType.visa;
-      case "Maestro":
-        return CardType.maestro;
-      default:
-        return CardType.masterCard;
     }
   }
 }

@@ -64,7 +64,7 @@ class SubscriptionsProvider with ChangeNotifier {
       }
 
       return baseItemResponse;
-    }catch(error){
+    } catch(error) {
       return BaseItemResponse(error: error.toString(), message: error.toString());
     }
   }

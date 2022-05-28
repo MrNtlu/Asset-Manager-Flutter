@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:asset_flutter/common/models/json_convert.dart';
 import 'package:flutter/material.dart';
 import 'package:asset_flutter/common/models/response.dart';
 import 'package:asset_flutter/static/token.dart';
@@ -27,6 +30,54 @@ class BaseProvider<T> with ChangeNotifier {
       return baseListResponse;
     } catch(error) {
       return BaseListResponse(error: error.toString());
+    }
+  }
+
+  @protected
+  Future<BaseItemResponse<T>> addItem<C extends JSONConverter>(C _createObject, {required String url}) async {
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        body: json.encode(_createObject.convertToJson()),
+        headers: UserToken().getBearerToken()
+      );
+
+      var baseItemResponse = response.getBaseItemResponse<T>();
+      var data = baseItemResponse.data;
+
+      if (baseItemResponse.error == null && data != null) {  
+        pitems.add(data);
+        notifyListeners();
+      }
+
+      return baseItemResponse;
+    } catch(error) {
+      return BaseItemResponse(error: error.toString(), message: error.toString());
+    }
+  }
+
+  @protected
+  Future<BaseAPIResponse> deleteItem(String _id, {
+    required String url,
+    required T deleteItem
+  }) async {
+    try {
+      final response = await http.delete(
+        Uri.parse(url),
+        body: json.encode({
+          "id": _id
+        }),
+        headers: UserToken().getBearerToken()
+      );
+
+      if (response.getBaseResponse().error == null) {
+        pitems.remove(deleteItem);
+        notifyListeners();   
+      }
+
+      return response.getBaseResponse();
+    } catch (error) {
+      return BaseAPIResponse(error.toString());
     }
   }
 }

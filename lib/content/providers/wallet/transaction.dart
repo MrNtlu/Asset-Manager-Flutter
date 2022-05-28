@@ -61,8 +61,7 @@ class Transaction with ChangeNotifier {
   Transaction(this.id, this.title, this.description, this.category, this.price,
       this.currency, this.transactionDate, this.transactionMethod);
 
-  Future<BaseItemResponse<Transaction>> updateTransaction(
-      TransactionUpdate update) async {
+  Future<BaseItemResponse<Transaction>> updateTransaction(TransactionUpdate update) async {
     try {
       final response = await http.put(
           Uri.parse(APIRoutes().transactionRoutes.updateTransaction),

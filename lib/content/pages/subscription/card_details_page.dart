@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/check_dialog.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
@@ -79,7 +78,12 @@ class _CardDetailsPageState extends State<CardDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final _creditCard = _cardProvider.findById(widget._creditCardID);
+    late final CreditCard _creditCard;
+    try {
+      _creditCard = _cardProvider.findById(widget._creditCardID);
+    } catch (_) {
+      _creditCard = CreditCard('', '', '', '', Colors.white.value.toString(), '', '');
+    }
 
     return Scaffold(
       resizeToAvoidBottomInset: false,

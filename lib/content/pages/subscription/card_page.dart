@@ -24,12 +24,12 @@ class _CardPageState extends State<CardPage> {
   late final CardProvider _cardProvider;
   late final CardStateProvider _cardStateProvider;
 
-  void _getCreditCards(){
+  void _getCreditCards() {
     setState(() {
       _state = ListState.loading;
     });
     
-    _cardProvider.getCreditCards().then((response){
+    _cardProvider.getCreditCards().then((response) {
       _error = response.error;
       if (_state != ListState.disposed) {
         setState(() {
@@ -117,6 +117,7 @@ class _CardPageState extends State<CardPage> {
 
   Widget _portraitBody() {
     final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait || Platform.isMacOS || Platform.isWindows;
+
     switch (_state) {
       case ListState.loading:
         return const LoadingView("Fetching credit cards");

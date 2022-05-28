@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/add_elevated_button.dart';
 import 'package:asset_flutter/content/pages/subscription/card_page.dart';
+import 'package:asset_flutter/content/pages/wallet/bank_account_page.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_date_state.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_sheet_state.dart';
 import 'package:asset_flutter/content/widgets/wallet/transaction_calendar.dart';
@@ -219,6 +220,8 @@ class _WalletPageState extends State<WalletPage> {
             switch (index) {
               case 0:
                 return const CardPage();
+              case 2:
+                return const BankAccountPage();
               default:
                 return const CardPage();
             }
