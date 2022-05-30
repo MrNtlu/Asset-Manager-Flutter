@@ -13,7 +13,6 @@ import 'package:asset_flutter/content/providers/wallet/bank_account_state.dart';
 import 'package:asset_flutter/content/providers/wallet/bank_accounts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:iban/iban.dart';
 import 'package:provider/provider.dart';
 
 class BankCreatePage extends StatefulWidget {
@@ -294,13 +293,9 @@ class _BankCreatePageState extends State<BankCreatePage> {
                                   }
                                 },
                                 validator: (value) {
-                                  //TODO: IBAN Validator
-
                                   if (value != null) {
                                     if (value.isEmpty) {
                                       return "Please don't leave this empty.";
-                                    } else if (isValid(value, sanitize: true)) {
-                                      return "Iban is not valid";
                                     }
                                   }
                           
@@ -311,7 +306,7 @@ class _BankCreatePageState extends State<BankCreatePage> {
                                   filled: true,
                                   fillColor: Colors.white,
                                   border: OutlineInputBorder(),
-                                  labelText: "IBAN",
+                                  labelText: "Bank Account No",
                                 ),
                               ),
                             ),

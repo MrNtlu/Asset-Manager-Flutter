@@ -2,6 +2,7 @@ import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
+import 'package:asset_flutter/content/pages/wallet/bank_account_details_page.dart';
 import 'package:asset_flutter/content/pages/wallet/bank_create_page.dart';
 import 'package:asset_flutter/content/providers/wallet/bank_account_state.dart';
 import 'package:asset_flutter/content/providers/wallet/bank_accounts.dart';
@@ -139,70 +140,49 @@ class _BankAccountPageState extends State<BankAccountPage> {
 
                       return GestureDetector(
                         onTap: () {
-                          // Navigator.of(context).push(
-                          //   MaterialPageRoute(builder: (_) => CardDetailsPage(_creditCard.id))
-                          // );
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) => BankAccountDetailsPage(_bankAccount.id))
+                          );
                         },
                         child: ListTile(
-                          title: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12)
-                            ),
-                            color: AppColors().primaryColor,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                    width: double.infinity,
-                                    child: Stack(
-                                      children: [
-                                        const Center(
-                                          child: Icon(
-                                            Icons.account_balance_rounded,
-                                            color: Colors.white,
-                                            size: 42,
-                                          ),
-                                        ),
-                                        Positioned(
-                                          right: 0,
-                                          top: 0,
-                                          child: Text(
-                                            _bankAccount.currency,
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                          title: Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Row(
+                              children: [
+                                const Center(
+                                  child: Icon(
+                                    Icons.account_balance_rounded,
+                                    color: Colors.black,
+                                    size: 42,
                                   ),
-                                  Padding(
+                                ),
+                                Expanded(
+                                  flex: 6,
+                                  child: Padding(
                                     padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 4),
-                                    child: Text(
-                                      _bankAccount.iban,
-                                      style: const TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: double.infinity,
                                     child: Text(
                                       _bankAccount.name,
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.white,
+                                        fontSize: 18,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold
                                       ),
                                     ),
-                                  )
-                                ],
-                              ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    _bankAccount.currency,
+                                    textAlign: TextAlign.right,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
