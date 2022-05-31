@@ -1,5 +1,6 @@
 import 'package:asset_flutter/common/models/json_convert.dart';
 import 'package:asset_flutter/content/models/responses/transaction.dart';
+import 'package:asset_flutter/utils/extensions.dart';
 
 class TransactionCreate implements JSONConverter {
   String title;
@@ -23,8 +24,8 @@ class TransactionCreate implements JSONConverter {
     "price": price,
     "currency": currency,
     if(transactionMethod != null)
-    "method": transactionMethod!,
-    "transaction_date": transactionDate
+    "method": transactionMethod!.convertToJson(),
+    "transaction_date": transactionDate.dateToJSONFormat()
   };
 }
 
@@ -56,9 +57,11 @@ class TransactionUpdate implements JSONConverter {
     if(currency != null)
     "currency": currency!,
     if(transactionMethod != null)
-    "method": transactionMethod!,
+    "method": transactionMethod!.convertToJson(),
+    if(transactionMethod == null)
+    "delete_method": true,
     if(transactionDate != null)
-    "transaction_date": transactionDate!
+    "transaction_date": transactionDate!.dateToJSONFormat()
   };
 }
 

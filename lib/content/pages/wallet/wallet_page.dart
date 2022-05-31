@@ -3,6 +3,7 @@ import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/add_elevated_button.dart';
 import 'package:asset_flutter/content/pages/subscription/card_page.dart';
 import 'package:asset_flutter/content/pages/wallet/bank_account_page.dart';
+import 'package:asset_flutter/content/pages/wallet/transaction_create_page.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_date_state.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_sheet_state.dart';
 import 'package:asset_flutter/content/widgets/wallet/transaction_calendar.dart';
@@ -156,9 +157,11 @@ class _WalletPageState extends State<WalletPage> {
                   children: [
                     Expanded(
                       flex: 10,
-                      child: AddElevatedButton("Add Transaction", () {
-                        
-                      }),
+                      child: AddElevatedButton("Add Transaction", () =>
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: ((_) => const TransactionCreatePage(true)))
+                        )
+                      ),
                     ),
                     Expanded(
                       flex: 2,
@@ -174,9 +177,10 @@ class _WalletPageState extends State<WalletPage> {
                           padding: const EdgeInsets.all(12)
                         )
                         : ElevatedButton(
-                          onPressed: () {
-
-                          },
+                          onPressed: () => showModalBottomSheet(
+                            context: context, 
+                            builder: (_) => const TransactionFilterSheet()
+                          ),
                           child: const Icon(Icons.filter_alt_rounded),
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.all(12),

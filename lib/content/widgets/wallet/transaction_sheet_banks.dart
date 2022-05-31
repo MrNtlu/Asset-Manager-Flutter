@@ -50,7 +50,7 @@ class _TransactionSheetBankAccountsState extends State<TransactionSheetBankAccou
 
   Widget _buttonText() => Text(
     widget.selectedBankAcc != null
-    ? "${widget.selectedBankAcc!.iban} ${widget.selectedBankAcc!.name}"
+    ? "${widget.selectedBankAcc!.name} ${widget.selectedBankAcc!.currency}"
     : "Select Bank Account",
     style: const TextStyle(fontSize: 16),
   );

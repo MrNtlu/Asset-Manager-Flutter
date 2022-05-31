@@ -3,9 +3,13 @@ import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
 import 'package:asset_flutter/content/models/requests/transaction.dart';
+import 'package:asset_flutter/content/providers/subscription/cards.dart';
+import 'package:asset_flutter/content/providers/wallet/bank_accounts.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_date_state.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_sheet_state.dart';
+import 'package:asset_flutter/content/providers/wallet/transaction_state.dart';
 import 'package:asset_flutter/content/providers/wallet/transactions.dart';
+import 'package:asset_flutter/content/providers/wallet/wallet_state.dart';
 import 'package:asset_flutter/content/widgets/wallet/tl_cell.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +27,9 @@ class _TransactionListState extends State<TransactionList> {
   ListState _state = ListState.init;
   late final ScrollController _scrollController;
   late final TransactionsProvider _provider;
+  late final TransactionStateProvider _transactionsStateProvider;
   late final TransactionSheetSelectionStateProvider _selectionProvider;
+  late final WalletStateProvider _walletStateProvider;
   final TransactionSortFilter _sortFilter = TransactionSortFilter(1, "date", -1);
   int _page = 1;
   bool _canPaginate = false;
@@ -83,10 +89,30 @@ class _TransactionListState extends State<TransactionList> {
     _getTransactions();
   }
 
+  void _transactionStateListener() {
+    if (_state != ListState.disposed && _transactionsStateProvider.shouldRefresh) {
+      _getTransactions();
+    }
+  }
+
+  void _walletStateListener() {
+    if (_state != ListState.disposed) {
+      if (_state == ListState.done) {
+        _getTransactions();
+      } else {
+        setState(() {
+          _state = _walletStateProvider.state;
+        });
+      }
+    }
+  }
+
   @override
   void dispose() {
+    _transactionsStateProvider.removeListener(_transactionStateListener);
     _scrollController.removeListener(_scrollHandler);
     _selectionProvider.removeListener(onSelectionListener);
+    _walletStateProvider.removeListener(_walletStateListener);
     _state = ListState.disposed;
     _scrollController.dispose();
     super.dispose();
@@ -96,10 +122,15 @@ class _TransactionListState extends State<TransactionList> {
   void didChangeDependencies() {
     if (_state == ListState.init) {
       _provider = Provider.of<TransactionsProvider>(context);
+      
+      _transactionsStateProvider = Provider.of<TransactionStateProvider>(context);
+      _transactionsStateProvider.addListener(_transactionStateListener);
       _selectionProvider = Provider.of<TransactionSheetSelectionStateProvider>(context);
       _selectionProvider.addListener(onSelectionListener);
       _scrollController = ScrollController();
       _scrollController.addListener(_scrollHandler);
+      _walletStateProvider = Provider.of<WalletStateProvider>(context);
+      _walletStateProvider.addListener(_walletStateListener);
 
       final _selectedTimeRangeProvider = Provider.of<TransactionDateRangeSelectionStateProvider>(context, listen: false);
       if  (_selectedTimeRangeProvider.selectedTimeRange != null) {
@@ -109,7 +140,12 @@ class _TransactionListState extends State<TransactionList> {
         _selectedTimeRangeProvider.selectedTimeRange = null;
       }
 
-      _getTransactions();
+      Future.wait([
+        Provider.of<CardProvider>(context).getCreditCards(),
+        Provider.of<BankAccountProvider>(context).getBankAccounts()
+      ]).whenComplete(() => {
+         _getTransactions()
+      });
     }
     super.didChangeDependencies();
   }

@@ -90,77 +90,75 @@ class _SDEditHeaderState extends State<SDEditHeader> {
             return null;
           },
         ),
-        SizedBox(
-          child: Row(
-            children: [
-              Expanded(
-                flex: 3,
-                child: CustomTextFormField(
-                  "Price", 
-                  const TextInputType.numberWithOptions(decimal: true, signed: true),
-                  initialText: widget.price > 0 ? widget.price.toString() : "", 
-                  edgeInsets: const EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 8),
-                  textInputAction: TextInputAction.next,
-                  onSaved: (value) {
-                    if (value != null) {
-                      if (widget.isEditing) {
-                        widget.updateData!.currency = widget.currency;
-                      }
-
-                      if(widget.isEditing && widget.price != double.parse(value)){
-                        widget.updateData!.price = double.parse(value);
-                      } else if(!widget.isEditing) {
-                        widget.createData!.price = double.parse(value);
-                        widget.createData!.currency = widget.currency;
-                      }
-                    }
-                  },
-                  validator: (value) {
-                    if (value != null) {
-                      if (value.isEmpty) {
-                        return "Please don't leave this empty.";
-                      } else if (double.tryParse(value) == null) {
-                        return "Price is not valid.";
-                      }
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              flex: 3,
+              child: CustomTextFormField(
+                "Price", 
+                const TextInputType.numberWithOptions(decimal: true, signed: true),
+                initialText: widget.price > 0 ? widget.price.toString() : "", 
+                edgeInsets: const EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 8),
+                textInputAction: TextInputAction.next,
+                onSaved: (value) {
+                  if (value != null) {
+                    if (widget.isEditing) {
+                      widget.updateData!.currency = widget.currency;
                     }
 
-                    return null;
-                  },
-                )
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                flex: 1,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 6),
-                  child: TextButton(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(widget.currency, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                        const Icon(Icons.arrow_drop_down_rounded, size: 30)
-                      ],
-                    ),
-                    onPressed: () => showModalBottomSheet(
-                      context: context, 
-                      shape: Platform.isIOS || Platform.isMacOS
-                      ? const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(16),
-                          topLeft: Radius.circular(16)
-                        ),
-                      )
-                      : null,
-                      enableDrag: false,
-                      isDismissible: true,
-                      isScrollControlled: true,
-                      builder: (_) => CurrencySheet(selectedSymbol: widget.currency)
-                    ),
-                  ),
-                ),
+                    final parsedValue = double.parse(value); 
+                    if(widget.isEditing && widget.price != parsedValue){
+                      widget.updateData!.price = parsedValue;
+                    } else if(!widget.isEditing) {
+                      widget.createData!.price = parsedValue;
+                      widget.createData!.currency = widget.currency;
+                    }
+                  }
+                },
+                validator: (value) {
+                  if (value != null) {
+                    if (value.isEmpty) {
+                      return "Please don't leave this empty.";
+                    } else if (double.tryParse(value) == null) {
+                      return "Price is not valid.";
+                    }
+                  }
+
+                  return null;
+                },
               )
-            ],
-          )
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              flex: 1,
+              child: TextButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(widget.currency, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    const Icon(Icons.arrow_drop_down_rounded, size: 30)
+                  ],
+                ),
+                onPressed: () => showModalBottomSheet(
+                  context: context, 
+                  shape: Platform.isIOS || Platform.isMacOS
+                  ? const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(16),
+                      topLeft: Radius.circular(16)
+                    ),
+                  )
+                  : null,
+                  enableDrag: false,
+                  isDismissible: true,
+                  isScrollControlled: true,
+                  builder: (_) => CurrencySheet(selectedSymbol: widget.currency)
+                ),
+              ),
+            )
+          ],
         ),
         CustomTextFormField(
           "Description",

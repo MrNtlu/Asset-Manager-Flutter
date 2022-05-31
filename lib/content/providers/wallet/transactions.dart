@@ -10,6 +10,10 @@ import 'package:http/http.dart' as http;
 
 class TransactionsProvider extends BasePaginationProvider<Transaction> {
 
+  Transaction findById(String id) {
+    return pitems.firstWhere((element) => element.id == id);
+  }
+
   Future<BasePaginationResponse<Transaction>> getTransactions({
     required TransactionSortFilter sortFilter
   }) async {
@@ -61,6 +65,37 @@ class TransactionsProvider extends BasePaginationProvider<Transaction> {
       return response.getBaseResponse();
     } catch (error) {
       return BaseAPIResponse(error.toString());
+    }
+  }
+
+  Future<BaseItemResponse<Transaction>> updateTransaction(TransactionUpdate update) async {
+    try {
+      final response = await http.put(
+        Uri.parse(APIRoutes().transactionRoutes.updateTransaction),
+        body: json.encode(update.convertToJson()),
+        headers: UserToken().getBearerToken()
+      );
+
+      var baseItemResponse = response.getBaseItemResponse<Transaction>();
+      var data = baseItemResponse.data;
+
+      if (baseItemResponse.error == null && data != null) {
+        final item = pitems.firstWhere((element) => element.id == data.id);
+        item.title = data.title;
+        item.description = data.description;
+        item.category = data.category;
+        item.price = data.price;
+        item.currency = data.currency;
+        item.transactionMethod = data.transactionMethod;
+        item.transactionDate = data.transactionDate;
+
+        notifyListeners();
+      }
+
+      return baseItemResponse;
+    } catch (error) {
+      return BaseItemResponse(
+          message: error.toString(), error: error.toString());
     }
   }
 }

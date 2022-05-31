@@ -11,6 +11,7 @@ import 'package:asset_flutter/content/providers/common/currency_sheet_state.dart
 import 'package:asset_flutter/content/providers/wallet/bank_account.dart';
 import 'package:asset_flutter/content/providers/wallet/bank_account_state.dart';
 import 'package:asset_flutter/content/providers/wallet/bank_accounts.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -123,7 +124,7 @@ class _BankCreatePageState extends State<BankCreatePage> {
     }
   }
 
-   @override
+  @override
   void dispose() {
     _currencySheetSelectionStateProvider.removeListener(_currencySheetListener);
     _state = CreateState.disposed;
@@ -162,13 +163,13 @@ class _BankCreatePageState extends State<BankCreatePage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         iconTheme: const IconThemeData(
-          color: Colors.black,
+          color: Colors.white,
         ),
         title: Text(
           widget.isCreate ? "Create" : "Update", 
-          style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors().primaryLightishColor,
       ),
       body: SafeArea(
         child: _body(),
@@ -196,11 +197,6 @@ class _BankCreatePageState extends State<BankCreatePage> {
                       margin: const EdgeInsets.fromLTRB(12, 16, 12, 0),
                       child: TextFormField(
                         keyboardType: TextInputType.name,
-                        onChanged: (value) {
-                          setState(() {
-                            bankAccName = value;
-                          });
-                        },
                         textInputAction: TextInputAction.next,
                         onSaved: (value) {
                           if (value != null) {
@@ -234,11 +230,6 @@ class _BankCreatePageState extends State<BankCreatePage> {
                       margin: const EdgeInsets.fromLTRB(12, 16, 12, 0),
                       child: TextFormField(
                         keyboardType: TextInputType.name,
-                        onChanged: (value) {
-                          setState(() {
-                            bankAccHolder = value;
-                          });
-                        },
                         textInputAction: TextInputAction.next,
                         onSaved: (value) {
                           if (value != null) {
@@ -278,11 +269,6 @@ class _BankCreatePageState extends State<BankCreatePage> {
                               child: TextFormField(
                                 keyboardType: const TextInputType.numberWithOptions(signed: true, decimal: true),
                                 textInputAction: TextInputAction.done,
-                                onChanged: (value) {
-                                  setState(() {
-                                    bankAccIban = value;
-                                  });
-                                },
                                 onSaved: (value) {
                                   if (value != null) {
                                     if (!widget.isCreate && _bankAccount!.iban != value){
@@ -374,7 +360,7 @@ class _BankCreatePageState extends State<BankCreatePage> {
           ),
         );
       case CreateState.loading:
-        return LoadingView("${widget.isCreate ? 'Creating' : 'Updating'} Subscription");
+        return LoadingView("${widget.isCreate ? 'Creating' : 'Updating'} Bank Account");
       default:
         return const LoadingView("Loading");
     }

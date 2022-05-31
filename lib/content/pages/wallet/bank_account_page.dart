@@ -1,13 +1,16 @@
+import 'dart:io';
+
 import 'package:asset_flutter/common/models/state.dart';
+import 'package:asset_flutter/common/widgets/check_dialog.dart';
 import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
-import 'package:asset_flutter/content/pages/wallet/bank_account_details_page.dart';
+import 'package:asset_flutter/content/pages/wallet/bank_account_details_sheet.dart';
 import 'package:asset_flutter/content/pages/wallet/bank_create_page.dart';
 import 'package:asset_flutter/content/providers/wallet/bank_account_state.dart';
 import 'package:asset_flutter/content/providers/wallet/bank_accounts.dart';
-import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 
 class BankAccountPage extends StatefulWidget {
@@ -36,6 +39,28 @@ class _BankAccountPageState extends State<BankAccountPage> {
             ? ListState.error
             : (
               response.data.isEmpty
+                ? ListState.empty
+                : ListState.done
+            );
+        });
+      }
+    });
+  }
+
+
+  void _deleteBankAccount(String id) {
+    setState(() {
+      _state = ListState.loading;
+    });
+
+    _bankProvider.deleteBankAccount(id).then((response) {
+      _error = response.error;
+      if (_state != ListState.disposed) {
+        setState(() {
+          _state = response.error != null
+            ? ListState.error
+            : (
+              _bankProvider.items.isEmpty
                 ? ListState.empty
                 : ListState.done
             );
@@ -139,51 +164,124 @@ class _BankAccountPageState extends State<BankAccountPage> {
                       var _bankAccount = _bankProvider.items[index];
 
                       return GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) => BankAccountDetailsPage(_bankAccount.id))
-                          );
-                        },
-                        child: ListTile(
-                          title: Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Row(
-                              children: [
-                                const Center(
-                                  child: Icon(
-                                    Icons.account_balance_rounded,
-                                    color: Colors.black,
-                                    size: 42,
-                                  ),
+                        onTap: () => showModalBottomSheet(
+                          context: context,
+                          shape: Platform.isIOS || Platform.isMacOS
+                          ? const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(16),
+                              topLeft: Radius.circular(16)
+                            ),
+                          )
+                          : null,
+                          enableDrag: true,
+                          isDismissible: true,
+                          builder: (_) => BankAccountDetailsSheet(_bankAccount.id)
+                        ),
+                        child: Slidable(
+                          endActionPane: ActionPane(
+                            motion: const StretchMotion(),
+                            children: [
+                              SlidableAction(
+                                onPressed: (slideContext) => showDialog(
+                                  context: context,
+                                  builder: (ctx) => AreYouSureDialog("edit", (){
+                                    Navigator.pop(ctx);
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(builder: (_) => BankCreatePage(false, bankAccountID: _bankAccount.id,))
+                                    );
+                                  }),
                                 ),
-                                Expanded(
-                                  flex: 6,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 4),
-                                    child: Text(
-                                      _bankAccount.name,
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold
+                                backgroundColor: Colors.orange,
+                                foregroundColor: Colors.white,
+                                icon: Icons.edit_rounded,
+                                label: 'Edit',
+                              ),
+                              SlidableAction(
+                                onPressed: (context) => showDialog(
+                                  context: context,
+                                  builder: (ctx) => AreYouSureDialog('delete', (){
+                                    Navigator.pop(ctx);
+                                    _deleteBankAccount(_bankAccount.id);
+                                  })
+                                ),
+                                backgroundColor: Colors.red,
+                                foregroundColor: Colors.white,
+                                icon: Icons.delete_rounded,
+                                label: 'Delete',
+                              ),
+                            ],
+                          ),
+                          child: LayoutBuilder(
+                            builder: (layoutContext, contsraints) {
+                              final slidable = Slidable.of(layoutContext);
+
+                              return Stack(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8),
+                                    child: SizedBox(
+                                      height: 75,
+                                      child: Row(
+                                        children: [
+                                          const Center(
+                                            child: Icon(
+                                              Icons.account_balance_rounded,
+                                              color: Colors.black,
+                                              size: 42,
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 6,
+                                            child: Padding(
+                                              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 4),
+                                              child: Text(
+                                                _bankAccount.name,
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                  fontSize: 18,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: Text(
+                                              _bankAccount.currency,
+                                              textAlign: TextAlign.right,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: Text(
-                                    _bankAccount.currency,
-                                    textAlign: TextAlign.right,
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                                  Positioned(
+                                    bottom: 0,
+                                    right: 2,
+                                    child: IconButton(
+                                      padding: EdgeInsets.zero,
+                                      constraints: const BoxConstraints(),
+                                      icon: const Icon(Icons.swipe_left_rounded, size: 16),
+                                      onPressed: () {
+                                        if(slidable != null) {
+                                          if(slidable.direction.value == 0){
+                                            slidable.openEndActionPane();
+                                          }else {
+                                            slidable.close();
+                                          }
+                                        }
+                                      },
+                                    )
+                                  )
+                                ],
+                              );
+                            },
                           ),
                         ),
                       );

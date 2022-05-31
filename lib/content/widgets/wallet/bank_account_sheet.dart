@@ -110,7 +110,7 @@ class _BankAccountSelectionSheetState extends State<BankAccountSelectionSheet> {
                   return ListTile(
                     onTap: () => handleSelection(index),
                     title: Text(
-                      "${data.iban} ${data.name}",
+                      "${data.name} ${data.currency}",
                       style: currencySelection 
                       ? const TextStyle(
                         fontSize: 18,
@@ -148,7 +148,7 @@ class _BankAccountSelectionSheetState extends State<BankAccountSelectionSheet> {
                 ? CupertinoButton.filled(
                   child: const Text('Apply'), 
                   onPressed: () {
-                    _bankAccSelectionProvider.cardSelectionChanged(
+                    _bankAccSelectionProvider.bankAccSelectionChanged(
                       _selectionList.contains(true)
                       ? _bankAccountProvider.items[_selectionList.indexOf(true)]
                       : null
@@ -161,7 +161,7 @@ class _BankAccountSelectionSheetState extends State<BankAccountSelectionSheet> {
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: ElevatedButton(
                       onPressed: () {
-                        _bankAccSelectionProvider.cardSelectionChanged(
+                        _bankAccSelectionProvider.bankAccSelectionChanged(
                           _selectionList.contains(true)
                           ? _bankAccountProvider.items[_selectionList.indexOf(true)]
                           : null
@@ -178,14 +178,14 @@ class _BankAccountSelectionSheetState extends State<BankAccountSelectionSheet> {
         );
       case ListState.empty:
         return const SingleChildScrollView(
-          child: NoItemView("Couldn't find any credit card."),
+          child: NoItemView("Couldn't find any bank account."),
         );
       case ListState.error:
         return SingleChildScrollView(
           child: ErrorView(_error ?? "Unknown error!", _getBankAccounts),
         );
       case ListState.loading:
-        return const LoadingView("Fetching credit cards");
+        return const LoadingView("Fetching bank accounts");
       default:
         return const LoadingView("Loading");
     }

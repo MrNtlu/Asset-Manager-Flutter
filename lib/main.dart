@@ -16,7 +16,9 @@ import 'package:asset_flutter/content/providers/wallet/bank_accounts.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_calendar.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_date_state.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_sheet_state.dart';
+import 'package:asset_flutter/content/providers/wallet/transaction_state.dart';
 import 'package:asset_flutter/content/providers/wallet/transactions.dart';
+import 'package:asset_flutter/content/providers/wallet/wallet_state.dart';
 import 'package:asset_flutter/static/purchase_api.dart';
 import 'package:asset_flutter/content/pages/tabs_page.dart';
 import 'package:asset_flutter/content/providers/asset.dart';
@@ -84,7 +86,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: BankAccountProvider()),
         ChangeNotifierProvider.value(value: TransactionCalendarCountsProvider()),
         ChangeNotifierProvider(create: (context) => CardStateProvider()),
+        ChangeNotifierProvider(create: (context) => WalletStateProvider()),
         ChangeNotifierProvider(create: (context) => BankAccountStateProvider()),
+        ChangeNotifierProvider(create: (context) => TransactionStateProvider()),
         ChangeNotifierProvider(create: (context) => MarketSelectionStateProvider()),
         ChangeNotifierProvider(create: (context) => StatsToggleSelectionStateProvider()),
         ChangeNotifierProvider(create: (context) => StatsSheetSelectionStateProvider()),

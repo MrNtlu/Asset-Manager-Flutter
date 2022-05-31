@@ -1,4 +1,5 @@
 import 'package:asset_flutter/content/models/responses/asset.dart';
+import 'package:asset_flutter/content/models/responses/bank_account.dart';
 import 'package:asset_flutter/content/models/responses/card.dart';
 import 'package:asset_flutter/content/models/responses/investings.dart';
 import 'package:asset_flutter/content/models/responses/subscription.dart';
@@ -301,6 +302,11 @@ class _TypeConverter<T> {
         response["iban"],
         response["account_holder"],
         response["currency"]
+      ) as T;
+    } else if (T == BankAccountStats) {
+      return BankAccountStats(
+        response["currency"],
+        response["total_transaction"],
       ) as T;
     } else if (T == CardStats) {
       return CardStats(

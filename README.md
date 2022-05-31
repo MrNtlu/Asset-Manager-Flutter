@@ -40,6 +40,7 @@ Android: [Download Kanma on Google Play](https://play.google.com/store/apps/deta
     <li> Syncfusion Flutter Charts
     <li> TableCalendar
     <li> Firebase Crashlytics/Analytics
+    <li> Flutter Datetime Picker
 </ul>
 
 &nbsp;

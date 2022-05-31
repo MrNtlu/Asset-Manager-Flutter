@@ -1,13 +1,5 @@
-import 'dart:convert';
-
-import 'package:asset_flutter/common/models/response.dart';
-import 'package:asset_flutter/content/models/requests/transaction.dart';
 import 'package:asset_flutter/content/models/responses/transaction.dart';
-import 'package:asset_flutter/static/routes.dart';
-import 'package:asset_flutter/static/token.dart';
-import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 enum Category {
   food(0, Icons.fastfood_rounded, Color(0xFFF500BD)),
@@ -60,33 +52,4 @@ class Transaction with ChangeNotifier {
 
   Transaction(this.id, this.title, this.description, this.category, this.price,
       this.currency, this.transactionDate, this.transactionMethod);
-
-  Future<BaseItemResponse<Transaction>> updateTransaction(TransactionUpdate update) async {
-    try {
-      final response = await http.put(
-          Uri.parse(APIRoutes().transactionRoutes.updateTransaction),
-          body: json.encode(update.convertToJson()),
-          headers: UserToken().getBearerToken());
-
-      var baseItemResponse = response.getBaseItemResponse<Transaction>();
-      var data = baseItemResponse.data;
-
-      if (baseItemResponse.error == null && data != null) {
-        title = data.title;
-        description = data.description;
-        category = data.category;
-        price = data.price;
-        currency = data.currency;
-        transactionMethod = data.transactionMethod;
-        transactionDate = data.transactionDate;
-
-        notifyListeners();
-      }
-
-      return baseItemResponse;
-    } catch (error) {
-      return BaseItemResponse(
-          message: error.toString(), error: error.toString());
-    }
-  }
 }

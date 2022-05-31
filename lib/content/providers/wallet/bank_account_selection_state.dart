@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class BankAccountSelectionStateProvider with ChangeNotifier {
   BankAccount? selectedBankAcc;
 
-  void cardSelectionChanged(BankAccount? bankAccount) {
+  void bankAccSelectionChanged(BankAccount? bankAccount) {
     if (bankAccount != selectedBankAcc || (selectedBankAcc == null && bankAccount == null)) {
       selectedBankAcc = bankAccount;
       notifyListeners();

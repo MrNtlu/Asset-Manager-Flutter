@@ -21,46 +21,48 @@ class ErrorDialog extends StatelessWidget {
       child: SingleChildScrollView(
         child: Stack(
           children: [
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-                  child: Lottie.asset(
-                    "assets/lottie/error_dialog.json",
-                    width: 125,
-                    height: 125,
-                    repeat: true,
-                    fit: BoxFit.contain,
-                    frameRate: FrameRate(60),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
-                  child: Text(
-                    _error,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
+            Center(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                    child: Lottie.asset(
+                      "assets/lottie/error_dialog.json",
+                      width: 125,
+                      height: 125,
+                      repeat: true,
+                      fit: BoxFit.contain,
+                      frameRate: FrameRate(60),
                     ),
                   ),
-                ),
-                const SizedBox(height: 8),
-                isApple
-                ? CupertinoButton(
-                  child: const Text("OK!", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 14)), 
-                  onPressed: (){
-                    Navigator.pop(context);
-                  }
-                )
-                : TextButton(
-                  onPressed: (){
-                    Navigator.pop(context);
-                  }, 
-                  child: const Text("OK!")
-                ),
-                const SizedBox(height: 4)
-              ],
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
+                    child: Text(
+                      _error,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  isApple
+                  ? CupertinoButton(
+                    child: const Text("OK!", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 14)), 
+                    onPressed: (){
+                      Navigator.pop(context);
+                    }
+                  )
+                  : TextButton(
+                    onPressed: (){
+                      Navigator.pop(context);
+                    }, 
+                    child: const Text("OK!")
+                  ),
+                  const SizedBox(height: 4)
+                ],
+              ),
             ),
             Positioned(
               bottom: 0,
