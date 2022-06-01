@@ -131,12 +131,12 @@ class _TransactionCreatePageState extends State<TransactionCreatePage> {
 
     form.currentState?.save();
 
-    if (transactionCategory != _transaction!.category) {
-      updateData!.category = transactionCategory;
+    if (_categoryList.selectedCategory!.value != _transaction!.category) {
+      updateData!.category = _categoryList.selectedCategory!.value;
     }
 
-    if (transactionDate != _transaction!.transactionDate) {
-      updateData!.transactionDate = transactionDate;
+    if (_dateTimePicker.selectedDateTime != _transaction!.transactionDate) {
+      updateData!.transactionDate = _dateTimePicker.selectedDateTime;
     }
 
     if (transactionCurrency != _transaction!.currency) {
@@ -156,6 +156,7 @@ class _TransactionCreatePageState extends State<TransactionCreatePage> {
     _provider.updateTransaction(updateData!).then((value) {
       if (_state != CreateState.disposed) {
         if (value.error == null) {
+          _transactionsStateProvider.setRefresh(false);
           setState(() {
             _state = CreateState.success;
           });
@@ -251,9 +252,7 @@ class _TransactionCreatePageState extends State<TransactionCreatePage> {
         backgroundColor: AppColors().primaryLightishColor,
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: _body()
-        ),
+        child: _body(),
       ),
     );
   }

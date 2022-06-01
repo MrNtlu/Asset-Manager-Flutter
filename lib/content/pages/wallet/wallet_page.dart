@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/add_elevated_button.dart';
+import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/content/pages/subscription/card_page.dart';
 import 'package:asset_flutter/content/pages/wallet/bank_account_page.dart';
 import 'package:asset_flutter/content/pages/wallet/transaction_create_page.dart';
@@ -9,6 +10,7 @@ import 'package:asset_flutter/content/providers/wallet/transaction_sheet_state.d
 import 'package:asset_flutter/content/widgets/wallet/transaction_calendar.dart';
 import 'package:asset_flutter/content/widgets/wallet/transaction_filter_sheet.dart';
 import 'package:asset_flutter/content/widgets/wallet/transaction_list.dart';
+import 'package:asset_flutter/content/widgets/wallet/wallet_stats.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,19 +31,16 @@ class _WalletPageState extends State<WalletPage> {
 
   final bannerMainTexts = [
     "Credit Cards",
-    "Statistics",
     "Bank Accounts"
   ];
 
   final bannerSubTexts = [
     "List of credit cards and statistics",
-    "Detailed statistics for transactions",
     "List of bank accounts and statistics"
   ];
 
   final bannerIcons = [
     Icons.credit_card_rounded,
-    Icons.bar_chart_rounded,
     Icons.account_balance_rounded
   ];
 
@@ -75,11 +74,13 @@ class _WalletPageState extends State<WalletPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: MediaQuery.of(context).orientation == Orientation.portrait
-        ? _body()
-        : SingleChildScrollView(
-          child: _landscapeBody(),
-        )
+        child: _state == BaseState.loading
+        ?  MediaQuery.of(context).orientation == Orientation.portrait
+          ? _body()
+          : SingleChildScrollView(
+            child: _landscapeBody(),
+          )
+        : const LoadingView("Loading") 
       )
     );
   }
@@ -90,57 +91,57 @@ class _WalletPageState extends State<WalletPage> {
     children: [
       SizedBox(
         width: MediaQuery.of(context).size.width,
-        height: 125,
+        height: 135,
         child: PageView(
           controller: controller,
           scrollDirection: Axis.horizontal,
           children: pageItems(),
         ),
       ),
-      Padding(
-        padding: const EdgeInsets.only(top: 6),
-        child: ToggleButtons(
-          borderWidth: 0,
-          selectedColor: Colors.transparent,
-          borderColor: Colors.transparent,
-          fillColor: Colors.transparent,
-          selectedBorderColor: Colors.transparent,
-          disabledBorderColor: Colors.transparent,
-          splashColor: Colors.transparent,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Text(
-                "List", 
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20, color: isSelected[0] ? Colors.black : Colors.grey.shade400
-                )
-              )
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Text(
-                "Calendar", 
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20, color: isSelected[1] ? Colors.black : Colors.grey.shade400
-                )
-              )
-            ),
-          ],
-          isSelected: isSelected,
-          onPressed: (int newIndex) {
-            setState(() {
-              var falseIndex = newIndex == 0 ? 1 : 0;
-              if (!isSelected[newIndex]) {
-                isSelected[newIndex] = true;
-                isSelected[falseIndex] = false;
-              }
-            });
-          },
-        ),
-      ),
+      // Padding(
+      //   padding: const EdgeInsets.only(top: 6),
+      //   child: ToggleButtons(
+      //     borderWidth: 0,
+      //     selectedColor: Colors.transparent,
+      //     borderColor: Colors.transparent,
+      //     fillColor: Colors.transparent,
+      //     selectedBorderColor: Colors.transparent,
+      //     disabledBorderColor: Colors.transparent,
+      //     splashColor: Colors.transparent,
+      //     children: [
+      //       Padding(
+      //         padding: const EdgeInsets.symmetric(horizontal: 8),
+      //         child: Text(
+      //           "List", 
+      //           style: TextStyle(
+      //             fontWeight: FontWeight.bold,
+      //             fontSize: 20, color: isSelected[0] ? Colors.black : Colors.grey.shade400
+      //           )
+      //         )
+      //       ),
+      //       Padding(
+      //         padding: const EdgeInsets.symmetric(horizontal: 8),
+      //         child: Text(
+      //           "Calendar", 
+      //           style: TextStyle(
+      //             fontWeight: FontWeight.bold,
+      //             fontSize: 20, color: isSelected[1] ? Colors.black : Colors.grey.shade400
+      //           )
+      //         )
+      //       ),
+      //     ],
+      //     isSelected: isSelected,
+      //     onPressed: (int newIndex) {
+      //       setState(() {
+      //         var falseIndex = newIndex == 0 ? 1 : 0;
+      //         if (!isSelected[newIndex]) {
+      //           isSelected[newIndex] = true;
+      //           isSelected[falseIndex] = false;
+      //         }
+      //       });
+      //     },
+      //   ),
+      // ),
       if (isSelected[1])
       const TransactionCalendar(),
       if (isSelected[0])
@@ -209,7 +210,11 @@ class _WalletPageState extends State<WalletPage> {
   List<Widget> pageItems() {
     List<Widget> _items = List.empty(growable: true);
     for (var i = 0; i < 3; i++) {
-      _items.add(_pageItem(i));
+      if (i == 1) {
+        _items.add(const WalletStats());
+      } else {
+        _items.add(_pageItem(i));
+      }
     }
 
     return _items;
@@ -252,7 +257,7 @@ class _WalletPageState extends State<WalletPage> {
           Positioned(
             top: 8,
             right: 8,
-            child: Icon(bannerIcons[index], size: 36, color: Colors.white)
+            child: Icon(bannerIcons[index == 2 ? 1 : index], size: 36, color: Colors.white)
           ),
           Padding(
             padding: const EdgeInsets.all(10.0),
@@ -261,11 +266,11 @@ class _WalletPageState extends State<WalletPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  bannerMainTexts[index],
+                  bannerMainTexts[index == 2 ? 1 : index],
                   style: const TextStyle(fontSize: 26.0, color: Colors.white),
                 ),
                 Text(
-                  bannerSubTexts[index],
+                  bannerSubTexts[index == 2 ? 1 : index],
                   style: const TextStyle(fontSize: 14.0, color: Colors.white),
                 )
               ],

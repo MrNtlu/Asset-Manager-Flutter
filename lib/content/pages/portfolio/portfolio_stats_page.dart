@@ -8,19 +8,8 @@ import 'package:flutter/material.dart';
 class PortfolioStatsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final AppBar appBar = AppBar(
-      iconTheme: const IconThemeData(
-        color: Colors.black,
-      ),
-      title: const Text(
-        'Statistics', 
-        style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)
-      ),
-      backgroundColor: Colors.white,
-    );
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: appBar,
       body: SafeArea(
         child: CustomScrollView(
           physics: const ClampingScrollPhysics(),
@@ -28,6 +17,13 @@ class PortfolioStatsPage extends StatelessWidget {
             SliverToBoxAdapter(
               child: Column(
                 children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: IconButton(
+                      onPressed: () => Navigator.pop(context), 
+                      icon: const Icon(Icons.arrow_back_ios_new_rounded)
+                    ),
+                  ),
                   const Portfolio(isDetailed: true),
                   const PortfolioStats(true),
                   PortfolioStatsLineChart(MediaQuery.of(context).viewPadding.top),

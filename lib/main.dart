@@ -17,6 +17,7 @@ import 'package:asset_flutter/content/providers/wallet/transaction_calendar.dart
 import 'package:asset_flutter/content/providers/wallet/transaction_date_state.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_sheet_state.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_state.dart';
+import 'package:asset_flutter/content/providers/wallet/transaction_total_stat.dart';
 import 'package:asset_flutter/content/providers/wallet/transactions.dart';
 import 'package:asset_flutter/content/providers/wallet/wallet_state.dart';
 import 'package:asset_flutter/static/purchase_api.dart';
@@ -77,6 +78,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: PortfolioStateProvider()),
         ChangeNotifierProvider.value(value: PricesProvider()),
         ChangeNotifierProvider.value(value: DailyStatsProvider()),
+        ChangeNotifierProvider.value(value: TransactionTotalStatsProvider()),
         ChangeNotifierProvider.value(value: CurrenciesProvider()),
         ChangeNotifierProvider.value(value: SubscriptionStateProvider()),
         ChangeNotifierProvider.value(value: CardProvider()),

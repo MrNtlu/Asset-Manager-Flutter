@@ -24,7 +24,7 @@ class TransactionList extends StatefulWidget {
 }
 
 class _TransactionListState extends State<TransactionList> {
-  ListState _state = ListState.init;
+  late ListState _state;
   late final ScrollController _scrollController;
   late final TransactionsProvider _provider;
   late final TransactionStateProvider _transactionsStateProvider;
@@ -109,13 +109,19 @@ class _TransactionListState extends State<TransactionList> {
 
   @override
   void dispose() {
+    _state = ListState.disposed;
     _transactionsStateProvider.removeListener(_transactionStateListener);
     _scrollController.removeListener(_scrollHandler);
     _selectionProvider.removeListener(onSelectionListener);
     _walletStateProvider.removeListener(_walletStateListener);
-    _state = ListState.disposed;
     _scrollController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    _state = ListState.init;
+    super.initState();
   }
 
   @override
@@ -140,6 +146,7 @@ class _TransactionListState extends State<TransactionList> {
         _selectedTimeRangeProvider.selectedTimeRange = null;
       }
 
+      _state = ListState.loading;
       Future.wait([
         Provider.of<CardProvider>(context).getCreditCards(),
         Provider.of<BankAccountProvider>(context).getBankAccounts()

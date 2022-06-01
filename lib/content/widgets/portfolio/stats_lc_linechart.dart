@@ -115,6 +115,7 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
                   child: _portraitBody("Total Assets", isProfit: false),
                 ),
               ),
+              if (_dailyStatsProvider.item != null && _dailyStatsProvider.item!.totalAssets.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(right: 16, bottom: 2),
                 child: Align(
@@ -153,6 +154,7 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
                   child: _portraitBody("Profit/Loss"),
                 ),
               ),
+              if (_dailyStatsProvider.item != null && _dailyStatsProvider.item!.totalPL.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(right: 16, bottom: 2),
                 child: Align(

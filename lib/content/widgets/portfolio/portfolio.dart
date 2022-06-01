@@ -15,9 +15,7 @@ class Portfolio extends StatelessWidget {
   Widget build(BuildContext context) {
     final assetStatsProvider = Provider.of<AssetsProvider>(context);
     final assetStats = assetStatsProvider.assetStats;
-    final currencySymbol = assetStats!.currency == ''
-                        ? 'USD'
-                        : assetStats.currency;
+    final currencySymbol = assetStats!.currency == '' ? 'USD' : assetStats.currency;
 
     return Container(
       padding: const EdgeInsets.only(top: 12, bottom: 8),

@@ -13,6 +13,7 @@ import 'package:asset_flutter/content/providers/subscription/subscription.dart';
 import 'package:asset_flutter/content/providers/wallet/bank_account.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_calendar.dart';
+import 'package:asset_flutter/content/providers/wallet/transaction_total_stat.dart';
 
 class BaseAPIResponse {
   final String? error;
@@ -270,6 +271,11 @@ class _TypeConverter<T> {
         response["total_assets"] != null ? ((response["total_assets"]) as List).map((e) => e as num).toList() : [],
         response["total_p/l"] != null ? ((response["total_p/l"]) as List).map((e) => e as num).toList() : [],
         response["dates"] != null ? ((response["dates"]) as List).map((e) => DateTime.parse(e)).toList() : [],
+      ) as T;
+    } else if (T == TransactionTotalStats) {
+      return TransactionTotalStats(
+        response["currency"],
+        response["total_transaction"],
       ) as T;
     } else if (T == UserInfo) {
       return UserInfo(
