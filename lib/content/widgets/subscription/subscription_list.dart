@@ -18,21 +18,29 @@ class SubscriptionList extends StatelessWidget{
       : _landscapeListView(_data);
   }
 
-  Widget _portraitListView(List<Subscription> _data) => ListView.builder(itemBuilder: ((context, index) {
-    if(index == _data.length) {
-      return const SizedBox(height: 75);
+  Widget _portraitListView(List<Subscription> _data) => ListView.builder(
+    itemBuilder: ((context, index) {
+      if(index == _data.length) {
+        return const SizedBox(height: 75);
+      }
+      final data = _data[index];
+      return ChangeNotifierProvider.value(
+        value: data,
+        child: Padding(
+          padding: const EdgeInsets.all(4),
+          child: SubscriptionListCell(data),
+        )
+      );
     }
-    final data = _data[index];
-    return ChangeNotifierProvider.value(
-      value: data,
-      child: SubscriptionListCell(data)
-    );
-  }),
+  ),
+  itemExtent: 100,
   itemCount: _data.length + 1,
   physics: const ClampingScrollPhysics(),
   shrinkWrap: true,
   );
 
+
+  //TODO: Implement
   Widget _landscapeListView(List<Subscription> _data) => SizedBox(
     height: _data.length < 6 ? _data.length * 110 : 650,
     child: ListView.builder(itemBuilder: ((context, index) {

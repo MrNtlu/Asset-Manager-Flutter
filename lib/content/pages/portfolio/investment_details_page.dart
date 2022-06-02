@@ -55,7 +55,7 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
       if (_state != EditState.disposed) {
         if (_state == EditState.init) {
           if (response.data == null) { 
-            _assetProvider.asset = widget._data;
+            _assetProvider.setItem = widget._data;
           }
 
           setState(() {
@@ -76,13 +76,13 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
     });
     Provider.of<AssetLogProvider>(context, listen: false).addAssetLog(
       AssetCreate(
-        _assetProvider.asset!.toAsset, 
-        _assetProvider.asset!.fromAsset, 
+        _assetProvider.item!.toAsset, 
+        _assetProvider.item!.fromAsset, 
         type, 
         amount, 
-        _assetProvider.asset!.type, 
-        _assetProvider.asset!.market,
-        _assetProvider.asset!.name, 
+        _assetProvider.item!.type, 
+        _assetProvider.item!.market,
+        _assetProvider.item!.name, 
         price,
       )
     ).then((response) {
@@ -206,8 +206,8 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
       case EditState.view:
         return Stack(
           children: [
-            InvestmentDetailsLogList(_appBar.preferredSize.height, _assetProvider.asset!),
-            InvestmentDetailsTopBar(_assetProvider.asset!, widget.image),
+            InvestmentDetailsLogList(_appBar.preferredSize.height, _assetProvider.item!),
+            InvestmentDetailsTopBar(_assetProvider.item!, widget.image),
             Align(
               alignment: Alignment.bottomCenter,
               child: AddElevatedButton(('Add ' + widget._data.toAsset), () {

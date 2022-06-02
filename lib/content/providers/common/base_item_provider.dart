@@ -10,6 +10,10 @@ class BaseItemProvider<T> with ChangeNotifier {
 
   T? get item => _item;
 
+  set setItem(T item){
+    _item = item;
+  }
+
   Future<BaseItemResponse<T>> getItem({required String url}) async {
     try {
       final response = await http.get(

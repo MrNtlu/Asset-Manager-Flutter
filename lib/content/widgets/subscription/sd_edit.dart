@@ -161,7 +161,6 @@ class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
             createData: widget.createData,
           )
         ),
-        const Divider(thickness: 1),
         widget.datePicker,
         const Divider(thickness: 1),
         _subSectionTitle("Bill Cycle"),

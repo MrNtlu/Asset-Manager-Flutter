@@ -10,20 +10,14 @@ class SubscriptionListCellImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(1),
       decoration: const BoxDecoration(
-        color: Colors.white, 
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(8),
-          bottomRight: Radius.circular(24),
-        )
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(6))
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(24),
-        child: SizedBox.fromSize(
-          size: const Size.fromRadius(24),
-          child: SLNetworkImage(_image)
-        ),
+      padding: const EdgeInsets.all(2),
+      child: SizedBox.fromSize(
+        size: const Size.square(48),
+        child: SLNetworkImage(_image)
       ),
     );
   }

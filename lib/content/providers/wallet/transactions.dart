@@ -33,40 +33,11 @@ class TransactionsProvider extends BasePaginationProvider<Transaction> {
     return getList(url: APIRoutes().transactionRoutes.transactionByUserIDAndFilterSort + "?" + apiQuery);
   }
 
-  Future<BaseAPIResponse> createTransaction(TransactionCreate transactionCreate) async {
-    try {
-      final response = await http.post(
-        Uri.parse(APIRoutes().transactionRoutes.createTransaction),
-        body: json.encode(transactionCreate.convertToJson()),
-        headers: UserToken().getBearerToken()
-      );
+  Future<BaseAPIResponse> createTransaction(TransactionCreate transactionCreate) async
+    => createItem<TransactionCreate>(transactionCreate, url: APIRoutes().transactionRoutes.createTransaction);
 
-      return response.getBaseResponse();
-    } catch(error) {
-      return BaseAPIResponse(error.toString());
-    }
-  }
-
-  Future<BaseAPIResponse> deleteTransaction(String id) async {
-    try {
-      final response = await http.delete(
-        Uri.parse(APIRoutes().transactionRoutes.deleteTransactionByTransactionID),
-        body: json.encode({
-          "id": id
-        }),
-        headers: UserToken().getBearerToken()
-      );
-
-      if (response.getBaseResponse().error == null) {
-        pitems.removeWhere((element) => element.id == id);
-        notifyListeners();
-      }
-
-      return response.getBaseResponse();
-    } catch (error) {
-      return BaseAPIResponse(error.toString());
-    }
-  }
+  Future<BaseAPIResponse> deleteTransaction(String id, Transaction _item) async 
+    => deleteItem(id, url: APIRoutes().transactionRoutes.deleteTransactionByTransactionID, deleteItem: _item);
 
   Future<BaseItemResponse<Transaction>> updateTransaction(TransactionUpdate update) async {
     try {

@@ -1,6 +1,4 @@
-import 'dart:io';
 import 'package:asset_flutter/utils/extensions.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
@@ -15,61 +13,60 @@ class TransactionCreateDateTimePicker extends StatefulWidget {
 }
 
 class _TransactionCreateDateTimePickerState extends State<TransactionCreateDateTimePicker> {
+  late final TextEditingController _controller;
+  late bool isInit;
+
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          flex: 3,
-          child: Text(
-            widget.selectedDateTime.dateToFullDateTime(),
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 16,
-              fontWeight: FontWeight.w500
-            ),
-          ),
-        ),
-        Expanded(
-          flex: 2,
-          child: Platform.isIOS || Platform.isMacOS 
-          ? CupertinoButton(
-            padding: const EdgeInsets.all(12),
-            onPressed: () => _showDateTimePicker(), 
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Padding(
-                  padding: EdgeInsets.only(right: 12),
-                  child: Icon(Icons.more_time_rounded, size: 20),
-                ),
-                Text("Pick Date", style: TextStyle(fontSize: 16))
-              ],
-            ),
-          )
-          : TextButton.icon(
-            onPressed: () => _showDateTimePicker(), 
-            label: const Text("Pick Date", style: TextStyle(fontSize: 16)),
-            icon: const Icon(Icons.more_time_rounded, size: 20)
-          ),
-        )
-      ],
-    );
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
-  void _showDateTimePicker() {
-    DatePicker.showDateTimePicker(
-      context,
-      showTitleActions: true,
-      minTime: DateTime(2021, 5, 1),
-      maxTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 7),
-      onConfirm: (date) {
-        setState(() {
-          widget.selectedDateTime = date;
-        });
-      }, 
-      currentTime: widget.selectedDateTime, 
-      locale: LocaleType.en
+  @override
+  void initState() {
+    isInit = false;
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (!isInit) {
+      _controller = TextEditingController(text: widget.selectedDateTime.dateToFullDateTime());
+      isInit = true;
+    }
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      readOnly: true,
+      enableInteractiveSelection: false,
+      controller: TextEditingController(text: widget.selectedDateTime.dateToFullDateTime()),
+      decoration: const InputDecoration(
+        filled: true,
+          fillColor: Colors.white,
+          enabledBorder: OutlineInputBorder(borderSide: BorderSide(width: 0)),
+          focusedBorder: OutlineInputBorder(borderSide: BorderSide(width: 0)),
+          border: OutlineInputBorder(borderSide: BorderSide(width: 0)),
+          labelText: "Pick Date",
+          suffixIcon: Icon(Icons.calendar_month_rounded, size: 20),
+      ),
+      onTap: () => DatePicker.showDateTimePicker(
+        context,
+        showTitleActions: true,
+
+        minTime: DateTime(2021, 5, 1),
+        maxTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 7, 12, 59, 59, 0, 0),
+        onConfirm: (date) {
+          setState(() {
+            widget.selectedDateTime = date;
+            _controller.text = date.dateToFullDateTime();
+          });
+        },
+        currentTime: widget.selectedDateTime, 
+        locale: LocaleType.en
+      ),
     );
   }
 }

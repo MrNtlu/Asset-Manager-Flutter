@@ -412,7 +412,6 @@ class _TransactionCreatePageState extends State<TransactionCreatePage> {
                   ],
                 )
               ),
-              const Divider(),
               Column(
                 children: [
                   Padding(

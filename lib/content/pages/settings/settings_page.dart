@@ -28,6 +28,7 @@ import 'package:http/http.dart' as http;
 import 'package:asset_flutter/utils/extensions.dart';
 
 class SettingsPage extends StatefulWidget {
+  const SettingsPage();
   @override
   State<SettingsPage> createState() => _SettingsPageState();
 }

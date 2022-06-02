@@ -28,10 +28,10 @@ class _TabsPage extends State<TabsPage> {
     }
   }
 
-  final List<Widget> _pages = [
+  final List<Widget> _pages = const [
     PortfolioPage(),
     SubscriptionPage(),
-    const WalletPage(),
+    WalletPage(),
     SettingsPage()
   ];
 

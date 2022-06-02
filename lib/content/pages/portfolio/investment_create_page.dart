@@ -10,7 +10,6 @@ import 'package:asset_flutter/content/models/requests/asset.dart';
 import 'package:asset_flutter/content/models/responses/investings.dart';
 import 'package:asset_flutter/content/providers/assets.dart';
 import 'package:asset_flutter/content/widgets/portfolio/ic_dropdowns.dart';
-import 'package:asset_flutter/content/widgets/portfolio/investment_toggle_button.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/currencies.dart';
 import 'package:asset_flutter/static/markets.dart';
@@ -45,7 +44,6 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
   late final InvestmentCreateDropdowns _investmentCreateDropdowns;
   late final DropdownSearch<Investings> _investingsDropdown;
   late final DropdownSearch<Investings> _investingCurrenciesDropdown;
-  late final InvestmentToggleButton _toggleButton;
 
   CreateState _state = CreateState.init;
   int _currentStep = 0;
@@ -56,7 +54,7 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
     _assetCreate.toAsset = _selectedItem!.symbol;
     _assetCreate.name = _selectedItem!.name;
     _assetCreate.fromAsset = _selectedCurrencyItem!.symbol;
-    _assetCreate.type = _toggleButton.isSelected[0] ? "buy" : "sell";
+    _assetCreate.type = "buy";
     _assetCreate.assetType = _investmentCreateDropdowns.typeDropdownValue.toLowerCase();
     _assetCreate.assetMarket = _investmentCreateDropdowns.marketDropdownValue;
     _assetCreate.price = _price!;
@@ -125,7 +123,6 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
       _investmentCreateDropdowns = InvestmentCreateDropdowns();
       _investingsDropdown = _createInvestingsDropdown();
       _investingCurrenciesDropdown = _createInvestingCurrenciesDropdown();
-      _toggleButton = InvestmentToggleButton();
       _assetsProvider = Provider.of<AssetsProvider>(context, listen: false);
     }
     _state = CreateState.editing;
@@ -160,11 +157,6 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
       case CreateState.editing:
         return Column(
           children: [
-            Container(
-              alignment: Alignment.center,
-              margin: const EdgeInsets.only(top: 8, bottom: 12),
-              child: _toggleButton,
-            ),
             Expanded(
               child: Stepper(
                 type: MediaQuery.of(context).orientation == Orientation.portrait
@@ -177,26 +169,41 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        if (_currentStep == 2)
+                        isApple
+                        ? CupertinoButton.filled(
+                          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                          onPressed: () => _createInvestment(context),
+                          child: const Text("Save")
+                        )
+                        : ElevatedButton(
+                          onPressed: () => _createInvestment(context),
+                          child: const Text("Save")
+                        ),
                         if (_currentStep != 2)
-                          isApple
-                              ? CupertinoButton.filled(
-                                  padding: const EdgeInsets.all(12),
-                                  onPressed: details.onStepContinue,
-                                  child: const Text("Continue"))
-                              : ElevatedButton(
-                                  onPressed: details.onStepContinue,
-                                  child: const Text("Continue")),
+                        isApple
+                        ? CupertinoButton.filled(
+                          padding: const EdgeInsets.all(12),
+                          onPressed: details.onStepContinue,
+                          child: const Text("Continue")
+                        )
+                        : ElevatedButton(
+                          onPressed: details.onStepContinue,
+                          child: const Text("Continue")
+                        ),
                         if (_currentStep != 0)
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8),
-                            child: isApple
-                                ? CupertinoButton(
-                                    onPressed: details.onStepCancel,
-                                    child: const Text("Cancel"))
-                                : OutlinedButton(
-                                    onPressed: details.onStepCancel,
-                                    child: const Text("Cancel")),
-                          )
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8),
+                          child: isApple
+                          ? CupertinoButton(
+                              onPressed: details.onStepCancel,
+                              child: const Text("Cancel")
+                            )
+                          : OutlinedButton(
+                              onPressed: details.onStepCancel,
+                              child: const Text("Cancel")
+                            ),
+                          ),
                       ],
                     ),
                   );

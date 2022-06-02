@@ -24,9 +24,9 @@ class CustomTextFormField extends StatelessWidget {
       this.edgeInsets = const EdgeInsets.fromLTRB(32, 16, 32, 0),
       this.onSaved,
       this.validator,
-      this.focusedBorder = const OutlineInputBorder(),
-      this.enabledBorder = const OutlineInputBorder(),
-      this.defaultBorder = const OutlineInputBorder(),
+      this.focusedBorder = const OutlineInputBorder(borderSide: BorderSide(width: 0)),
+      this.enabledBorder = const OutlineInputBorder(borderSide: BorderSide(width: 0)),
+      this.defaultBorder = const OutlineInputBorder(borderSide: BorderSide(width: 0)),
       this.errorTextStyle,
     }
   );

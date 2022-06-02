@@ -19,46 +19,48 @@ class SubscriptionListCell extends StatelessWidget {
           MaterialPageRoute(builder: ((context) => SubscriptionDetailsPage(subscription.id, isCardDetails: isCardDetails)))
         );
       },
-      child: SizedBox(
-        height: 105,
-        child: Card(
-            clipBehavior: Clip.antiAlias,
-            elevation: 4,
-            color: Color(subscription.color),
-            margin: const EdgeInsets.only(left: 8, bottom: 12, right: 8),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Color(subscription.color),
+          borderRadius: const BorderRadius.all(Radius.circular(6))
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        child: Row(
+          children: [
+            SubscriptionListCellImage(subscription.image),
+            SLText(
+              subscription.name, 
+              5, 
+              18, 
+              Alignment.centerLeft,
+              textAlign: TextAlign.left,
+              const EdgeInsets.fromLTRB(12, 0, 4, 0)
             ),
-            child: Column(
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SubscriptionListCellImage(subscription.image),
-                    SLText(subscription.name, 1, 18, Alignment.center,
-                        const EdgeInsets.fromLTRB(12, 8, 12, 0)),
-                  ],
-                ),
-                Expanded(
-                  child: Container(
-                    margin: const EdgeInsets.fromLTRB(12, 0, 12, 8),
-                    child: Row(
-                      children: [
-                        SLSubText(
-                          subscription.nextBillDate.dateToDaysLeft(),
-                          Alignment.bottomLeft
-                        ),
-                        SLSubText(
-                          subscription.price.toString() + ' ' + subscription.currency,
-                          Alignment.bottomRight
-                        )
-                      ],
+            Expanded(
+              flex: 2,
+              child: Stack(
+                children: [
+                  SLSubText(
+                    subscription.price.toString() + ' ' + subscription.currency,
+                    Alignment.centerRight,
+                    16,
+                  ),
+                  Positioned(
+                    bottom: 2,
+                    right: 0,
+                    child: SLSubText(
+                      subscription.nextBillDate.dateToDaysLeft(),
+                      Alignment.centerRight,
+                      12,
+                      textColor: Colors.white.withOpacity(0.85),
                     ),
                   ),
-                ),
-              ],
-            )),
-      ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        ),
     );
   }
 }
@@ -83,16 +85,19 @@ class SLText extends StatelessWidget {
       child: Container(
         alignment: _alignment,
         margin: _edgeInsets,
-        child: AutoSizeText(_text,
-            maxLines: 1,
-            softWrap: true,
-            overflow: TextOverflow.ellipsis,
-            textAlign: textAlign,
-            minFontSize: _textSize,
-            style: TextStyle(
-                fontSize: _textSize,
-                color: textColor,
-                fontWeight: FontWeight.bold)),
+        child: AutoSizeText(
+          _text,
+          maxLines: 2,
+          softWrap: true,
+          overflow: TextOverflow.ellipsis,
+          textAlign: textAlign,
+          minFontSize: _textSize - 4,
+          style: TextStyle(
+            fontSize: _textSize,
+            color: textColor,
+            fontWeight: FontWeight.bold
+          )
+        ),
       ),
     );
   }
@@ -101,17 +106,25 @@ class SLText extends StatelessWidget {
 class SLSubText extends StatelessWidget {
   final String _text;
   final Alignment _alignment;
+  final double _fontSize;
+  final Color textColor;
 
-  const SLSubText(this._text, this._alignment, {Key? key}) : super(key: key);
+  const SLSubText(this._text, this._alignment, this._fontSize, {this.textColor = Colors.white, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: Container(
+    return Container(
       alignment: _alignment,
-      child: Text(_text,
-          style: const TextStyle(
-              fontSize: 14, color: Colors.white, fontWeight: FontWeight.bold)),
-    ));
+      child: AutoSizeText(
+        _text,
+        minFontSize: _fontSize - 4,
+        maxLines: 1,
+        style: TextStyle(
+          fontSize: _fontSize, 
+          color: textColor, 
+          fontWeight: FontWeight.bold
+        )
+      ),
+    );
   }
 }

@@ -27,7 +27,7 @@ class InvestmentDetailsListCell extends StatelessWidget {
     _detailsStateProvider.setState(EditState.editing);
 
     Future.wait([
-      _assetLogProvider.deleteAssetLog(_data.id),
+      _assetLogProvider.deleteAssetLog(_data.id, _data),
       _assetProvider.getAssetStats(
         toAsset: _data.toAsset, 
         fromAsset: _data.fromAsset,

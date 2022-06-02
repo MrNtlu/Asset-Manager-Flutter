@@ -23,7 +23,7 @@ class TransactionListCell extends StatelessWidget {
   void _deleteTransaction(BuildContext context) {
     _walletStateProvider.setState(ListState.loading);
 
-    _provider.deleteTransaction(_data.id).then((response) {
+    _provider.deleteTransaction(_data.id, _data).then((response) {
       if (response.error != null) {
         showDialog(
           context: context, 

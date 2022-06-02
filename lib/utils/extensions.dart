@@ -107,7 +107,7 @@ extension DateTimeExt on DateTime {
   }
 
   String dateToJSONFormat() {
-    final DateFormat formatter = DateFormat("yyyy-MM-dd'T'hh:mm:ss'Z'");
+    final DateFormat formatter = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     return formatter.format(this);
   }
 

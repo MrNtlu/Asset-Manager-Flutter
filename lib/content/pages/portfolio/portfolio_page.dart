@@ -1,22 +1,25 @@
 import 'dart:io';
 import 'package:asset_flutter/common/models/state.dart';
+import 'package:asset_flutter/common/widgets/add_elevated_button.dart';
 import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
 import 'package:asset_flutter/content/pages/market/markets_page.dart';
+import 'package:asset_flutter/content/pages/portfolio/investment_create_page.dart';
 import 'package:asset_flutter/content/providers/assets.dart';
 import 'package:asset_flutter/content/providers/portfolio/portfolio_state.dart';
 import 'package:asset_flutter/content/providers/common/stats_sheet_state.dart';
-import 'package:asset_flutter/content/widgets/portfolio/add_investment_button.dart';
 import 'package:asset_flutter/content/widgets/portfolio/investment_list.dart';
 import 'package:asset_flutter/content/widgets/portfolio/portfolio_stats_header.dart';
 import 'package:asset_flutter/content/widgets/portfolio/section_sort_title.dart';
 import 'package:asset_flutter/content/widgets/portfolio/section_title.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class PortfolioPage extends StatefulWidget {
+  const PortfolioPage();
   @override
   State<PortfolioPage> createState() => _PortfolioPageState();
 }
@@ -101,25 +104,6 @@ class _PortfolioPageState extends State<PortfolioPage> {
       ),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          iconTheme: const IconThemeData(
-            color: Colors.black,
-          ),
-          title: const Text(
-            "Your Portfolio",
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)
-          ),
-          centerTitle: false,
-          backgroundColor: Colors.white,
-          actions: [
-            IconButton(
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const MarketsPage())
-              ),
-              icon: const ImageIcon(AssetImage("assets/images/markets.png"))
-            )
-          ],
-        ),
         body: SafeArea(
           child: MediaQuery.of(context).orientation == Orientation.portrait || Platform.isMacOS || Platform.isWindows 
             ? _portraitBody()
@@ -182,10 +166,49 @@ class _PortfolioPageState extends State<PortfolioPage> {
                       ],
                     ),
                   ),
-                Container(
+                Align(
                   alignment: Alignment.bottomCenter,
-                  child: const AddInvestmentButton(edgeInsets: EdgeInsets.only(left: 8, right: 8, bottom: 8))
-                ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 11,
+                        child: AddElevatedButton("Add Investment", (){
+                            Navigator.of(context).push(
+                              MaterialPageRoute(builder: ((context) => const InvestmentCreatePage()))
+                            );
+                          },
+                        )
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Container(
+                          margin: const EdgeInsets.only(right: 8),
+                          child: Platform.isIOS || Platform.isMacOS
+                          ? CupertinoButton.filled(
+                            child: const ImageIcon(AssetImage("assets/images/markets.png")),
+                            padding: const EdgeInsets.all(12),
+                            onPressed: () => Navigator.of(context).push(
+                              MaterialPageRoute(builder: (_) => const MarketsPage())
+                            ),
+                          )
+                          : ElevatedButton(
+                            onPressed: () => showModalBottomSheet(
+                              context: context, 
+                              builder: (_) => Container()
+                            ),
+                            child: const ImageIcon(AssetImage("assets/images/markets.png")),
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.all(12),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12)
+                              ),
+                            ),
+                          )
+                        ),
+                      )
+                    ],
+                  ),
+                )
               ],
             )
           )
@@ -233,9 +256,48 @@ class _PortfolioPageState extends State<PortfolioPage> {
                               ],
                             )
                           ),
-                      Container(
+                      Align(
                         alignment: Alignment.bottomCenter,
-                        child: const AddInvestmentButton(edgeInsets: EdgeInsets.all(8))
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 11,
+                              child: AddElevatedButton("Add Investment", (){
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(builder: ((context) => const InvestmentCreatePage()))
+                                  );
+                                },
+                              )
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Container(
+                                margin: const EdgeInsets.only(right: 8),
+                                child: Platform.isIOS || Platform.isMacOS
+                                ? CupertinoButton.filled(
+                                  child: const ImageIcon(AssetImage("assets/images/markets.png")),
+                                  padding: const EdgeInsets.all(12),
+                                  onPressed: () => Navigator.of(context).push(
+                                    MaterialPageRoute(builder: (_) => const MarketsPage())
+                                  ),
+                                )
+                                : ElevatedButton(
+                                  onPressed: () => showModalBottomSheet(
+                                    context: context, 
+                                    builder: (_) => Container()
+                                  ),
+                                  child: const ImageIcon(AssetImage("assets/images/markets.png")),
+                                  style: ElevatedButton.styleFrom(
+                                    padding: const EdgeInsets.all(12),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12)
+                                    ),
+                                  ),
+                                )
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ],
                   ),
