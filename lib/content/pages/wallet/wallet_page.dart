@@ -148,7 +148,7 @@ class _WalletPageState extends State<WalletPage> {
       Expanded(
         child: Container(
           color: Colors.white,
-          margin: const EdgeInsets.only(top: 6),
+          margin: const EdgeInsets.only(top: 8),
           child: Stack(
             children: [
               const TransactionList(),
@@ -260,7 +260,7 @@ class _WalletPageState extends State<WalletPage> {
             child: Icon(bannerIcons[index == 2 ? 1 : index], size: 36, color: Colors.white)
           ),
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,

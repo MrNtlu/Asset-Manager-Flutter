@@ -86,6 +86,18 @@ extension DateTimeExt on DateTime {
     return dayDiff.dateDifferencePluralString('day') + ' left';
   }
 
+  String dateToInfoDate() {
+    final dayDiff = difference(DateTime.now()).inDays;
+
+    if (dayDiff == 1) {
+      return "Tomorrow";
+    } else if (dayDiff == 0) {
+      return "Today";
+    } else {
+      return dateToHumanDate();
+    }
+  }
+
   String dateToFormatDate() {
     final DateFormat formatter = DateFormat('dd/MM/yyyy');
     return formatter.format(this);
@@ -126,6 +138,15 @@ extension IntExt on int {
 extension StringExt on String {
   bool isEmailValid() {
     return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(this);
+  }
+
+  String getCurrencyFromString() {
+    try {
+      var format = NumberFormat.simpleCurrency(name: this);
+      return format.currencySymbol.isNotEmpty ? format.currencySymbol : this;
+    } catch(_) {
+      return this;
+    }
   }
 }
 

@@ -6,6 +6,7 @@ import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
 import 'package:asset_flutter/content/models/responses/investings.dart';
 import 'package:asset_flutter/content/providers/common/currencies.dart';
+import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -88,7 +89,7 @@ class _CurrencyListState extends State<CurrencyList> {
             final data = _provider.items[index];
             final currencySelection = _selectionList[index];
 
-            return CurrencyListCell("${data.name}/${data.symbol}", currencySelection, index, handleSelection);
+            return CurrencyListCell("${data.symbol.getCurrencyFromString()} - ${data.name}", currencySelection, index, handleSelection);
           }),
           separatorBuilder: (_, __) => const Divider(),
           shrinkWrap: true,

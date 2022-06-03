@@ -93,7 +93,7 @@ class _CardDetailsPageState extends State<CardDetailsPage> {
         ),
         title: Text(
           _creditCard.name, 
-          style: TextStyle(color: _getThemeColor(_creditCard.color), fontWeight: FontWeight.bold)
+          style: TextStyle(color: _getThemeColor(_creditCard.color))
         ),
         backgroundColor: Color(int.parse(_creditCard.color)),
         actions: [

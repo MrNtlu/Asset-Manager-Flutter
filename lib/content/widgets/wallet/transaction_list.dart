@@ -163,7 +163,7 @@ class _TransactionListState extends State<TransactionList> {
       case ListState.done:
         final _data = _provider.items;
 
-        return ListView.separated(
+        return ListView.builder(
           controller: _scrollController,
           itemBuilder: (ctx, index) {
             if ((_canPaginate || _isPaginating) && index == _data.length) {
@@ -183,15 +183,16 @@ class _TransactionListState extends State<TransactionList> {
             final data = _data[index];
             if (_sortFilter.sort == "date" && (index == 0 || (index != 0 && !isSameDay(data.transactionDate, _data[index - 1].transactionDate)))){
               return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.fromLTRB(8, 16, 8, 8),
                     child: Text(
-                      data.transactionDate.dateToHumanDate(),
+                      data.transactionDate.dateToInfoDate(),
                       style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black
+                        color: Colors.black,
                       ),
                     ),
                   ),
@@ -202,7 +203,6 @@ class _TransactionListState extends State<TransactionList> {
             }
             return TransactionListCell(data);
           },
-          separatorBuilder: (_, __) => const Divider(),
           itemCount:_data.length + (_canPaginate ? 2 : 1),
           physics: const ClampingScrollPhysics(),
           shrinkWrap: true,

@@ -82,7 +82,7 @@ class PortfolioInvestmentListCell extends StatelessWidget {
                     null,
                     fontSize: 13,
                     iconSize: 15,
-                    plPrefix: data.fromAsset
+                    plPrefix: data.fromAsset.getCurrencyFromString()
                   )
                 ),
               ],

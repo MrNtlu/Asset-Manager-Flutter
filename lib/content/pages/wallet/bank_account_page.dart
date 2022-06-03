@@ -47,7 +47,6 @@ class _BankAccountPageState extends State<BankAccountPage> {
     });
   }
 
-
   void _deleteBankAccount(String id) {
     setState(() {
       _state = ListState.loading;
@@ -121,7 +120,7 @@ class _BankAccountPageState extends State<BankAccountPage> {
         ),
         title: const Text(
           "Bank Accounts", 
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)
+          style: TextStyle(color: Colors.black)
         ),
         backgroundColor: Colors.white,
         actions: [

@@ -97,7 +97,7 @@ class _CardPageState extends State<CardPage> {
         ),
         title: const Text(
           "Credit Cards", 
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)
+          style: TextStyle(color: Colors.black)
         ),
         backgroundColor: Colors.white,
         actions: [

@@ -7,7 +7,6 @@ import 'package:asset_flutter/common/widgets/success_view.dart';
 import 'package:asset_flutter/content/providers/subscription/subscription_state.dart';
 import 'package:asset_flutter/content/providers/subscription/subscriptions.dart';
 import 'package:asset_flutter/content/widgets/subscription/sd_edit.dart';
-import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -100,8 +99,11 @@ class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text("Create"),
-        backgroundColor: AppColors().primaryLightishColor,
+        title: const Text("Create", style: TextStyle(color: Colors.black)),
+        iconTheme: const IconThemeData(
+          color: Colors.black,
+        ),
+        backgroundColor: Colors.white,
         actions: [
           IconButton(
             icon: const Icon(Icons.save_rounded),

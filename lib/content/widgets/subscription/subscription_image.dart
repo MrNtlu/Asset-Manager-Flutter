@@ -18,7 +18,7 @@ class SubscriptionImage extends StatelessWidget {
       margin: const EdgeInsets.only(right: 6),
       decoration: BoxDecoration(
         color: Colors.white, 
-        borderRadius: BorderRadius.all(Radius.circular(size/2))
+        borderRadius: BorderRadius.all(Radius.circular(size/2)),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(size/2),

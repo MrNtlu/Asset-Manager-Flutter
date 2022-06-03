@@ -39,17 +39,19 @@ class SubscriptionList extends StatelessWidget{
   shrinkWrap: true,
   );
 
-
-  //TODO: Implement
   Widget _landscapeListView(List<Subscription> _data) => SizedBox(
-    height: _data.length < 6 ? _data.length * 110 : 650,
+    height: _data.length < 6 ? _data.length * 105 : 630,
     child: ListView.builder(itemBuilder: ((context, index) {
       final data = _data[index];
       return ChangeNotifierProvider.value(
         value: data,
-        child: SubscriptionListCell(data)
+        child: Padding(
+          padding: const EdgeInsets.all(4),
+          child: SubscriptionListCell(data),
+        )
       );
     }),
+    itemExtent: 100,
     itemCount: _data.length,
     physics: const ClampingScrollPhysics(),
     shrinkWrap: true,

@@ -125,7 +125,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
           floatHeaderSlivers: false,
           headerSliverBuilder: ((context, innerBoxIsScrolled) => [
               SliverAppBar(
-                expandedHeight: MediaQuery.of(context).size.height > 600 ? 380 : 360,
+                expandedHeight: MediaQuery.of(context).size.height > 600 ? 381 : 361,
                 floating: true,
                 snap: false,
                 backgroundColor: Colors.white,

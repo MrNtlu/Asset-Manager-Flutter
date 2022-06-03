@@ -167,7 +167,7 @@ class _BankCreatePageState extends State<BankCreatePage> {
         ),
         title: Text(
           widget.isCreate ? "Create" : "Update", 
-          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)
+          style: const TextStyle(color: Colors.white)
         ),
         backgroundColor: AppColors().primaryLightishColor,
       ),

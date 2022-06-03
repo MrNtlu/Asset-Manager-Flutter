@@ -6,6 +6,7 @@ import 'package:asset_flutter/content/providers/wallet/transaction_total_stat.da
 import 'package:asset_flutter/content/providers/wallet/wallet_state.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/utils/extensions.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -107,11 +108,11 @@ class _WalletStatsState extends State<WalletStats> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Padding(
-                      padding: EdgeInsets.only(left: 8),
+                      padding: EdgeInsets.only(left: 12),
                       child: Text(
-                        "Total Expenses",
+                        "Total Balance",
                         style: TextStyle(
-                          fontSize: 16, 
+                          fontSize: 14, 
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         )
@@ -130,14 +131,16 @@ class _WalletStatsState extends State<WalletStats> {
                           "Month", 
                           style: TextStyle(
                             color: isSelected[0] ? Colors.white : Colors.black54,
-                            fontSize: 14, 
+                            fontSize: 12,
+                            fontWeight: isSelected[0] ? FontWeight.bold : FontWeight.normal
                           )
                         ),
                         Text(
                           "Day", 
                           style: TextStyle(
                             color: isSelected[1] ? Colors.white : Colors.black54,
-                            fontSize: 14, 
+                            fontWeight: isSelected[1] ? FontWeight.bold : FontWeight.normal,
+                            fontSize: 12, 
                           )
                         ),
                       ],
@@ -156,20 +159,24 @@ class _WalletStatsState extends State<WalletStats> {
                   ],
                 ),
                 Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        _totalStatsProvider.item!.totalTransaction.abs().numToString() + " " + (_totalStatsProvider.item!.currency.isNotEmpty ? _totalStatsProvider.item!.currency : "USD"),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 12),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: AutoSizeText(
+                        (_totalStatsProvider.item!.currency.isNotEmpty ? _totalStatsProvider.item!.currency : "USD").getCurrencyFromString() 
+                          + " " + _totalStatsProvider.item!.totalTransaction.abs().numToString(),
+                        maxLines: 1,
+                        minFontSize: 18,
                         style: TextStyle(
                           color: isNeutral
                           ? Colors.grey
                           : (_totalStatsProvider.item!.totalTransaction < 0 ? AppColors().greenColor : AppColors().redColor),
-                          fontSize: 20,
+                          fontSize: 22,
                           fontWeight: FontWeight.bold
                         ),
                       ),
-                    ],
+                    ),
                   ),
                 ),
                 const Padding(
@@ -179,8 +186,8 @@ class _WalletStatsState extends State<WalletStats> {
                     child: Text(
                       "Click to see detailed statistics",
                       style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 11,
+                        color: Colors.white70,
+                        fontSize: 10,
                       ),
                     ),
                   ),

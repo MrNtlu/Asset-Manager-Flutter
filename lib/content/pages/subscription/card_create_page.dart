@@ -180,7 +180,7 @@ class _CardCreatePageState extends State<CardCreatePage> {
         ),
         title: Text(
           widget.isCreate ? "Create" : "Update", 
-          style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)
+          style: const TextStyle(color: Colors.black)
         ),
         backgroundColor: Colors.white,
       ),

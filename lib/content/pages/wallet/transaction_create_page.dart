@@ -243,13 +243,13 @@ class _TransactionCreatePageState extends State<TransactionCreatePage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         iconTheme: const IconThemeData(
-          color: Colors.white,
+          color: Colors.black,
         ),
         title: Text(
           widget.isCreate ? "Create" : "Update", 
-          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)
+          style: const TextStyle(color: Colors.black)
         ),
-        backgroundColor: AppColors().primaryLightishColor,
+        backgroundColor: Colors.white,
       ),
       body: SafeArea(
         child: _body(),

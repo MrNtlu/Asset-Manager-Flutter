@@ -391,7 +391,7 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
         if (_investmentCreateDropdowns.typeDropdownValue == "Stock") {
           return investings.name;
         }
-        return (investings.name + '/' + investings.symbol);
+        return (investings.symbol.getCurrencyFromString() + ' - ' + investings.name);
       }
       return "";
     }
@@ -441,7 +441,8 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
         if (_investmentCreateDropdowns.typeDropdownValue == "Stock") {
           return investings.name;
         }
-        return (investings.name + '/' + investings.symbol);
+
+        return (investings.symbol.getCurrencyFromString() + ' - ' + investings.name);
       }
       return "";
     }

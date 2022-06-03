@@ -41,9 +41,9 @@ class SubscriptionListCell extends StatelessWidget {
               child: Stack(
                 children: [
                   SLSubText(
-                    subscription.price.toString() + ' ' + subscription.currency,
+                    subscription.currency.getCurrencyFromString() + ' ' + subscription.price.toString(),
                     Alignment.centerRight,
-                    16,
+                    18,
                   ),
                   Positioned(
                     bottom: 2,

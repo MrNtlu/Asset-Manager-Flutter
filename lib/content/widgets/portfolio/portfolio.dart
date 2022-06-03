@@ -19,62 +19,58 @@ class Portfolio extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.only(top: 12, bottom: 8),
-      child: Column(children: [
-        Container(
-          margin: const EdgeInsets.only(left: 8, right: 8),
-          child: Card(
-            color: AppColors().primaryColor,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(8, 8, 12, 8),
-              child: Column(
-                children: [
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
+      child: Container(
+        margin: const EdgeInsets.only(left: 8, right: 8),
+        child: Card(
+          color: AppColors().primaryColor,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(8, 8, 12, 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(left: 12, top: 12),
+                  child: Text(
+                    "My Portfolio",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.white70
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 4, left: 12, bottom: 16),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: AutoSizeText(
                       (assetStats.currency == ''
                         ? 'USD'
-                        : assetStats.currency),
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.white
+                        : assetStats.currency).getCurrencyFromString() + ' ' + assetStats.totalAsset.numToString(),
+                      softWrap: false,
+                      maxLines: 1,
+                      minFontSize: 22,
+                      style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width > 350 ? 36 : 32,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 12, left: 8),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: AutoSizeText(
-                        assetStats.totalAsset.numToString(),
-                        softWrap: false,
-                        maxLines: 1,
-                        minFontSize: 22,
-                        style: TextStyle(
-                          fontSize: MediaQuery.of(context).size.width > 350 ? 36 : 32,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 16),
-                    child: PortfolioPLText(
-                      assetStats.totalPL.toDouble(),
-                      assetStats.totalPLPercentage.toDouble(),
-                      null, 
-                      fontSize: MediaQuery.of(context).size.width > 350 ? 20 : 16, 
-                      iconSize: MediaQuery.of(context).size.width > 350 ? 22 : 18,
-                      plPrefix: currencySymbol,
-                    )
-                  ),
-                ],
-              ),
+                ),
+                PortfolioPLText(
+                  assetStats.totalPL.toDouble(),
+                  assetStats.totalPLPercentage.toDouble(),
+                  null, 
+                  fontSize: MediaQuery.of(context).size.width > 350 ? 20 : 16, 
+                  iconSize: MediaQuery.of(context).size.width > 350 ? 22 : 18,
+                  plPrefix: currencySymbol.getCurrencyFromString(),
+                )
+              ],
             ),
           ),
         ),
-      ]),
+      ),
     );
   }
 }

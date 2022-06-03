@@ -75,7 +75,7 @@ class _CardDetailsSubscriptionListState extends State<CardDetailsSubscriptionLis
           child: _state == ListState.empty
             ? const Center(child: NoItemView("Couldn't find subscription."))
             : Padding(
-              padding: const EdgeInsets.only(top: 8),
+              padding: const EdgeInsets.all(4),
               child: ListView.builder(
                 itemBuilder: ((context, index) {
                   final _data = _cardSubscriptionsProvider.items[index];
@@ -85,6 +85,7 @@ class _CardDetailsSubscriptionListState extends State<CardDetailsSubscriptionLis
                     child: SubscriptionListCell(_data, isCardDetails: true)
                   );
                 }),
+                itemExtent: 100,
                 itemCount: _cardSubscriptionsProvider.items.length,
                 shrinkWrap: true,
               ),
