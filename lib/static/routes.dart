@@ -196,7 +196,6 @@ class TransactionRoutes {
 
     transactionStats = _baseTransactionURL + "/stats";
     totalTransactionByInterval = _baseTransactionURL + "/total";
-    calendarTransactionCount = _baseTransactionURL + "/calendar";
     transactionByUserIDAndFilterSort = _baseTransactionURL;
 
     updateTransaction = _baseTransactionURL;

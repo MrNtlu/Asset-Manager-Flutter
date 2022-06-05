@@ -131,7 +131,7 @@ class TransactionListCell extends StatelessWidget {
                   children: [
                     SizedBox(
                       child: AutoSizeText(
-                        "${_isIncome ? '+' : '-'}${_data.price.numToString()} ${_data.currency}",
+                        "${_isIncome ? '+' : '-'}${_data.price.abs().numToString()} ${_data.currency}",
                         textAlign: TextAlign.right,
                         style: TextStyle(
                           color: _isIncome ? AppColors().greenColor : AppColors().redColor,

@@ -87,6 +87,9 @@ class _TransactionCreatePageState extends State<TransactionCreatePage> {
 
     createData!.transactionDate = _dateTimePicker.selectedDateTime;
     createData!.category = _categoryList.selectedCategory!.value;
+    if (_categoryList.selectedCategory == Category.income) {
+      createData!.price = createData!.price * -1;
+    }
     if (isSelected[0] && _bankAccPicker.selectedBankAcc != null) {
       createData!.transactionMethod = TransactionMethod(methodID: _bankAccPicker.selectedBankAcc!.id, type: 0);
     } else if (isSelected[1] && _creditCardPicker.selectedCard != null) {
@@ -133,6 +136,9 @@ class _TransactionCreatePageState extends State<TransactionCreatePage> {
 
     if (_categoryList.selectedCategory!.value != _transaction!.category) {
       updateData!.category = _categoryList.selectedCategory!.value;
+      if (_categoryList.selectedCategory! == Category.income) {
+        updateData!.price = (updateData!.price?.abs() ?? transactionPrice.abs()) * -1;
+      }
     }
 
     if (_dateTimePicker.selectedDateTime != _transaction!.transactionDate) {
@@ -141,6 +147,10 @@ class _TransactionCreatePageState extends State<TransactionCreatePage> {
 
     if (transactionCurrency != _transaction!.currency) {
       updateData!.currency = transactionCurrency;
+    }
+
+    if (_categoryList.selectedCategory! == Category.income && updateData!.price != null) {
+      updateData!.price = updateData!.price!.abs() * -1;
     }
 
     if (isSelected[0]) {
@@ -211,7 +221,7 @@ class _TransactionCreatePageState extends State<TransactionCreatePage> {
       transactionTitle = widget.isCreate ? createData!.title : _transaction!.title;
       transactionDescription = widget.isCreate ? createData!.description : _transaction!.description;
       transactionCategory = widget.isCreate ? createData!.category : _transaction!.category;
-      transactionPrice = widget.isCreate ? createData!.price : _transaction!.price;
+      transactionPrice = widget.isCreate ? createData!.price.abs() : _transaction!.price.abs();
       transactionCurrency = widget.isCreate ? createData!.currency : _transaction!.currency;
       transactionMethod = widget.isCreate ? createData!.transactionMethod : _transaction!.transactionMethod;
       transactionDate = widget.isCreate ? createData!.transactionDate : _transaction!.transactionDate;

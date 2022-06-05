@@ -56,7 +56,7 @@ class _WalletStatsPageState extends State<WalletStatsPage> {
                           disabledBorderColor: Colors.transparent,
                           splashColor: Colors.transparent,
                           children: [
-                            _toggleButton("Day", 0),
+                            _toggleButton("Week", 0),
                             _toggleButton("Month", 1),
                             _toggleButton("Year", 2),
                           ],
@@ -218,6 +218,7 @@ class _WalletStatsPageState extends State<WalletStatsPage> {
                       yValueMapper: (ChartData data, _) => data.stat,
                       borderColor: Colors.black,
                       borderWidth: 3,
+                      dataLabelSettings: DataLabelSettings(isVisible: true, color: AppColors().barCardColor),
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
