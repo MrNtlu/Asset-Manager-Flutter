@@ -1,5 +1,6 @@
 import 'package:asset_flutter/content/widgets/portfolio/stats_lc_linechart.dart';
 import 'package:asset_flutter/static/colors.dart';
+import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -28,10 +29,19 @@ class PortfolioFullscreenStatsPage extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(right: 8),
-                  child: Text(
+                  child: MediaQuery.of(context).orientation == Orientation.landscape 
+                    ? Text(
                     "$_title($_currency)",
                     style: const TextStyle(
                       color: Colors.white,
+                    ),
+                  )
+                  : const Text(
+                    "Landscape mode recommended.",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold
                     ),
                   ),
                 )
@@ -68,7 +78,7 @@ class PortfolioFullscreenStatsPage extends StatelessWidget {
                 tooltipBehavior: TooltipBehavior(
                   enable: true, 
                   canShowMarker: true, 
-                  format: 'point.x - point.y $_currency',
+                  format: 'point.x - ${_currency.getCurrencyFromString()} point.y',
                 ),
                 series: [
                   SplineSeries<ChartData, String>(
@@ -76,6 +86,7 @@ class PortfolioFullscreenStatsPage extends StatelessWidget {
                     color: AppColors().accentColor,
                     dataSource: _chartData,
                     markerSettings: const MarkerSettings(isVisible: true),
+                    dataLabelMapper: (_data, index) => _currency.getCurrencyFromString() + _data.stat.numToString(),
                     dataLabelSettings: const DataLabelSettings(isVisible: true, color: Colors.white),
                     xValueMapper: (ChartData data, _) => data.date,
                     yValueMapper: (ChartData data, _) => data.stat,

@@ -5,7 +5,6 @@ import 'package:asset_flutter/common/widgets/no_item_holder.dart';
 import 'package:asset_flutter/content/models/requests/transaction.dart';
 import 'package:asset_flutter/content/providers/subscription/cards.dart';
 import 'package:asset_flutter/content/providers/wallet/bank_accounts.dart';
-import 'package:asset_flutter/content/providers/wallet/transaction_date_state.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_sheet_state.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_state.dart';
 import 'package:asset_flutter/content/providers/wallet/transactions.dart';
@@ -137,14 +136,6 @@ class _TransactionListState extends State<TransactionList> {
       _scrollController.addListener(_scrollHandler);
       _walletStateProvider = Provider.of<WalletStateProvider>(context);
       _walletStateProvider.addListener(_walletStateListener);
-
-      final _selectedTimeRangeProvider = Provider.of<TransactionDateRangeSelectionStateProvider>(context, listen: false);
-      if  (_selectedTimeRangeProvider.selectedTimeRange != null) {
-        _sortFilter.startDate = _selectedTimeRangeProvider.selectedTimeRange!.start;
-        _sortFilter.endDate = _selectedTimeRangeProvider.selectedTimeRange!.end;
-        _selectionProvider.selectedTimeRange = _selectedTimeRangeProvider.selectedTimeRange;
-        _selectedTimeRangeProvider.selectedTimeRange = null;
-      }
 
       _state = ListState.loading;
       Future.wait([

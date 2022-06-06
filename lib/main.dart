@@ -14,9 +14,10 @@ import 'package:asset_flutter/content/providers/wallet/bank_account_selection_st
 import 'package:asset_flutter/content/providers/wallet/bank_account_state.dart';
 import 'package:asset_flutter/content/providers/wallet/bank_accounts.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_calendar.dart';
-import 'package:asset_flutter/content/providers/wallet/transaction_date_state.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_sheet_state.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_state.dart';
+import 'package:asset_flutter/content/providers/wallet/transaction_stats.dart';
+import 'package:asset_flutter/content/providers/wallet/transaction_stats_toggle.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_total_stat.dart';
 import 'package:asset_flutter/content/providers/wallet/transactions.dart';
 import 'package:asset_flutter/content/providers/wallet/wallet_state.dart';
@@ -87,6 +88,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: TransactionsProvider()),
         ChangeNotifierProvider.value(value: BankAccountProvider()),
         ChangeNotifierProvider.value(value: TransactionCalendarCountsProvider()),
+        ChangeNotifierProvider.value(value: TransactionStatsProvider()),
         ChangeNotifierProvider(create: (context) => CardStateProvider()),
         ChangeNotifierProvider(create: (context) => WalletStateProvider()),
         ChangeNotifierProvider(create: (context) => BankAccountStateProvider()),
@@ -98,7 +100,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => CardSheetSelectionStateProvider()),
         ChangeNotifierProvider(create: (context) => BankAccountSelectionStateProvider()),
         ChangeNotifierProvider(create: (context) => TransactionSheetSelectionStateProvider()),
-        ChangeNotifierProvider(create: (context) => TransactionDateRangeSelectionStateProvider()),
+        ChangeNotifierProvider(create: (context) => TransactionStatsToggleProvider()),
       ],
       child: MaterialApp(
         title: 'Kanma',

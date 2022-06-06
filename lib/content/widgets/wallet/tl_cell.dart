@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/check_dialog.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
@@ -5,6 +7,7 @@ import 'package:asset_flutter/content/pages/wallet/transaction_create_page.dart'
 import 'package:asset_flutter/content/providers/wallet/transaction.dart';
 import 'package:asset_flutter/content/providers/wallet/transactions.dart';
 import 'package:asset_flutter/content/providers/wallet/wallet_state.dart';
+import 'package:asset_flutter/content/widgets/wallet/transaction_details_sheet.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -40,6 +43,7 @@ class TransactionListCell extends StatelessWidget {
     _provider = Provider.of<TransactionsProvider>(context, listen: false);
     _walletStateProvider = Provider.of<WalletStateProvider>(context, listen: false);
     final _isIncome = _data.category == Category.income.value;
+    final category = Category.valueToCategory(_data.category);
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
@@ -77,85 +81,104 @@ class TransactionListCell extends StatelessWidget {
             ),
           ],
         ),
-        child: ListTile(
-          title: Row(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(right: 12),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(18),
-                  border: Border.all(
-                    color: Category.valueToCategory(_data.category).iconColor,
-                  )
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Icon(
-                    Category.valueToCategory(_data.category).icon,
-                    color: Category.valueToCategory(_data.category).iconColor,
-                    size: 24, 
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 3,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      _data.title,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold
-                      ),
-                    ),
-                    if(_data.description != null)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 4),
-                      child: Text(
-                        _data.description!,
-                        style: const TextStyle(
-                          fontSize: 14,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    SizedBox(
-                      child: AutoSizeText(
-                        "${_isIncome ? '+' : '-'}${_data.price.abs().numToString()} ${_data.currency}",
-                        textAlign: TextAlign.right,
-                        style: TextStyle(
-                          color: _isIncome ? AppColors().greenColor : AppColors().redColor,
-                          fontWeight: FontWeight.bold
-                        ),
-                        maxLines: 1,
-                        minFontSize: 12,
-                        maxFontSize: 14,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 4),
-                      child: Text(
-                        _data.transactionDate.dateToDateTime(),
-                        style: const TextStyle(
-                          fontSize: 10,
-                        ),
-                        maxLines: 1,
-                      ),
-                    )
-                  ],
+        child: GestureDetector(
+          onTap: () {
+            showModalBottomSheet(
+              context: context,
+              shape: Platform.isIOS || Platform.isMacOS
+              ? const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(16),
+                  topLeft: Radius.circular(16)
                 ),
               )
-            ],
+              : null,
+              enableDrag: true,
+              isDismissible: true,
+              isScrollControlled: false,
+              builder: (_) => TransactionDetailsSheet(_data, category)
+            );
+          },
+          child: ListTile(
+            title: Row(
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(right: 12),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(18),
+                    border: Border.all(
+                      color: category.iconColor,
+                    )
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Icon(
+                      category.icon,
+                      color: category.iconColor,
+                      size: 24, 
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _data.title,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold
+                        ),
+                      ),
+                      if(_data.description != null)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: Text(
+                          _data.description!,
+                          style: const TextStyle(
+                            fontSize: 14,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      SizedBox(
+                        child: AutoSizeText(
+                          "${_isIncome ? '+' : '-'}${_data.price.abs().numToString()} ${_data.currency}",
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            color: _isIncome ? AppColors().greenColor : AppColors().redColor,
+                            fontWeight: FontWeight.bold
+                          ),
+                          maxLines: 1,
+                          minFontSize: 12,
+                          maxFontSize: 14,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: Text(
+                          _data.transactionDate.dateToDateTime(),
+                          style: const TextStyle(
+                            fontSize: 10,
+                          ),
+                          maxLines: 1,
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

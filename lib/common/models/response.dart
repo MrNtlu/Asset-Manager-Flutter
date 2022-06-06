@@ -13,6 +13,7 @@ import 'package:asset_flutter/content/providers/subscription/subscription.dart';
 import 'package:asset_flutter/content/providers/wallet/bank_account.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_calendar.dart';
+import 'package:asset_flutter/content/providers/wallet/transaction_stats.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_total_stat.dart';
 
 class BaseAPIResponse {
@@ -319,6 +320,28 @@ class _TypeConverter<T> {
         response["currency"],
         response["total_monthly_payment"],
         response["total_payment"],
+      ) as T;
+    } else if (T == TransactionStats) {
+      return TransactionStats(
+        response["daily_stats"] != null 
+          ? ((response["daily_stats"]) as List
+          ).map((e) => TransactionDailyStats(
+            e["currency"],
+            e["total_transaction"],
+            DateTime.parse(e["date"]),
+          )).toList() : [],
+        TransactionCategoryStats(
+          response["category_stats"]["currency"],
+          response["category_stats"]["total_transaction"],
+          response["category_stats"]["category_list"] != null 
+            ? ((response["category_stats"]["category_list"]) as List
+            ).map((e) => TransactionCategoryStat(
+              e["_id"],
+              e["total_transaction"],
+            )).toList() : [],
+        ),
+        response["total_expense"],
+        response["total_income"],
       ) as T;
     } else{
       return response as T;

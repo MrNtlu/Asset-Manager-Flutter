@@ -1,5 +1,7 @@
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
+import 'package:asset_flutter/content/pages/subscription/card_page.dart';
+import 'package:asset_flutter/content/pages/wallet/bank_account_page.dart';
 import 'package:asset_flutter/content/pages/wallet/wallet_stats_page.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_state.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_total_stat.dart';
@@ -86,118 +88,158 @@ class _WalletStatsState extends State<WalletStats> {
       case ViewState.error:
       case ViewState.empty:
         final isNeutral = _state == ViewState.error ? false : _totalStatsProvider.item!.totalTransaction.abs() <= 0.01;
-        return GestureDetector(
-          onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: ((_) => const WalletStatsPage()))),
-          child: Container(
-            margin: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(12)),
-              color: AppColors().primaryColor,
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black38,
-                  offset: Offset(2.0, 2.0),
-                  blurRadius: 5.0,
-                  spreadRadius: 1.0
-                )
-              ],
-            ),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(left: 12),
-                      child: Text(
-                        "Total Balance",
-                        style: TextStyle(
-                          fontSize: 14, 
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        )
-                      ),
-                    ),
-                    ToggleButtons(
-                      borderWidth: 0,
-                      selectedColor: Colors.transparent,
-                      borderColor: Colors.transparent,
-                      fillColor: Colors.transparent,
-                      selectedBorderColor: Colors.transparent,
-                      disabledBorderColor: Colors.transparent,
-                      splashColor: Colors.transparent,
-                      children: [
-                        Text(
-                          "Month", 
-                          style: TextStyle(
-                            color: isSelected[0] ? Colors.white : Colors.black54,
-                            fontSize: 12,
-                            fontWeight: isSelected[0] ? FontWeight.bold : FontWeight.normal
-                          )
-                        ),
-                        Text(
-                          "Day", 
-                          style: TextStyle(
-                            color: isSelected[1] ? Colors.white : Colors.black54,
-                            fontWeight: isSelected[1] ? FontWeight.bold : FontWeight.normal,
-                            fontSize: 12, 
-                          )
-                        ),
-                      ],
-                      isSelected: isSelected,
-                      onPressed: (int newIndex) {
-                        setState(() {
-                          var falseIndex = newIndex == 0 ? 1 : 0;
-                          if (!isSelected[newIndex]) {
-                            isSelected[newIndex] = true;
-                            isSelected[falseIndex] = false;
-                            _getTotalStats();
+        return Container(
+          margin: const EdgeInsets.all(8),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      PopupMenuButton(
+                        onSelected: (item) {
+                          switch (item) {
+                            case 0:
+                              Navigator.of(context).push(
+                                MaterialPageRoute(builder: ((_) {
+                                  return const CardPage();
+                                }))
+                              );
+                              break;
+                            case 1:
+                              Navigator.of(context).push(
+                                MaterialPageRoute(builder: ((_) {
+                                  return const BankAccountPage();
+                                }))
+                              );
+                              break;
                           }
-                        });
-                      },
-                    ),
-                  ],
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 12),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: AutoSizeText(
-                        (_totalStatsProvider.item!.currency.isNotEmpty ? _totalStatsProvider.item!.currency : "USD").getCurrencyFromString() 
-                          + " " + _totalStatsProvider.item!.totalTransaction.abs().numToString(),
-                        maxLines: 1,
-                        minFontSize: 18,
-                        style: TextStyle(
-                          color: isNeutral
-                          ? Colors.grey
-                          : (_totalStatsProvider.item!.totalTransaction < 0 ? AppColors().greenColor : AppColors().redColor),
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold
-                        ),
+                        },
+                        itemBuilder: (ctx) => [
+                          PopupMenuItem(
+                            value: 0,
+                            child: Row(
+                              children: const [
+                                Icon(Icons.credit_card_rounded),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 8),
+                                  child: Text("Credit Cards"),
+                                ),
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem(
+                            value: 1,
+                            child: Row(
+                              children: const [
+                                Icon(Icons.account_balance_rounded),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 8),
+                                  child: Text("Bank Accounts"),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
+                      IconButton(
+                        onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: ((_) => const WalletStatsPage()))),
+                        icon: const Icon(Icons.stacked_bar_chart_rounded),
+                      ),
+                    ],
+                  ),
+                  ToggleButtons(
+                    borderWidth: 0,
+                    selectedColor: Colors.transparent,
+                    borderColor: Colors.transparent,
+                    fillColor: Colors.transparent,
+                    selectedBorderColor: Colors.transparent,
+                    disabledBorderColor: Colors.transparent,
+                    splashColor: Colors.transparent,
+                    children: [
+                      _toggleButton("Month", 0),
+                      _toggleButton("Day", 1),
+                    ],
+                    isSelected: isSelected,
+                    onPressed: (int newIndex) {
+                      setState(() {
+                        var falseIndex = newIndex == 0 ? 1 : 0;
+                        if (!isSelected[newIndex]) {
+                          isSelected[newIndex] = true;
+                          isSelected[falseIndex] = false;
+                          _getTotalStats();
+                        }
+                      });
+                    },
+                  ),
+                ],
+              ),
+              const Padding(
+                padding: EdgeInsets.only(top: 16),
+                child: Text(
+                  "Total Balance",
+                  style: TextStyle(
+                    fontSize: 14, 
+                    color: Colors.black54,
+                    fontWeight: FontWeight.bold,
+                  )
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8, left: 16, right: 16),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: AutoSizeText(
+                    (_totalStatsProvider.item!.currency.isNotEmpty ? _totalStatsProvider.item!.currency : "USD").getCurrencyFromString() 
+                      + " " + _totalStatsProvider.item!.totalTransaction.abs().numToString(),
+                    maxLines: 1,
+                    minFontSize: 18,
+                    style: TextStyle(
+                      color: isNeutral
+                      ? Colors.grey
+                      : (_totalStatsProvider.item!.totalTransaction < 0 ? AppColors().greenColor : AppColors().redColor),
+                      fontSize: 34,
+                      fontWeight: FontWeight.bold
                     ),
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.all(6),
-                  child: Align(
-                    alignment: Alignment.bottomRight,
-                    child: Text(
-                      "Click to see detailed statistics",
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 10,
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
+              ),
+            ],
           ),
         );
       default:
         return const LoadingView("Loading");
     }
   }
+
+  Widget _toggleButton(String _title, int index) {
+    if (isSelected[index]) {
+      return SizedBox(
+        width: 70,
+        child: Card(
+          color: Colors.black,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: _toggleText(_title, isSelected[index]),
+          ),
+        ),
+      );
+    }
+    return SizedBox(
+      width: 70,
+      child: _toggleText(_title, isSelected[index])
+    );
+  }
+
+  Widget _toggleText(String _title, bool _isSelected) => Text(
+    _title, 
+    textAlign: TextAlign.center,
+    style: TextStyle(
+      color: _isSelected ? Colors.white : Colors.black54,
+      fontSize: 14,
+      fontWeight: _isSelected ? FontWeight.bold : FontWeight.normal
+    )
+  );
 }
