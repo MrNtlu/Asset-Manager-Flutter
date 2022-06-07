@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/currency_sheet.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
@@ -11,7 +10,6 @@ import 'package:asset_flutter/content/providers/common/currency_sheet_state.dart
 import 'package:asset_flutter/content/providers/wallet/bank_account.dart';
 import 'package:asset_flutter/content/providers/wallet/bank_account_state.dart';
 import 'package:asset_flutter/content/providers/wallet/bank_accounts.dart';
-import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -163,13 +161,13 @@ class _BankCreatePageState extends State<BankCreatePage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         iconTheme: const IconThemeData(
-          color: Colors.white,
+          color: Colors.black,
         ),
         title: Text(
           widget.isCreate ? "Create" : "Update", 
-          style: const TextStyle(color: Colors.white)
+          style: const TextStyle(color: Colors.black)
         ),
-        backgroundColor: AppColors().primaryLightishColor,
+        backgroundColor: Colors.white,
       ),
       body: SafeArea(
         child: _body(),

@@ -76,7 +76,7 @@ class InvestmentDetailsTopBar extends StatelessWidget {
                         null,
                         fontSize: 15,
                         iconSize: 17,
-                        plPrefix: _data.fromAsset
+                        plPrefix: _data.fromAsset.getCurrencyFromString()
                       )
                     )
                   ],

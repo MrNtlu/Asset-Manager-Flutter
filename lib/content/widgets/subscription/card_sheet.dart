@@ -184,7 +184,7 @@ class _CardSelectionSheetState extends State<CardSelectionSheet> {
           child: ErrorView(_error ?? "Unknown error!", _getCreditCards),
         );
       case ListState.loading:
-        return const LoadingView("Fetching credit cards");
+        return const LoadingView("Getting credit cards");
       default:
         return const LoadingView("Loading");
     }

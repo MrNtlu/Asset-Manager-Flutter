@@ -489,7 +489,7 @@ class _CardCreatePageState extends State<CardCreatePage> {
           ),
         );
       case CreateState.loading:
-        return LoadingView("${widget.isCreate ? 'Creating' : 'Updating'} Subscription");
+        return LoadingView("${widget.isCreate ? 'Creating' : 'Updating'} Credit Card");
       default:
         return const LoadingView("Loading");
     }

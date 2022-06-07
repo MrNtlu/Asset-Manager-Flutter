@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/check_dialog.dart';
 import 'package:asset_flutter/common/widgets/error_view.dart';
@@ -114,26 +113,38 @@ class _BankAccountPageState extends State<BankAccountPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        iconTheme: const IconThemeData(
-          color: Colors.black,
-        ),
-        title: const Text(
-          "Bank Accounts", 
-          style: TextStyle(color: Colors.black)
-        ),
-        backgroundColor: Colors.white,
-        actions: [
-          IconButton(
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => const BankCreatePage(true))
-            ), 
-            icon: const Icon(Icons.add_rounded, size: 28)
-          )
-        ],
-      ),
       body: SafeArea(
-        child: _portraitBody(),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 6),
+              child: Row(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: IconButton(
+                      onPressed: () => Navigator.pop(context), 
+                      icon: const Icon(Icons.arrow_back_ios_new_rounded)
+                    ),
+                  ),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: IconButton(
+                        onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => const BankCreatePage(true))
+                        ), 
+                        icon: const Icon(Icons.add_box_rounded)
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Expanded(child: _portraitBody()),
+          ],
+        ),
       ),
     );
   }
@@ -146,148 +157,146 @@ class _BankAccountPageState extends State<BankAccountPage> {
         return ErrorView(_error ?? "Unknown error!", _getBankAccounts);
       case ListState.empty:
       case ListState.done:
-        return SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: Stack(
-            children: [
-              _state == ListState.empty
-                ? const Center(child: NoItemView("Couldn't find bank account."))
-                : Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: ListView.separated(
-                    itemCount: _bankProvider.items.length,
-                    physics: const ClampingScrollPhysics(),
-                    shrinkWrap: true,
-                    separatorBuilder: (_, __) => const Divider(),
-                    itemBuilder: ((context, index) {
-                      var _bankAccount = _bankProvider.items[index];
+        return Stack(
+          children: [
+            _state == ListState.empty
+            ? const Center(child: NoItemView("Couldn't find bank account."))
+            : Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: ListView.separated(
+                itemCount: _bankProvider.items.length,
+                physics: const ClampingScrollPhysics(),
+                shrinkWrap: true,
+                separatorBuilder: (_, __) => const Divider(),
+                itemBuilder: ((context, index) {
+                  var _bankAccount = _bankProvider.items[index];
 
-                      return GestureDetector(
-                        onTap: () => showModalBottomSheet(
-                          context: context,
-                          shape: Platform.isIOS || Platform.isMacOS
-                          ? const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(16),
-                              topLeft: Radius.circular(16)
+                  return GestureDetector(
+                    onTap: () => showModalBottomSheet(
+                      context: context,
+                      shape: Platform.isIOS || Platform.isMacOS
+                      ? const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(16),
+                          topLeft: Radius.circular(16)
+                        ),
+                      )
+                      : null,
+                      enableDrag: true,
+                      isDismissible: true,
+                      builder: (_) => BankAccountDetailsSheet(_bankAccount.id)
+                    ),
+                    child: Slidable(
+                      endActionPane: ActionPane(
+                        motion: const StretchMotion(),
+                        children: [
+                          SlidableAction(
+                            onPressed: (slideContext) => showDialog(
+                              context: context,
+                              builder: (ctx) => AreYouSureDialog("edit", (){
+                                Navigator.pop(ctx);
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(builder: (_) => BankCreatePage(false, bankAccountID: _bankAccount.id,))
+                                );
+                              }),
                             ),
-                          )
-                          : null,
-                          enableDrag: true,
-                          isDismissible: true,
-                          builder: (_) => BankAccountDetailsSheet(_bankAccount.id)
-                        ),
-                        child: Slidable(
-                          endActionPane: ActionPane(
-                            motion: const StretchMotion(),
-                            children: [
-                              SlidableAction(
-                                onPressed: (slideContext) => showDialog(
-                                  context: context,
-                                  builder: (ctx) => AreYouSureDialog("edit", (){
-                                    Navigator.pop(ctx);
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(builder: (_) => BankCreatePage(false, bankAccountID: _bankAccount.id,))
-                                    );
-                                  }),
-                                ),
-                                backgroundColor: Colors.orange,
-                                foregroundColor: Colors.white,
-                                icon: Icons.edit_rounded,
-                                label: 'Edit',
-                              ),
-                              SlidableAction(
-                                onPressed: (context) => showDialog(
-                                  context: context,
-                                  builder: (ctx) => AreYouSureDialog('delete', (){
-                                    Navigator.pop(ctx);
-                                    _deleteBankAccount(_bankAccount.id);
-                                  })
-                                ),
-                                backgroundColor: Colors.red,
-                                foregroundColor: Colors.white,
-                                icon: Icons.delete_rounded,
-                                label: 'Delete',
-                              ),
-                            ],
+                            backgroundColor: Colors.orange,
+                            foregroundColor: Colors.white,
+                            icon: Icons.edit_rounded,
+                            label: 'Edit',
                           ),
-                          child: LayoutBuilder(
-                            builder: (layoutContext, contsraints) {
-                              final slidable = Slidable.of(layoutContext);
+                          SlidableAction(
+                            onPressed: (context) => showDialog(
+                              context: context,
+                              builder: (ctx) => AreYouSureDialog('delete', (){
+                                Navigator.pop(ctx);
+                                _deleteBankAccount(_bankAccount.id);
+                              })
+                            ),
+                            backgroundColor: Colors.red,
+                            foregroundColor: Colors.white,
+                            icon: Icons.delete_rounded,
+                            label: 'Delete',
+                          ),
+                        ],
+                      ),
+                      child: LayoutBuilder(
+                        builder: (layoutContext, contsraints) {
+                          final slidable = Slidable.of(layoutContext);
 
-                              return Stack(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: SizedBox(
-                                      height: 75,
-                                      child: Row(
-                                        children: [
-                                          const Center(
-                                            child: Icon(
-                                              Icons.account_balance_rounded,
-                                              color: Colors.black,
-                                              size: 42,
-                                            ),
-                                          ),
-                                          Expanded(
-                                            flex: 6,
-                                            child: Padding(
-                                              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 4),
-                                              child: Text(
-                                                _bankAccount.name,
-                                                textAlign: TextAlign.center,
-                                                style: const TextStyle(
-                                                  fontSize: 18,
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Text(
-                                              _bankAccount.currency,
-                                              textAlign: TextAlign.right,
-                                              style: const TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                          return Stack(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                child: SizedBox(
+                                  height: 75,
+                                  child: Row(
+                                    children: [
+                                      const Center(
+                                        child: Icon(
+                                          Icons.account_balance_rounded,
+                                          color: Colors.black,
+                                          size: 42,
+                                        ),
                                       ),
-                                    ),
+                                      Expanded(
+                                        flex: 6,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 4),
+                                          child: Text(
+                                            _bankAccount.name,
+                                            textAlign: TextAlign.center,
+                                            style: const TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          _bankAccount.currency,
+                                          textAlign: TextAlign.right,
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  Positioned(
-                                    bottom: 0,
-                                    right: 2,
-                                    child: IconButton(
-                                      padding: EdgeInsets.zero,
-                                      constraints: const BoxConstraints(),
-                                      icon: const Icon(Icons.swipe_left_rounded, size: 16),
-                                      onPressed: () {
-                                        if(slidable != null) {
-                                          if(slidable.direction.value == 0){
-                                            slidable.openEndActionPane();
-                                          }else {
-                                            slidable.close();
-                                          }
-                                        }
-                                      },
-                                    )
-                                  )
-                                ],
-                              );
-                            },
-                          ),
-                        ),
-                      );
-                    })
-                  ),
-                ),
-          ])
+                                ),
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                right: 2,
+                                child: IconButton(
+                                  padding: EdgeInsets.zero,
+                                  constraints: const BoxConstraints(),
+                                  icon: const Icon(Icons.swipe_left_rounded, size: 16, color: Colors.black),
+                                  onPressed: () {
+                                    if(slidable != null) {
+                                      if(slidable.direction.value == 0){
+                                        slidable.openEndActionPane();
+                                      }else {
+                                        slidable.close();
+                                      }
+                                    }
+                                  },
+                                )
+                              )
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                  );
+                })
+              ),
+            ),
+          ]
         );
       default:
         return const LoadingView("Loading");

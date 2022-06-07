@@ -100,19 +100,8 @@ class InvestmentDetailsListCell extends StatelessWidget {
       amount: _data.amount.toDouble(),
     );
 
-    return Card(
-      elevation: 6,
-      margin: const EdgeInsets.only(top: 8, right: 4, left: 4),
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-        side: BorderSide(
-          color: _data.type == "buy" ? Colors.green.shade600 : Colors.red.shade600,
-          width: 1
-        )
-      ),
-      color: Colors.white,
-      child: Slidable(
+    return ListTile(
+      title: Slidable(
         endActionPane: ActionPane(
           motion: const StretchMotion(),
           children: [
@@ -154,7 +143,7 @@ class InvestmentDetailsListCell extends StatelessWidget {
             final slidable = Slidable.of(layoutContext);
 
             return Padding(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 4),
               child: Column(
                 children: [
                   Container(
@@ -166,7 +155,8 @@ class InvestmentDetailsListCell extends StatelessWidget {
                         Text(
                           "${_data.type[0].toUpperCase()}${_data.type.substring(1)}",
                           style: TextStyle(
-                            color: _data.type == "buy" ? Colors.green.shade600 : Colors.red.shade600
+                            color: _data.type == "buy" ? Colors.green.shade600 : Colors.red.shade600,
+                            fontWeight: FontWeight.bold
                           ),
                         ),
                         Text(
@@ -205,7 +195,7 @@ class InvestmentDetailsListCell extends StatelessWidget {
                     child: IconButton(
                       padding: EdgeInsets.zero,
                       constraints: const BoxConstraints(),
-                      icon: const Icon(Icons.swipe_left_rounded, size: 16),
+                      icon: const Icon(Icons.swipe_left_rounded, size: 16, color: Colors.black),
                       onPressed: () {
                         if(slidable != null) {
                           if(slidable.direction.value == 0){

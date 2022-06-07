@@ -110,7 +110,7 @@ class _CurrencyListState extends State<CurrencyList> {
             child: errorView,
           );
       case ListState.loading:
-        return const LoadingView("Fetching currencies");
+        return const LoadingView("Getting currencies");
       default:
         return const LoadingView("Loading");
     }

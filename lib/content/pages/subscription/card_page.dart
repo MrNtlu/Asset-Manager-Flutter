@@ -4,9 +4,9 @@ import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
 import 'package:asset_flutter/content/pages/subscription/card_create_page.dart';
-import 'package:asset_flutter/content/pages/subscription/card_details_page.dart';
 import 'package:asset_flutter/content/providers/subscription/card_state.dart';
 import 'package:asset_flutter/content/providers/subscription/cards.dart';
+import 'package:asset_flutter/content/widgets/subscription/cd_stats_sheet.dart';
 import 'package:awesome_card/awesome_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -91,26 +91,38 @@ class _CardPageState extends State<CardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        iconTheme: const IconThemeData(
-          color: Colors.black,
-        ),
-        title: const Text(
-          "Credit Cards", 
-          style: TextStyle(color: Colors.black)
-        ),
-        backgroundColor: Colors.white,
-        actions: [
-          IconButton(
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => const CardCreatePage(true))
-            ), 
-            icon: const Icon(Icons.add_rounded, size: 28)
-          )
-        ],
-      ),
       body: SafeArea(
-        child: _portraitBody()
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 6),
+              child: Row(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: IconButton(
+                      onPressed: () => Navigator.pop(context), 
+                      icon: const Icon(Icons.arrow_back_ios_new_rounded)
+                    ),
+                  ),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: IconButton(
+                        onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => const CardCreatePage(true))
+                        ), 
+                        icon: const Icon(Icons.add_box_rounded)
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Expanded(child: _portraitBody()),
+          ],
+        )
       )
     );
   }
@@ -120,58 +132,65 @@ class _CardPageState extends State<CardPage> {
 
     switch (_state) {
       case ListState.loading:
-        return const LoadingView("Fetching credit cards");
+        return const LoadingView("Getting credit cards");
       case ListState.error:
         return ErrorView(_error ?? "Unknown error!", _getCreditCards);
       case ListState.empty:
       case ListState.done:
-        return SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: Stack(
-            children: [
-              _state == ListState.empty
-                ? const Center(child: NoItemView("Couldn't find credit card."))
-                : Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: ListView.builder(
-                    itemCount: _cardProvider.items.length,
-                    physics: const ClampingScrollPhysics(),
-                    shrinkWrap: true,
-                    itemBuilder: ((context, index) {
-                      var _creditCard = _cardProvider.items[index];
+        return Stack(
+          children: [
+            _state == ListState.empty
+            ? const Center(child: NoItemView("Couldn't find credit card."))
+            : Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: ListView.builder(
+                itemCount: _cardProvider.items.length,
+                physics: const ClampingScrollPhysics(),
+                shrinkWrap: true,
+                itemBuilder: ((context, index) {
+                  var _creditCard = _cardProvider.items[index];
 
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) => CardDetailsPage(_creditCard.id))
-                          );
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-                          child: CreditCard(
-                            cardNumber: "XXXX XXXX XXXX ${_creditCard.lastDigits}",
-                            cardHolderName: _creditCard.cardHolder,
-                            bankName: _creditCard.name,
-                            cardType: _cardTypeMapper(_creditCard.cardType),
-                            showBackSide: false,
-                            frontBackground: Container(
-                              width: double.maxFinite,
-                              height: double.maxFinite,
-                              color: Color(int.parse(_creditCard.color)),
-                            ),
-                            backBackground: CardBackgrounds.white,
-                            frontTextColor: index % 4 == 3 ? Colors.black : Colors.white,
-                            showShadow: true,
-                            horizontalMargin: 8,
-                            height: isPortrait ? null : 250,
-                            width: isPortrait ? null : 500,
-                          ),
+                  return GestureDetector(
+                    onTap: () => showModalBottomSheet(
+                      context: context,
+                      shape: Platform.isIOS || Platform.isMacOS
+                      ? const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(16),
+                          topLeft: Radius.circular(16)
                         ),
-                      );
-                    })
-                  ),
-                ),
-          ])
+                      )
+                      : null,
+                      enableDrag: true,
+                      isDismissible: true,
+                      builder: (_) => CardDetailsStatsSheet(_creditCard.id)
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                      child: CreditCard(
+                        cardNumber: "XXXX XXXX XXXX ${_creditCard.lastDigits}",
+                        cardHolderName: _creditCard.cardHolder,
+                        bankName: _creditCard.name,
+                        cardType: _cardTypeMapper(_creditCard.cardType),
+                        showBackSide: false,
+                        frontBackground: Container(
+                          width: double.maxFinite,
+                          height: double.maxFinite,
+                          color: Color(int.parse(_creditCard.color)),
+                        ),
+                        backBackground: CardBackgrounds.white,
+                        frontTextColor: index % 4 == 3 ? Colors.black : Colors.white,
+                        showShadow: true,
+                        horizontalMargin: 8,
+                        height: isPortrait ? null : 250,
+                        width: isPortrait ? null : 500,
+                      ),
+                    ),
+                  );
+                })
+              ),
+            ),
+          ]
         );
       default:
         return const LoadingView("Loading");

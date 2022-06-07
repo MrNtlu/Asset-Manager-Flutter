@@ -185,7 +185,7 @@ class _BankAccountSelectionSheetState extends State<BankAccountSelectionSheet> {
           child: ErrorView(_error ?? "Unknown error!", _getBankAccounts),
         );
       case ListState.loading:
-        return const LoadingView("Fetching bank accounts");
+        return const LoadingView("Getting bank accounts");
       default:
         return const LoadingView("Loading");
     }

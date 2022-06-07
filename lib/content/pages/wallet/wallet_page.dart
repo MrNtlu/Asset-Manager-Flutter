@@ -22,21 +22,6 @@ class _WalletPageState extends State<WalletPage> {
   BaseState _state = BaseState.init;
   late final TransactionSheetSelectionStateProvider _provider;
 
-  final bannerMainTexts = [
-    "Credit Cards",
-    "Bank Accounts"
-  ];
-
-  final bannerSubTexts = [
-    "List of credit cards and statistics",
-    "List of bank accounts and statistics"
-  ];
-
-  final bannerIcons = [
-    Icons.credit_card_rounded,
-    Icons.account_balance_rounded
-  ];
-  
   @override
   void dispose() {
     _provider.resetSelection(shouldNotify: false);
@@ -67,8 +52,6 @@ class _WalletPageState extends State<WalletPage> {
       )
     );
   }
-
-  PageController controller = PageController(viewportFraction: 0.8, initialPage: 1);
 
   Widget _body() => Column(
     children: [

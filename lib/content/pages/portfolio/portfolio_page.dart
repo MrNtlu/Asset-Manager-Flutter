@@ -116,7 +116,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
   Widget _portraitBody() {
     switch (_state) {
       case ListState.loading:
-        return const LoadingView("Fetching portfolio");
+        return const LoadingView("Getting portfolio");
       case ListState.error:
         return ErrorView(_error ?? "Unknown error!", _getAssets);
       case ListState.empty:
@@ -221,7 +221,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
   Widget _landscapeBody() {
     switch (_state) {
       case ListState.loading:
-        return const LoadingView("Fetching portfolio");
+        return const LoadingView("Getting portfolio");
       case ListState.error:
         return ErrorView(_error ?? "Unknown error!", _getAssets);
       case ListState.empty:

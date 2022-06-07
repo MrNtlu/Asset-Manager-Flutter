@@ -113,7 +113,8 @@ class _InvestmentDetailsLogListState extends State<InvestmentDetailsLogList> {
   Widget _body(List<AssetLog> _data) {
     switch (_state) {
       case ListState.done:
-        return ListView.builder(
+        return ListView.separated(
+          separatorBuilder: (_, __) => const Divider(),
           controller: _scrollController,
           itemBuilder: (context, index) {
             if (index == 0) {
@@ -170,7 +171,7 @@ class _InvestmentDetailsLogListState extends State<InvestmentDetailsLogList> {
           ),
         );
       case ListState.loading:
-        return const LoadingView("Fetching investments");
+        return const LoadingView("Getting investments");
       default:
         return const LoadingView("Loading");
     }

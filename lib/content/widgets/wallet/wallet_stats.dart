@@ -145,7 +145,7 @@ class _WalletStatsState extends State<WalletStats> {
                       ),
                       IconButton(
                         onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: ((_) => const WalletStatsPage()))),
-                        icon: const Icon(Icons.stacked_bar_chart_rounded),
+                        icon: const Icon(Icons.bar_chart_rounded),
                       ),
                     ],
                   ),

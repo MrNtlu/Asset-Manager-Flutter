@@ -2,7 +2,6 @@ import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/success_view.dart';
-import 'package:asset_flutter/content/pages/subscription/card_details_page.dart';
 import 'package:asset_flutter/content/providers/subscription/subscription.dart';
 import 'package:asset_flutter/content/providers/subscription/subscription_state.dart';
 import 'package:asset_flutter/content/providers/subscription/subscriptions.dart';
@@ -155,14 +154,6 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
       ];
     } else {
       return [
-        if (_data.cardID != null)
-        IconButton(
-          icon: const Icon(Icons.credit_card_rounded),
-          tooltip: 'Credit Cards',
-          onPressed: () => Navigator.of(context).push(
-            MaterialPageRoute(builder: (_) => CardDetailsPage(_data.cardID!)) 
-          ),
-        ),
         IconButton(
           icon: const Icon(Icons.edit_rounded),
           tooltip: 'Enter Edit State',

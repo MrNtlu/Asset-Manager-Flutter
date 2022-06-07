@@ -6,6 +6,7 @@ import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/content/models/responses/bank_account.dart';
 import 'package:asset_flutter/content/providers/wallet/bank_account.dart';
 import 'package:asset_flutter/content/providers/wallet/bank_accounts.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/routes.dart';
 import 'package:asset_flutter/static/token.dart';
 import 'package:asset_flutter/utils/extensions.dart';
@@ -106,7 +107,7 @@ class _BankAccountDetailsSheetState extends State<BankAccountDetailsSheet> {
   Widget _body(BankAccount _bankAcc) {
     switch (_state) {
       case DetailState.loading:
-        return const LoadingView("Fetching stats");
+        return const LoadingView("Getting stats");
       case DetailState.error:
         return ErrorView(_error ?? "Unknown error!", _getBankAccStats);
       case DetailState.view:
@@ -139,7 +140,13 @@ class _BankAccountDetailsSheetState extends State<BankAccountDetailsSheet> {
                   Text(_bankAccStats!.currency, style: const TextStyle(fontWeight: FontWeight.bold))
                 ),
                 DataCell(
-                  Text(_bankAccStats!.totalTransaction.numToString() + ' ' + _bankAccStats!.currency)
+                  Text(
+                    _bankAccStats!.currency.getCurrencyFromString() + _bankAccStats!.totalTransaction.abs().numToString(),
+                    style: TextStyle(
+                      color: _bankAccStats!.totalTransaction > 0 ? AppColors().redColor : AppColors().greenColor,
+                      fontWeight: FontWeight.bold
+                    ),
+                  )
                 ),
               ]
             )

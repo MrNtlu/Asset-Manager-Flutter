@@ -81,7 +81,7 @@ class _MarketListState extends State<MarketList> {
   Widget _portraitBody() {
     switch (_state) {
       case ListState.loading:
-        return const LoadingView("Fetching Market Prices");
+        return const LoadingView("Getting Market Prices");
       case ListState.error:
         return ErrorView(_error ?? "Unknown error!", _getMarketPrices);
       case ListState.empty:

@@ -78,10 +78,10 @@ class SubscriptionStatsSheet extends StatelessWidget {
                   Text(_statsData.currency, style: const TextStyle(fontWeight: FontWeight.bold))
                 ),
                 DataCell(
-                  Text(_statsData.monthlyPayment.numToString())
+                  Text(_statsData.currency.getCurrencyFromString() + _statsData.monthlyPayment.numToString())
                 ),
                 DataCell(
-                  Text(_statsData.totalPayment.numToString())
+                  Text(_statsData.currency.getCurrencyFromString() + _statsData.totalPayment.numToString())
                 ),
               ]
             )

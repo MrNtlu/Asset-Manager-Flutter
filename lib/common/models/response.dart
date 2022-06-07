@@ -317,9 +317,15 @@ class _TypeConverter<T> {
       ) as T;
     } else if (T == CardStats) {
       return CardStats(
-        response["currency"],
-        response["total_monthly_payment"],
-        response["total_payment"],
+        CardSubscriptionStats(
+          response["subscription_stats"]["currency"],
+          response["subscription_stats"]["total_monthly_payment"],
+          response["subscription_stats"]["total_payment"]
+        ),
+        CardTransactionTotal(
+          response["transaction_stats"]["currency"],
+          response["transaction_stats"]["total_transaction"]
+        )
       ) as T;
     } else if (T == TransactionStats) {
       return TransactionStats(
