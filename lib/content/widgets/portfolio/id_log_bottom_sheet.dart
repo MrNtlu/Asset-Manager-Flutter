@@ -41,28 +41,6 @@ class InvestmentDetailsLogBottomSheet extends StatelessWidget {
             children: [
               _toggleButton,
               CustomTextFormField(
-                "Buy/Sell Price",
-                const TextInputType.numberWithOptions(decimal: true, signed: true),
-                initialText: price?.toString(),
-                textInputAction: TextInputAction.done,
-                onSaved: (value) {
-                  if (value != null) {
-                    price = double.parse(value);
-                  }
-                },
-                validator: (value) {
-                  if (value != null) {
-                    if (value.isEmpty) {
-                      return "Please don't leave this empty.";
-                    } else if (double.tryParse(value) == null) {
-                      return "Price is not valid.";
-                    }
-                  }
-
-                  return null;
-                },
-              ),
-              CustomTextFormField(
                 "Amount",
                 const TextInputType.numberWithOptions(decimal: true, signed: true),
                 initialText: amount?.toString(),
@@ -78,6 +56,28 @@ class InvestmentDetailsLogBottomSheet extends StatelessWidget {
                       return "Please don't leave this empty.";
                     } else if (double.tryParse(value) == null) {
                       return "Amount is not valid.";
+                    }
+                  }
+
+                  return null;
+                },
+              ),
+              CustomTextFormField(
+                "Buy/Sell Price",
+                const TextInputType.numberWithOptions(decimal: true, signed: true),
+                initialText: price?.toString(),
+                textInputAction: TextInputAction.done,
+                onSaved: (value) {
+                  if (value != null) {
+                    price = double.parse(value);
+                  }
+                },
+                validator: (value) {
+                  if (value != null) {
+                    if (value.isEmpty) {
+                      return "Please don't leave this empty.";
+                    } else if (double.tryParse(value) == null) {
+                      return "Price is not valid.";
                     }
                   }
 
@@ -124,7 +124,7 @@ class InvestmentDetailsLogBottomSheet extends StatelessWidget {
                             price!,
                             _toggleButton.isSelected[0]);
                       },
-                      child: Text((price != null ? "Update " : "Add ") + _toAsset,
+                      child: Text((price != null ? "Update " : "Add "),
                           style: const TextStyle(
                             fontSize: 16, 
                             fontWeight: FontWeight.bold

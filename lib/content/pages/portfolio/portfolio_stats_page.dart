@@ -1,6 +1,5 @@
 import 'package:asset_flutter/content/widgets/portfolio/portfolio.dart';
 import 'package:asset_flutter/content/widgets/portfolio/stats.dart';
-import 'package:asset_flutter/content/widgets/portfolio/stats_detailed_table.dart';
 import 'package:asset_flutter/content/widgets/portfolio/stats_distribution_chart.dart';
 import 'package:asset_flutter/content/widgets/portfolio/stats_line_chart.dart';
 import 'package:flutter/material.dart';
@@ -26,9 +25,14 @@ class PortfolioStatsPage extends StatelessWidget {
                   ),
                   const Portfolio(isDetailed: true),
                   const PortfolioStats(true),
+                  const Divider(),
                   PortfolioStatsLineChart(MediaQuery.of(context).viewPadding.top),
+                  const Divider(),
                   const PortfolioStatsDistributionChart(),
-                  const PortfolioStatsDetailedTable(),
+                  const Divider(),
+                  const SizedBox(height: 8)
+                  //TODO: Removed, if not necessary remove
+                  //const PortfolioStatsDetailedTable(),
                 ],
               ),
             ),

@@ -11,10 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class InvestmentDetailsLogList extends StatefulWidget {
-  final double _appBarHeight;
   final Asset _asset;
 
-  const InvestmentDetailsLogList(this._appBarHeight, this._asset, {Key? key}) : super(key: key);
+  const InvestmentDetailsLogList(this._asset, {Key? key}) : super(key: key);
 
   @override
   State<InvestmentDetailsLogList> createState() => _InvestmentDetailsLogListState();
@@ -101,25 +100,17 @@ class _InvestmentDetailsLogListState extends State<InvestmentDetailsLogList> {
   Widget build(BuildContext context) {
     var _data = _provider.items;
 
-    return SizedBox(
-      height: MediaQuery.of(context).size.height - ( 
-            widget._appBarHeight + 
-            MediaQuery.of(context).padding.top + 
-            MediaQuery.of(context).padding.bottom),
-      child: _body(_data)
-    );
+    return _body(_data);
   }
 
   Widget _body(List<AssetLog> _data) {
     switch (_state) {
       case ListState.done:
         return ListView.separated(
-          separatorBuilder: (_, __) => const Divider(),
+          separatorBuilder: (_, __) => const Divider(thickness: 1),
           controller: _scrollController,
           itemBuilder: (context, index) {
-            if (index == 0) {
-              return const SizedBox(height: 100);
-            } else if ((_canPaginate || _isPaginating) && index == _data.length + 1) {
+            if ((_canPaginate || _isPaginating) && index == _data.length) {
               return Center(
                 child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
@@ -128,14 +119,12 @@ class _InvestmentDetailsLogListState extends State<InvestmentDetailsLogList> {
                   child: const CircularProgressIndicator(),
                 ),
               );
-            } else if (index == _data.length + ((_canPaginate || _isPaginating) ? 2 : 1)){
-              return const SizedBox(height: 65);
             }
 
-            final data = _data[index - 1];
+            final data = _data[index];
             return InvestmentDetailsListCell(data);
           },
-          itemCount: _data.length + (_canPaginate ? 3 : 2),
+          itemCount: _data.length + (_canPaginate ? 1 : 0),
           padding: const EdgeInsets.only(top: 4),
           physics: const ClampingScrollPhysics(),
           shrinkWrap: true,
@@ -145,7 +134,7 @@ class _InvestmentDetailsLogListState extends State<InvestmentDetailsLogList> {
         return Center(
           child: Padding(
             padding: EdgeInsets.only(
-              top: isPortraitOrDesktop ? widget._appBarHeight : 95,
+              top: isPortraitOrDesktop ? 0 : 95,
               bottom: isPortraitOrDesktop ? 0 : 50
             ),
             child: isPortraitOrDesktop

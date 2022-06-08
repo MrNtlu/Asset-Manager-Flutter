@@ -76,9 +76,9 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
 
   @override
   void dispose() {
-    _state = ListState.disposed;
     _subscriptionStateProvider.removeListener(_subscriptionStateListener);
     _statsSheetProvider.removeListener(_statsSheetListener);
+    _state = ListState.disposed;
     super.dispose();
   }
 
@@ -95,7 +95,9 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
 
       _state = ListState.loading;
       Provider.of<CardProvider>(context).getCreditCards().whenComplete(() {
-        _getSubscriptions();
+        if (_state != ListState.disposed) {
+          _getSubscriptions();
+        }
       });
 
     }
@@ -167,7 +169,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                             context: context, 
                             builder: (_) => Container()
                           ),
-                          child: const Icon(Icons.menu_rounded),
+                          child: const Icon(Icons.menu_rounded, color: Colors.white),
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.all(12),
                             shape: RoundedRectangleBorder(

@@ -1,3 +1,4 @@
+import 'package:asset_flutter/common/widgets/toggle_button.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_stats_toggle.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -43,9 +44,9 @@ class _TransactionStatsToggleState extends State<TransactionStatsToggle> {
       disabledBorderColor: Colors.transparent,
       splashColor: Colors.transparent,
       children: [
-        _toggleButton("Week", 0),
-        _toggleButton("Month", 1),
-        _toggleButton("Year", 2),
+        ToggleButton(widget.isSelected[0], "Week"),
+        ToggleButton(widget.isSelected[1], "Month"),
+        ToggleButton(widget.isSelected[2], "Year"),
       ],
       isSelected: widget.isSelected,
       onPressed: (int newIndex) {
@@ -63,34 +64,4 @@ class _TransactionStatsToggleState extends State<TransactionStatsToggle> {
       },
     );
   }
-
-  Widget _toggleButton(String _title, int index) {
-    if (widget.isSelected[index]) {
-      return SizedBox(
-        width: 70,
-        child: Card(
-          color: Colors.black,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: _toggleText(_title, widget.isSelected[index]),
-          ),
-        ),
-      );
-    }
-    return SizedBox(
-      width: 70,
-      child: _toggleText(_title, widget.isSelected[index])
-    );
-  }
-
-  Widget _toggleText(String _title, bool _isSelected) => Text(
-    _title, 
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      color: _isSelected ? Colors.white : Colors.black54,
-      fontSize: 14,
-      fontWeight: _isSelected ? FontWeight.bold : FontWeight.normal
-    )
-  );
 }

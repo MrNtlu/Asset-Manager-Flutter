@@ -5,7 +5,8 @@ import 'package:lottie/lottie.dart';
 
 class StatsLineChartPremiumView extends StatelessWidget {
   final double _topPadding;
-  const StatsLineChartPremiumView(this._topPadding, {Key? key}) : super(key: key);
+  final Color textColor;
+  const StatsLineChartPremiumView(this._topPadding, {this.textColor = Colors.white, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +23,11 @@ class StatsLineChartPremiumView extends StatelessWidget {
         ),
         Container(
           margin: const EdgeInsets.fromLTRB(8, 16, 8, 16),
-          child: const Text(
+          child: Text(
             "Sorry, this function requires premium membership.",
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: Colors.white,
+              color: textColor,
               fontSize: 16,
             ),
           ),

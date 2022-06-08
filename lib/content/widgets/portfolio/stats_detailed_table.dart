@@ -24,7 +24,7 @@ class PortfolioStatsDetailedTable extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 8),
             child: Card(
               clipBehavior: Clip.antiAlias,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
               child: DataTable(
                 border: TableBorder.all(
                   borderRadius: BorderRadius.circular(9),
@@ -32,7 +32,7 @@ class PortfolioStatsDetailedTable extends StatelessWidget {
                   color: AppColors().barCardColor,
                 ),
                 dividerThickness: 1,
-                headingRowColor: MaterialStateColor.resolveWith((states) => AppColors().barCardColor),
+                headingRowColor: MaterialStateColor.resolveWith((states) => Colors.black),
                 columns: [
                   DataColumn(
                     label: Text(

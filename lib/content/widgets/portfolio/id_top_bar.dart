@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:asset_flutter/content/providers/asset.dart';
 import 'package:asset_flutter/content/widgets/portfolio/il_cell_image.dart';
 import 'package:asset_flutter/content/widgets/portfolio/pl_text.dart';
@@ -15,15 +17,22 @@ class InvestmentDetailsTopBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: (Platform.isIOS || Platform.isMacOS) ? 123 : 105,
+      padding: EdgeInsets.fromLTRB(4, 4, 4, ((Platform.isIOS || Platform.isMacOS) ? 24 : 6)),
       decoration: BoxDecoration(
-        color: AppColors().primaryLightishColor,
         borderRadius: const BorderRadius.only(
-          bottomRight: Radius.circular(36),
-          bottomLeft: Radius.circular(36)
+          topLeft: Radius.circular(24),
+          topRight: Radius.circular(24),
         ),
+        color: AppColors().primaryLightishColor,
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black,
+            offset: Offset(0.0, 1.0),
+            blurRadius: 3.0,
+          ),
+        ],
       ),
-      height: 105,
-      padding: const EdgeInsets.fromLTRB(4, 4, 4, 6),
       child: Column(
         children: [
           Row(

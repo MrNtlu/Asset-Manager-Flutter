@@ -280,8 +280,9 @@ class _TypeConverter<T> {
       ) as T;
     } else if (T == UserInfo) {
       return UserInfo(
-        response["is_premium"],
-        response["is_lifetime_premium"],
+        response["is_premium"] ?? false,
+        response["is_lifetime_premium"] ?? false,
+        response["is_oauth"] ?? false,
         response["email_address"],
         response["currency"],
         response["investing_limit"],

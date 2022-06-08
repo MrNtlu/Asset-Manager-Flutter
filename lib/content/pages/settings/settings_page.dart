@@ -132,7 +132,11 @@ class _SettingsPageState extends State<SettingsPage> {
           try {
             Purchases.logOut();
             SharedPref().deleteLoginCredentials();
-            await GoogleSignInApi().signOut();
+            if (PurchaseApi().userInfo != null && PurchaseApi().userInfo!.isOAuth) {
+              await GoogleSignInApi().signOut();
+            } else if (PurchaseApi().userInfo == null) {
+              await GoogleSignInApi().signOut();
+            }
             Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => LoginPage()));
           } catch (error) {
             setState(() {
@@ -273,7 +277,7 @@ class _SettingsPageState extends State<SettingsPage> {
               title: const Text('Account Info'),
               tiles: [
                 _userInfoText("Email", _userInfo!.email),
-                _userInfoText("Membership", _userInfo!.isPremium ? "Premium" : "Free"),
+                _userInfoText("Membership", _userInfo!.isLifetimePremium ? "Lifetime Premium" : _userInfo!.isPremium ? "Premium" : "Free"),
                 _userInfoText("Currency", _userInfo!.currency),
                 _userInfoText("Investment Usage", _userInfo!.investingLimit),
                 _userInfoText("Subscription Usage", _userInfo!.subscriptionLimit),

@@ -1,10 +1,10 @@
 import 'package:asset_flutter/content/providers/assets.dart';
 import 'package:asset_flutter/content/widgets/portfolio/section_title.dart';
 import 'package:asset_flutter/static/chart.dart';
-import 'package:asset_flutter/static/colors.dart';
-import 'package:fl_chart/fl_chart.dart';
+import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class PortfolioStatsDistributionChart extends StatelessWidget {
   const PortfolioStatsDistributionChart({Key? key}) : super(key: key);
@@ -22,55 +22,42 @@ class PortfolioStatsDistributionChart extends StatelessWidget {
             padding: EdgeInsets.only(top: 8),
             child: SectionTitle("Profit/Loss Distribution", ""),
           ),
-          Card(
-            elevation: 4,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            color: AppColors().barCardColor,
-            child: Container(
-              height: 250,
-              margin: const EdgeInsets.only(top: 12, bottom: 4),
-              child: BarChart(
-                BarChartData(
-                  alignment: BarChartAlignment.center,
-                  barTouchData: BarTouchData(
-                    enabled: true,
-                    touchTooltipData: BarTouchTooltipData(
-                      fitInsideHorizontally: true,
-                    )
-                  ),
-                  borderData: FlBorderData(show: false),
-                  gridData: FlGridData(
-                    drawVerticalLine: false,
-                    getDrawingHorizontalLine: (value){
-                      return FlLine(
-                        strokeWidth: value == 0 ? 0.4 : 0,
-                        color: Colors.black
-                      );
-                    }
-                  ),
-                  barGroups: assetStats.convertDataToBarChart(),
-                  groupsSpace: 45,
-                  titlesData: FlTitlesData(
-                    topTitles: SideTitles(
-                      showTitles: true,
-                      getTextStyles: (context, value) => const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
-                      getTitles: (id) => ChartAttributes().chartStatsText[id.toInt()],
-                    ),
-                    bottomTitles: SideTitles(
-                      showTitles: false,
-                    ),
-                    leftTitles: SideTitles(
-                      showTitles: false
-                    ),
-                    rightTitles: SideTitles(
-                      showTitles: false,
-                    ),
-                  )
+          Container(
+            height: 250,
+            margin: const EdgeInsets.only(top: 12, bottom: 4),
+            child: SfCartesianChart(
+              legend: Legend(title: LegendTitle(text: "Profit/Loss")),
+              primaryXAxis: CategoryAxis(
+                labelStyle: const TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold
                 )
               ),
-            ),
+              primaryYAxis: NumericAxis(
+                labelStyle: const TextStyle(
+                  color: Colors.black,
+                )
+              ),
+              tooltipBehavior: TooltipBehavior(
+                enable: true,
+                header: "P/L",
+                canShowMarker: true,
+                format: '${assetStats.currency.getCurrencyFromString()} point.y'
+              ),
+              series: <ChartSeries<double, String>>[
+                ColumnSeries<double, String>(
+                  dataSource: assetStats.convertDataToDouble(),
+                  xValueMapper: (double data, index) => ChartAttributes().chartStatsText[index],
+                  yValueMapper: (double data, _) => data,
+                  pointColorMapper: (value, index) => assetStats.convertDataToTitle()[index],
+                  spacing: 0.3,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(8),
+                    topRight: Radius.circular(8),
+                  )
+                )
+              ]
+            )
           ),
         ],
       );

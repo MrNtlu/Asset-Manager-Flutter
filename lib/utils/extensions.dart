@@ -22,11 +22,27 @@ extension NumExt on num {
       return toDouble().toString();
     }
     
-    return toDouble().toStringAsFixed(
-      toString().length >= 8 
-        ? 6
-        : toString().length - 2
-    );
+    final List<String> numberHolder = [];
+    int count = 0;
+    bool isDecimalStarted = false;
+    for (var char in toDouble().toString().split(".")[1].characters) {
+      count += 1;
+      if (int.parse(char) > 0) {
+        isDecimalStarted = true;
+        numberHolder.clear();
+      } else {
+        numberHolder.add(char);
+      }
+
+      if (isDecimalStarted && numberHolder.length > 2) {
+        count -= numberHolder.length;
+        break;
+      } else if (count > 7) {
+        break;
+      }
+    }
+
+    return toDouble().toStringAsFixed(count);
   }
 }
 

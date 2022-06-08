@@ -85,6 +85,41 @@ class AssetStats {
     return list;
   }
 
+  List<double> convertDataToDouble() {
+    final list = List<double>.empty(growable: true);
+    for (var i = 0; i < 5; i++) {
+      var value = (i == 0)
+          ? commodityPL
+          : (i == 1)
+              ? cryptoPL
+              : (i == 2)
+                  ? exchangePL
+                  : (i == 3)
+                    ? stockPL
+                    : totalPL;
+      var absValue = double.parse((value.toDouble()).abs().toStringAsFixed(2));
+      list.add(absValue);
+    }
+    return list;
+  }
+
+  List<Color> convertDataToTitle() {
+    final list = List<Color>.empty(growable: true);
+    for (var i = 0; i < 5; i++) {
+      var value = (i == 0)
+          ? commodityPL
+          : (i == 1)
+              ? cryptoPL
+              : (i == 2)
+                  ? exchangePL
+                  : (i == 3)
+                    ? stockPL
+                    : totalPL;
+      list.add(value.toDouble() > 0 ? const Color(0xffff5182) : const Color(0xff53fdd7));
+    }
+    return list;
+  }
+
   List<BarChartGroupData> convertDataToBarChart() {
     final list = List<BarChartGroupData>.empty(growable: true);
     for (var i = 0; i < 5; i++) {

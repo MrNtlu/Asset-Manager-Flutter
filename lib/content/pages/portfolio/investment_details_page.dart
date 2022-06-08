@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:asset_flutter/common/models/state.dart';
-import 'package:asset_flutter/common/widgets/add_elevated_button.dart';
 import 'package:asset_flutter/common/widgets/check_dialog.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
@@ -10,8 +9,8 @@ import 'package:asset_flutter/content/providers/portfolio/portfolio_state.dart';
 import 'package:asset_flutter/content/widgets/portfolio/id_log_bottom_sheet.dart';
 import 'package:asset_flutter/content/widgets/portfolio/id_log_list.dart';
 import 'package:asset_flutter/content/widgets/portfolio/id_top_bar.dart';
-import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/images.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -41,7 +40,6 @@ class InvestmentDetailsPage extends StatefulWidget {
 
 class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
   EditState _state = EditState.init;
-  late final AppBar _appBar;
   late final AssetProvider _assetProvider;
   late final AssetDetailsStateProvider _stateListener;
   bool isDataChanged = false;
@@ -164,18 +162,6 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
       _assetProvider = Provider.of<AssetProvider>(context);
       _getStats();
 
-      _appBar = AppBar(
-        title: Text(widget._data.name),
-        backgroundColor: AppColors().primaryLightishColor,
-        actions: [
-          IconButton(
-            onPressed: () => _deleteLogs(context), 
-            icon: const Icon(Icons.delete_rounded),
-            tooltip: "Delete Investment",
-          ),
-        ],
-      );
-
       _stateListener = Provider.of<AssetDetailsStateProvider>(context);
       _stateListener.addListener(_assetDetailsStateListener);
     }
@@ -193,8 +179,8 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: _appBar,
         body: SafeArea(
+          bottom: false,
           child: _body(),
         ),
       ),
@@ -204,25 +190,58 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
   Widget _body() {
     switch (_state) {
       case EditState.view:
-        return Stack(
+        return Column(
           children: [
-            InvestmentDetailsLogList(_appBar.preferredSize.height, _assetProvider.item!),
-            InvestmentDetailsTopBar(_assetProvider.item!, widget.image),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: AddElevatedButton(('Add ' + widget._data.toAsset), () {
-                showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  barrierColor: Colors.black54,
-                  builder: (ctx) => InvestmentDetailsLogBottomSheet(
-                    widget._data.toAsset, 
-                    _createInvestmentLog
+            Row(
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: IconButton(
+                    onPressed: () {
+                      if (isDataChanged) {
+                        Provider.of<PortfolioStateProvider>(context, listen: false).setRefresh(true);
+                      }
+                      Navigator.pop(context);
+                    }, 
+                    icon: const Icon(Icons.arrow_back_ios_new_rounded)
+                  ),
+                ),
+                Expanded(
+                  child: AutoSizeText(
+                    widget._data.name,
+                    textAlign: TextAlign.center,
+                    minFontSize: 16,
+                    maxLines: 1,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold
+                    ),
                   )
-                );
-              },
-              edgeInsets: const EdgeInsets.only(left: 8, right: 6, bottom: 8)),
-            )
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: IconButton(
+                    onPressed: () => showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      barrierColor: Colors.black54,
+                      builder: (ctx) => InvestmentDetailsLogBottomSheet(
+                        widget._data.toAsset, 
+                        _createInvestmentLog
+                      )
+                    ), 
+                    icon: const Icon(Icons.add_box_rounded, size: 28)
+                  ),
+                )
+              ],
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: InvestmentDetailsLogList(_assetProvider.item!),
+              )
+            ),
+            InvestmentDetailsTopBar(_assetProvider.item!, widget.image),
           ],
         );
       case EditState.loading:

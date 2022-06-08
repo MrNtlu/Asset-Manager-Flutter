@@ -1,6 +1,7 @@
 import 'package:asset_flutter/content/widgets/portfolio/il_cell_image.dart';
 import 'package:asset_flutter/static/images.dart';
 import 'package:asset_flutter/utils/stock_handler.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class MarketListCell extends StatelessWidget {
@@ -55,10 +56,12 @@ class MarketListCell extends StatelessWidget {
               ),
               Expanded(
                 flex: 1,
-                child: Text(
+                child: AutoSizeText(
                   _price, 
                   textAlign: TextAlign.right,
                   overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  minFontSize: 12,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,

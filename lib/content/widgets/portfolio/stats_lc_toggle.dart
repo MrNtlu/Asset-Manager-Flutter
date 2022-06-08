@@ -1,5 +1,5 @@
+import 'package:asset_flutter/common/widgets/toggle_button.dart';
 import 'package:asset_flutter/content/providers/common/stats_toggle_state.dart';
-import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -27,23 +27,19 @@ class _StatsLineChartToggleButtonState extends State<StatsLineChartToggleButton>
   @override
   Widget build(BuildContext context) {
     return ToggleButtons(
-      children: const [
-        Padding(
-          padding: EdgeInsets.all(2),
-          child: Text("7 Days", style: TextStyle(fontSize: 12)),
-        ),
-        Padding(
-          padding: EdgeInsets.all(2),
-          child: Text("Month", style: TextStyle(fontSize: 12)),
-        ),
-        Padding(
-          padding: EdgeInsets.all(2),
-          child: Text("3 Months", style: TextStyle(fontSize: 12)),
-        ),
+      children: [
+        ToggleButton(_selectedList[0], "Week", width: 80, edgeInsets: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),),
+        ToggleButton(_selectedList[1], "Month", width: 80, edgeInsets: const EdgeInsets.symmetric(vertical: 8, horizontal: 4)),
+        ToggleButton(_selectedList[2], "Year", width: 80, edgeInsets: const EdgeInsets.symmetric(vertical: 8, horizontal: 4)),
       ],
       borderRadius: BorderRadius.circular(8),
-      fillColor: AppColors().primaryColor,
-      selectedColor: Colors.white,
+      borderWidth: 0,
+      selectedColor: Colors.transparent,
+      borderColor: Colors.transparent,
+      fillColor: Colors.transparent,
+      selectedBorderColor: Colors.transparent,
+      disabledBorderColor: Colors.transparent,
+      splashColor: Colors.transparent,
       isSelected: _selectedList,
       onPressed: (index){
         _selectedList[_selectedList.indexOf(true)] = false;
@@ -53,7 +49,7 @@ class _StatsLineChartToggleButtonState extends State<StatsLineChartToggleButton>
           : (
             index == 1
               ? "monthly"
-              : "3monthly"
+              : "yearly"
           )
         );
         setState(() {

@@ -20,7 +20,7 @@ class PortfolioStatsLineChart extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.all(8),
                     child: Text(
-                      "Daily Stats",
+                      "Analysis",
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 20,

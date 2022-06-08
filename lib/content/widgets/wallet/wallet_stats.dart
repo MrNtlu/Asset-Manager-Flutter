@@ -1,5 +1,6 @@
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
+import 'package:asset_flutter/common/widgets/toggle_button.dart';
 import 'package:asset_flutter/content/pages/subscription/card_page.dart';
 import 'package:asset_flutter/content/pages/wallet/bank_account_page.dart';
 import 'package:asset_flutter/content/pages/wallet/wallet_stats_page.dart';
@@ -158,8 +159,8 @@ class _WalletStatsState extends State<WalletStats> {
                     disabledBorderColor: Colors.transparent,
                     splashColor: Colors.transparent,
                     children: [
-                      _toggleButton("Month", 0),
-                      _toggleButton("Day", 1),
+                      ToggleButton(isSelected[0], "Month"),
+                      ToggleButton(isSelected[1], "Day"),
                     ],
                     isSelected: isSelected,
                     onPressed: (int newIndex) {
@@ -212,34 +213,4 @@ class _WalletStatsState extends State<WalletStats> {
         return const LoadingView("Loading");
     }
   }
-
-  Widget _toggleButton(String _title, int index) {
-    if (isSelected[index]) {
-      return SizedBox(
-        width: 70,
-        child: Card(
-          color: Colors.black,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: _toggleText(_title, isSelected[index]),
-          ),
-        ),
-      );
-    }
-    return SizedBox(
-      width: 70,
-      child: _toggleText(_title, isSelected[index])
-    );
-  }
-
-  Widget _toggleText(String _title, bool _isSelected) => Text(
-    _title, 
-    textAlign: TextAlign.center,
-    style: TextStyle(
-      color: _isSelected ? Colors.white : Colors.black54,
-      fontSize: 14,
-      fontWeight: _isSelected ? FontWeight.bold : FontWeight.normal
-    )
-  );
 }

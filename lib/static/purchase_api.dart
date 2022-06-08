@@ -33,36 +33,44 @@ class PurchaseApi {
     });
   }
 
-  Future setUserMembershipStatus(bool isPremium) async {
-    await http.put(Uri.parse(APIRoutes().userRoutes.changeMembership),
-        headers: UserToken().getBearerToken(),
-        body: json.encode({"is_premium": isPremium}));
+  Future setUserMembershipStatus(bool isPremium, bool isLifetimePremium) async {
+    await http.put(
+      Uri.parse(APIRoutes().userRoutes.changeMembership),
+      headers: UserToken().getBearerToken(),
+      body: json.encode({
+        "is_premium": isPremium,
+        "is_lifetime_premium": isLifetimePremium
+      })
+    );
   }
 
   Future checkUserPremiumStatus() async {
     final purchaserInfo = await Purchases.getPurchaserInfo();
     final entitlements = purchaserInfo.entitlements.active.values.toList();
 
-    if (userInfo != null &&
-        (entitlements.isEmpty ||
-            (entitlements.isNotEmpty && !entitlements.first.isActive)) &&
-        userInfo!.isPremium) {
+    if (
+      userInfo != null 
+      && (entitlements.isEmpty || (entitlements.isNotEmpty && !entitlements.first.isActive)) 
+      && userInfo!.isPremium
+    ) {
       if (entitlements.isNotEmpty) {
         Log().createLog("${entitlements.first.identifier} ${entitlements.first.isActive} purchased failed/ended.");
       }
-      await setUserMembershipStatus(false);
+      await setUserMembershipStatus(false, false);
       await setUserInfo();
-    } else if (userInfo != null &&
-        (entitlements.isNotEmpty && entitlements.first.isActive) &&
-        !userInfo!.isPremium) {
+    } else if (
+      userInfo != null 
+      && (entitlements.isNotEmpty && entitlements.first.isActive)
+      && !userInfo!.isPremium
+    ) {
       Log().createLog("${entitlements.first.identifier} purchased.");
-      await setUserMembershipStatus(true);
+      await setUserMembershipStatus(true, entitlements.where((element) => element.productIdentifier == "kantan_11999_unlimited").isNotEmpty);
       await setUserInfo();
     }
   }
 
   Future init() async {
-    await Purchases.setDebugLogsEnabled(true);
+    await Purchases.setDebugLogsEnabled(false);
     await Purchases.setup(dotenv.env['REVENUE_CAT_KEY'] ?? '');
   }
 
