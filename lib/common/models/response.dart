@@ -285,6 +285,7 @@ class _TypeConverter<T> {
         response["is_oauth"] ?? false,
         response["email_address"],
         response["currency"],
+        response["fcm_token"] ?? "",
         response["investing_limit"],
         response["subscription_limit"],
       ) as T;

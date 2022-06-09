@@ -4,6 +4,7 @@ import 'package:asset_flutter/content/pages/settings/settings_page.dart';
 import 'package:asset_flutter/content/pages/subscription/subscription_page.dart';
 import 'package:asset_flutter/static/purchase_api.dart';
 import 'package:asset_flutter/static/token.dart';
+import 'package:asset_flutter/utils/fcm.dart';
 import 'package:flutter/material.dart';
 
 class TabsPage extends StatefulWidget {
@@ -25,6 +26,9 @@ class _TabsPage extends State<TabsPage> {
     super.didChangeDependencies();
     if (!isInit) {
       await PurchaseApi().userInit();
+      final firebaseMessaging = FCM();
+      await firebaseMessaging.init();
+      firebaseMessaging.setNotifications();
     }
   }
 

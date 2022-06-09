@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:asset_flutter/auth/pages/login_page.dart';
 import 'package:asset_flutter/auth/pages/register_page.dart';
 import 'package:asset_flutter/content/providers/common/currencies.dart';
@@ -44,11 +46,13 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 FirebaseCrashlytics crashlytics = FirebaseCrashlytics.instance;
+FirebaseMessaging messaging = FirebaseMessaging.instance;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await PurchaseApi().init();
+  await Firebase.initializeApp();
   
   setWindowForPC();
   runApp(const MyApp());

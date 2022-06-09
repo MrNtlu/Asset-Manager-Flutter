@@ -48,8 +48,11 @@ dependencies:
   google_sign_in: ^5.3.0
   flutter_signin_button: ^2.0.0
   table_calendar: ^3.0.5
+  firebase_core: ^1.17.1
   firebase_crashlytics: ^2.5.3
   firebase_analytics: ^9.1.2
+  firebase_messaging: ^11.4.1
+  flutter_local_notifications: ^9.6.0
   flutter_svg: ^1.0.3
   syncfusion_flutter_charts: ^20.1.55
   flutter_datetime_picker: ^1.5.1
