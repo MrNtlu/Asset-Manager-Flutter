@@ -30,8 +30,8 @@ class TransactionStatsExpenseChart extends StatelessWidget {
         primaryXAxis: CategoryAxis(
           majorGridLines: const MajorGridLines(width: 0.5),
           labelPlacement: LabelPlacement.onTicks,
-          labelStyle: const TextStyle(
-            color: Colors.black
+          labelStyle: TextStyle(
+            color: Theme.of(context).colorScheme.bgTextColor
           ),
           labelIntersectAction: AxisLabelIntersectAction.rotate45,
         ),
@@ -51,10 +51,11 @@ class TransactionStatsExpenseChart extends StatelessWidget {
                 : "MMM yy"
               ).format(e.date))
             ).toList(),
+            name: "Expenses",
             markerSettings: const MarkerSettings(isVisible: true),
             xValueMapper: (ChartData data, _) => data.date,
             yValueMapper: (ChartData data, _) => data.stat,
-            borderColor: Colors.black,
+            borderColor: Theme.of(context).colorScheme.bgTextColor,
             borderWidth: 3,
             dataLabelMapper: (_data, index) => _stats[index].currency.getCurrencyFromString() + _data.stat.numToString(),
             dataLabelSettings: DataLabelSettings(

@@ -4,9 +4,8 @@ class SectionTitle extends StatelessWidget {
   final String _mainTitle;
   final String _subTitle;
   final double mainFontSize;
-  final Color textColor;
 
-  const SectionTitle(this._mainTitle, this._subTitle, {this.mainFontSize = 20, this.textColor = Colors.black});
+  const SectionTitle(this._mainTitle, this._subTitle, {this.mainFontSize = 20});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +20,6 @@ class SectionTitle extends StatelessWidget {
               child: Text(
                 _mainTitle,
                 style: TextStyle(
-                  color: textColor,
                   fontSize: mainFontSize,
                   fontWeight: FontWeight.bold,
                 ),
@@ -37,7 +35,7 @@ class SectionTitle extends StatelessWidget {
               padding: const EdgeInsets.all(12),
               child: Text(
                 _subTitle,
-                style: TextStyle(color: textColor, fontSize: 14,fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
               ),
             ),
           ),

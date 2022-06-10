@@ -35,7 +35,6 @@ class SubscriptionStatsSheet extends StatelessWidget {
                 child: Text(
                   "Monthly",
                   style: TextStyle(
-                    color: Colors.black,
                     fontWeight: FontWeight.bold,
                     fontSize: 16
                   ),
@@ -48,7 +47,6 @@ class SubscriptionStatsSheet extends StatelessWidget {
                 child: Text(
                   "Total Paid",
                   style: TextStyle(
-                    color: Colors.black,
                     fontWeight: FontWeight.bold,
                     fontSize: 16
                   ),

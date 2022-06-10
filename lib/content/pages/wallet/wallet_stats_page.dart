@@ -127,7 +127,6 @@ class _WalletStatsPageState extends State<WalletStatsPage> {
                   "Category Distribution",
                   style: TextStyle(
                     fontSize: 18,
-                    color: Colors.black,
                     fontWeight: FontWeight.bold
                   ),
                 ),
@@ -141,7 +140,6 @@ class _WalletStatsPageState extends State<WalletStatsPage> {
                       "Expenses",
                       style: TextStyle(
                         fontSize: 18,
-                        color: Colors.black,
                         fontWeight: FontWeight.bold
                       ),
                     ),

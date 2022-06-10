@@ -57,7 +57,6 @@ class _PasswordTextFormFieldState extends State<PasswordTextFormField> {
         initialValue: widget.initialText,
         decoration: InputDecoration(
           filled: true,
-          fillColor: Colors.white,
           enabledBorder: widget.enabledBorder,
           focusedBorder: widget.focusedBorder,
           errorStyle: widget.errorTextStyle,
@@ -70,7 +69,6 @@ class _PasswordTextFormFieldState extends State<PasswordTextFormField> {
               child: Icon(
                 _isHidden ? Icons.visibility : Icons.visibility_off,
                 size: 20.0,
-                color: Colors.black,
               ),
               onTap: () {
                 setState(() {

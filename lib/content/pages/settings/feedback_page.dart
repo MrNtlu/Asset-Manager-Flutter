@@ -89,15 +89,11 @@ class _FeedbackPageState extends State<FeedbackPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        iconTheme: const IconThemeData(
-          color: Colors.black,
-        ),
         title: const Text(
           "Feedback/Suggestion",
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)
+          style: TextStyle(fontWeight: FontWeight.bold)
         ),
         centerTitle: false,
-        backgroundColor: Colors.white,
       ),
       body: SafeArea(
         child: _body(),
@@ -142,7 +138,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
                     textAlignVertical: TextAlignVertical.top,
                     decoration: const InputDecoration(
                       filled: true,
-                      fillColor: Colors.white,
                       enabledBorder: OutlineInputBorder(),
                       focusedBorder: OutlineInputBorder(),
                       border: OutlineInputBorder(),

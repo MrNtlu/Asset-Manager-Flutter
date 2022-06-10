@@ -4,6 +4,7 @@ import 'package:asset_flutter/common/widgets/toggle_button.dart';
 import 'package:asset_flutter/content/pages/subscription/card_page.dart';
 import 'package:asset_flutter/content/pages/wallet/bank_account_page.dart';
 import 'package:asset_flutter/content/pages/wallet/wallet_stats_page.dart';
+import 'package:asset_flutter/content/providers/settings/theme_state.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_state.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_total_stat.dart';
 import 'package:asset_flutter/content/providers/wallet/wallet_state.dart';
@@ -176,13 +177,13 @@ class _WalletStatsState extends State<WalletStats> {
                   ),
                 ],
               ),
-              const Padding(
-                padding: EdgeInsets.only(top: 16),
+              Padding(
+                padding: const EdgeInsets.only(top: 16),
                 child: Text(
                   "Total Balance",
                   style: TextStyle(
                     fontSize: 14, 
-                    color: Colors.black54,
+                    color: Provider.of<ThemeProvider>(context, listen: false).isDarkMode ? Colors.white54 :  Colors.black54,
                     fontWeight: FontWeight.bold,
                   )
                 ),

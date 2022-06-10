@@ -175,14 +175,9 @@ class _CardCreatePageState extends State<CardCreatePage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        iconTheme: const IconThemeData(
-          color: Colors.black,
-        ),
         title: Text(
           widget.isCreate ? "Create" : "Update", 
-          style: const TextStyle(color: Colors.black)
         ),
-        backgroundColor: Colors.white,
       ),
       body: SafeArea(
         child: _body(),
@@ -259,7 +254,6 @@ class _CardCreatePageState extends State<CardCreatePage> {
                         initialValue: widget.isCreate ? null : cardName,
                         decoration: const InputDecoration(
                           filled: true,
-                          fillColor: Colors.white,
                           border: OutlineInputBorder(),
                           labelText: "Card Name",
                         ),
@@ -297,7 +291,6 @@ class _CardCreatePageState extends State<CardCreatePage> {
                         initialValue: widget.isCreate ? null : cardHolderName,
                         decoration: const InputDecoration(
                           filled: true,
-                          fillColor: Colors.white,
                           border: OutlineInputBorder(),
                           labelText: "Card Holder",
                         ),
@@ -342,7 +335,6 @@ class _CardCreatePageState extends State<CardCreatePage> {
                                 initialValue: widget.isCreate ? null : cardNumber,
                                 decoration: const InputDecoration(
                                   filled: true,
-                                  fillColor: Colors.white,
                                   border: OutlineInputBorder(),
                                   labelText: "Last 4 Digits",
                                 ),
@@ -409,9 +401,10 @@ class _CardCreatePageState extends State<CardCreatePage> {
                           padding: const EdgeInsets.all(4),
                           decoration: BoxDecoration(
                             border: Border.all(
-                                color: (cardColorPick == color.value.toString())
-                                    ? Colors.orangeAccent
-                                    : Colors.transparent),
+                              color: (cardColorPick == color.value.toString())
+                              ? Colors.orangeAccent
+                              : Colors.transparent
+                            ),
                             shape: BoxShape.circle,
                           ),
                           child: CircleAvatar(
@@ -445,9 +438,10 @@ class _CardCreatePageState extends State<CardCreatePage> {
                         padding: const EdgeInsets.all(4),
                         decoration: BoxDecoration(
                           border: Border.all(
-                              color: (type == cardTypePick)
-                                  ? Colors.orangeAccent
-                                  : Colors.transparent),
+                            color: (type == cardTypePick)
+                            ? Colors.orangeAccent
+                            : Colors.transparent
+                          ),
                           shape: BoxShape.circle,
                         ),
                         child: CircleAvatar(
@@ -472,15 +466,17 @@ class _CardCreatePageState extends State<CardCreatePage> {
                   padding: const EdgeInsets.all(12),
                   child: const Text(
                     "Save",
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(fontSize: 18, color: Colors.white),
                   ), 
                 )
                 : ElevatedButton(
                   onPressed: () => widget.isCreate ? _createCreditCard() : _updateCreditCard(),
-                  child: const Text("Save",
+                  child: const Text(
+                    "Save",
                     style: TextStyle(
                       fontSize: 16, 
-                      fontWeight: FontWeight.bold
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white
                     )
                   ),
                 ),

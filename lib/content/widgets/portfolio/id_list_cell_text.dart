@@ -20,9 +20,10 @@ class InvestmentDetailsLogListCellText extends StatelessWidget {
               child: Text(
                 _firstText,
                 style: TextStyle(
-                    color: AppColors().lightBlack,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold),
+                  color: AppColors().lightBlack,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold
+                ),
               ),
             ),
           ),
@@ -31,9 +32,9 @@ class InvestmentDetailsLogListCellText extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: Text(
                 _secondText,
-                style: TextStyle(
-                    color: AppColors().lightBlack,
-                    fontSize: 16,),
+                style: const TextStyle(
+                  fontSize: 16
+                ),
               ),
             ),
           )

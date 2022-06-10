@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -16,15 +17,15 @@ class LoadingView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8),
       child: _isPortrait
-        ? _body()
+        ? _body(context)
         : SizedBox(
           height: MediaQuery.of(context).size.height,
-          child: _body()
+          child: _body(context)
         ),
     );
   }
 
-  Widget _body() => Stack(
+  Widget _body(BuildContext context) => Stack(
     fit: StackFit.expand,
     children: [
       Align(
@@ -38,7 +39,7 @@ class LoadingView extends StatelessWidget {
         alignment: Alignment.center,
         child: Text(
           _text,
-          style: TextStyle(color: textColor, fontSize: 16, fontWeight: FontWeight.bold),
+          style: TextStyle(color: textColor == Colors.black ? Theme.of(context).colorScheme.bgTextColor : textColor, fontSize: 16, fontWeight: FontWeight.bold),
         ),
       )
     ]

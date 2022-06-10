@@ -8,13 +8,11 @@ import 'package:flutter/material.dart';
 class InvestmentDetailsLogBottomSheet extends StatelessWidget {
   double? price;
   double? amount;
-  final String _toAsset;
   late final InvestmentToggleButton _toggleButton;
   static final _form = GlobalKey<FormState>();
   final Function(BuildContext, String, double, double, bool) _investmentLogHandler;
 
   InvestmentDetailsLogBottomSheet(
-    this._toAsset, 
     this._investmentLogHandler,
     {
       this.price,
@@ -127,6 +125,7 @@ class InvestmentDetailsLogBottomSheet extends StatelessWidget {
                       child: Text((price != null ? "Update " : "Add "),
                           style: const TextStyle(
                             fontSize: 16, 
+                            color: Colors.white,
                             fontWeight: FontWeight.bold
                           )
                         )
@@ -147,9 +146,10 @@ class InvestmentDetailsLogBottomSheet extends StatelessWidget {
                             price!,
                             _toggleButton.isSelected[0]);
                       },
-                      child: Text((price != null ? "Update " : "Add ") + _toAsset,
+                      child: Text((price != null ? "Update " : "Add "),
                         style: const TextStyle(
-                          fontSize: 16, 
+                          fontSize: 16,
+                          color: Colors.white,
                           fontWeight: FontWeight.bold
                         )
                       )

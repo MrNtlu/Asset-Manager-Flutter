@@ -1,4 +1,7 @@
 import 'dart:io';
+import 'package:asset_flutter/content/providers/settings/theme_state.dart';
+import 'package:asset_flutter/static/colors.dart';
+import 'package:asset_flutter/static/shared_pref.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:asset_flutter/auth/pages/login_page.dart';
@@ -53,6 +56,7 @@ void main() async {
   await dotenv.load(fileName: ".env");
   await PurchaseApi().init();
   await Firebase.initializeApp();
+  await SharedPref().init();
   
   setWindowForPC();
   runApp(const MyApp());
@@ -106,19 +110,25 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => TransactionSheetSelectionStateProvider()),
         ChangeNotifierProvider(create: (context) => TransactionStatsToggleProvider()),
       ],
-      child: MaterialApp(
-        title: 'Kanma',
-        theme: ThemeData(
-          scaffoldBackgroundColor: Colors.white,
-        ),
-        debugShowCheckedModeBanner: false,
-        home: LoginPage(),
-        routes: {
-          LoginPage.routeName: (ctx) => LoginPage(),
-          RegisterPage.routeName: (ctx) => RegisterPage(),
-          TabsPage.routeName: (ctx) => TabsPage(UserToken().token)
-        },
-      ),
+      child: ChangeNotifierProvider(
+        create: (context) => ThemeProvider(),
+        builder: (context, _) {
+          Provider.of<ThemeProvider>(context);
+          return MaterialApp(
+            title: 'Kanma',
+            theme: AppColors().lightTheme,
+            darkTheme: AppColors().darkTheme,
+            themeMode: SharedPref().isDarkTheme() ? ThemeMode.dark : ThemeMode.light,
+            debugShowCheckedModeBanner: false,
+            home: LoginPage(),
+            routes: {
+              LoginPage.routeName: (ctx) => LoginPage(),
+              RegisterPage.routeName: (ctx) => RegisterPage(),
+              TabsPage.routeName: (ctx) => TabsPage(UserToken().token)
+            },
+          );
+        }
+      )
     );
   }
 }

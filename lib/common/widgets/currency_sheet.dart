@@ -51,7 +51,7 @@ class CurrencySheet extends StatelessWidget {
                 ),
                 Platform.isIOS || Platform.isMacOS
                 ? CupertinoButton.filled(
-                  child: const Text('Apply'), 
+                  child: const Text('Apply', style: TextStyle(color: Colors.white)), 
                   onPressed: () {
                     _currencySheetProvider.currencySelectionChanged(_currencyList.selectedSymbol);
                     Navigator.pop(context);
@@ -65,7 +65,7 @@ class CurrencySheet extends StatelessWidget {
                         _currencySheetProvider.currencySelectionChanged(_currencyList.selectedSymbol);
                         Navigator.pop(context);
                       }, 
-                      child: const Text('Apply')
+                      child: const Text('Apply', style: TextStyle(color: Colors.white))
                     ),
                   ),
                 )

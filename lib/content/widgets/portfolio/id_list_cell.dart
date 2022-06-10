@@ -94,7 +94,6 @@ class InvestmentDetailsListCell extends StatelessWidget {
     _assetProvider = Provider.of<AssetProvider>(context, listen: false);
     _assetLogProvider = Provider.of<AssetLogProvider>(context, listen: false);
     final _logBottomSheet = InvestmentDetailsLogBottomSheet(
-      _data.toAsset, 
       _editAssetLog,
       isSell: _data.type == "sell",
       price: _data.price.toDouble(),
@@ -163,7 +162,6 @@ class InvestmentDetailsListCell extends StatelessWidget {
                         _data.createdAt.dateToDaysAgo(),
                         style: const TextStyle(
                           fontSize: 12,
-                          color: Colors.black,
                           fontWeight: FontWeight.bold
                         ),
                       ),

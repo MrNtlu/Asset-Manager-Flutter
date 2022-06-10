@@ -1,6 +1,7 @@
 import 'package:asset_flutter/content/providers/assets.dart';
 import 'package:asset_flutter/content/widgets/portfolio/section_title.dart';
 import 'package:asset_flutter/static/chart.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +14,7 @@ class PortfolioStatsDistributionChart extends StatelessWidget {
   Widget build(BuildContext context) {
     final assetStatsProvider = Provider.of<AssetsProvider>(context, listen: false);
     final assetStats = assetStatsProvider.assetStats;
+    final _textColor = Theme.of(context).colorScheme.bgTextColor;
 
     return assetStats == null || assetStats.stockPL == 0 && assetStats.commodityPL == 0 && assetStats.totalPL == 0 && assetStats.cryptoPL == 0 && assetStats.exchangePL == 0
       ? Container()
@@ -28,14 +30,14 @@ class PortfolioStatsDistributionChart extends StatelessWidget {
             child: SfCartesianChart(
               legend: Legend(title: LegendTitle(text: "Profit/Loss")),
               primaryXAxis: CategoryAxis(
-                labelStyle: const TextStyle(
-                  color: Colors.black,
+                labelStyle: TextStyle(
+                  color: _textColor,
                   fontWeight: FontWeight.bold
                 )
               ),
               primaryYAxis: NumericAxis(
-                labelStyle: const TextStyle(
-                  color: Colors.black,
+                labelStyle: TextStyle(
+                  color: _textColor,
                 )
               ),
               tooltipBehavior: TooltipBehavior(

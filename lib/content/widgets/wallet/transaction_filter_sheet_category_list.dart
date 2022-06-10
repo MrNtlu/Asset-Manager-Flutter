@@ -1,4 +1,5 @@
 import 'package:asset_flutter/content/providers/wallet/transaction.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
@@ -39,7 +40,7 @@ class _TransactionFilterSheetCategoryListState extends State<TransactionFilterSh
                   color: Category.values[index].iconColor
                 )
               ),
-              color: isSelected ? Category.values[index].iconColor : Colors.white,
+              color: isSelected ? Category.values[index].iconColor : Theme.of(context).colorScheme.bgColor,
               child: Padding(
                 padding: const EdgeInsets.all(8),
                 child: Row(
@@ -55,7 +56,7 @@ class _TransactionFilterSheetCategoryListState extends State<TransactionFilterSh
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
-                          color: isSelected ? Colors.white : Colors.black
+                          color: isSelected ? Colors.white : Theme.of(context).colorScheme.bgTextColor,
                         )
                       ),
                     )

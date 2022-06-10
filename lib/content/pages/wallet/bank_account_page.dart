@@ -235,7 +235,6 @@ class _BankAccountPageState extends State<BankAccountPage> {
                                       const Center(
                                         child: Icon(
                                           Icons.account_balance_rounded,
-                                          color: Colors.black,
                                           size: 42,
                                         ),
                                       ),
@@ -248,7 +247,6 @@ class _BankAccountPageState extends State<BankAccountPage> {
                                             textAlign: TextAlign.center,
                                             style: const TextStyle(
                                               fontSize: 18,
-                                              color: Colors.black,
                                               fontWeight: FontWeight.bold
                                             ),
                                           ),
@@ -261,7 +259,6 @@ class _BankAccountPageState extends State<BankAccountPage> {
                                           textAlign: TextAlign.right,
                                           style: const TextStyle(
                                             fontSize: 14,
-                                            color: Colors.black,
                                           ),
                                         ),
                                       ),
@@ -275,7 +272,7 @@ class _BankAccountPageState extends State<BankAccountPage> {
                                 child: IconButton(
                                   padding: EdgeInsets.zero,
                                   constraints: const BoxConstraints(),
-                                  icon: const Icon(Icons.swipe_left_rounded, size: 16, color: Colors.black),
+                                  icon: const Icon(Icons.swipe_left_rounded, size: 16),
                                   onPressed: () {
                                     if(slidable != null) {
                                       if(slidable.direction.value == 0){

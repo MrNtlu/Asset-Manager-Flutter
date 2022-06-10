@@ -114,12 +114,11 @@ class _BankAccountSelectionSheetState extends State<BankAccountSelectionSheet> {
                       style: currencySelection 
                       ? const TextStyle(
                         fontSize: 18,
-                        color: Colors.black,
                         fontWeight: FontWeight.bold
                       )
                       : TextStyle(fontSize: 18, color: AppColors().lightBlack),
                     ),
-                    trailing: currencySelection ? const Icon(Icons.check, color: Colors.black, size: 26) : null
+                    trailing: currencySelection ? Icon(Icons.check, color: Theme.of(context).colorScheme.bgTextColor, size: 26) : null
                   );
                 }),
                 separatorBuilder: (_, __) => const Divider(), 
@@ -146,7 +145,7 @@ class _BankAccountSelectionSheetState extends State<BankAccountSelectionSheet> {
                 ),
                 Platform.isIOS || Platform.isMacOS
                 ? CupertinoButton.filled(
-                  child: const Text('Apply'), 
+                  child: const Text('Apply', style: TextStyle(color: Colors.white)), 
                   onPressed: () {
                     _bankAccSelectionProvider.bankAccSelectionChanged(
                       _selectionList.contains(true)
@@ -168,7 +167,7 @@ class _BankAccountSelectionSheetState extends State<BankAccountSelectionSheet> {
                         );
                         Navigator.pop(context);
                       }, 
-                      child: const Text('Apply')
+                      child: const Text('Apply', style: TextStyle(color: Colors.white))
                     ),
                   ),
                 )

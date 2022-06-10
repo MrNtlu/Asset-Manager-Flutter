@@ -160,14 +160,9 @@ class _BankCreatePageState extends State<BankCreatePage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        iconTheme: const IconThemeData(
-          color: Colors.black,
-        ),
         title: Text(
           widget.isCreate ? "Create" : "Update", 
-          style: const TextStyle(color: Colors.black)
         ),
-        backgroundColor: Colors.white,
       ),
       body: SafeArea(
         child: _body(),
@@ -217,7 +212,6 @@ class _BankCreatePageState extends State<BankCreatePage> {
                         initialValue: widget.isCreate ? null : bankAccName,
                         decoration: const InputDecoration(
                           filled: true,
-                          fillColor: Colors.white,
                           border: OutlineInputBorder(),
                           labelText: "Bank Account Name",
                         ),
@@ -250,7 +244,6 @@ class _BankCreatePageState extends State<BankCreatePage> {
                         initialValue: widget.isCreate ? null : bankAccHolder,
                         decoration: const InputDecoration(
                           filled: true,
-                          fillColor: Colors.white,
                           border: OutlineInputBorder(),
                           labelText: "Account Holder",
                         ),
@@ -288,7 +281,6 @@ class _BankCreatePageState extends State<BankCreatePage> {
                                 initialValue: widget.isCreate ? null : bankAccIban,
                                 decoration: const InputDecoration(
                                   filled: true,
-                                  fillColor: Colors.white,
                                   border: OutlineInputBorder(),
                                   labelText: "Bank Account No",
                                 ),
@@ -341,7 +333,7 @@ class _BankCreatePageState extends State<BankCreatePage> {
                   padding: const EdgeInsets.all(12),
                   child: const Text(
                     "Save",
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(fontSize: 18, color: Colors.white),
                   ), 
                 )
                 : ElevatedButton(
@@ -349,7 +341,8 @@ class _BankCreatePageState extends State<BankCreatePage> {
                   child: const Text("Save",
                     style: TextStyle(
                       fontSize: 16, 
-                      fontWeight: FontWeight.bold
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white
                     )
                   ),
                 ),

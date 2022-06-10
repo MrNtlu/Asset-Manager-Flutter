@@ -68,7 +68,7 @@ class SortSheet extends StatelessWidget {
                 ),
                 Platform.isIOS || Platform.isMacOS
                 ? CupertinoButton.filled(
-                  child: const Text('Apply'), 
+                  child: const Text('Apply', style: TextStyle(color: Colors.white)), 
                   onPressed: () {
                     _statsSheetProvider.sortSelectionChanged(sortListView.getSelectedItem(), sortTypeListView.getSelectedItem());
                     Navigator.pop(context);
@@ -82,7 +82,7 @@ class SortSheet extends StatelessWidget {
                         _statsSheetProvider.sortSelectionChanged(sortListView.getSelectedItem(), sortTypeListView.getSelectedItem());
                         Navigator.pop(context);
                       }, 
-                      child: const Text('Apply')
+                      child: const Text('Apply', style: TextStyle(color: Colors.white))
                     ),
                   ),
                 ),

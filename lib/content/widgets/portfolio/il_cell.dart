@@ -46,7 +46,6 @@ class PortfolioInvestmentListCell extends StatelessWidget {
               child: AutoSizeText(
                 data.name,
                 style: const TextStyle(
-                  color: Colors.black,
                   fontWeight: FontWeight.bold,
                 ),
                 maxLines: 2,
@@ -67,7 +66,6 @@ class PortfolioInvestmentListCell extends StatelessWidget {
                   child: AutoSizeText(
                     data.currentValue.numToString() + ' ' + data.fromAsset,
                     style: const TextStyle(
-                      color: Colors.black,
                       fontWeight: FontWeight.bold
                     ),
                     maxFontSize: 16,

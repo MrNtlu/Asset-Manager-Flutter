@@ -37,13 +37,12 @@ class SubscriptionSheet extends StatelessWidget {
                   builder: (_) => SubscriptionStatsSheet(_stats)
                 );
               }, 
-              icon: const Icon(Icons.bar_chart_rounded, color: Colors.black, size: 28),
+              icon: const Icon(Icons.bar_chart_rounded, size: 28),
               label: const Padding(
                 padding: EdgeInsets.only(left: 8),
                 child: Text(
                   "Subscription Statistics",
                   style: TextStyle(
-                    color: Colors.black,
                     fontSize: 18,
                     fontWeight: FontWeight.bold
                   ),
@@ -76,13 +75,12 @@ class SubscriptionSheet extends StatelessWidget {
                 )
               );
             }, 
-            icon: const Icon(Icons.filter_alt_rounded, color: Colors.black, size: 26),
+            icon: const Icon(Icons.filter_alt_rounded, size: 26),
             label: const Padding(
               padding: EdgeInsets.only(left: 8),
               child: Text(
                 "Sort Subscriptions",
                 style: TextStyle(
-                  color: Colors.black,
                   fontSize: 18,
                   fontWeight: FontWeight.bold
                 ),

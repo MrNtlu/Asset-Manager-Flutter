@@ -1,13 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/purchase_api.dart';
 import 'package:asset_flutter/static/routes.dart';
 import 'package:asset_flutter/static/token.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 

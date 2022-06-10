@@ -86,7 +86,6 @@ class _SubscriptionCreateImageSheetState extends State<SubscriptionCreateImageSh
                             _itemList[index],
                             style: const TextStyle(
                               fontSize: 18,
-                              color: Colors.black,
                             ),
                           ),
                         ],

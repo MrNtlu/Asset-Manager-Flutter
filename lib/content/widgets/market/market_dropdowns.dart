@@ -1,4 +1,5 @@
 import 'package:asset_flutter/content/providers/market/market_selection_state.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/markets.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -45,8 +46,7 @@ class _MarketDropdownsState extends State<MarketDropdowns> {
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
                 isExpanded: true,
-                style: const TextStyle(fontSize: 16, color: Colors.black),
-                dropdownColor: Colors.white,
+                style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.bgTextColor),
                 value: _typeDropdownValue,
                 items: const ["Crypto", "Stock", "Commodity"].map((value) {
                   return DropdownMenuItem(
@@ -75,9 +75,8 @@ class _MarketDropdownsState extends State<MarketDropdowns> {
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
                 isExpanded: true,
-                style: const TextStyle(fontSize: 16, color: Colors.black),
+                style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.bgTextColor),
                 value: _marketDropdownValue,
-                dropdownColor: Colors.white,
                 items: _marketDropdownList.map((value) {
                     return DropdownMenuItem(
                       value: value,

@@ -252,14 +252,9 @@ class _TransactionCreatePageState extends State<TransactionCreatePage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        iconTheme: const IconThemeData(
-          color: Colors.black,
-        ),
         title: Text(
           widget.isCreate ? "Create" : "Update", 
-          style: const TextStyle(color: Colors.black)
         ),
-        backgroundColor: Colors.white,
       ),
       body: SafeArea(
         child: _body(),
@@ -314,7 +309,6 @@ class _TransactionCreatePageState extends State<TransactionCreatePage> {
                         initialValue: widget.isCreate ? null : transactionTitle,
                         decoration: const InputDecoration(
                           filled: true,
-                          fillColor: Colors.white,
                           border: OutlineInputBorder(),
                           labelText: "Title",
                         ),
@@ -338,7 +332,6 @@ class _TransactionCreatePageState extends State<TransactionCreatePage> {
                         initialValue: widget.isCreate ? null : transactionDescription,
                         decoration: const InputDecoration(
                           filled: true,
-                          fillColor: Colors.white,
                           border: OutlineInputBorder(),
                           labelText: "Description (Optional)",
                         ),
@@ -381,7 +374,6 @@ class _TransactionCreatePageState extends State<TransactionCreatePage> {
                                 initialValue: widget.isCreate ? null : transactionPrice.toString(),
                                 decoration: const InputDecoration(
                                   filled: true,
-                                  fillColor: Colors.white,
                                   border: OutlineInputBorder(),
                                   labelText: "Price",
                                 ),
@@ -460,7 +452,6 @@ class _TransactionCreatePageState extends State<TransactionCreatePage> {
                           ],
                           constraints: const BoxConstraints(maxHeight: 37, minHeight: 37),
                           borderWidth: 0,
-                          color: Colors.black,
                           selectedColor: Colors.white,
                           borderRadius: BorderRadius.circular(8),
                           fillColor: AppColors().primaryColor,
@@ -493,7 +484,7 @@ class _TransactionCreatePageState extends State<TransactionCreatePage> {
                   padding: const EdgeInsets.all(12),
                   child: const Text(
                     "Save",
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(fontSize: 18, color: Colors.white),
                   ), 
                 )
                 : ElevatedButton(
@@ -501,7 +492,8 @@ class _TransactionCreatePageState extends State<TransactionCreatePage> {
                   child: const Text("Save",
                     style: TextStyle(
                       fontSize: 16, 
-                      fontWeight: FontWeight.bold
+                      fontWeight: FontWeight.bold, 
+                      color: Colors.white
                     )
                   ),
                 ),

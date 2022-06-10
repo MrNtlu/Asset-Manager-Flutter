@@ -147,9 +147,8 @@ class _CardDetailsStatsSheetState extends State<CardDetailsStatsSheet> {
                   numeric: false,
                   label: FittedBox(
                     child: Text(
-                      "Subscription Stats",
+                      "Subsc. Stats",
                       style: TextStyle(
-                        color: Colors.black,
                         fontWeight: FontWeight.bold,
                         fontSize: 12
                       ),
@@ -162,7 +161,6 @@ class _CardDetailsStatsSheetState extends State<CardDetailsStatsSheet> {
                     child: Text(
                       "Monthly",
                       style: TextStyle(
-                        color: Colors.black,
                         fontWeight: FontWeight.bold,
                         fontSize: 16
                       ),
@@ -175,7 +173,6 @@ class _CardDetailsStatsSheetState extends State<CardDetailsStatsSheet> {
                     child: Text(
                       "Total Paid",
                       style: TextStyle(
-                        color: Colors.black,
                         fontWeight: FontWeight.bold,
                         fontSize: 16
                       ),
@@ -209,7 +206,6 @@ class _CardDetailsStatsSheetState extends State<CardDetailsStatsSheet> {
                       child: Text(
                         "Transaction Stats",
                         style: TextStyle(
-                          color: Colors.black,
                           fontWeight: FontWeight.bold,
                           fontSize: 12
                         ),
@@ -222,7 +218,6 @@ class _CardDetailsStatsSheetState extends State<CardDetailsStatsSheet> {
                       child: Text(
                         "Total Paid",
                         style: TextStyle(
-                          color: Colors.black,
                           fontWeight: FontWeight.bold,
                           fontSize: 16
                         ),

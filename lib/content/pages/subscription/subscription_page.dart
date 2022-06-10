@@ -11,6 +11,7 @@ import 'package:asset_flutter/content/providers/subscription/subscription_state.
 import 'package:asset_flutter/content/providers/subscription/subscriptions.dart';
 import 'package:asset_flutter/content/widgets/subscription/subscription_list.dart';
 import 'package:asset_flutter/content/widgets/subscription/subscription_sheet.dart';
+import 'package:asset_flutter/static/shared_pref.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -99,7 +100,6 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
           _getSubscriptions();
         }
       });
-
     }
     super.didChangeDependencies();
   }
@@ -108,8 +108,8 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark.copyWith(
-        statusBarIconBrightness: Brightness.dark,
-        statusBarBrightness: Brightness.light
+        statusBarIconBrightness: SharedPref().isDarkTheme() ? Brightness.light : Brightness.dark,
+        statusBarBrightness: SharedPref().isDarkTheme() ? Brightness.dark : Brightness.light
       ),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -167,7 +167,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                         : ElevatedButton(
                           onPressed: () => showModalBottomSheet(
                             context: context, 
-                            builder: (_) => Container()
+                            builder: (_) => SubscriptionSheet(_subscriptionsProvider.stats, sort, sortType)
                           ),
                           child: const Icon(Icons.menu_rounded, color: Colors.white),
                           style: ElevatedButton.styleFrom(

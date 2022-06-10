@@ -20,6 +20,7 @@ class PremiumErrorDialog extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12)
       ),
+      backgroundColor: Colors.white,
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -49,7 +50,7 @@ class PremiumErrorDialog extends StatelessWidget {
                 isApple
                 ? CupertinoButton.filled(
                   padding: const EdgeInsets.all(12),
-                  child: const Text('Membership Plans'), 
+                  child: const Text('Membership Plans', style: TextStyle(color: Colors.white)), 
                   onPressed: () => showModalBottomSheet(
                     context: context,
                     isScrollControlled: true,
@@ -72,7 +73,7 @@ class PremiumErrorDialog extends StatelessWidget {
                       child: const OffersSheet()
                     )
                   ), 
-                  child: const Text('Membership Plans'),
+                  child: const Text('Membership Plans', style: TextStyle(color: Colors.white)),
                 ),
                 isApple
                 ? CupertinoButton(

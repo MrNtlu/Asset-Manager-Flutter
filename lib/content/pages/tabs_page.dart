@@ -2,6 +2,7 @@ import 'package:asset_flutter/content/pages/wallet/wallet_page.dart';
 import 'package:asset_flutter/content/pages/portfolio/portfolio_page.dart';
 import 'package:asset_flutter/content/pages/settings/settings_page.dart';
 import 'package:asset_flutter/content/pages/subscription/subscription_page.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/purchase_api.dart';
 import 'package:asset_flutter/static/token.dart';
 import 'package:asset_flutter/utils/fcm.dart';
@@ -55,9 +56,9 @@ class _TabsPage extends State<TabsPage> {
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         onTap: _selectPage,
-        selectedItemColor: Colors.black,
+        selectedItemColor: Theme.of(context).colorScheme.bottomBarSelectedTextColor,
         unselectedItemColor: Colors.grey,
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.bottomBarBgColor,
         currentIndex: _selectedPageIndex,
         elevation: 8,
         enableFeedback: true,

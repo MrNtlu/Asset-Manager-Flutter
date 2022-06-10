@@ -13,6 +13,7 @@ import 'package:asset_flutter/content/widgets/portfolio/investment_list.dart';
 import 'package:asset_flutter/content/widgets/portfolio/portfolio_stats_header.dart';
 import 'package:asset_flutter/content/widgets/portfolio/section_sort_title.dart';
 import 'package:asset_flutter/content/widgets/portfolio/section_title.dart';
+import 'package:asset_flutter/static/shared_pref.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -99,8 +100,8 @@ class _PortfolioPageState extends State<PortfolioPage> {
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark.copyWith(
-        statusBarIconBrightness: Brightness.dark,
-        statusBarBrightness: Brightness.light
+        statusBarIconBrightness: SharedPref().isDarkTheme() ? Brightness.light : Brightness.dark,
+        statusBarBrightness: SharedPref().isDarkTheme() ? Brightness.dark : Brightness.light
       ),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -128,7 +129,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
                 expandedHeight: MediaQuery.of(context).size.height > 600 ? 383 : 363,
                 floating: true,
                 snap: false,
-                backgroundColor: Colors.white,
+                backgroundColor: Theme.of(context).backgroundColor,
                 elevation: 5,
                 flexibleSpace: const FlexibleSpaceBar(
                   collapseMode: CollapseMode.parallax,
@@ -185,18 +186,17 @@ class _PortfolioPageState extends State<PortfolioPage> {
                           margin: const EdgeInsets.only(right: 8),
                           child: Platform.isIOS || Platform.isMacOS
                           ? CupertinoButton.filled(
-                            child: const ImageIcon(AssetImage("assets/images/markets.png")),
+                            child: const ImageIcon(AssetImage("assets/images/markets.png"), color: Colors.white),
                             padding: const EdgeInsets.all(12),
                             onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(builder: (_) => const MarketsPage())
                             ),
                           )
                           : ElevatedButton(
-                            onPressed: () => showModalBottomSheet(
-                              context: context, 
-                              builder: (_) => Container()
+                            onPressed: () => Navigator.of(context).push(
+                              MaterialPageRoute(builder: (_) => const MarketsPage())
                             ),
-                            child: const ImageIcon(AssetImage("assets/images/markets.png")),
+                            child: const ImageIcon(AssetImage("assets/images/markets.png"), color: Colors.white),
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.all(12),
                               shape: RoundedRectangleBorder(
@@ -230,77 +230,74 @@ class _PortfolioPageState extends State<PortfolioPage> {
           physics: const ScrollPhysics(),
           slivers: [
             SliverToBoxAdapter(
-              child: Container(
-                color: Colors.white,
-                child: Center(
-                  child: Column(
-                    children: [
-                      const PortfolioStatsHeader(),
-                      _state == ListState.empty
-                        ? Column(
-                            children: const[
-                              SectionTitle("Investments", ""),
-                              NoItemView("Couldn't find investment.")
-                            ])
-                        : SizedBox(
-                            child: Column(
-                              children: [
-                                SectionSortTitle(
-                                  "Investments",
-                                  const ["Name", "Amount", "Profit", "Profit(%)"],
-                                  const ["Ascending", "Descending"],
-                                  sortTitle: sort,
-                                  sortType: sortType,
-                                ),
-                                const PortfolioInvestmentList(),
-                              ],
+              child: Center(
+                child: Column(
+                  children: [
+                    const PortfolioStatsHeader(),
+                    _state == ListState.empty
+                      ? Column(
+                          children: const[
+                            SectionTitle("Investments", ""),
+                            NoItemView("Couldn't find investment.")
+                          ])
+                      : SizedBox(
+                          child: Column(
+                            children: [
+                              SectionSortTitle(
+                                "Investments",
+                                const ["Name", "Amount", "Profit", "Profit(%)"],
+                                const ["Ascending", "Descending"],
+                                sortTitle: sort,
+                                sortType: sortType,
+                              ),
+                              const PortfolioInvestmentList(),
+                            ],
+                          )
+                        ),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 11,
+                            child: AddElevatedButton("Add Investment", (){
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(builder: ((context) => const InvestmentCreatePage()))
+                                );
+                              },
                             )
                           ),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 11,
-                              child: AddElevatedButton("Add Investment", (){
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(builder: ((context) => const InvestmentCreatePage()))
-                                  );
-                                },
+                          Expanded(
+                            flex: 2,
+                            child: Container(
+                              margin: const EdgeInsets.only(right: 8),
+                              child: Platform.isIOS || Platform.isMacOS
+                              ? CupertinoButton.filled(
+                                child: const ImageIcon(AssetImage("assets/images/markets.png"), color: Colors.white),
+                                padding: const EdgeInsets.all(12),
+                                onPressed: () => Navigator.of(context).push(
+                                  MaterialPageRoute(builder: (_) => const MarketsPage())
+                                ),
+                              )
+                              : ElevatedButton(
+                                onPressed: () => showModalBottomSheet(
+                                  context: context, 
+                                  builder: (_) => Container()
+                                ),
+                                child: const ImageIcon(AssetImage("assets/images/markets.png"), color: Colors.white),
+                                style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.all(12),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12)
+                                  ),
+                                ),
                               )
                             ),
-                            Expanded(
-                              flex: 2,
-                              child: Container(
-                                margin: const EdgeInsets.only(right: 8),
-                                child: Platform.isIOS || Platform.isMacOS
-                                ? CupertinoButton.filled(
-                                  child: const ImageIcon(AssetImage("assets/images/markets.png")),
-                                  padding: const EdgeInsets.all(12),
-                                  onPressed: () => Navigator.of(context).push(
-                                    MaterialPageRoute(builder: (_) => const MarketsPage())
-                                  ),
-                                )
-                                : ElevatedButton(
-                                  onPressed: () => showModalBottomSheet(
-                                    context: context, 
-                                    builder: (_) => Container()
-                                  ),
-                                  child: const ImageIcon(AssetImage("assets/images/markets.png")),
-                                  style: ElevatedButton.styleFrom(
-                                    padding: const EdgeInsets.all(12),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12)
-                                    ),
-                                  ),
-                                )
-                              ),
-                            )
-                          ],
-                        ),
+                          )
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),

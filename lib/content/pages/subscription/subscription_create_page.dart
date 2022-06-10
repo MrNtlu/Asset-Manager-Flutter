@@ -99,11 +99,7 @@ class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text("Create", style: TextStyle(color: Colors.black)),
-        iconTheme: const IconThemeData(
-          color: Colors.black,
-        ),
-        backgroundColor: Colors.white,
+        title: const Text("Create"),
         actions: [
           IconButton(
             icon: const Icon(Icons.save_rounded),

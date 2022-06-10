@@ -45,12 +45,11 @@ class SDEditDatePickerState extends State<SDEditDatePicker> {
         controller: _controller,
         decoration: const InputDecoration(
           filled: true,
-            fillColor: Colors.white,
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide(width: 0)),
-            focusedBorder: OutlineInputBorder(borderSide: BorderSide(width: 0)),
-            border: OutlineInputBorder(borderSide: BorderSide(width: 0)),
-            labelText: "Pick Date",
-            suffixIcon: Icon(Icons.calendar_month_rounded, size: 20),
+          enabledBorder: OutlineInputBorder(borderSide: BorderSide(width: 0)),
+          focusedBorder: OutlineInputBorder(borderSide: BorderSide(width: 0)),
+          border: OutlineInputBorder(borderSide: BorderSide(width: 0)),
+          labelText: "Pick Date",
+          suffixIcon: Icon(Icons.calendar_month_rounded, size: 20),
         ),
         onTap: () async {
           DateTime? selectedDate = await showDatePicker(

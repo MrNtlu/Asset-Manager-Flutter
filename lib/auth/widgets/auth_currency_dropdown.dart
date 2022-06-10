@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/currency_sheet.dart';
 import 'package:asset_flutter/content/providers/common/currency_sheet_state.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,9 +10,9 @@ import 'package:provider/provider.dart';
 // ignore_for_file: must_be_immutable
 class RegisterCurrencyDropdown extends StatefulWidget {
   String currency;
-  final Color textColor;
+  final Color? textColor;
   
-  RegisterCurrencyDropdown({this.currency = "USD", this.textColor = Colors.black});
+  RegisterCurrencyDropdown({this.currency = "USD", this.textColor});
 
   @override
   State<RegisterCurrencyDropdown> createState() => _RegisterCurrencyDropdownState();
@@ -61,7 +62,7 @@ class _RegisterCurrencyDropdownState extends State<RegisterCurrencyDropdown> {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: widget.textColor
+              color: widget.textColor ?? Theme.of(context).colorScheme.bgTextColor
             ),
           ),
           Container(

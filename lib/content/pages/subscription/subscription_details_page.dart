@@ -8,6 +8,7 @@ import 'package:asset_flutter/content/providers/subscription/subscriptions.dart'
 import 'package:asset_flutter/content/widgets/subscription/sd_edit.dart';
 import 'package:asset_flutter/content/widgets/subscription/sd_view.dart';
 import 'package:asset_flutter/content/widgets/subscription/subscription_image.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -110,7 +111,7 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: _state == EditState.editing ? Colors.black : Colors.white,
+          color: _state == EditState.editing ? Theme.of(context).colorScheme.bgTextColor : Colors.white,
         ),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -120,14 +121,14 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
             Text(
               _state == EditState.editing ? "Edit" : _data.name, 
               style: TextStyle(
-                color: _state == EditState.editing ? Colors.black : Colors.white,
+                color: _state == EditState.editing ? Theme.of(context).colorScheme.bgTextColor : Colors.white,
                 fontWeight: _state == EditState.editing ? FontWeight.normal : FontWeight.bold
               )
             ),
           ],
         ),
         centerTitle: true,
-        backgroundColor: _state == EditState.editing ? Colors.white : Color(_data.color),
+        backgroundColor: _state == EditState.editing ? Theme.of(context).colorScheme.bgColor : Color(_data.color),
         actions: widget.isCardDetails ? null : _iconButtons(),
       ),
       body: SafeArea(

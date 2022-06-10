@@ -27,7 +27,7 @@ class PortfolioInvestmentList extends StatelessWidget {
         final data = _data[index];
         return PortfolioInvestmentListCell(data);
       }),
-      separatorBuilder: (_, __) => const Divider(thickness: 0.75),
+      separatorBuilder: (context, __) => const Divider(thickness: 0.75),
       itemCount: _data.length + 1,
       padding: const EdgeInsets.only(top: 4),
       physics: const ClampingScrollPhysics(),

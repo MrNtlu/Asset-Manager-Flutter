@@ -61,7 +61,7 @@ class TransactionListCell extends StatelessWidget {
                   );
                 }),
               ),
-              backgroundColor: Colors.white,
+              backgroundColor: Theme.of(context).colorScheme.bgColor,
               foregroundColor: Colors.orange,
               icon: Icons.edit_rounded,
               label: 'Edit',
@@ -74,7 +74,7 @@ class TransactionListCell extends StatelessWidget {
                   _deleteTransaction(ctx);
                 })
               ),
-              backgroundColor: Colors.white,
+              backgroundColor: Theme.of(context).colorScheme.bgColor,
               foregroundColor: Colors.red,
               icon: Icons.delete_rounded,
               label: 'Delete',

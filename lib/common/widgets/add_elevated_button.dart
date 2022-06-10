@@ -25,17 +25,17 @@ class AddElevatedButton extends StatelessWidget {
           children: [
             const Padding(
               padding: EdgeInsets.only(right: 12),
-              child: Icon(Icons.add_circle, size: 22),
+              child: Icon(Icons.add_circle, size: 22, color: Colors.white),
             ),
-            Text(_label, style: const TextStyle(fontSize: 18)),
+            Text(_label, style: const TextStyle(fontSize: 18, color: Colors.white)),
           ],
         ), 
         onPressed: _onPressed,
       )
       : ElevatedButton.icon(
         onPressed: _onPressed,
-        label: Text(_label, style: const TextStyle(fontSize: 18)),
-        icon: const Icon(Icons.add_circle, size: 22),
+        label: Text(_label, style: const TextStyle(fontSize: 18, color: Colors.white)),
+        icon: const Icon(Icons.add_circle, size: 22, color: Colors.white),
         style: ElevatedButton.styleFrom(
           padding: const EdgeInsets.all(12),
           shape: RoundedRectangleBorder(

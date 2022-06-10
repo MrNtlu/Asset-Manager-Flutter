@@ -47,9 +47,11 @@ class BaseButton extends StatelessWidget {
       : ElevatedButton(
         onPressed: _onPressed,
         child: Stack(
+          alignment: Alignment.center,
           children: [
             Text(
               _text,
+              textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 16, 
                 fontWeight: FontWeight.bold

@@ -226,7 +226,6 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
                       isScrollControlled: true,
                       barrierColor: Colors.black54,
                       builder: (ctx) => InvestmentDetailsLogBottomSheet(
-                        widget._data.toAsset, 
                         _createInvestmentLog
                       )
                     ), 

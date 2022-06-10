@@ -95,7 +95,7 @@ class TransactionFilterSheet extends StatelessWidget {
                   Platform.isIOS || Platform.isMacOS
                   ? CupertinoButton(
                     color: CupertinoColors.systemGrey,
-                    child: const Text('Reset'), 
+                    child: const Text('Reset', style: TextStyle(color: Colors.white)), 
                     onPressed: () { 
                       Provider.of<TransactionSheetSelectionStateProvider>(context, listen: false).resetSelection();
                       Navigator.pop(context);
@@ -112,13 +112,13 @@ class TransactionFilterSheet extends StatelessWidget {
                           Provider.of<TransactionSheetSelectionStateProvider>(context, listen: false).resetSelection();
                           Navigator.pop(context); 
                         },
-                        child: const Text('Reset')
+                        child: const Text('Reset', style: TextStyle(color: Colors.white))
                       ),
                     ),
                   ),
                   Platform.isIOS || Platform.isMacOS
                   ? CupertinoButton.filled(
-                    child: const Text('Apply'), 
+                    child: const Text('Apply', style: TextStyle(color: Colors.white)), 
                     onPressed: () {
                       Provider.of<TransactionSheetSelectionStateProvider>(context, listen: false).selectionChanged(
                         _dateRangePicker.dateTimeRange, _creditCardPicker.selectedCard, _bankAccPicker.selectedBankAcc, 
@@ -138,9 +138,10 @@ class TransactionFilterSheet extends StatelessWidget {
                             _categoryList.selectedCategory, sortListView.getSelectedItem(), sortTypeListView.getSelectedItem()
                           );
                           Navigator.pop(context);
+                          //TODO: Check and delete
                           // Navigator.of(context).push(MaterialPageRoute(builder: (_) => const TransactionFilteredList()));
                         }, 
-                        child: const Text('Apply')
+                        child: const Text('Apply', style: TextStyle(color: Colors.white))
                       ),
                     ),
                   )
@@ -160,7 +161,6 @@ class TransactionFilterSheet extends StatelessWidget {
       style: const TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.bold,
-        color: Colors.black
       )
     ),
   );

@@ -183,7 +183,6 @@ class _TransactionListState extends State<TransactionList> {
                       style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black,
                       ),
                     ),
                   ),

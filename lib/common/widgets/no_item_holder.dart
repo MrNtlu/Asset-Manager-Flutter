@@ -1,24 +1,25 @@
+import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 class NoItemView extends StatelessWidget {
   final String _text;
   final double height;
-  final Color textColor;
+  final Color? textColor;
 
-  const NoItemView(this._text, {Key? key, this.height = 250, this.textColor = Colors.black,}) : super(key: key);
+  const NoItemView(this._text, {Key? key, this.height = 250, this.textColor}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MediaQuery.of(context).orientation == Orientation.portrait 
-      ? _body()
+      ? _body(context)
       : SizedBox(
           height: 250,
-          child: _body(),
+          child: _body(context),
         );
   }
 
-  Widget _body() => Column(
+  Widget _body(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.center,
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -31,7 +32,7 @@ class NoItemView extends StatelessWidget {
       Text(
         _text,
         style: TextStyle(
-          color: textColor,
+          color: textColor ?? Theme.of(context).colorScheme.bgTextColor,
           fontSize: 18,
         ),
       )

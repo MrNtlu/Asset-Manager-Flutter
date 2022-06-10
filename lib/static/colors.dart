@@ -1,5 +1,16 @@
 import 'package:flutter/material.dart';
 
+extension ColorSchemeExt on ColorScheme {
+  Color get bgColor => brightness == Brightness.dark ? Colors.black : Colors.white;
+  Color get bgTextColor => brightness == Brightness.dark ? Colors.white : Colors.black;
+
+  Color get toggleColor => brightness == Brightness.light ? Colors.black : Colors.white;
+  Color get toggleTextColor => brightness == Brightness.light ? Colors.white : Colors.black;
+
+  Color get bottomBarSelectedTextColor => brightness == Brightness.light ? Colors.black : Colors.white;
+  Color get bottomBarBgColor => brightness == Brightness.light ? Colors.white : Colors.black;
+}
+
 class AppColors {
   final primaryColor = const Color(0xFF00579B);
   final primaryDarkestColor = const Color(0xFF00355E);
@@ -16,6 +27,51 @@ class AppColors {
   final bgPrimary = const Color(0xFF051B74);
   final bgSecondary = const Color(0xFF2E0BA0);
   final bgAccent = const Color(0xFFF500BD);
+
+  final darkTheme = ThemeData(
+    scaffoldBackgroundColor: Colors.black,
+    backgroundColor: Colors.black,
+    primaryColor: const Color(0xFF00579B),
+    colorScheme: const ColorScheme.dark(primary: Color(0xff007aff)),
+    dividerColor: Colors.white38,
+    bottomSheetTheme: const BottomSheetThemeData(
+      backgroundColor: Color(0xFF1E1E1E),
+      modalBackgroundColor: Color(0xFF1E1E1E),
+    ),
+    inputDecorationTheme: const InputDecorationTheme(
+      fillColor: Color(0xFF1E1E1E),
+    ),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Colors.black,
+      iconTheme: IconThemeData(color: Colors.white),
+      titleTextStyle: TextStyle(
+        color: Colors.white,
+        fontSize: 20
+      )
+    )
+  );
+
+  final lightTheme = ThemeData(
+    scaffoldBackgroundColor: Colors.white,
+    backgroundColor: Colors.white,
+    primaryColor: const Color(0xFF00579B),
+    colorScheme: const ColorScheme.light(primary: Color(0xff007aff)),
+    bottomSheetTheme: const BottomSheetThemeData(
+      backgroundColor: Colors.white,
+      modalBackgroundColor: Colors.white,
+    ),
+    inputDecorationTheme: const InputDecorationTheme(
+      fillColor: Colors.white
+    ),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Colors.white,
+      iconTheme: IconThemeData(color: Colors.black),
+      titleTextStyle: TextStyle(
+        color: Colors.black,
+        fontSize: 20
+      )
+    )
+  );
 
   AppColors._privateConstructor();
 
@@ -49,7 +105,6 @@ class CardColors {
 
 class SubscriptionColors {
   List<Color> subscriptionColors = [
-    Colors.black,
     const Color(0xFF595B62),
     Colors.blue.shade900,
     Colors.blue,

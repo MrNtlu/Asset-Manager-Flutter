@@ -107,7 +107,7 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
       case ViewState.error:
         return SizedBox(
           height: 250,
-          child: StatsLineChartPremiumView(widget._topPadding, textColor: Colors.black)
+          child: StatsLineChartPremiumView(widget._topPadding, textColor: Theme.of(context).colorScheme.bgTextColor)
         );
       case ViewState.empty:
         return const SizedBox(
@@ -115,7 +115,6 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
           child: Center(
             child: Text(
               "Not enough data yet", 
-              style: TextStyle(color: Colors.black)
             ),
           ),
         );
@@ -201,8 +200,8 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
         : ''
       }",
       alignment: ChartAlignment.near,
-      textStyle: const TextStyle(
-        color: Colors.black,
+      textStyle: TextStyle(
+        color: Theme.of(context).colorScheme.bgTextColor,
         fontSize: 12,
         fontWeight: FontWeight.bold
       )
@@ -219,8 +218,8 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
     primaryXAxis: CategoryAxis(
       majorGridLines: const MajorGridLines(width: 0),
       labelPlacement: LabelPlacement.onTicks,
-      labelStyle: const TextStyle(
-        color: Colors.black,
+      labelStyle: TextStyle(
+        color: Theme.of(context).colorScheme.bgTextColor,
         fontWeight: FontWeight.bold
       ),
       labelIntersectAction: AxisLabelIntersectAction.rotate45,
@@ -233,6 +232,9 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
       edgeLabelPlacement: EdgeLabelPlacement.shift,
       majorTickLines: const MajorTickLines(size: 0),
       isVisible: false,
+      labelStyle: TextStyle(
+        color: Theme.of(context).colorScheme.bgTextColor,
+      ),
     ),
     tooltipBehavior: TooltipBehavior(enable: true, canShowMarker: true, format: 'point.x - ${_dailyStatsProvider.item!.currency.getCurrencyFromString()} point.y'),
     series: [

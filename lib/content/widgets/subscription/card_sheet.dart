@@ -113,12 +113,11 @@ class _CardSelectionSheetState extends State<CardSelectionSheet> {
                       style: currencySelection 
                       ? const TextStyle(
                         fontSize: 18,
-                        color: Colors.black,
                         fontWeight: FontWeight.bold
                       )
                       : TextStyle(fontSize: 18, color: AppColors().lightBlack),
                     ),
-                    trailing: currencySelection ? const Icon(Icons.check, color: Colors.black, size: 26) : null
+                    trailing: currencySelection ? Icon(Icons.check, color: Theme.of(context).colorScheme.bgTextColor, size: 26) : null
                   );
                 }),
                 separatorBuilder: (_, __) => const Divider(), 
@@ -145,7 +144,7 @@ class _CardSelectionSheetState extends State<CardSelectionSheet> {
                 ),
                 Platform.isIOS || Platform.isMacOS
                 ? CupertinoButton.filled(
-                  child: const Text('Apply'), 
+                  child: const Text('Apply', style: TextStyle(color: Colors.white)), 
                   onPressed: () {
                     _cardSelectionProvider.cardSelectionChanged(
                       _selectionList.contains(true)
@@ -167,7 +166,7 @@ class _CardSelectionSheetState extends State<CardSelectionSheet> {
                         );
                         Navigator.pop(context);
                       }, 
-                      child: const Text('Apply')
+                      child: const Text('Apply', style: TextStyle(color: Colors.white))
                     ),
                   ),
                 )

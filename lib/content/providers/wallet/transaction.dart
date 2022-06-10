@@ -9,7 +9,7 @@ enum Category {
   software(4, Icons.terminal_rounded, Color(0xFF237B70)),
   health(5, Icons.emergency_rounded, Color(0xFFF85958)),
   income(6, Icons.attach_money_rounded, Color(0xFFFEA802)),
-  others(7, Icons.more_horiz_rounded, Colors.black);
+  others(7, Icons.more_horiz_rounded, Colors.grey);
 
   const Category(this.value, this.icon, this.iconColor);
   final int value;

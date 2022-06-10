@@ -22,6 +22,14 @@ class SharedPref {
     return _instance;
   }
 
+  void setTheme(bool isDarkTheme) {
+    sharedPref?.setBool("theme", isDarkTheme);
+  }
+
+  bool isDarkTheme() {
+    return _sharedPreference.getBool("theme") ?? false;
+  }
+
   void setLoginCredentials(String email, String password) {
     sharedPref?.setString("email_address", email);
     sharedPref?.setString("password", password);

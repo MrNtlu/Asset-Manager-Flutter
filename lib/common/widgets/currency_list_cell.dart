@@ -18,12 +18,11 @@ class CurrencyListCell extends StatelessWidget {
         style: isSelected 
         ? const TextStyle(
           fontSize: 18,
-          color: Colors.black,
           fontWeight: FontWeight.bold
         )
         : TextStyle(fontSize: 18, color: AppColors().lightBlack),
       ),
-      trailing: isSelected ? const Icon(Icons.check, color: Colors.black, size: 26) : null
+      trailing: isSelected ? Icon(Icons.check, color: Theme.of(context).colorScheme.bgTextColor, size: 26) : null
     );
   }
 }

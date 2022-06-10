@@ -11,8 +11,10 @@ import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/password_textformfield.dart';
 import 'package:asset_flutter/common/widgets/success_view.dart';
 import 'package:asset_flutter/content/pages/settings/feedback_page.dart';
+import 'package:asset_flutter/content/providers/settings/theme_state.dart';
 import 'package:asset_flutter/content/widgets/settings/offers_sheet.dart';
 import 'package:asset_flutter/content/models/responses/user.dart';
+import 'package:asset_flutter/content/widgets/settings/theme_switch.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/google_signin_api.dart';
 import 'package:asset_flutter/static/purchase_api.dart';
@@ -22,6 +24,7 @@ import 'package:asset_flutter/static/token.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:http/http.dart' as http;
@@ -240,6 +243,8 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void didChangeDependencies() {
     if (_state == DetailState.init) {
+      final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+      themeProvider.initTheme(SharedPref().isDarkTheme());
       _getUserInfo();
     }
     super.didChangeDependencies();
@@ -250,15 +255,11 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        iconTheme: const IconThemeData(
-          color: Colors.black,
-        ),
         title: const Text(
           "Settings",
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)
+          style: TextStyle(fontWeight: FontWeight.bold)
         ),
         centerTitle: false,
-        backgroundColor: Colors.white,
       ),
       body: SafeArea(
         child: _body(),
@@ -306,6 +307,7 @@ class _SettingsPageState extends State<SettingsPage> {
             SettingsSection(
               title: const Text('Account Settings'),
               tiles: [
+                const CustomSettingsTile(child: SettingsThemeSwitch()),
                 SettingsTile.navigation(
                   leading: const Icon(Icons.monetization_on_rounded),
                   title: const Text('Change Currency'),
@@ -336,7 +338,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                     })
                                   );
                                 }, 
-                                child: const Text('Save', style: TextStyle(fontSize: 16))
+                                child: const Text('Save', style: TextStyle(fontSize: 16, color: Colors.white))
                               )
                               : ElevatedButton(
                                 onPressed: (){
@@ -349,7 +351,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                     })
                                   );
                                 }, 
-                                child: const Text('Save', style: TextStyle(fontSize: 16))
+                                child: const Text('Save', style: TextStyle(fontSize: 16, color: Colors.white))
                               )
                             ],
                           ),

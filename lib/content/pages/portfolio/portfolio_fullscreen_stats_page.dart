@@ -13,7 +13,6 @@ class PortfolioFullscreenStatsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors().barCardColor,
       body: SafeArea(
         child: Column(
           children: [
@@ -24,7 +23,7 @@ class PortfolioFullscreenStatsPage extends StatelessWidget {
                   alignment: Alignment.topLeft,
                   child: IconButton(
                     onPressed: () => Navigator.pop(context), 
-                    icon: const Icon(Icons.arrow_back_ios_rounded, color: Colors.white,)
+                    icon: const Icon(Icons.arrow_back_ios_rounded)
                   ),
                 ),
                 Padding(
@@ -33,13 +32,11 @@ class PortfolioFullscreenStatsPage extends StatelessWidget {
                     ? Text(
                     "$_title($_currency)",
                     style: const TextStyle(
-                      color: Colors.white,
                     ),
                   )
                   : const Text(
                     "Landscape mode recommended.",
                     style: TextStyle(
-                      color: Colors.white,
                       fontSize: 12,
                       fontWeight: FontWeight.bold
                     ),
@@ -62,18 +59,12 @@ class PortfolioFullscreenStatsPage extends StatelessWidget {
                 primaryXAxis: CategoryAxis(
                   majorGridLines: const MajorGridLines(width: 0),
                   labelPlacement: LabelPlacement.onTicks,
-                  labelStyle: const TextStyle(
-                    color: Colors.white
-                  )
                 ),
                 primaryYAxis: NumericAxis(
                   axisLine: const AxisLine(width: 0),
                   edgeLabelPlacement: EdgeLabelPlacement.shift,
                   majorTickLines: const MajorTickLines(size: 0),
                   isVisible: true,
-                  labelStyle: const TextStyle(
-                    color: Colors.white
-                  )
                 ),
                 tooltipBehavior: TooltipBehavior(
                   enable: true, 
@@ -87,7 +78,10 @@ class PortfolioFullscreenStatsPage extends StatelessWidget {
                     dataSource: _chartData,
                     markerSettings: const MarkerSettings(isVisible: true),
                     dataLabelMapper: (_data, index) => _currency.getCurrencyFromString() + _data.stat.numToString(),
-                    dataLabelSettings: const DataLabelSettings(isVisible: true, color: Colors.white),
+                    dataLabelSettings: DataLabelSettings(
+                      isVisible: true, 
+                      color: Theme.of(context).colorScheme.bgTextColor
+                    ),
                     xValueMapper: (ChartData data, _) => data.date,
                     yValueMapper: (ChartData data, _) => data.stat,
                   )

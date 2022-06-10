@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
@@ -125,7 +124,6 @@ class _BankAccountDetailsSheetState extends State<BankAccountDetailsSheet> {
                 child: Text(
                   "Total Transactions",
                   style: TextStyle(
-                    color: Colors.black,
                     fontWeight: FontWeight.bold,
                     fontSize: 16
                   ),

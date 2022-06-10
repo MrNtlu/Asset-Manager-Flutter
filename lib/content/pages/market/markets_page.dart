@@ -11,14 +11,10 @@ class MarketsPage extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        iconTheme: const IconThemeData(
-          color: Colors.black,
-        ),
         title: const Text(
           "Markets", 
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)
+          style: TextStyle(fontWeight: FontWeight.bold)
         ),
-        backgroundColor: Colors.white,
       ),
       body: SafeArea(
         child: Container(
