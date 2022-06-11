@@ -1,10 +1,13 @@
+import 'package:asset_flutter/content/providers/settings/theme_state.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class TransactionDetailsSheetText extends StatelessWidget {
   final String _title;
   final String _value;
-  final Color textColor;
-  const TransactionDetailsSheetText(this._title, this._value, {this.textColor = Colors.black, Key? key}) : super(key: key);
+  final Color? textColor;
+  const TransactionDetailsSheetText(this._title, this._value, {this.textColor, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,10 +18,10 @@ class TransactionDetailsSheetText extends StatelessWidget {
           padding: const EdgeInsets.only(top: 16),
           child: Text(
             _title,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: Colors.black54
+              color: Provider.of<ThemeProvider>(context, listen: false).isDarkMode ? Colors.white54 :  Colors.black54
             ),
           ),
         ),
@@ -29,7 +32,7 @@ class TransactionDetailsSheetText extends StatelessWidget {
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: textColor
+              color: textColor ?? Theme.of(context).colorScheme.bgTextColor
             ),
           ),
         )

@@ -6,7 +6,6 @@ import 'package:asset_flutter/auth/models/responses/user.dart';
 import 'package:asset_flutter/auth/pages/register_page.dart';
 import 'package:asset_flutter/auth/widgets/auth_bottom_sheet.dart';
 import 'package:asset_flutter/common/models/state.dart';
-import 'package:asset_flutter/common/widgets/error_snackbar.dart';
 import 'package:asset_flutter/common/widgets/expanded_divider.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/content/pages/tabs_page.dart';
@@ -202,7 +201,9 @@ class _LoginPageState extends State<LoginPage> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Container(
+      body: _state == DetailState.loading
+        ? const LoadingView("Please wait while logging in")
+        : Container(
         height: double.infinity,
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -211,9 +212,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
         child: SafeArea(
-          child: _state == DetailState.loading
-          ? const LoadingView("Please wait while logging in", textColor: Colors.white)
-          : CustomScrollView(
+          child: CustomScrollView(
               physics: const ScrollPhysics(),
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               slivers: [
@@ -398,12 +397,13 @@ class _LoginPageState extends State<LoginPage> {
     
     GoogleSignInApi().signOut();
     SharedPref().deleteLoginCredentials();
-    
+
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      duration: const Duration(seconds: 5),
-      content: ErrorSnackbar(error),
-      behavior: SnackBarBehavior.floating,
-      backgroundColor: Colors.transparent,
+      content: Text(error, style: const TextStyle(color: Colors.white)),
+      action: SnackBarAction(label: "OK", onPressed: () => ScaffoldMessenger.of(context).removeCurrentSnackBar(), textColor: Colors.black),
+      behavior: SnackBarBehavior.fixed,
+      backgroundColor: Colors.red,
       elevation: 0,
     ));
   }

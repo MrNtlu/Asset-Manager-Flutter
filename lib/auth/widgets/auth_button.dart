@@ -25,7 +25,7 @@ class AuthButton extends StatelessWidget {
           padding: const EdgeInsets.all(12),
           child: Text(
             text,
-            style: TextStyle(fontSize: fontSize),
+            style: TextStyle(fontSize: fontSize, color: Colors.white),
           ), 
           onPressed: () => onPressedHandler(context),
         )

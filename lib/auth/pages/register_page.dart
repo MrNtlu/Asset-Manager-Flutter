@@ -4,7 +4,6 @@ import 'package:asset_flutter/auth/widgets/auth_button.dart';
 import 'package:asset_flutter/auth/widgets/auth_checkbox.dart';
 import 'package:asset_flutter/auth/widgets/auth_currency_dropdown.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
-import 'package:asset_flutter/common/widgets/error_snackbar.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/password_textformfield.dart';
 import 'package:asset_flutter/common/widgets/success_view.dart';
@@ -55,11 +54,12 @@ class _RegisterPageState extends State<RegisterPage> {
             _isLoading = false;
           });
           if (value.error != null) {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              duration: const Duration(seconds: 5),
-              content: ErrorSnackbar(value.error.toString()),
-              behavior: SnackBarBehavior.floating,
-              backgroundColor: Colors.transparent,
+              content: Text(value.error.toString(), style: const TextStyle(color: Colors.white)),
+              action: SnackBarAction(label: "OK", onPressed: () => ScaffoldMessenger.of(context).removeCurrentSnackBar(), textColor: Colors.black),
+              behavior: SnackBarBehavior.fixed,
+              backgroundColor: Colors.red,
               elevation: 0,
             ));
           } else {

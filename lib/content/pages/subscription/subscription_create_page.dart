@@ -1,6 +1,5 @@
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
-import 'package:asset_flutter/common/widgets/error_snackbar.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/premium_dialog.dart';
 import 'package:asset_flutter/common/widgets/success_view.dart';
@@ -35,10 +34,12 @@ class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
       return;
     }
     if (_subscriptionDetailsEdit.selectedDomain == null) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: ErrorSnackbar("Please select subscription image."),
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.transparent,
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: const Text("Please select subscription image.", style: TextStyle(color: Colors.white)),
+        action: SnackBarAction(label: "OK", onPressed: () => ScaffoldMessenger.of(context).removeCurrentSnackBar(), textColor: Colors.black),
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: Colors.red,
         elevation: 0,
       ));
       return;

@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
-import 'package:asset_flutter/common/widgets/error_snackbar.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/premium_dialog.dart';
 import 'package:asset_flutter/common/widgets/success_view.dart';
@@ -10,7 +9,6 @@ import 'package:asset_flutter/content/models/requests/asset.dart';
 import 'package:asset_flutter/content/models/responses/investings.dart';
 import 'package:asset_flutter/content/providers/assets.dart';
 import 'package:asset_flutter/content/widgets/portfolio/ic_dropdowns.dart';
-import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/currencies.dart';
 import 'package:asset_flutter/static/markets.dart';
 import 'package:asset_flutter/static/routes.dart';
@@ -135,7 +133,6 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Text("Create"),
-          backgroundColor: AppColors().primaryLightishColor,
           actions: [
             IconButton(
               icon: const Icon(Icons.save_rounded),
@@ -174,22 +171,22 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
                         ? CupertinoButton.filled(
                           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
                           onPressed: () => _createInvestment(context),
-                          child: const Text("Save")
+                          child: const Text("Save", style: TextStyle(color: Colors.white))
                         )
                         : ElevatedButton(
                           onPressed: () => _createInvestment(context),
-                          child: const Text("Save")
+                          child: const Text("Save", style: TextStyle(color: Colors.white))
                         ),
                         if (_currentStep != 2)
                         isApple
                         ? CupertinoButton.filled(
                           padding: const EdgeInsets.all(12),
                           onPressed: details.onStepContinue,
-                          child: const Text("Continue")
+                          child: const Text("Continue", style: TextStyle(color: Colors.white))
                         )
                         : ElevatedButton(
                           onPressed: details.onStepContinue,
-                          child: const Text("Continue")
+                          child: const Text("Continue", style: TextStyle(color: Colors.white))
                         ),
                         if (_currentStep != 0)
                         Padding(
@@ -223,10 +220,12 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
                   }
 
                   if (_currentStep == 1 && (_selectedItem == null || _selectedCurrencyItem == null) && index != 0) {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: ErrorSnackbar("Please select investment and currency."),
-                      behavior: SnackBarBehavior.floating,
-                      backgroundColor: Colors.transparent,
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: const Text("Please select investment and currency.", style: TextStyle(color: Colors.white)),
+                      action: SnackBarAction(label: "OK", onPressed: () => ScaffoldMessenger.of(context).removeCurrentSnackBar(), textColor: Colors.black),
+                      behavior: SnackBarBehavior.fixed,
+                      backgroundColor: Colors.red,
                       elevation: 0,
                     ));
                   } else {
@@ -252,10 +251,12 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
                   }
 
                   if (_currentStep == 1 && (_selectedItem == null || _selectedCurrencyItem == null)) {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: ErrorSnackbar("Please select investment and currency."),
-                      behavior: SnackBarBehavior.floating,
-                      backgroundColor: Colors.transparent,
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: const Text("Please select investment and currency.", style: TextStyle(color: Colors.white)),
+                      action: SnackBarAction(label: "OK", onPressed: () => ScaffoldMessenger.of(context).removeCurrentSnackBar(), textColor: Colors.black),
+                      behavior: SnackBarBehavior.fixed,
+                      backgroundColor: Colors.red,
                       elevation: 0,
                     ));
                   } else if (!(getSteps().length - 1 == _currentStep)) {
@@ -311,30 +312,6 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
         child: Column(
           children: [
             CustomTextFormField(
-              "Buy/Sell Price",
-              const TextInputType.numberWithOptions(
-                  decimal: true, signed: true),
-              initialText: _price?.toString(),
-              textInputAction: TextInputAction.next,
-              edgeInsets: const EdgeInsets.symmetric(vertical: 8),
-              onSaved: (value) {
-                if (value != null) {
-                  _price = double.parse(value);
-                }
-              },
-              validator: (value) {
-                if (value != null) {
-                  if (value.isEmpty) {
-                    return "Please don't leave this empty.";
-                  } else if (double.tryParse(value) == null) {
-                    return "Price is not valid.";
-                  }
-                }
-
-                return null;
-              },
-            ),
-            CustomTextFormField(
               "Amount",
               const TextInputType.numberWithOptions(
                   decimal: true, signed: true),
@@ -359,7 +336,31 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
 
                 return null;
               },
-            )
+            ),
+            CustomTextFormField(
+              "Buy/Sell Price",
+              const TextInputType.numberWithOptions(
+                  decimal: true, signed: true),
+              initialText: _price?.toString(),
+              textInputAction: TextInputAction.next,
+              edgeInsets: const EdgeInsets.symmetric(vertical: 8),
+              onSaved: (value) {
+                if (value != null) {
+                  _price = double.parse(value);
+                }
+              },
+              validator: (value) {
+                if (value != null) {
+                  if (value.isEmpty) {
+                    return "Please don't leave this empty.";
+                  } else if (double.tryParse(value) == null) {
+                    return "Price is not valid.";
+                  }
+                }
+
+                return null;
+              },
+            ),
           ],
         ),
       )

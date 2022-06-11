@@ -85,14 +85,12 @@ class TransactionListCell extends StatelessWidget {
           onTap: () {
             showModalBottomSheet(
               context: context,
-              shape: Platform.isIOS || Platform.isMacOS
-              ? const RoundedRectangleBorder(
+              shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
                   topRight: Radius.circular(16),
                   topLeft: Radius.circular(16)
                 ),
-              )
-              : null,
+              ),
               enableDrag: true,
               isDismissible: true,
               isScrollControlled: false,

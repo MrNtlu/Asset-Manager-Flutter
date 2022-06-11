@@ -150,7 +150,27 @@ class OffersSheetState extends State<OffersSheet> {
                           padding: EdgeInsets.only(right: 8),
                           child: Icon(Icons.check_rounded, color: Colors.white),
                         ),
+                        Text("Unlimited Transactions", style: TextStyle(color: Colors.white, fontSize: 16))
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Padding(
+                          padding: EdgeInsets.only(right: 8),
+                          child: Icon(Icons.check_rounded, color: Colors.white),
+                        ),
                         Text("Unlimited Credit Cards", style: TextStyle(color: Colors.white, fontSize: 16))
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Padding(
+                          padding: EdgeInsets.only(right: 8),
+                          child: Icon(Icons.check_rounded, color: Colors.white),
+                        ),
+                        Text("Unlimited Bank Accounts", style: TextStyle(color: Colors.white, fontSize: 16))
                       ],
                     ),
                     Row(

@@ -1,3 +1,4 @@
+import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/markets.dart';
 import 'package:flutter/material.dart';
 
@@ -46,8 +47,7 @@ class _InvestmentCreateDropdownsState extends State<InvestmentCreateDropdowns> {
             child: DropdownButton<String>(
               isExpanded: true,
               value: widget.typeDropdownValue,
-              style: const TextStyle(fontSize: 16, color: Colors.black),
-              dropdownColor: Colors.white,
+              style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.bgTextColor),
               items: const ["Crypto", "Stock", "Exchange", "Commodity"].map((value) {
                 return DropdownMenuItem(
                   value: value,
@@ -81,8 +81,7 @@ class _InvestmentCreateDropdownsState extends State<InvestmentCreateDropdowns> {
             child: DropdownButton<String>(
               isExpanded: true,
               value: widget.marketDropdownValue,
-              style: const TextStyle(fontSize: 16, color: Colors.black),
-              dropdownColor: Colors.white,
+              style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.bgTextColor),
               items: _marketDropdownList.map((value) {
                 return DropdownMenuItem(
                   value: value,

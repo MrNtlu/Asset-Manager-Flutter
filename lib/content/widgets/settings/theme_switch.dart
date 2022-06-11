@@ -14,8 +14,8 @@ class SettingsThemeSwitch extends StatelessWidget {
     return SettingsTile.switchTile(
       onToggle: (value) => themeProvider.toggleTheme(value),
       initialValue: themeProvider.isDarkMode,
-      leading: const Icon(Icons.format_paint),
-      title: const Text('Enable Dark Theme'),
+      leading: const Icon(Icons.dark_mode_rounded),
+      title: const Text('Dark Theme'),
     );
   }
 }
