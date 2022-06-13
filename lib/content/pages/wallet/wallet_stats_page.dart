@@ -35,9 +35,11 @@ class _WalletStatsPageState extends State<WalletStatsPage> {
 
     _provider.getTransactionStats(interval: interval).then((response) {
       if (_state != ViewState.disposed) {
-        _state = response.error != null
-        ? ViewState.error
-        : ViewState.done;
+        setState(() {
+          _state = response.error != null
+          ? ViewState.error
+          : ViewState.done;
+        });
       }
     });
   }
@@ -52,14 +54,20 @@ class _WalletStatsPageState extends State<WalletStatsPage> {
   @override
   void dispose() {
     _toggleProvider.removeListener(_onIntervalChanged);
+    _provider.dispose();
     _state = ViewState.disposed;
     super.dispose();
   }
 
   @override
+  void initState() {
+    _provider = TransactionStatsProvider();
+    super.initState();
+  }
+
+  @override
   void didChangeDependencies() {
     if (_state == ViewState.init) {
-      _provider = Provider.of<TransactionStatsProvider>(context);
       _toggleProvider = Provider.of<TransactionStatsToggleProvider>(context);
       _toggleProvider.addListener(_onIntervalChanged); 
       _getTransactionStats();
@@ -72,8 +80,11 @@ class _WalletStatsPageState extends State<WalletStatsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: _body(),
+      body: ChangeNotifierProvider.value(
+        value: _provider,
+        child: SafeArea(
+          child: _body(),
+        ),
       )
     );
   }

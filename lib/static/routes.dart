@@ -82,11 +82,13 @@ class OAuthRoutes {
   late String _baseOAuthURL;
 
   late String google;
+  late String apple;
 
   OAuthRoutes({baseURL}) {
     _baseOAuthURL = baseURL + '/oauth';
 
     google = _baseOAuthURL + '/google';
+    apple = _baseOAuthURL + '/apple';
   }
 }
 

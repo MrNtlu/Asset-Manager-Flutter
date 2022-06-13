@@ -283,6 +283,7 @@ class _TypeConverter<T> {
         response["is_premium"] ?? false,
         response["is_lifetime_premium"] ?? false,
         response["is_oauth"] ?? false,
+        response["oauth_type"] ?? -1,
         response["email_address"],
         response["currency"],
         response["fcm_token"] ?? "",

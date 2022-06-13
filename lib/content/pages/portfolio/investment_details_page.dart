@@ -42,6 +42,7 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
   EditState _state = EditState.init;
   late final AssetProvider _assetProvider;
   late final AssetDetailsStateProvider _stateListener;
+  late final AssetLogProvider _assetLogProvider;
   bool isDataChanged = false;
 
   void _getStats() {
@@ -72,7 +73,7 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
     setState(() {
       _state = EditState.loading;
     });
-    Provider.of<AssetLogProvider>(context, listen: false).addAssetLog(
+    _assetLogProvider.addAssetLog(
       AssetCreate(
         _assetProvider.item!.toAsset, 
         _assetProvider.item!.fromAsset, 
@@ -104,7 +105,7 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
       _state = EditState.editing;
     });
     
-    Provider.of<AssetLogProvider>(context, listen: false)
+    _assetLogProvider
       .deleteAllAssetLogs(widget._data.toAsset, widget._data.fromAsset, widget._data.market)
       .then((response){
         if (_state != EditState.disposed) {
@@ -152,8 +153,15 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
   @override
   void dispose() {
     _stateListener.removeListener(_assetDetailsStateListener);
+    _assetLogProvider.dispose();
     _state = EditState.disposed;
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    _assetLogProvider = AssetLogProvider();
+    super.initState();
   }
 
   @override
@@ -179,9 +187,12 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: SafeArea(
-          bottom: false,
-          child: _body(),
+        body: ChangeNotifierProvider.value(
+          value: _assetLogProvider,
+          child: SafeArea(
+            bottom: false,
+            child: _body(),
+          ),
         ),
       ),
     );

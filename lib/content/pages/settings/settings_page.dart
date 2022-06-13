@@ -135,9 +135,21 @@ class _SettingsPageState extends State<SettingsPage> {
           try {
             Purchases.logOut();
             SharedPref().deleteLoginCredentials();
+
             if (PurchaseApi().userInfo != null && PurchaseApi().userInfo!.isOAuth) {
-              await GoogleSignInApi().signOut();
+              switch (PurchaseApi().userInfo!.oAuthType) {
+                case 0:
+                  await GoogleSignInApi().signOut();
+                  break;
+                case 1:
+                  SharedPref().deleteOAuthLoginCredentials();
+                  break;
+                default:
+                  SharedPref().deleteOAuthLoginCredentials();
+                  await GoogleSignInApi().signOut();
+              }
             } else if (PurchaseApi().userInfo == null) {
+              SharedPref().deleteOAuthLoginCredentials();
               await GoogleSignInApi().signOut();
             }
             Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => LoginPage()));
@@ -578,16 +590,20 @@ class _SettingsPageState extends State<SettingsPage> {
 
   SettingsTile _userInfoText(String title, String data) => SettingsTile(
     title: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(title),
-        AutoSizeText(
-          data,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold
+        const SizedBox(width: 8),
+        Expanded(
+          child: AutoSizeText(
+            data,
+            textAlign: TextAlign.right,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold
+            ),
+            maxLines: 1,
+            maxFontSize: 16,
+            minFontSize: 12,
           ),
-          maxFontSize: 16,
-          minFontSize: 12,
         ),
       ],
     )

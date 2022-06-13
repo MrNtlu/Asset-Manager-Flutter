@@ -24,6 +24,7 @@ import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lottie/lottie.dart';
 import 'package:http/http.dart' as http;
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class LoginPage extends StatefulWidget {
   static const routeName = "/login";
@@ -79,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  void _onOAuth2Login(String token) async {
+  void _onOAuth2GoogleLogin(String token) async {
     try {
       var response = await http.post(
         Uri.parse(APIRoutes().oauthRoutes.google),
@@ -118,6 +119,53 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  void _onOAuth2AppleLogin(String _code, bool isRefresh) async {
+    setState(() {
+      _state = DetailState.loading;
+    });
+
+    try {
+      var response = await http.post(
+        Uri.parse(APIRoutes().oauthRoutes.apple),
+        body: json.encode({
+          "code": _code,
+          "is_refresh": isRefresh
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        }
+      );
+
+      final token = json.decode(response.body)["access_token"];
+      final message = json.decode(response.body)["message"];
+      final error = json.decode(response.body)["error"];
+      final refreshToken = json.decode(response.body)["refresh_token"];
+
+      if (_state != DetailState.disposed) {
+        if (token == null) {
+          SharedPref().deleteOAuthLoginCredentials();
+          _onErrorDialog(true, error: error ?? message);
+        } else {
+          try {
+            widget.token = token!;
+            if (!isRefresh) {
+              SharedPref().setOAuthLoginCredentials(refreshToken);
+            }
+          // ignore: empty_catches
+          } catch(err) {}
+
+          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) {
+            return TabsPage(widget.token);
+          }));
+        }
+      }
+    } catch (err) {
+      if (_state != DetailState.disposed) {
+        _onErrorDialog(true, error: err.toString());
+      }
+    }
+  }
+
   Future _authenticate(GoogleSignInAccount user) async {
     setState(() {
       _state = DetailState.loading;
@@ -125,7 +173,7 @@ class _LoginPageState extends State<LoginPage> {
     user.authentication.then((response){
       if (_state != DetailState.disposed) {
         if (response.accessToken != null) {
-          _onOAuth2Login(response.accessToken!);
+          _onOAuth2GoogleLogin(response.accessToken!);
         } else {
           _onErrorDialog(true);
         }
@@ -173,9 +221,14 @@ class _LoginPageState extends State<LoginPage> {
       _checkbox = AuthCheckbox('Remember Password');
       SharedPref().init().then((_) {
         var loginCreds = SharedPref().getLoginCredentials();
+        var oAuthCreds = SharedPref().getOAuthLoginCredentials();
 
         if (loginCreds.keys.first) {
           _onSigninPressed(context, login: loginCreds.values.first);
+        }
+
+        if (oAuthCreds != null) {
+          _onOAuth2AppleLogin(oAuthCreds, true);
         }
       });
 
@@ -213,7 +266,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
         child: SafeArea(
           child: CustomScrollView(
-              physics: const ScrollPhysics(),
+              physics: const ClampingScrollPhysics(),
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               slivers: [
                 SliverFillRemaining(
@@ -229,7 +282,7 @@ class _LoginPageState extends State<LoginPage> {
                             child: Lottie.asset(
                               "assets/lottie/auth.json", 
                               fit: BoxFit.cover,
-                              height: MediaQuery.of(context).size.height / 3.42,
+                              height: MediaQuery.of(context).size.height / 3.5,
                               frameRate: FrameRate(60)
                             )
                           ),
@@ -322,11 +375,31 @@ class _LoginPageState extends State<LoginPage> {
                                       margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 3),
                                       child: SignInButton(
                                         Buttons.Google,
-                                        text: "Sign In with Google",
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(8)
                                         ),
                                         onPressed: _onGoogleSignInPressed,
+                                      ),
+                                    ),
+                                    if (isApple)
+                                    Container(
+                                      width: double.infinity,
+                                      height: 45,
+                                      margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                                      child: SignInButton(
+                                        Buttons.AppleDark,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(8)
+                                        ),
+                                        onPressed: () async {
+                                          final credential = await SignInWithApple.getAppleIDCredential(
+                                            scopes: [
+                                              AppleIDAuthorizationScopes.email,
+                                            ],
+                                          );
+                                          
+                                          _onOAuth2AppleLogin(credential.authorizationCode, false);
+                                        },
                                       ),
                                     ),
                                     Padding(

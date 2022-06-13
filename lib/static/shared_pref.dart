@@ -48,5 +48,17 @@ class SharedPref {
     sharedPref?.remove("password");
   }
 
+  void setOAuthLoginCredentials(String token) {
+    sharedPref?.setString("refresh_token", token);
+  }
+
+  String? getOAuthLoginCredentials() {
+    return _sharedPreference.getString("refresh_token");
+  }
+
+  void deleteOAuthLoginCredentials(){
+    sharedPref?.remove("refresh_token");
+  }
+
   SharedPreferences? get sharedPref => _isInit ? _sharedPreference : null;
 }

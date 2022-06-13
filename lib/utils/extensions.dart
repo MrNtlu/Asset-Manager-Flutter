@@ -37,7 +37,7 @@ extension NumExt on num {
       if (isDecimalStarted && numberHolder.length > 2) {
         count -= numberHolder.length;
         break;
-      } else if (count > 7) {
+      } else if (count > 5) {
         break;
       }
     }

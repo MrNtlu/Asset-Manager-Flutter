@@ -21,7 +21,6 @@ import 'package:asset_flutter/content/providers/wallet/bank_accounts.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_calendar.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_sheet_state.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_state.dart';
-import 'package:asset_flutter/content/providers/wallet/transaction_stats.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_stats_toggle.dart';
 import 'package:asset_flutter/content/providers/wallet/transaction_total_stat.dart';
 import 'package:asset_flutter/content/providers/wallet/transactions.dart';
@@ -30,7 +29,6 @@ import 'package:asset_flutter/static/purchase_api.dart';
 import 'package:asset_flutter/content/pages/tabs_page.dart';
 import 'package:asset_flutter/content/providers/asset.dart';
 import 'package:asset_flutter/content/providers/asset_details.dart';
-import 'package:asset_flutter/content/providers/asset_logs.dart';
 import 'package:asset_flutter/content/providers/assets.dart';
 import 'package:asset_flutter/content/providers/market/market_selection_state.dart';
 import 'package:asset_flutter/content/providers/market/prices.dart';
@@ -78,25 +76,23 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(value: SubscriptionsProvider()),
-        ChangeNotifierProvider.value(value: AssetLogProvider()),
-        ChangeNotifierProvider.value(value: AssetsProvider()),
-        ChangeNotifierProvider.value(value: SubscriptionDetailsProvider()),
-        ChangeNotifierProvider.value(value: AssetProvider()),
-        ChangeNotifierProvider.value(value: AssetDetailsStateProvider()),
-        ChangeNotifierProvider.value(value: PortfolioStateProvider()),
-        ChangeNotifierProvider.value(value: PricesProvider()),
-        ChangeNotifierProvider.value(value: DailyStatsProvider()),
-        ChangeNotifierProvider.value(value: TransactionTotalStatsProvider()),
-        ChangeNotifierProvider.value(value: CurrenciesProvider()),
-        ChangeNotifierProvider.value(value: SubscriptionStateProvider()),
-        ChangeNotifierProvider.value(value: CardProvider()),
-        ChangeNotifierProvider.value(value: CardSubscriptionsProvider()),
-        ChangeNotifierProvider.value(value: SubscriptionImageSelection()),
-        ChangeNotifierProvider.value(value: TransactionsProvider()),
-        ChangeNotifierProvider.value(value: BankAccountProvider()),
-        ChangeNotifierProvider.value(value: TransactionCalendarCountsProvider()),
-        ChangeNotifierProvider.value(value: TransactionStatsProvider()),
+        ChangeNotifierProvider(create: (context) => SubscriptionsProvider()),
+        ChangeNotifierProvider(create: (context) => AssetsProvider()),
+        ChangeNotifierProvider(create: (context) => SubscriptionDetailsProvider()),
+        ChangeNotifierProvider(create: (context) => AssetProvider()),
+        ChangeNotifierProvider(create: (context) => AssetDetailsStateProvider()),
+        ChangeNotifierProvider(create: (context) => PortfolioStateProvider()),
+        ChangeNotifierProvider(create: (context) => PricesProvider()),
+        ChangeNotifierProvider(create: (context) => DailyStatsProvider()),
+        ChangeNotifierProvider(create: (context) => TransactionTotalStatsProvider()),
+        ChangeNotifierProvider(create: (context) => CurrenciesProvider()),
+        ChangeNotifierProvider(create: (context) => SubscriptionStateProvider()),
+        ChangeNotifierProvider(create: (context) => CardProvider()),
+        ChangeNotifierProvider(create: (context) => CardSubscriptionsProvider()),
+        ChangeNotifierProvider(create: (context) => SubscriptionImageSelection()),
+        ChangeNotifierProvider(create: (context) => TransactionsProvider()),
+        ChangeNotifierProvider(create: (context) => BankAccountProvider()),
+        ChangeNotifierProvider(create: (context) => TransactionCalendarCountsProvider()),
         ChangeNotifierProvider(create: (context) => CardStateProvider()),
         ChangeNotifierProvider(create: (context) => WalletStateProvider()),
         ChangeNotifierProvider(create: (context) => BankAccountStateProvider()),
@@ -104,7 +100,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => MarketSelectionStateProvider()),
         ChangeNotifierProvider(create: (context) => StatsToggleSelectionStateProvider()),
         ChangeNotifierProvider(create: (context) => StatsSheetSelectionStateProvider()),
-        ChangeNotifierProvider(create: (context) =>  CurrencySheetSelectionStateProvider()),
+        ChangeNotifierProvider(create: (context) => CurrencySheetSelectionStateProvider()),
         ChangeNotifierProvider(create: (context) => CardSheetSelectionStateProvider()),
         ChangeNotifierProvider(create: (context) => BankAccountSelectionStateProvider()),
         ChangeNotifierProvider(create: (context) => TransactionSheetSelectionStateProvider()),

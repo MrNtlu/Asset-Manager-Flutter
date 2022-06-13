@@ -60,7 +60,7 @@ class SubscriptionListCell extends StatelessWidget {
             ),
           ],
         ),
-        ),
+      ),
     );
   }
 }

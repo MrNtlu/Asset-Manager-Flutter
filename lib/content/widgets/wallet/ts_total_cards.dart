@@ -11,28 +11,28 @@ class TransactionStatsTotalCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<TransactionStatsProvider>(builder: ((context, value, _) {
-      final data = value.item!;
-      final _totalData = isExpense ? data.totalExpense : data.totalIncome;
-      
-      return Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        color: isExpense ? AppColors().redColor : AppColors().greenColor,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                isExpense ? "Expense" : "Income",
-                style: const TextStyle(
-                  color: Colors.white70,
-                  fontSize: 16,
-                ),
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      color: isExpense ? AppColors().redColor : AppColors().greenColor,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              isExpense ? "Expense" : "Income",
+              style: const TextStyle(
+                color: Colors.white70,
+                fontSize: 16,
               ),
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: AutoSizeText(
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Consumer<TransactionStatsProvider>(builder: ((context, value, _) {
+                final data = value.item!;
+                final _totalData = isExpense ? data.totalExpense : data.totalIncome;
+
+                return AutoSizeText(
                   data.categoryStats.currency.getCurrencyFromString() + _totalData.abs().numToString(),
                   maxLines: 1,
                   minFontSize: 16,
@@ -41,12 +41,12 @@ class TransactionStatsTotalCards extends StatelessWidget {
                     fontSize: 22,
                     fontWeight: FontWeight.bold
                   ),
-                ),
-              ),
-            ],
-          ),
+                );
+              }))
+            ),
+          ],
         ),
-      );
-    }));
+      ),
+    );
   }
 }
