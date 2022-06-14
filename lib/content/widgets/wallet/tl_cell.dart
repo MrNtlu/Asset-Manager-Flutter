@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/check_dialog.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';

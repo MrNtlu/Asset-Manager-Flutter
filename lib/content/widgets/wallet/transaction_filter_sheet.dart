@@ -125,7 +125,6 @@ class TransactionFilterSheet extends StatelessWidget {
                         _categoryList.selectedCategory, sortListView.getSelectedItem(), sortTypeListView.getSelectedItem()
                       );
                       Navigator.pop(context);
-                      // Navigator.of(context).push(MaterialPageRoute(builder: (_) => const TransactionFilteredList()));
                     }
                   )
                   : Expanded(
@@ -138,8 +137,6 @@ class TransactionFilterSheet extends StatelessWidget {
                             _categoryList.selectedCategory, sortListView.getSelectedItem(), sortTypeListView.getSelectedItem()
                           );
                           Navigator.pop(context);
-                          //TODO: Check and delete
-                          // Navigator.of(context).push(MaterialPageRoute(builder: (_) => const TransactionFilteredList()));
                         }, 
                         child: const Text('Apply', style: TextStyle(color: Colors.white))
                       ),

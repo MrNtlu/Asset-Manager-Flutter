@@ -40,6 +40,7 @@ import 'package:asset_flutter/content/providers/subscription/subscriptions.dart'
 import 'package:asset_flutter/static/token.dart';
 import 'package:flutter/material.dart';
 import 'package:desktop_window/desktop_window.dart';
+import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -55,6 +56,7 @@ void main() async {
   await PurchaseApi().init();
   await Firebase.initializeApp();
   await SharedPref().init();
+  FlutterAppBadger.removeBadge();
   
   setWindowForPC();
   runApp(const MyApp());

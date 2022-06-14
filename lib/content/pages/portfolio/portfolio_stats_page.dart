@@ -31,8 +31,6 @@ class PortfolioStatsPage extends StatelessWidget {
                   const PortfolioStatsDistributionChart(),
                   const Divider(),
                   const SizedBox(height: 8)
-                  //TODO: Removed, if not necessary remove
-                  //const PortfolioStatsDetailedTable(),
                 ],
               ),
             ),

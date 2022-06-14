@@ -125,6 +125,7 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
     });
   });
 
+  //TODO: Implement
   void _deleteLogs(BuildContext context) {
     Platform.isMacOS || Platform.isIOS
     ? showCupertinoDialog(
