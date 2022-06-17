@@ -133,7 +133,7 @@ class TransactionListCell extends StatelessWidget {
                         child: Text(
                           _data.description!,
                           style: const TextStyle(
-                            fontSize: 14,
+                            fontSize: 12,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,

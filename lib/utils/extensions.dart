@@ -3,6 +3,7 @@ import 'package:asset_flutter/common/models/response.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 extension ColorExt on Color {
   Color getThemeColor() => ThemeData.estimateBrightnessForColor(this) == Brightness.light ? Colors.black : Colors.white;
@@ -107,7 +108,7 @@ extension DateTimeExt on DateTime {
 
     if (dayDiff == 1) {
       return "Tomorrow";
-    } else if (dayDiff == 0) {
+    } else if (isSameDay(DateTime.now(), this)) {
       return "Today";
     } else {
       return dateToHumanDate();

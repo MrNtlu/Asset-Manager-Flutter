@@ -59,7 +59,6 @@ class _TransactionCreatePageState extends State<TransactionCreatePage> {
   
   int tempTransactionMethod = -1;
 
-
   void _createTransaction() {
     final isValid = form.currentState?.validate();
     if (isValid != null && !isValid) {
