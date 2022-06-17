@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:asset_flutter/content/providers/settings/theme_state.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/shared_pref.dart';
@@ -60,6 +61,12 @@ void main() async {
   
   setWindowForPC();
   runApp(const MyApp());
+
+  final status = await AppTrackingTransparency.requestTrackingAuthorization();
+  final shouldActivateAnalytics = status == TrackingStatus.authorized || status == TrackingStatus.notSupported;
+  print("Status is $status $shouldActivateAnalytics");
+  analytics.setAnalyticsCollectionEnabled(shouldActivateAnalytics);
+  crashlytics.setCrashlyticsCollectionEnabled(shouldActivateAnalytics);
 }
 
 Future setWindowForPC() async {

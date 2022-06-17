@@ -1,8 +1,8 @@
 import 'dart:io';
 
 class APIRoutes {
-  final baseURL = Platform.isAndroid ? 'http://10.0.2.2:8080/api/v1' : 'http://localhost:8080/api/v1';
-  // final baseURL = 'https://rocky-reaches-65250.herokuapp.com/api/v1';
+  // final baseURL = Platform.isAndroid ? 'http://10.0.2.2:8080/api/v1' : 'http://localhost:8080/api/v1';
+  final baseURL = 'https://rocky-reaches-65250.herokuapp.com/api/v1';
 
   late final AssetRoutes assetRoutes;
   late final SubscriptionRoutes subscriptionRoutes;
