@@ -64,7 +64,7 @@ void main() async {
 
   final status = await AppTrackingTransparency.requestTrackingAuthorization();
   final shouldActivateAnalytics = status == TrackingStatus.authorized || status == TrackingStatus.notSupported;
-  print("Status is $status $shouldActivateAnalytics");
+
   analytics.setAnalyticsCollectionEnabled(shouldActivateAnalytics);
   crashlytics.setCrashlyticsCollectionEnabled(shouldActivateAnalytics);
 }

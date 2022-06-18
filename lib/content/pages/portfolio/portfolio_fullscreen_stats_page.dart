@@ -72,11 +72,12 @@ class PortfolioFullscreenStatsPage extends StatelessWidget {
                   format: 'point.x - ${_currency.getCurrencyFromString()} point.y',
                 ),
                 series: [
-                  SplineSeries<ChartData, String>(
+                  SplineAreaSeries<ChartData, String>(
                     name: _title,
-                    color: AppColors().accentColor,
+                    borderColor: Theme.of(context).colorScheme.bgTextColor,
+                    borderWidth: 3,
                     dataSource: _chartData,
-                    markerSettings: const MarkerSettings(isVisible: true),
+                    markerSettings: MarkerSettings(isVisible: true, color: Theme.of(context).colorScheme.bgTextColor),
                     dataLabelMapper: (_data, index) => _currency.getCurrencyFromString() + _data.stat.numToString(),
                     dataLabelSettings: DataLabelSettings(
                       isVisible: true, 
@@ -84,6 +85,11 @@ class PortfolioFullscreenStatsPage extends StatelessWidget {
                     ),
                     xValueMapper: (ChartData data, _) => data.date,
                     yValueMapper: (ChartData data, _) => data.stat,
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [AppColors().primaryColor, AppColors().primaryColor.withOpacity(0.5)], 
+                    )
                   )
                 ],
               ),

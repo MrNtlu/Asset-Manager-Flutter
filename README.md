@@ -44,6 +44,7 @@ Android: [Download Kanma on Google Play](https://play.google.com/store/apps/deta
     <li> Firebase Crashlytics/Analytics
     <li> Flutter Local Notifications
     <li> Flutter Datetime Picker
+    <li> App Tracking Transparency
 </ul>
 
 &nbsp;

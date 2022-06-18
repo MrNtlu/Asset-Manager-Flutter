@@ -15,7 +15,12 @@ class TransactionStatsCategoryDistribution extends StatelessWidget {
       final _categoryList = data.categoryList;
       
       return SfCircularChart(
-        legend: Legend(isVisible: true, overflowMode: LegendItemOverflowMode.wrap, position: LegendPosition.auto), 
+        legend: Legend(
+          isVisible: true, 
+          overflowMode: LegendItemOverflowMode.wrap, 
+          position: LegendPosition.auto, 
+          isResponsive: true,
+        ), 
         series: <CircularSeries>[
           PieSeries<PieChartData, String>(
             dataSource: _categoryList.isNotEmpty
@@ -39,7 +44,7 @@ class TransactionStatsCategoryDistribution extends StatelessWidget {
               isVisible: _categoryList.isNotEmpty, 
               useSeriesColor: true,
             ),
-            radius: '75%'
+            radius: '70%'
           )
         ]
       ); 

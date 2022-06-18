@@ -52,7 +52,7 @@ class TransactionStatsExpenseChart extends StatelessWidget {
               ).format(e.date))
             ).toList(),
             name: "Expenses",
-            markerSettings: const MarkerSettings(isVisible: true),
+            markerSettings: MarkerSettings(isVisible: true, color: Theme.of(context).colorScheme.bgTextColor),
             xValueMapper: (ChartData data, _) => data.date,
             yValueMapper: (ChartData data, _) => data.stat,
             borderColor: Theme.of(context).colorScheme.bgTextColor,
@@ -60,7 +60,7 @@ class TransactionStatsExpenseChart extends StatelessWidget {
             dataLabelMapper: (_data, index) => _stats[index].currency.getCurrencyFromString() + _data.stat.numToString(),
             dataLabelSettings: DataLabelSettings(
               isVisible: true, 
-              color: AppColors().barCardColor,
+              color: Theme.of(context).colorScheme.bgTextColor,
             ),
             gradient: LinearGradient(
               begin: Alignment.topCenter,
