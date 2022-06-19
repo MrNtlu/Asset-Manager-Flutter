@@ -196,6 +196,7 @@ class _SettingsPageState extends State<SettingsPage> {
           Purchases.logOut();
           GoogleSignInApi().signOut();
           SharedPref().deleteLoginCredentials();
+          SharedPref().deleteOAuthLoginCredentials();
           Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (_) => LoginPage()));
         }
