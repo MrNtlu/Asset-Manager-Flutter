@@ -204,20 +204,27 @@ class OffersSheetState extends State<OffersSheet> {
       
                   return GestureDetector(
                     onTap: () async {
+                      setState(() {
+                        _state = ListState.loading;
+                      });
                       try {
                         await Purchases.purchasePackage(package);
-                        Log().createLog("${product.title} purchased.");
-      
+                        Log().createLog("${product.title} ${product.identifier} purchased.");
+
                         showDialog(
                           context: context,
                           builder: (_) => const SuccessView("purchased. Thank you for becoming a premium member")
                         );
                       } on PlatformException catch (e) {
+                        setState(() {
+                          _state = ListState.done;
+                        });
+
                         var errorCode = PurchasesErrorHelper.getErrorCode(e);
-                        if (errorCode == PurchasesErrorCode.purchaseCancelledError) {
-                          Log().createLog("${product.title} purchase cancelled.");
-                        } else {
-                          Log().createLog("${product.title} failed to purchase.");
+                        if (errorCode != PurchasesErrorCode.purchaseCancelledError) {
+                          final appUserID = await Purchases.appUserID;
+                          final purchaserInfo = await Purchases.getPurchaserInfo();
+                          Log().createLog("${product.title} failed to purchase. $appUserID $purchaserInfo ${e.message}");
       
                           showDialog(
                             context: context,

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:asset_flutter/content/models/responses/user.dart';
 import 'package:asset_flutter/static/log.dart';
 import 'package:asset_flutter/static/routes.dart';
@@ -71,7 +72,7 @@ class PurchaseApi {
 
   Future init() async {
     await Purchases.setDebugLogsEnabled(false);
-    await Purchases.setup(dotenv.env['REVENUE_CAT_KEY'] ?? '');
+    await Purchases.setup(dotenv.env[Platform.isIOS || Platform.isMacOS ? 'REVENUE_CAT_IOS_KEY' : 'REVENUE_CAT_KEY'] ?? '');
   }
 
   Future userInit() async {

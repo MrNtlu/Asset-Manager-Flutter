@@ -89,7 +89,7 @@ class _RegisterPageState extends State<RegisterPage> {
     if (!_isInit) {
       _currencyDropdown = RegisterCurrencyDropdown(textColor: Colors.white);
       _termsConditionsCheck = AuthCheckbox("Terms & Conditions");
-      _privacyPolicyCheck = AuthCheckbox("Privacy & Policy");
+      _privacyPolicyCheck = AuthCheckbox("Privacy Policy");
 
       _isInit = true;
     }
@@ -103,7 +103,10 @@ class _RegisterPageState extends State<RegisterPage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text('Register'),
+        iconTheme: const IconThemeData(
+          color: Colors.white
+        ),
+        title: const Text('Register', style: TextStyle(color: Colors.white)),
       ),
       body: Container(
         height: double.infinity,

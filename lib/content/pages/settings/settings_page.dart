@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:asset_flutter/auth/pages/login_page.dart';
+import 'package:asset_flutter/auth/pages/policy_page.dart';
 import 'package:asset_flutter/auth/widgets/auth_currency_dropdown.dart';
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/base_button.dart';
@@ -496,8 +497,42 @@ class _SettingsPageState extends State<SettingsPage> {
                 CustomSettingsTile(
                   child: Column(
                     children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          isApple
+                          ? CupertinoButton(
+                            child: const Text('Terms & Conditions', style: TextStyle(color: CupertinoColors.activeBlue, fontSize: 12)),
+                            onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+                                return const PolicyPage(false);
+                              })),
+                          )
+                          : TextButton(
+                            child: const Text('Terms & Conditions', style: TextStyle(color: CupertinoColors.activeBlue, fontSize: 12)),
+                            onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+                                return const PolicyPage(false);
+                              })),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 4),
+                            child: isApple
+                            ? CupertinoButton(
+                              child: const Text('Privacy Policy', style: TextStyle(color: CupertinoColors.activeBlue, fontSize: 12)),
+                              onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+                                return const PolicyPage(true);
+                              })),
+                            )
+                            : TextButton(
+                              child: const Text('Privacy Policy', style: TextStyle(color: CupertinoColors.activeBlue, fontSize: 12)),
+                              onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+                                return const PolicyPage(true);
+                              })),
+                            ),
+                          ),
+                        ],
+                      ),
                       Padding(
-                        padding: const EdgeInsets.all(32),
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                         child: isApple
                         ? CupertinoButton(
                           child: const Text('Delete Account', style: TextStyle(color: Color(0xFF777777), fontSize: 12)),

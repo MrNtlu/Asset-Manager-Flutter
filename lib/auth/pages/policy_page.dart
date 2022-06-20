@@ -1,4 +1,3 @@
-import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
@@ -18,8 +17,7 @@ class PolicyPage extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('Register'),
-        backgroundColor: AppColors().primaryColor,
+        title: Text(_isPrivacyPolicy ? "Privacy Policy" : "Terms & Conditions"),
       ),
       body: FutureBuilder(
         future: loadAsset(context),
