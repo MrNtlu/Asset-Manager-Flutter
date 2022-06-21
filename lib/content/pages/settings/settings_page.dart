@@ -134,7 +134,7 @@ class _SettingsPageState extends State<SettingsPage> {
           );
         } else {
           try {
-            Purchases.logOut();
+            await Purchases.logOut();
             SharedPref().deleteLoginCredentials();
 
             if (PurchaseApi().userInfo != null && PurchaseApi().userInfo!.isOAuth) {

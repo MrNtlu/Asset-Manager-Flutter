@@ -51,4 +51,4 @@ Android: [Download Kanma on Google Play](https://play.google.com/store/apps/deta
 &nbsp;
 &nbsp;
 
-![kanma_3_phone](https://user-images.githubusercontent.com/25686023/167297852-4afc5f5e-97dd-40a7-ad11-7c2c2b4371e3.png)
+![preview_mockup](https://user-images.githubusercontent.com/25686023/174805948-87b0edb6-67c9-460a-aa60-002c58001cad.png)
