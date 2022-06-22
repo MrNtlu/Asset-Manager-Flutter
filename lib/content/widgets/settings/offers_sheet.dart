@@ -36,9 +36,11 @@ class OffersSheetState extends State<OffersSheet> {
           .toList();
     }
 
-    setState(() {
-      _state = offerings.isEmpty ? ListState.empty : ListState.done;
-    });
+    if (_state != ListState.disposed) {  
+      setState(() {
+        _state = offerings.isEmpty ? ListState.empty : ListState.done;
+      });
+    }
   }
 
   @override
@@ -122,75 +124,105 @@ class OffersSheetState extends State<OffersSheet> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: const [
                         Padding(
                           padding: EdgeInsets.only(right: 8),
-                          child: Icon(Icons.check_rounded, color: Colors.white),
+                          child: Icon(Icons.check_box_rounded, color: Colors.white),
                         ),
-                        Text("Unlimited Investments", style: TextStyle(color: Colors.white, fontSize: 16))
+                        SizedBox(
+                          width: 200,
+                          child: Text("Unlimited Investments", style: TextStyle(color: Colors.white, fontSize: 16))
+                        )
                       ],
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: const [
                         Padding(
                           padding: EdgeInsets.only(right: 8),
-                          child: Icon(Icons.check_rounded, color: Colors.white),
+                          child: Icon(Icons.check_box_rounded, color: Colors.white),
                         ),
-                        Text("Unlimited Subscriptions", style: TextStyle(color: Colors.white, fontSize: 16))
+                        SizedBox(
+                          width: 200,
+                          child: Text("Unlimited Subscriptions", style: TextStyle(color: Colors.white, fontSize: 16))
+                        )
                       ],
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: const [
                         Padding(
                           padding: EdgeInsets.only(right: 8),
-                          child: Icon(Icons.check_rounded, color: Colors.white),
+                          child: Icon(Icons.check_box_rounded, color: Colors.white),
                         ),
-                        Text("Unlimited Transactions", style: TextStyle(color: Colors.white, fontSize: 16))
+                        SizedBox(
+                          width: 200,
+                          child: Text("Unlimited Transactions", style: TextStyle(color: Colors.white, fontSize: 16))
+                        )
                       ],
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: const [
                         Padding(
                           padding: EdgeInsets.only(right: 8),
-                          child: Icon(Icons.check_rounded, color: Colors.white),
+                          child: Icon(Icons.check_box_rounded, color: Colors.white),
                         ),
-                        Text("Unlimited Credit Cards", style: TextStyle(color: Colors.white, fontSize: 16))
+                        SizedBox(
+                          width: 200,
+                          child: Text("Unlimited Credit Cards", style: TextStyle(color: Colors.white, fontSize: 16))
+                        )
                       ],
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: const [
                         Padding(
                           padding: EdgeInsets.only(right: 8),
-                          child: Icon(Icons.check_rounded, color: Colors.white),
+                          child: Icon(Icons.check_box_rounded, color: Colors.white),
                         ),
-                        Text("Unlimited Bank Accounts", style: TextStyle(color: Colors.white, fontSize: 16))
+                        SizedBox(
+                          width: 200,
+                          child: Text("Unlimited Bank Accounts", style: TextStyle(color: Colors.white, fontSize: 16))
+                        )
                       ],
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: const [
                         Padding(
                           padding: EdgeInsets.only(right: 8),
-                          child: Icon(Icons.check_rounded, color: Colors.white),
+                          child: Icon(Icons.check_box_rounded, color: Colors.white),
                         ),
-                        Text("Stats for Longer Periods", style: TextStyle(color: Colors.white, fontSize: 16))
+                        SizedBox(
+                          width: 200,
+                          child: Text("Stats for Longer Periods", style: TextStyle(color: Colors.white, fontSize: 16))
+                        )
                       ],
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: const [
                         Padding(
                           padding: EdgeInsets.only(right: 8),
-                          child: Icon(Icons.check_rounded, color: Colors.white),
+                          child: Icon(Icons.check_box_rounded, color: Colors.white),
                         ),
-                        Text("More soon...", style: TextStyle(color: Colors.white, fontSize: 16))
+                        SizedBox(
+                          width: 200,
+                          child: Text("More soon...", style: TextStyle(color: Colors.white, fontSize: 16))
+                        )
                       ],
                     ),
                   ],
@@ -198,7 +230,7 @@ class OffersSheetState extends State<OffersSheet> {
               ),
               ListView.builder(
                 shrinkWrap: true,
-                itemBuilder: (context, index) {
+                itemBuilder: (_, index) {
                   final package = _packages[index];
                   final product = package.product;
       
@@ -207,6 +239,7 @@ class OffersSheetState extends State<OffersSheet> {
                       setState(() {
                         _state = ListState.loading;
                       });
+
                       try {
                         await Purchases.purchasePackage(package);
                         Log().createLog("${product.title} ${product.identifier} purchased.");
@@ -216,9 +249,11 @@ class OffersSheetState extends State<OffersSheet> {
                           builder: (_) => const SuccessView("purchased. Thank you for becoming a premium member")
                         );
                       } on PlatformException catch (e) {
-                        setState(() {
-                          _state = ListState.done;
-                        });
+                        if (_state != ListState.disposed) { 
+                          setState(() {
+                            _state = ListState.done;
+                          });
+                        }
 
                         var errorCode = PurchasesErrorHelper.getErrorCode(e);
                         if (errorCode != PurchasesErrorCode.purchaseCancelledError) {
