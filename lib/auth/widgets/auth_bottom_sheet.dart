@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
@@ -13,18 +14,17 @@ import 'package:asset_flutter/common/widgets/textformfield.dart';
 import 'package:http/http.dart' as http;
 
 class AuthBottomSheet extends StatefulWidget {
-  final _form = GlobalKey<FormState>();
-  final _emailInput = TextEditingController();
-
   @override
   State<AuthBottomSheet> createState() => _AuthBottomSheetState();
 }
 
 class _AuthBottomSheetState extends State<AuthBottomSheet> {
   BaseState _state = BaseState.init;
+  final _form = GlobalKey<FormState>();
+  final _emailInput = TextEditingController();
 
   void onSendEmailPressed(BuildContext _) async {
-    final isValid = widget._form.currentState?.validate();
+    final isValid = _form.currentState?.validate();
     if (isValid != null && !isValid) {
       return;
     }
@@ -36,7 +36,7 @@ class _AuthBottomSheetState extends State<AuthBottomSheet> {
       final response = await http.post(
         Uri.parse(APIRoutes().userRoutes.forgotPassword),
         body: json.encode({
-          "email_address": widget._emailInput.text,
+          "email_address": _emailInput.text,
         }),
       );
 
@@ -80,21 +80,29 @@ class _AuthBottomSheetState extends State<AuthBottomSheet> {
         return Padding(
           padding: MediaQuery.of(context).viewInsets,
           child: Container(
-            height: 265,
+            height: 220,
             margin: const EdgeInsets.all(12),
+            decoration: Platform.isIOS || Platform.isMacOS
+            ? const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(16),
+                topLeft: Radius.circular(16)
+              ),
+            )
+            : null,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Form(
-                  key: widget._form,
+                  key: _form,
                   child: CustomTextFormField(
                     'Email', 
                     TextInputType.emailAddress, 
-                    textfieldController: widget._emailInput,
+                    textfieldController: _emailInput,
                     prefixIcon: Icon(
                       Icons.email,
-                      color: AppColors().primaryColor
-                    ),
+                      color: Theme.of(context).colorScheme.bgTextColor
+                    ), 
                     textInputAction: TextInputAction.done,
                     validator: (value) {
                       if(value != null) {
@@ -113,7 +121,7 @@ class _AuthBottomSheetState extends State<AuthBottomSheet> {
                   width: double.infinity,
                   margin: const EdgeInsets.fromLTRB(32, 8, 32, 16),
                   child: const Text(
-                    "Please enter your email address. You'll receive password recet email if you have an account.",
+                    "Please enter your email address. You'll receive password reset email if you have an account.",
                     softWrap: true,
                     textAlign: TextAlign.center,
                     style: TextStyle(

@@ -203,6 +203,14 @@ class _LoginPageState extends State<LoginPage> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      shape: Platform.isIOS || Platform.isMacOS
+      ? const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(16),
+          topLeft: Radius.circular(16)
+        ),
+      )
+      : null,
       builder: (_) => AuthBottomSheet()
     );
   }
@@ -307,7 +315,7 @@ class _LoginPageState extends State<LoginPage> {
                                         : null,
                                       prefixIcon: Icon(
                                         Icons.email,
-                                        color: AppColors().primaryDarkestColor,
+                                        color: Theme.of(context).colorScheme.bgTextColor,
                                       ),
                                       onSaved: (value) {
                                         if (value != null) {
@@ -336,7 +344,7 @@ class _LoginPageState extends State<LoginPage> {
                                         : null,
                                       prefixIcon: Icon(
                                         Icons.password,
-                                        color: AppColors().primaryDarkestColor,
+                                        color: Theme.of(context).colorScheme.bgTextColor,
                                       ),
                                       textInputAction: TextInputAction.done,
                                       onSaved: (value) {

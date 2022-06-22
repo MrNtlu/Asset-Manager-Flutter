@@ -137,7 +137,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             : null,
                           prefixIcon: Icon(
                             Icons.email, 
-                            color: AppColors().primaryDarkestColor
+                            color: Theme.of(context).colorScheme.bgTextColor
                           ),
                           onSaved: (value) {
                             if (value != null) {
@@ -166,7 +166,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             : null,
                           prefixIcon: Icon(
                             Icons.password, 
-                            color: AppColors().primaryDarkestColor
+                            color: Theme.of(context).colorScheme.bgTextColor
                           ),
                           onSaved: (value) {
                             if (value != null) {
