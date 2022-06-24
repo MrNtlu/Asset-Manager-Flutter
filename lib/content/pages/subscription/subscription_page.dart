@@ -238,7 +238,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                               : ElevatedButton(
                                 onPressed: () => showModalBottomSheet(
                                   context: context, 
-                                  builder: (_) => Container()
+                                  builder: (_) => SubscriptionSheet(_subscriptionsProvider.stats, sort, sortType)
                                 ),
                                 child: const Icon(Icons.menu_rounded),
                                 style: ElevatedButton.styleFrom(
