@@ -55,6 +55,7 @@ class SubscriptionDetailsEdit extends StatefulWidget {
 class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
   EditState _state = EditState.init;
   late final SubscriptionImageSelection _imageSelection;
+  bool isInit = false;
 
   @override
   void dispose() {
@@ -176,7 +177,11 @@ class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
         Container(
           margin: const EdgeInsets.fromLTRB(12, 8, 8, 4),
           child: Consumer<CardSheetSelectionStateProvider>(builder: (context, selection, _) {
-            widget.selectedCard = selection.selectedCard;
+            if (isInit) {
+              widget.selectedCard = selection.selectedCard;
+            } else {
+              isInit = true;
+            }
             return TextButton(
               child: Text(
                 widget.selectedCard != null

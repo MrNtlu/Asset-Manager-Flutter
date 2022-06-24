@@ -25,6 +25,8 @@ class InvestmentDetailsListCell extends StatelessWidget {
   InvestmentDetailsListCell(this._data, {Key? key}) : super(key: key);
 
   void _deleteAssetLog(BuildContext context) {
+    final navigator = Navigator.of(context);
+    final _stateProvider = Provider.of<PortfolioStateProvider>(context, listen: false);
     _detailsStateProvider.setState(EditState.editing);
 
     Future.wait([
@@ -43,8 +45,8 @@ class InvestmentDetailsListCell extends StatelessWidget {
         );
       } else {
         if(_assetLogProvider.items.isEmpty) {
-          Provider.of<PortfolioStateProvider>(context, listen: false).setRefresh(true);
-          Navigator.pop(context);
+          _stateProvider.setRefresh(true);
+          navigator.pop();
           return;
         }
         _detailsStateProvider.setState(EditState.view);

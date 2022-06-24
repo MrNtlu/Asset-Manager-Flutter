@@ -32,6 +32,7 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
   final _investingsDropdownKey = GlobalKey<DropdownSearchState<String>>();
   final _investingCurrenciesDropdownKey = GlobalKey<DropdownSearchState<String>>();
   late final AssetsProvider _assetsProvider;
+  late Orientation _orientation;
 
   final AssetCreate _assetCreate = AssetCreate('', '', '', -1, '', '', '', -1);
   late final List<Investings> _investingList = [];
@@ -59,54 +60,58 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
   }
 
   void _createInvestment(BuildContext context) {
-    if (_selectedItem == null || _selectedCurrencyItem == null) {
-      setState(() {
-        _currentStep = 1;
-      });
-      showDialog(
-          context: context,
-          builder: (ctx) => const ErrorDialog("Please select investment and currency."));
-      return;
-    }
-
-    final _isValid = _form.currentState?.validate();
-    if (_isValid != null && !_isValid && _price == null) {
-      setState(() {
-        _currentStep = 2;
-      });
-      return;
-    }
-
-    setState(() {
-      _state = CreateState.loading;
-    });
-
-    _form.currentState?.save();
-    _createAssetData();
-
-    _assetsProvider.createAsset(_assetCreate).then((value) {
-      if (_state != CreateState.disposed) {
-        if (value.error == null) {
-          setState(() {
-            _state = CreateState.success;
-          });
-        } else {
-          if (value.error!.startsWith("Free members")) {
-            showDialog(
-              context: context, 
-              builder: (ctx) => PremiumErrorDialog(value.error!, MediaQuery.of(context).viewPadding.top)
-            );
-          } else {
-            showDialog(
-              context: context,
-              builder: (ctx) => ErrorDialog(value.error!.toString()));
-          }
-          setState(() {
-            _state = CreateState.editing;
-          });
-        }
+    if (_state == CreateState.editing) {
+      if (_selectedItem == null || _selectedCurrencyItem == null) {
+        setState(() {
+          _currentStep = 1;
+        });
+        showDialog(
+            context: context,
+            builder: (ctx) => const ErrorDialog("Please select investment and currency."));
+        return;
       }
-    });
+
+      setState(() {
+        _state = CreateState.loading;
+      });
+
+      final _isValid = _form.currentState?.validate();
+      if (_isValid != null && !_isValid && _price == null) {
+        setState(() {
+          _state = CreateState.editing;
+          _currentStep = 2;
+        });
+        return;
+      }
+
+      _form.currentState?.save();
+      _createAssetData();
+
+      _assetsProvider.createAsset(_assetCreate).then((value) {
+        if (_state != CreateState.disposed) {
+          if (value.error == null) {
+            setState(() {
+              _state = CreateState.success;
+            });
+          } else {
+            if (value.error!.startsWith("Free members")) {
+              showDialog(
+                context: context, 
+                builder: (ctx) => PremiumErrorDialog(value.error!, MediaQuery.of(context).viewPadding.top)
+              );
+            } else {
+              showDialog(
+                context: context,
+                builder: (ctx) => ErrorDialog(value.error!.toString()));
+            }
+
+            setState(() {
+              _state = CreateState.editing;
+            });
+          }
+        }
+      }); 
+    }
   }
 
   @override
@@ -122,8 +127,9 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
       _investingsDropdown = _createInvestingsDropdown();
       _investingCurrenciesDropdown = _createInvestingCurrenciesDropdown();
       _assetsProvider = Provider.of<AssetsProvider>(context, listen: false);
+      _state = CreateState.editing;
     }
-    _state = CreateState.editing;
+    _orientation = MediaQuery.of(context).orientation;
     super.didChangeDependencies();
   }
 
@@ -156,7 +162,7 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
           children: [
             Expanded(
               child: Stepper(
-                type: MediaQuery.of(context).orientation == Orientation.portrait
+                type: _orientation == Orientation.portrait
                     ? StepperType.vertical
                     : StepperType.horizontal,
                 elevation: 0,
@@ -318,7 +324,7 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
               initialText: _assetCreate.amount != -1
                   ? _assetCreate.amount.toString()
                   : null,
-              textInputAction: TextInputAction.done,
+              textInputAction: TextInputAction.next,
               edgeInsets: const EdgeInsets.symmetric(vertical: 8),
               onSaved: (value) {
                 if (value != null) {
@@ -342,7 +348,7 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
               const TextInputType.numberWithOptions(
                   decimal: true, signed: true),
               initialText: _price?.toString(),
-              textInputAction: TextInputAction.next,
+              textInputAction: TextInputAction.done,
               edgeInsets: const EdgeInsets.symmetric(vertical: 8),
               onSaved: (value) {
                 if (value != null) {
