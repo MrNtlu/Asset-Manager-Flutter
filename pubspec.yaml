@@ -72,7 +72,7 @@ dev_dependencies:
   flutter_native_splash: ^2.1.6
 
 flutter_native_splash:
-  color: "#ffffff"
+  color: "#00355E"
   color_dark: "#000000"
   image: "assets/images/investment.png"
   android: true
