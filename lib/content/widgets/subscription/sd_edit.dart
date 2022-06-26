@@ -14,6 +14,7 @@ import 'package:asset_flutter/content/widgets/subscription/sd_edit_color_picker.
 import 'package:asset_flutter/content/widgets/subscription/sd_edit_date_picker.dart';
 import 'package:asset_flutter/content/widgets/subscription/sd_edit_header.dart';
 import 'package:asset_flutter/content/widgets/subscription/subscription_image.dart';
+import 'package:asset_flutter/static/purchase_api.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -160,6 +161,7 @@ class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
           : 
           SDEditHeader(
             createData: widget.createData,
+            currency: PurchaseApi().userInfo?.currency ?? "USD",
           )
         ),
         widget.datePicker,

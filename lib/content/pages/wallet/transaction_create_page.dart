@@ -19,6 +19,7 @@ import 'package:asset_flutter/content/widgets/wallet/transaction_filter_sheet_ca
 import 'package:asset_flutter/content/widgets/wallet/transaction_sheet_banks.dart';
 import 'package:asset_flutter/content/widgets/wallet/transaction_sheet_cards.dart';
 import 'package:asset_flutter/static/colors.dart';
+import 'package:asset_flutter/static/purchase_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -210,7 +211,7 @@ class _TransactionCreatePageState extends State<TransactionCreatePage> {
       _currencySheetSelectionStateProvider.addListener(_currencySheetListener);
 
       if (widget.isCreate) {
-        createData = TransactionCreate("", -1, -1, "USD", DateTime.now());
+        createData = TransactionCreate("", -1, -1, PurchaseApi().userInfo?.currency ?? "USD", DateTime.now());
       } else {
         _transaction = _provider.findById(widget.transactionID!);
         _categoryList.selectedCategory = Category.valueToCategory(_transaction!.category);

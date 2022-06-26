@@ -10,6 +10,7 @@ import 'package:asset_flutter/content/providers/common/currency_sheet_state.dart
 import 'package:asset_flutter/content/providers/subscription/card_state.dart';
 import 'package:asset_flutter/content/providers/subscription/cards.dart';
 import 'package:asset_flutter/static/colors.dart';
+import 'package:asset_flutter/static/purchase_api.dart';
 import 'package:awesome_card/awesome_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -152,7 +153,7 @@ class _CardCreatePageState extends State<CardCreatePage> {
       _currencySheetSelectionStateProvider.addListener(_currencySheetListener);
 
       if (widget.isCreate) {
-        createData = CreditCardCreate("Card Name", "XXXX", "Card Holder", CardColors().cardColors[0].value.toString(), "MasterCard", 'USD');
+        createData = CreditCardCreate("Card Name", "XXXX", "Card Holder", CardColors().cardColors[0].value.toString(), "MasterCard", PurchaseApi().userInfo?.currency ?? "USD");
       } else {
         _creditCard = _cardProvider.findById(widget.creditCardID!);
         updateData = CreditCardUpdate(widget.creditCardID!);

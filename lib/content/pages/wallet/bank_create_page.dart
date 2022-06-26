@@ -10,6 +10,7 @@ import 'package:asset_flutter/content/providers/common/currency_sheet_state.dart
 import 'package:asset_flutter/content/providers/wallet/bank_account.dart';
 import 'package:asset_flutter/content/providers/wallet/bank_account_state.dart';
 import 'package:asset_flutter/content/providers/wallet/bank_accounts.dart';
+import 'package:asset_flutter/static/purchase_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -139,7 +140,7 @@ class _BankCreatePageState extends State<BankCreatePage> {
       _currencySheetSelectionStateProvider.addListener(_currencySheetListener);
 
       if (widget.isCreate) {
-        createData = BankAccountCreate("", "", "", 'USD');
+        createData = BankAccountCreate("", "", "", PurchaseApi().userInfo?.currency ?? "USD");
       } else {
         _bankAccount = _bankAccProvider.findById(widget.bankAccountID!);
         updateData = BankAccountUpdate(widget.bankAccountID!);
