@@ -36,29 +36,6 @@ class AssetLogProvider extends BasePaginationProvider<AssetLog> {
   Future<BaseAPIResponse> deleteAssetLog(String id, AssetLog _item) async
     => deleteItem(id, url: APIRoutes().assetRoutes.deleteAssetLogByLogID, deleteItem: _item);
 
-  Future<BaseAPIResponse> deleteAllAssetLogs(String toAsset, String fromAsset, String assetMarket) async {
-    try {
-      final response = await http.delete(
-        Uri.parse(APIRoutes().assetRoutes.deleteAssetLogsByUserID),
-        body: json.encode({
-          "to_asset": toAsset,
-          "from_asset": fromAsset,
-          "asset_market": assetMarket
-        }),
-        headers: UserToken().getBearerToken()
-      );
-
-      if (response.getBaseResponse().error == null) {
-        pitems.clear();
-        notifyListeners();
-      }
-
-      return response.getBaseResponse();
-    } catch (error) {
-      return BaseAPIResponse(error.toString());
-    }
-  }
-
   Future<BaseAPIResponse> editAssetLog(AssetLog assetLog, bool isAmountChanged) async {
     try {
       final response = await http.put(

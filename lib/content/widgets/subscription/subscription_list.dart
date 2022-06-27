@@ -27,20 +27,20 @@ class SubscriptionList extends StatelessWidget{
       return ChangeNotifierProvider.value(
         value: data,
         child: Padding(
-          padding: const EdgeInsets.all(4),
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 3),
           child: SubscriptionListCell(data),
         )
       );
     }
   ),
-  itemExtent: 100,
+  itemExtent: 83,
   itemCount: _data.length + 1,
   physics: const ClampingScrollPhysics(),
   shrinkWrap: true,
   );
 
   Widget _landscapeListView(List<Subscription> _data) => SizedBox(
-    height: _data.length < 6 ? _data.length * 105 : 630,
+    height: _data.length < 6 ? _data.length * 88 : 528,
     child: ListView.builder(itemBuilder: ((context, index) {
       final data = _data[index];
       return ChangeNotifierProvider.value(
@@ -51,7 +51,7 @@ class SubscriptionList extends StatelessWidget{
         )
       );
     }),
-    itemExtent: 100,
+    itemExtent: 85,
     itemCount: _data.length,
     physics: const ClampingScrollPhysics(),
     shrinkWrap: true,

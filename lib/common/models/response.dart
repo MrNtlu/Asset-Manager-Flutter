@@ -219,7 +219,7 @@ class _TypeConverter<T> {
         response["currency"],
         response["image"],
         response["color"],
-        response["card_id"]
+        response["card_id"],
       ) as T;
     } else if (T == Transaction) {
       return Transaction(
@@ -245,7 +245,14 @@ class _TypeConverter<T> {
     }  else if (T == SubscriptionDetails) {
       return SubscriptionDetails(
         response["monthly_payment"], 
-        response["total_payment"]
+        response["total_payment"],
+        response["card"] != null
+        ? SubscriptionCard(
+          response["card"]["name"], 
+          response["card"]["last_digit"], 
+          response["card"]["type"]
+        )
+        : null
       ) as T;
     } else if (T == BillCycle) {
       return BillCycle(

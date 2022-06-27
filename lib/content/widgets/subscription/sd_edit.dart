@@ -104,7 +104,7 @@ class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
               child: const Text(
                 "Select Subscription Image",
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 16,
                 ),
               ),
             ),

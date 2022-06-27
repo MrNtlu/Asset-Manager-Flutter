@@ -18,7 +18,7 @@ class SDViewText extends StatelessWidget {
             child: Text(
              _headerText,
               style: const TextStyle(
-                fontSize: 16,
+                fontSize: 17,
                 fontWeight: FontWeight.bold
               ),
             ),
@@ -28,9 +28,10 @@ class SDViewText extends StatelessWidget {
             margin: const EdgeInsets.all(6),
             child: Text(
               _subText,
-              style: const TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 17),
             ),
           ),
+          const Divider()
         ],
       ),
     );

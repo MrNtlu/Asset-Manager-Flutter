@@ -1,11 +1,20 @@
 import 'package:asset_flutter/common/models/json_convert.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 
+class SubscriptionCard {
+  final String name;
+  final String lastDigits;
+  final String type;
+
+  const SubscriptionCard(this.name, this.lastDigits, this.type);
+}
+
 class SubscriptionDetails {
   final num monthlyPayment;
   final num totalpayment;
+  final SubscriptionCard? card;
 
-  SubscriptionDetails(this.monthlyPayment, this.totalpayment);
+  SubscriptionDetails(this.monthlyPayment, this.totalpayment, this.card);
 }
 
 class BillCycle implements JSONConverter{

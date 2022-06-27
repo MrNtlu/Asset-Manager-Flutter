@@ -13,6 +13,7 @@ import 'package:asset_flutter/content/providers/subscription/subscriptions.dart'
 import 'package:asset_flutter/content/widgets/subscription/sd_view_text.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:awesome_card/awesome_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -114,6 +115,7 @@ class _SubscriptionDetailsViewState extends State<SubscriptionDetailsView> {
               height: 110,
               width: double.infinity,
               color: Color(widget._data.color),
+              margin: const EdgeInsets.only(bottom: 8),
               child: Column(
                 children: [
                   Expanded(
@@ -121,7 +123,7 @@ class _SubscriptionDetailsViewState extends State<SubscriptionDetailsView> {
                       margin: const EdgeInsets.fromLTRB(8, 8, 8, 4),
                       alignment: Alignment.bottomCenter,
                       child: AutoSizeText(
-                        widget._data.price.toString() + ' ' + widget._data.currency,
+                        widget._data.currency.getCurrencyFromString() + ' ' +widget._data.price.toString(),
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           color: Colors.white,
@@ -140,7 +142,7 @@ class _SubscriptionDetailsViewState extends State<SubscriptionDetailsView> {
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 14
+                          fontSize: 15
                         ),
                       ),
                     )
@@ -148,20 +150,32 @@ class _SubscriptionDetailsViewState extends State<SubscriptionDetailsView> {
                 ],
               ),
             ),
-            if(widget._data.description != null)
+            if (widget._data.description != null)
             SDViewText("Description", widget._data.description!),
+            if (_subscriptionDetails != null && _subscriptionDetails?.card != null)
+            Stack(
+              children: [
+                SDViewText("Credit Card", _subscriptionDetails!.card!.name + ' ' + _subscriptionDetails!.card!.lastDigits),
+                Positioned(
+                  bottom: 0,
+                  top: 0,
+                  right: 4,
+                  child: getCardTypeIcon(cardType: _cardTypeMapper(_subscriptionDetails!.card!.type))
+                )
+              ],
+            ),
             SDViewText("Initial Bill Date", widget._data.billDate.dateToFormatDate()),
             SDViewText("Next Bill Date", widget._data.nextBillDate.dateToFormatDate()),
             SDViewText("Bill Cycle", widget._data.billCycle.handleBillCycleString()),
             if(_subscriptionDetails != null)
             SDViewText(
               "Monthly Payment",
-              _subscriptionDetails!.monthlyPayment.numToString() + ' ' + widget._data.currency
+              widget._data.currency.getCurrencyFromString() + ' ' + _subscriptionDetails!.monthlyPayment.numToString()
             ),
             if(_subscriptionDetails != null)
             SDViewText(
               "Paid in Total",
-              _subscriptionDetails!.totalpayment.numToString() + ' ' + widget._data.currency
+              widget._data.currency.getCurrencyFromString() + ' ' + _subscriptionDetails!.totalpayment.numToString()
             ),
             if(!widget.isCardDetails)
             Padding(
@@ -200,6 +214,21 @@ class _SubscriptionDetailsViewState extends State<SubscriptionDetailsView> {
           height: MediaQuery.of(context).size.height * 0.7,
           child: const LoadingView("Loading")
         );
+    }
+  }
+
+  CardType _cardTypeMapper(String cardType) {
+    switch (cardType) {
+      case "AmericanExpress":
+        return CardType.americanExpress;
+      case "MasterCard":
+        return CardType.masterCard;
+      case "Visa":
+        return CardType.visa;
+      case "Maestro":
+        return CardType.maestro;
+      default:
+        return CardType.masterCard;
     }
   }
 }

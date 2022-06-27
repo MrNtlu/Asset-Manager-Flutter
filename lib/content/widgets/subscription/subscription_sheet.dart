@@ -38,9 +38,9 @@ class SubscriptionSheet extends StatelessWidget {
                   isDismissible: true,
                   isScrollControlled: true,
                   builder: (_) => SortSheet(
-                    const ["Name", "Currency", "Price"],
+                    const ["Date", "Name", "Currency", "Price"],
                     const ["Ascending", "Descending"],
-                    selectedSort: const ["Name", "Currency", "Price"].indexOf("${_sort[0].toUpperCase()}${_sort.substring(1)}"),
+                    selectedSort: const ["Date", "Name", "Currency", "Price"].indexOf("${_sort[0].toUpperCase()}${_sort.substring(1)}"),
                     selectedSortType: _sortType == -1 ? 0 : 1,
                   )
                 );

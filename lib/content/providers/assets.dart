@@ -55,4 +55,28 @@ class AssetsProvider with ChangeNotifier {
       return BaseAPIResponse(error.toString());
     }
   }
+
+  Future<BaseAPIResponse> deleteAllAssetLogs(String toAsset, String fromAsset, String assetMarket) async {
+    try {
+      final response = await http.delete(
+        Uri.parse(APIRoutes().assetRoutes.deleteAssetLogsByUserID),
+        body: json.encode({
+          "to_asset": toAsset,
+          "from_asset": fromAsset,
+          "asset_market": assetMarket
+        }),
+        headers: UserToken().getBearerToken()
+      );
+
+      if (response.getBaseResponse().error == null) {
+        final deleteItem = findByAsset(toAsset, fromAsset);
+        _items.remove(deleteItem);
+        notifyListeners();
+      }
+
+      return response.getBaseResponse();
+    } catch (error) {
+      return BaseAPIResponse(error.toString());
+    }
+  }
 }

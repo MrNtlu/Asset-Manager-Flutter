@@ -26,7 +26,7 @@ class InvestmentDetailsListCell extends StatelessWidget {
 
   void _deleteAssetLog(BuildContext context) {
     final navigator = Navigator.of(context);
-    final _stateProvider = Provider.of<PortfolioStateProvider>(context, listen: false);
+    final _stateProvider = Provider.of<PortfolioRefreshProvider>(context, listen: false);
     _detailsStateProvider.setState(EditState.editing);
 
     Future.wait([

@@ -142,7 +142,9 @@ class _TransactionListState extends State<TransactionList> {
         Provider.of<CardProvider>(context).getCreditCards(),
         Provider.of<BankAccountProvider>(context).getBankAccounts()
       ]).whenComplete(() => {
-         _getTransactions()
+        if (_state != ListState.disposed) {
+          _getTransactions()
+        }
       });
     }
     super.didChangeDependencies();

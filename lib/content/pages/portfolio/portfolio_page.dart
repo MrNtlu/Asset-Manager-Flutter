@@ -31,7 +31,8 @@ class _PortfolioPageState extends State<PortfolioPage> {
   int sortType = -1;
   String? _error;
   late final AssetsProvider _assetsProvider;
-  late final PortfolioStateProvider _refreshListener;
+  late final PortfolioRefreshProvider _refreshListener;
+  late final PortfolioStateProvider _stateListener;
   late final StatsSheetSelectionStateProvider _statsSheetProvider;
 
   void _getAssets() {
@@ -73,6 +74,15 @@ class _PortfolioPageState extends State<PortfolioPage> {
     }
   }
 
+  void _pageStateListener() {
+    if (_state != ListState.disposed && _stateListener.state != null) {
+      _error = _stateListener.error;
+      setState(() {
+        _state = _stateListener.state!;
+      });
+    }
+  }
+
   @override
   void dispose() {
     _refreshListener.removeListener(_refreshStateListener);
@@ -82,13 +92,22 @@ class _PortfolioPageState extends State<PortfolioPage> {
   }
 
   @override
+  void initState() {
+    _stateListener = PortfolioStateProvider();
+    super.initState();
+  }
+
+  @override
   void didChangeDependencies() {
     if (_state == ListState.init) {
       _assetsProvider = Provider.of<AssetsProvider>(context);
       _getAssets();
 
-      _refreshListener = Provider.of<PortfolioStateProvider>(context);
+      _refreshListener = Provider.of<PortfolioRefreshProvider>(context);
       _refreshListener.addListener(_refreshStateListener);
+
+      // _stateListener = Provider.of<PortfolioStateProvider>(context);
+      _stateListener.addListener(_pageStateListener);
 
       _statsSheetProvider = Provider.of<StatsSheetSelectionStateProvider>(context);
       _statsSheetProvider.addListener(_statsSheetListener);
@@ -105,11 +124,14 @@ class _PortfolioPageState extends State<PortfolioPage> {
       ),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: SafeArea(
-          child: MediaQuery.of(context).orientation == Orientation.portrait || Platform.isMacOS || Platform.isWindows 
-            ? _portraitBody()
-            : _landscapeBody()
-          ),
+        body: ChangeNotifierProvider.value(
+          value: _stateListener,
+          child: SafeArea(
+            child: MediaQuery.of(context).orientation == Orientation.portrait || Platform.isMacOS || Platform.isWindows 
+              ? _portraitBody()
+              : _landscapeBody()
+            ),
+        ),
       ),
     );
   }

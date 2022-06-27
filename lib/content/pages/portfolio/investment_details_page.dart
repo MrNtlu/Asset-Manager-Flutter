@@ -1,6 +1,4 @@
-import 'dart:io';
 import 'package:asset_flutter/common/models/state.dart';
-import 'package:asset_flutter/common/widgets/check_dialog.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/content/providers/asset.dart';
@@ -11,7 +9,6 @@ import 'package:asset_flutter/content/widgets/portfolio/id_log_list.dart';
 import 'package:asset_flutter/content/widgets/portfolio/id_top_bar.dart';
 import 'package:asset_flutter/static/images.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:asset_flutter/content/providers/asset_logs.dart';
@@ -99,45 +96,6 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
     });
   }
 
-  Widget _deleteDialog(BuildContext context) => AreYouSureDialog("delete investment", (){
-    Navigator.pop(context);
-    setState(() {
-      _state = EditState.editing;
-    });
-    
-    _assetLogProvider
-      .deleteAllAssetLogs(widget._data.toAsset, widget._data.fromAsset, widget._data.market)
-      .then((response){
-        if (_state != EditState.disposed) {
-          if (response.error != null) {
-            setState(() {
-              _state = EditState.view;
-            });
-            showDialog(
-              context: context, 
-              builder: (ctx) => ErrorDialog(response.error!)
-            );
-          } else {
-            isDataChanged = true;
-            Navigator.maybePop(context);
-          } 
-        }
-    });
-  });
-
-  //TODO: Implement
-  void _deleteLogs(BuildContext context) {
-    Platform.isMacOS || Platform.isIOS
-    ? showCupertinoDialog(
-      context: context, 
-      builder: (_) => _deleteDialog(context)
-    )
-    : showDialog(
-      context: context, 
-      builder: (_) => _deleteDialog(context)
-    );
-  }
-
   void _assetDetailsStateListener() {
     if (_state != EditState.disposed) {
       if (_state == EditState.editing) {
@@ -182,7 +140,7 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
     return WillPopScope(
       onWillPop: () async {
         if (isDataChanged) {
-          Provider.of<PortfolioStateProvider>(context, listen: false).setRefresh(true);
+          Provider.of<PortfolioRefreshProvider>(context, listen: false).setRefresh(true);
         }
         return true;
       },
@@ -211,7 +169,7 @@ class _InvestmentDetailsPageState extends State<InvestmentDetailsPage> {
                   child: IconButton(
                     onPressed: () {
                       if (isDataChanged) {
-                        Provider.of<PortfolioStateProvider>(context, listen: false).setRefresh(true);
+                        Provider.of<PortfolioRefreshProvider>(context, listen: false).setRefresh(true);
                       }
                       Navigator.pop(context);
                     }, 

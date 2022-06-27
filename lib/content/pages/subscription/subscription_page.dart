@@ -27,7 +27,7 @@ class SubscriptionPage extends StatefulWidget {
 
 class _SubscriptionPageState extends State<SubscriptionPage> {
   late ListState _state;
-  String sort = "name";
+  String sort = "date";
   int sortType = -1;
   String? _error;
   late final SubscriptionsProvider _subscriptionsProvider;
