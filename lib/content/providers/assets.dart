@@ -21,12 +21,24 @@ class AssetsProvider with ChangeNotifier {
 
   Future<AssetResponse> getAssets({
     required String sort, //name amount profit type
-    required int type
+    required int type,
+    required List<String> assetTypes,
   }) async {
     _items.clear();
+
+    String sortFilter = "?sort=$sort&type=$type";
+
+    if (assetTypes.isNotEmpty) {
+      if (assetTypes.length > 1) {
+        sortFilter += "&asset_type=${assetTypes.map((e) => e.toLowerCase()).join(",")}";
+      } else if (assetTypes.length == 1) {
+        sortFilter += "&asset_type=${assetTypes[0].toLowerCase()}";
+      }
+    }
+
     try {
       final response = await http.get(
-        Uri.parse(APIRoutes().assetRoutes.assetsByUserID + "?sort=$sort&type=$type"),
+        Uri.parse(APIRoutes().assetRoutes.assetsByUserID + sortFilter),
         headers: UserToken().getBearerToken(),
       );
       

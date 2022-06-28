@@ -9,6 +9,8 @@ extension ColorSchemeExt on ColorScheme {
 
   Color get bottomBarSelectedTextColor => brightness == Brightness.light ? Colors.black : Colors.white;
   Color get bottomBarBgColor => brightness == Brightness.light ? Colors.white : Colors.black;
+
+  Color get bgTransparentColor => brightness == Brightness.dark ? Colors.white54: Colors.black38;
 }
 
 class AppColors {
