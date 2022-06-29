@@ -143,12 +143,14 @@ class _SubscriptionCreateImageSheetState extends State<SubscriptionCreateImageSh
     var response = await http.get(
       Uri.parse("https://autocomplete.clearbit.com/v1/companies/suggest?query=$search"),
     );
-    (json.decode(response.body) as List).map((e) => e as Map<String, dynamic>).forEach((element) {
-        _itemList.add(element["domain"] as String);
-    });
+    if (_state != BaseState.disposed) {
+      (json.decode(response.body) as List).map((e) => e as Map<String, dynamic>).forEach((element) {
+          _itemList.add(element["domain"] as String);
+      });
 
-    setState(() {
-      _state = BaseState.init;
-    });
+      setState(() {
+        _state = BaseState.init;
+      }); 
+    }
   }
 }

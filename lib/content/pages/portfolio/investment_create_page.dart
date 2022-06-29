@@ -140,6 +140,7 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
         appBar: AppBar(
           title: const Text("Create"),
           actions: [
+            if (_state == CreateState.editing)
             IconButton(
               icon: const Icon(Icons.save_rounded),
               tooltip: 'Save Investment',
