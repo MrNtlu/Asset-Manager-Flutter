@@ -238,13 +238,18 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
     ),
     tooltipBehavior: TooltipBehavior(enable: true, canShowMarker: true, format: 'point.x - ${_dailyStatsProvider.item!.currency.getCurrencyFromString()} point.y'),
     series: [
-      SplineSeries<ChartData, String>(
+      SplineAreaSeries<ChartData, String>(
         name: isProfit ? "Profit/Loss" : "Total Assets",
-        color: AppColors().accentColor,
+        color: AppColors().primaryColor,
         dataSource: _lineChartMapper(isProfit: isProfit),
         markerSettings: const MarkerSettings(isVisible: true),
         xValueMapper: (ChartData data, _) => data.date,
         yValueMapper: (ChartData data, _) => data.stat,
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [AppColors().primaryColor, AppColors().primaryColor.withOpacity(0.5)], 
+        )
       )
     ],
   );

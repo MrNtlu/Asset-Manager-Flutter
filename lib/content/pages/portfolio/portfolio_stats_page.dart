@@ -29,7 +29,6 @@ class PortfolioStatsPage extends StatelessWidget {
                   PortfolioStatsLineChart(MediaQuery.of(context).viewPadding.top),
                   const Divider(),
                   const PortfolioStatsDistributionChart(),
-                  const Divider(),
                   const SizedBox(height: 8)
                 ],
               ),
