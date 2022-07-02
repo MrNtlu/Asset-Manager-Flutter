@@ -240,7 +240,7 @@ class _StatsLCLineChartState extends State<StatsLCLineChart> {
     series: [
       SplineAreaSeries<ChartData, String>(
         name: isProfit ? "Profit/Loss" : "Total Assets",
-        color: AppColors().primaryColor,
+        color: Theme.of(context).colorScheme.bgTextColor,
         dataSource: _lineChartMapper(isProfit: isProfit),
         markerSettings: const MarkerSettings(isVisible: true),
         xValueMapper: (ChartData data, _) => data.date,

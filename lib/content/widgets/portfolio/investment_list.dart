@@ -22,7 +22,7 @@ class PortfolioInvestmentList extends StatelessWidget {
     child: ListView.separated(
       itemBuilder: ((context, index) {
         if(index == _data.length) {
-          return const SizedBox();
+          return const SizedBox(height: 75);
         }
         final data = _data[index];
         return PortfolioInvestmentListCell(data);
