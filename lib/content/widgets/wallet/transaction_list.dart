@@ -172,7 +172,6 @@ class _TransactionListState extends State<TransactionList> {
               return const SizedBox(height: 75);
             }
             
-            //TODO: Test pagination, change design
             final data = _data[index];
             if (_sortFilter.sort == "date" && (index == 0 || (index != 0 && !isSameDay(data.transactionDate, _data[index - 1].transactionDate)))){
               return Column(
