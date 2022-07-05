@@ -1,7 +1,5 @@
-import 'package:asset_flutter/content/providers/settings/theme_state.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class TransactionDetailsSheetText extends StatelessWidget {
   final String _title;
@@ -21,7 +19,7 @@ class TransactionDetailsSheetText extends StatelessWidget {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: Provider.of<ThemeProvider>(context, listen: false).isDarkMode ? Colors.white54 :  Colors.black54
+              color: Theme.of(context).colorScheme.bgTransparentColor
             ),
           ),
         ),
