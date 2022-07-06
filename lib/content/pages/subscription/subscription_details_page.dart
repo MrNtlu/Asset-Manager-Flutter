@@ -100,8 +100,8 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
       _subscriptionStateProvider = Provider.of<SubscriptionStateProvider>(context, listen: false);
       _updateView = SubscriptionDetailsEdit(_data);
       _detailsView = SubscriptionDetailsView(_data, isCardDetails: widget.isCardDetails);
+      _state = EditState.view;
     }
-    _state = EditState.view;
     super.didChangeDependencies();
   }
 
@@ -173,7 +173,10 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
   Widget _body() {
     switch (_state) {
       case EditState.editing:
-        return SingleChildScrollView(child: _updateView);
+        return Padding(
+          padding: MediaQuery.of(context).viewInsets,
+          child: SingleChildScrollView(child: _updateView),
+        );
       case EditState.view:
         return SingleChildScrollView(child: _detailsView);
       case EditState.loading:

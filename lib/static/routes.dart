@@ -99,6 +99,7 @@ class UserRoutes {
   late String forgotPassword;
   late String changePassword;
   late String changeCurrency;
+  late String changeNotification;
   late String changeMembership;
   late String updateFCMToken;
   late String deleteUser;
@@ -110,6 +111,7 @@ class UserRoutes {
     forgotPassword = _baseUserURL + '/forgot-password';
     changePassword = _baseUserURL + '/change-password';
     changeCurrency = _baseUserURL + '/change-currency';
+    changeNotification = _baseUserURL + '/change-notification';
     updateFCMToken = _baseUserURL + '/update-token';
     changeMembership = _baseUserURL + '/membership';
     deleteUser = _baseUserURL;

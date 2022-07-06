@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:asset_flutter/common/models/state.dart';
+import 'package:asset_flutter/common/widgets/textformfield.dart';
 import 'package:asset_flutter/content/models/requests/subscription.dart';
 import 'package:asset_flutter/content/models/responses/subscription.dart';
 import 'package:asset_flutter/content/providers/subscription/card.dart';
@@ -14,8 +15,12 @@ import 'package:asset_flutter/content/widgets/subscription/sd_edit_color_picker.
 import 'package:asset_flutter/content/widgets/subscription/sd_edit_date_picker.dart';
 import 'package:asset_flutter/content/widgets/subscription/sd_edit_header.dart';
 import 'package:asset_flutter/content/widgets/subscription/subscription_image.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/purchase_api.dart';
+import 'package:asset_flutter/utils/extensions.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
@@ -24,6 +29,7 @@ class SubscriptionDetailsEdit extends StatefulWidget {
   late final bool isEditing;
 
   final form = GlobalKey<FormState>();
+  final advancedForm = GlobalKey<FormState>();
   late final SubscriptionUpdate? updateData;
   late final SubscriptionCreate? createData;
 
@@ -209,6 +215,122 @@ class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
           }),
         ),
         const Divider(thickness: 1),
+        Row(
+          children: [
+            Expanded(child: _subSectionTitle("Notification Reminder")),
+            Lottie.asset(
+              "assets/lottie/premium.json",
+              height: 32,
+              width: 32,
+              frameRate: FrameRate(60)
+            ),
+          ],
+        ),
+        // TODO Add overlay that prevents nonpremium users to interact
+        Padding(
+          padding: const EdgeInsets.all(12),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.notification_add_rounded,
+                size: 32,                    
+              ),
+              Expanded(
+                child: Text(
+                  DateTime.now().dateToTime(),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+              Platform.isIOS || Platform.isMacOS
+              ? Padding(
+                padding: const EdgeInsets.only(right: 4),
+                child: CupertinoSwitch(
+                  activeColor: Theme.of(context).colorScheme.bgTextColor,
+                  trackColor: Theme.of(context).colorScheme.bgTransparentColor,
+                  thumbColor: false ? Theme.of(context).colorScheme.bgColor : Theme.of(context).colorScheme.bgTextColor,
+                  value: false,
+                  onChanged: (value) {
+                    setState(() {
+                      // widget._value = !widget._value;
+                    });
+                  },
+                ),
+              )
+              : Theme(
+                data: Theme.of(context).copyWith(
+                  unselectedWidgetColor: Colors.grey.shade400,
+                ),
+                child: Checkbox(
+                  activeColor: Theme.of(context).colorScheme.bgTextColor,
+                  checkColor: Theme.of(context).colorScheme.bgColor,
+                  value: false,
+                  onChanged: (value) {
+                    setState(() {
+                      // widget._value = !widget._value;
+                    });
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+        const Divider(thickness: 1),
+        _subSectionTitle("Advanced Options (Optional)"),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.only(left: 12, top: 8, bottom: 4),
+          child: Text(
+            "You can enter your subscription account. Password will be encrypted.", 
+            textAlign: TextAlign.start,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.bgTransparentColor,
+              fontSize: 12
+            ),
+          )
+        ),
+        Form(
+          key: widget.advancedForm,
+          child: Column(
+            children: [
+              CustomTextFormField(
+                "Username/Email",
+                TextInputType.emailAddress,
+                initialText: "",
+                edgeInsets: const EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 8),
+                textInputAction: TextInputAction.next,
+                onSaved: (value) {
+                  // if (value != null) {
+                  //   if(widget.isEditing && widget.name != value){
+                  //     widget.updateData!.name = value;
+                  //   } else if (!widget.isEditing) {
+                  //     widget.createData!.name = value;
+                  //   }
+                  // }
+                },
+              ),
+              CustomTextFormField(
+                "Password",
+                TextInputType.visiblePassword,
+                initialText: "",
+                edgeInsets: const EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 8),
+                textInputAction: TextInputAction.done,
+                onSaved: (value) {
+                  // if (value != null) {
+                  //   if(widget.isEditing && widget.name != value){
+                  //     widget.updateData!.name = value;
+                  //   } else if (!widget.isEditing) {
+                  //     widget.createData!.name = value;
+                  //   }
+                  // }
+                },
+              ),
+              const Divider(thickness: 1)
+            ],
+          ),
+        ),
       ],
     );
   }

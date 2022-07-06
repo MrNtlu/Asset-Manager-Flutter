@@ -78,6 +78,42 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   }
 
+  void _changeNotificationPreference(bool isOn) {
+    setState(() {
+      _state = DetailState.loading;
+    });
+    try {
+      http.put(
+        Uri.parse(APIRoutes().userRoutes.changeNotification),
+        body: json.encode({
+          "app_notification": isOn,
+          "mail_notification": false,
+        }),
+        headers: UserToken().getBearerToken()
+      ).then((response){
+        _userInfo!.appNotification = isOn;
+        setState(() {
+          _state = DetailState.view;
+        });
+
+        if (response.getBaseResponse().error != null) {  
+          showDialog(
+            context: context, 
+            builder: (ctx) => ErrorDialog(response.getBaseResponse().error!)
+          );
+        }
+      });
+    } catch(error) {
+      setState(() {
+        _state = DetailState.view;
+      });
+      showDialog(
+        context: context, 
+        builder: (ctx) => ErrorDialog(error.toString())
+      );
+    }
+  }
+
   void _changePassword(String oldPassword, String newPassword) {
     setState(() {
       _state = DetailState.loading;
@@ -322,6 +358,16 @@ class _SettingsPageState extends State<SettingsPage> {
               title: const Text('Account Settings'),
               tiles: [
                 const CustomSettingsTile(child: SettingsThemeSwitch()),
+                SettingsTile.switchTile(
+                  onToggle: (value) => _changeNotificationPreference(value),
+                  initialValue: _userInfo!.appNotification,
+                  leading: Icon(
+                    _userInfo!.appNotification 
+                    ? Icons.notifications_active_rounded
+                    : Icons.notifications_off_rounded
+                  ),
+                  title: const Text('App Notification')
+                ),
                 SettingsTile.navigation(
                   leading: const Icon(Icons.monetization_on_rounded),
                   title: const Text('Change Currency'),

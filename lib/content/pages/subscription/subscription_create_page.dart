@@ -124,8 +124,11 @@ class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
           child: const SuccessView("created", shouldJustPop: true)
         );
       case CreateState.editing:
-        return SingleChildScrollView(
-          child: _subscriptionDetailsEdit,
+        return Padding(
+          padding: MediaQuery.of(context).viewInsets,
+          child: SingleChildScrollView(
+            child: _subscriptionDetailsEdit,
+          ),
         );
       case CreateState.loading:
         return const LoadingView("Creating Subscription");
