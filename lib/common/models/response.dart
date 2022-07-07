@@ -220,6 +220,15 @@ class _TypeConverter<T> {
         response["image"],
         response["color"],
         response["card_id"],
+        response["notification_time"] != null
+        ? DateTime.parse(response["notification_time"])
+        : null,
+        response["account"] != null
+        ? SubscriptionAccount(
+          response["account"]["email_address"], 
+          response["account"]["password"]
+        )
+        : null
       ) as T;
     } else if (T == Transaction) {
       return Transaction(

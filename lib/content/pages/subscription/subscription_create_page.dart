@@ -26,11 +26,16 @@ class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
     _subscriptionDetailsEdit.createData!.color = _subscriptionDetailsEdit.colorPicker.selectedColor.value;
     _subscriptionDetailsEdit.createData!.image = _subscriptionDetailsEdit.selectedDomain!;
     _subscriptionDetailsEdit.createData!.cardID = _subscriptionDetailsEdit.selectedCard?.id;
+    _subscriptionDetailsEdit.createData!.notificationTime = _subscriptionDetailsEdit.notificationSwitch.selectedDate;
   }
 
   void _createSubscription(BuildContext context) {
     final isValid = _subscriptionDetailsEdit.form.currentState?.validate();
-    if (isValid != null && !isValid) {
+    final isAdvancedValid = _subscriptionDetailsEdit.advancedForm.currentState?.validate();
+    if (
+      (isValid != null && !isValid) ||
+      (isAdvancedValid != null && !isAdvancedValid)
+    ) {
       return;
     }
     if (_subscriptionDetailsEdit.selectedDomain == null) {
@@ -49,6 +54,7 @@ class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
     });
 
     _subscriptionDetailsEdit.form.currentState?.save();
+    _subscriptionDetailsEdit.advancedForm.currentState?.save();
     _setCreateData();
 
     _subscriptionsProvider.addSubscription(_subscriptionDetailsEdit.createData!).then((value){

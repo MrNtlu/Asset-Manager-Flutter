@@ -50,12 +50,18 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
       _updateView.updateData!.image = _updateView.selectedDomain;
     }
 
+    _updateView.updateData!.notificationTime = _updateView.notificationSwitch.selectedDate; 
+
     _updateView.updateData!.cardID = _updateView.selectedCard?.id;
   }
 
   void _updateSubscription(BuildContext context){
     final isValid = _updateView.form.currentState?.validate();
-    if (isValid != null && !isValid) {
+    final isAdvancedValid = _updateView.advancedForm.currentState?.validate();
+    if (
+      (isValid != null && !isValid) ||
+      (isAdvancedValid != null && !isAdvancedValid)
+    ) {
       return;
     }
     setState(() {
@@ -63,6 +69,7 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
     });
 
     _updateView.form.currentState?.save();
+    _updateView.advancedForm.currentState?.save();
     _setUpdateData();
 
     _data.updateSubscription(_updateView.updateData!).then((value) {

@@ -12,10 +12,18 @@ class SubscriptionCreate implements JSONConverter{
   String currency;
   String image;
   int color;
+  SubscriptionAccount? account;
+  DateTime? notificationTime;
 
   SubscriptionCreate(this.name, this.billCycle, this.billDate, this.price,
       this.currency, this.image, this.color,
-      {this.cardID, this.description});
+      {
+        this.cardID, 
+        this.description,
+        this.account,
+        this.notificationTime
+      }
+    );
 
   @override
   Map<String, Object> convertToJson() => {
@@ -29,7 +37,11 @@ class SubscriptionCreate implements JSONConverter{
     "image": image,
     if (cardID != null)
     "card_id": cardID!, 
-    "color": color.toString()
+    "color": color.toString(),
+    if(account != null)
+    "account": account!.convertToJson(),
+    if(notificationTime != null)
+    "notification_time": notificationTime!.toUtc().dateToJSONFormat()
   };
 }
 
@@ -44,9 +56,12 @@ class SubscriptionUpdate implements JSONConverter {
   String? cardID;
   String? image;
   int? color;
+  SubscriptionAccount? account;
+  DateTime? notificationTime;
 
   SubscriptionUpdate(this.id,
-      {this.name,
+    {
+      this.name,
       this.description,
       this.billDate,
       this.billCycle,
@@ -54,7 +69,11 @@ class SubscriptionUpdate implements JSONConverter {
       this.currency,
       this.cardID,
       this.image,
-      this.color});
+      this.color,
+      this.account,
+      this.notificationTime
+    }
+  );
 
   @override
   Map<String, Object> convertToJson() => {
@@ -76,7 +95,11 @@ class SubscriptionUpdate implements JSONConverter {
     if(image != null)
     "image": image!,
     if(color != null)
-    "color": color.toString()
+    "color": color.toString(),
+    if(account != null)
+    "account": account!.convertToJson(),
+    if(notificationTime != null)
+    "notification_time": notificationTime!.toUtc().dateToJSONFormat()
   };
 }
 

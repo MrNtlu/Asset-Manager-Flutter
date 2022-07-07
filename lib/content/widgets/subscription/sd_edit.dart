@@ -15,10 +15,9 @@ import 'package:asset_flutter/content/widgets/subscription/sd_edit_color_picker.
 import 'package:asset_flutter/content/widgets/subscription/sd_edit_date_picker.dart';
 import 'package:asset_flutter/content/widgets/subscription/sd_edit_header.dart';
 import 'package:asset_flutter/content/widgets/subscription/subscription_image.dart';
+import 'package:asset_flutter/content/widgets/subscription/subscription_notification_switch.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/purchase_api.dart';
-import 'package:asset_flutter/utils/extensions.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -36,8 +35,10 @@ class SubscriptionDetailsEdit extends StatefulWidget {
   late final SDEditDatePicker datePicker;
   late final SDEditBillCycle billCyclePicker;
   late final SDEditColorPicker colorPicker;
+  late final SubscriptionNotificationSwitch notificationSwitch;
   String? selectedDomain;
   CreditCard? selectedCard;
+  SubscriptionAccount? account;
 
   SubscriptionDetailsEdit(this._data, {Key? key}) : super(key: key) {
     isEditing = _data != null;
@@ -47,6 +48,10 @@ class SubscriptionDetailsEdit extends StatefulWidget {
     datePicker = SDEditDatePicker(billDate: _data?.billDate ?? DateTime.now());
     billCyclePicker = SDEditBillCycle(billCycle: _data?.billCycle.copyWith() ?? BillCycle(month: 1));
     selectedCard = (_data != null && _data!.cardID != null) ? CreditCard(_data!.cardID!, '', '', '', '', '', '') :  null;
+    notificationSwitch = SubscriptionNotificationSwitch(
+      selectedDate: _data != null ? _data!.notificationTime : null,
+    );
+    account = _data?.account;
 
     if (isEditing) {
       updateData = SubscriptionUpdate(_data!.id);
@@ -63,6 +68,7 @@ class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
   EditState _state = EditState.init;
   late final SubscriptionImageSelection _imageSelection;
   bool isInit = false;
+  bool _isAdvancedOptionUsed = false;
 
   @override
   void dispose() {
@@ -226,62 +232,12 @@ class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
             ),
           ],
         ),
-        // TODO Add overlay that prevents nonpremium users to interact
-        Padding(
-          padding: const EdgeInsets.all(12),
-          child: Row(
-            children: [
-              const Icon(
-                Icons.notification_add_rounded,
-                size: 32,                    
-              ),
-              Expanded(
-                child: Text(
-                  DateTime.now().dateToTime(),
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-              Platform.isIOS || Platform.isMacOS
-              ? Padding(
-                padding: const EdgeInsets.only(right: 4),
-                child: CupertinoSwitch(
-                  activeColor: Theme.of(context).colorScheme.bgTextColor,
-                  trackColor: Theme.of(context).colorScheme.bgTransparentColor,
-                  thumbColor: false ? Theme.of(context).colorScheme.bgColor : Theme.of(context).colorScheme.bgTextColor,
-                  value: false,
-                  onChanged: (value) {
-                    setState(() {
-                      // widget._value = !widget._value;
-                    });
-                  },
-                ),
-              )
-              : Theme(
-                data: Theme.of(context).copyWith(
-                  unselectedWidgetColor: Colors.grey.shade400,
-                ),
-                child: Checkbox(
-                  activeColor: Theme.of(context).colorScheme.bgTextColor,
-                  checkColor: Theme.of(context).colorScheme.bgColor,
-                  value: false,
-                  onChanged: (value) {
-                    setState(() {
-                      // widget._value = !widget._value;
-                    });
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
+        widget.notificationSwitch,
         const Divider(thickness: 1),
         _subSectionTitle("Advanced Options (Optional)"),
         Container(
           width: double.infinity,
-          padding: const EdgeInsets.only(left: 12, top: 8, bottom: 4),
+          padding: const EdgeInsets.only(left: 12, top: 2, bottom: 8),
           child: Text(
             "You can enter your subscription account. Password will be encrypted.", 
             textAlign: TextAlign.start,
@@ -298,33 +254,62 @@ class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
               CustomTextFormField(
                 "Username/Email",
                 TextInputType.emailAddress,
-                initialText: "",
+                initialText: widget._data?.account?.email,
                 edgeInsets: const EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 8),
                 textInputAction: TextInputAction.next,
+                validator: (value) {
+                  _isAdvancedOptionUsed = value != null && value.isNotEmpty;
+
+                  if (widget.isEditing) {
+                    if (widget.account == null && _isAdvancedOptionUsed) {
+                      widget.account = SubscriptionAccount(value!, null);
+                    } else if (widget.account != null && _isAdvancedOptionUsed) {
+                      widget.account!.email = value!;
+                    } else if (widget.account != null && !_isAdvancedOptionUsed) {
+                      widget.account = null;
+                    }
+                  } else {
+                    widget.account = _isAdvancedOptionUsed ? SubscriptionAccount(value!, null) : null;
+                  }
+
+                  return null;
+                },
                 onSaved: (value) {
-                  // if (value != null) {
-                  //   if(widget.isEditing && widget.name != value){
-                  //     widget.updateData!.name = value;
-                  //   } else if (!widget.isEditing) {
-                  //     widget.createData!.name = value;
-                  //   }
-                  // }
+                  if (value != null) {
+                    if (widget.isEditing) {
+                      widget.updateData!.account = widget.account;
+                    } else if (!widget.isEditing) {
+                      widget.createData!.account = widget.account;
+                    }
+                  }
                 },
               ),
               CustomTextFormField(
                 "Password",
                 TextInputType.visiblePassword,
-                initialText: "",
+                initialText: widget._data?.account?.password,
                 edgeInsets: const EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 8),
                 textInputAction: TextInputAction.done,
+                validator: (value) {
+                  if (value != null && value.isNotEmpty) {
+
+                    if (widget.isEditing && widget.account == null) {
+                      return "Please don't leave username/email empty.";
+                    } else if (!widget.isEditing && !_isAdvancedOptionUsed) {
+                      return "Please don't leave username/email empty.";
+                    }
+                  }
+
+                  return null;
+                },
                 onSaved: (value) {
-                  // if (value != null) {
-                  //   if(widget.isEditing && widget.name != value){
-                  //     widget.updateData!.name = value;
-                  //   } else if (!widget.isEditing) {
-                  //     widget.createData!.name = value;
-                  //   }
-                  // }
+                  widget.account!.password = value;
+
+                  if (widget.isEditing) {
+                    widget.updateData!.account = widget.account;
+                  } else if (!widget.isEditing) {
+                    widget.createData!.account = widget.account;
+                  }
                 },
               ),
               const Divider(thickness: 1)

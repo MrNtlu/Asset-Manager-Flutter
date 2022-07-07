@@ -116,7 +116,7 @@ extension DateTimeExt on DateTime {
   }
 
   String dateToTime() {
-    final DateFormat formatter = DateFormat("HH:mm:ss'Z'");
+    final DateFormat formatter = DateFormat("HH:mm");
     return formatter.format(this);
   }
 

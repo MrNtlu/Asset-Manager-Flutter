@@ -20,6 +20,8 @@ class Subscription with ChangeNotifier {
   late String _image;
   late String _color;
   late String? cardID;
+  late DateTime? notificationTime;
+  late SubscriptionAccount? account;
 
   int get color => int.parse(_color);
 
@@ -28,7 +30,7 @@ class Subscription with ChangeNotifier {
   String get rawImage => _image;
 
   Subscription(this.id, this.name, this.description, this.billDate, this.nextBillDate,
-      this.billCycle, this.price, this.currency, this._image, this._color, this.cardID);
+      this.billCycle, this.price, this.currency, this._image, this._color, this.cardID, this.notificationTime, this.account);
 
   String _subscriptionImage(String company) {
     return "https://logo.clearbit.com/$company";
@@ -56,6 +58,8 @@ class Subscription with ChangeNotifier {
         _image = data._image;
         _color = (data.color).toString();
         cardID = data.cardID;
+        notificationTime = data.notificationTime;
+        account = data.account;
 
         notifyListeners();
       }

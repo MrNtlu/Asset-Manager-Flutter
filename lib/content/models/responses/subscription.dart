@@ -9,6 +9,20 @@ class SubscriptionCard {
   const SubscriptionCard(this.name, this.lastDigits, this.type);
 }
 
+class SubscriptionAccount implements JSONConverter {
+  String email;
+  String? password;
+
+  SubscriptionAccount(this.email, this.password);
+
+  @override
+  Map<String, Object> convertToJson() => {
+    "email_address": email,
+    if(password != null && password!.isNotEmpty)
+    "password": password!
+  };
+}
+
 class SubscriptionDetails {
   final num monthlyPayment;
   final num totalpayment;

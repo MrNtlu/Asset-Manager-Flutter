@@ -11,6 +11,7 @@ import 'package:asset_flutter/content/providers/subscription/subscription_detail
 import 'package:asset_flutter/content/providers/subscription/subscription_state.dart';
 import 'package:asset_flutter/content/providers/subscription/subscriptions.dart';
 import 'package:asset_flutter/content/widgets/subscription/sd_view_text.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:awesome_card/awesome_card.dart';
@@ -166,6 +167,18 @@ class _SubscriptionDetailsViewState extends State<SubscriptionDetailsView> {
             ),
             SDViewText("Initial Bill Date", widget._data.billDate.dateToFormatDate()),
             SDViewText("Next Bill Date", widget._data.nextBillDate.dateToFormatDate()),
+            if(widget._data.notificationTime != null)
+            Stack(
+              children: [
+                SDViewText("Reminder Time", widget._data.notificationTime!.dateToTime()),
+                const Positioned(
+                  bottom: 0,
+                  top: 0,
+                  right: 4,
+                  child: Icon(Icons.notifications_on_rounded)
+                )
+              ],
+            ),
             SDViewText("Bill Cycle", widget._data.billCycle.handleBillCycleString()),
             if(_subscriptionDetails != null)
             SDViewText(
@@ -176,6 +189,37 @@ class _SubscriptionDetailsViewState extends State<SubscriptionDetailsView> {
             SDViewText(
               "Paid in Total",
               widget._data.currency.getCurrencyFromString() + ' ' + _subscriptionDetails!.totalpayment.numToString()
+            ),
+            if(widget._data.account != null)
+            ListTileTheme(
+              contentPadding: EdgeInsets.zero,
+              dense: true,
+              horizontalTitleGap: 0.0,
+              minLeadingWidth: 0,
+              child: Theme(
+                data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                child: ExpansionTile(
+                  children: [
+                    _accountText("Username/Email ", widget._data.account!.email),
+                    if(widget._data.account!.password != null && widget._data.account!.password!.isNotEmpty)
+                    _accountText("Password ", widget._data.account!.password),
+                  ],
+                  textColor: Theme.of(context).colorScheme.bgTextColor,
+                  iconColor: Theme.of(context).colorScheme.bgTextColor,
+                  collapsedTextColor: Theme.of(context).colorScheme.bgTextColor,
+                  collapsedIconColor: Theme.of(context).colorScheme.bgTextColor,
+                  tilePadding: const EdgeInsets.symmetric(horizontal: 6),
+                  childrenPadding: const EdgeInsets.symmetric(horizontal: 6),
+                  initiallyExpanded: false,
+                  title: const Text(
+                    "Account",
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold
+                    ),
+                  )
+                ),
+              ),
             ),
             if(!widget.isCardDetails)
             Padding(
@@ -231,4 +275,33 @@ class _SubscriptionDetailsViewState extends State<SubscriptionDetailsView> {
         return CardType.masterCard;
     }
   }
+
+  Widget _accountText(title, info) => Padding(
+    padding: const EdgeInsets.only(bottom: 8),
+    child: SizedBox(
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 4),
+            child: Text(
+              title,
+              style: TextStyle(
+                fontSize: 17,
+                color: Theme.of(context).colorScheme.bgTransparentColor
+              ),
+            ),
+          ),
+          Text(
+            info,
+            style: TextStyle(
+              fontSize: 17,
+              color: Theme.of(context).colorScheme.bgTextColor
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }
