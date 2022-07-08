@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:asset_flutter/static/log.dart';
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/error_dialog.dart';
@@ -111,250 +113,302 @@ class OffersSheetState extends State<OffersSheet> {
   Widget _portraitBody() {
     switch (_state) {
       case ListState.done:
-        return Container(
-          decoration: BoxDecoration(
-            color: AppColors().bgSecondary,
-            image: const DecorationImage(
-              image: AssetImage("assets/images/auth_bg.jpeg"),
-              fit: BoxFit.cover
-            ),
-          ),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        Padding(
-                          padding: EdgeInsets.only(right: 8),
-                          child: Icon(Icons.check_box_rounded, color: Colors.white),
-                        ),
-                        SizedBox(
-                          width: 200,
-                          child: Text("Unlimited Investments", style: TextStyle(color: Colors.white, fontSize: 16))
-                        )
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        Padding(
-                          padding: EdgeInsets.only(right: 8),
-                          child: Icon(Icons.check_box_rounded, color: Colors.white),
-                        ),
-                        SizedBox(
-                          width: 200,
-                          child: Text("Unlimited Subscriptions", style: TextStyle(color: Colors.white, fontSize: 16))
-                        )
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        Padding(
-                          padding: EdgeInsets.only(right: 8),
-                          child: Icon(Icons.check_box_rounded, color: Colors.white),
-                        ),
-                        SizedBox(
-                          width: 200,
-                          child: Text("Unlimited Transactions", style: TextStyle(color: Colors.white, fontSize: 16))
-                        )
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        Padding(
-                          padding: EdgeInsets.only(right: 8),
-                          child: Icon(Icons.check_box_rounded, color: Colors.white),
-                        ),
-                        SizedBox(
-                          width: 200,
-                          child: Text("Unlimited Credit Cards", style: TextStyle(color: Colors.white, fontSize: 16))
-                        )
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        Padding(
-                          padding: EdgeInsets.only(right: 8),
-                          child: Icon(Icons.check_box_rounded, color: Colors.white),
-                        ),
-                        SizedBox(
-                          width: 200,
-                          child: Text("Unlimited Bank Accounts", style: TextStyle(color: Colors.white, fontSize: 16))
-                        )
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        Padding(
-                          padding: EdgeInsets.only(right: 8),
-                          child: Icon(Icons.check_box_rounded, color: Colors.white),
-                        ),
-                        SizedBox(
-                          width: 200,
-                          child: Text("Stats for Longer Periods", style: TextStyle(color: Colors.white, fontSize: 16))
-                        )
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        Padding(
-                          padding: EdgeInsets.only(right: 8),
-                          child: Icon(Icons.check_box_rounded, color: Colors.white),
-                        ),
-                        SizedBox(
-                          width: 200,
-                          child: Text("More soon...", style: TextStyle(color: Colors.white, fontSize: 16))
-                        )
-                      ],
-                    ),
-                  ],
-                ),
+        return SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+              color: AppColors().bgSecondary,
+              image: const DecorationImage(
+                image: AssetImage("assets/images/auth_bg.jpeg"),
+                fit: BoxFit.cover,
               ),
-              ListView.builder(
-                shrinkWrap: true,
-                itemBuilder: (_, index) {
-                  final package = _packages[index];
-                  final product = package.product;
-      
-                  return GestureDetector(
-                    onTap: () async {
-                      setState(() {
-                        _state = ListState.loading;
-                      });
-
-                      try {
-                        await Purchases.purchasePackage(package);
-                        Log().createLog("${product.title} ${product.identifier} purchased.");
-
-                        showDialog(
-                          context: context,
-                          builder: (_) => const SuccessView("purchased. Thank you for becoming a premium member")
-                        );
-                      } on PlatformException catch (e) {
-                        if (_state != ListState.disposed) { 
-                          setState(() {
-                            _state = ListState.done;
-                          });
-                        }
-
-                        var errorCode = PurchasesErrorHelper.getErrorCode(e);
-                        if (errorCode != PurchasesErrorCode.purchaseCancelledError) {
-                          final appUserID = await Purchases.appUserID;
-                          final purchaserInfo = await Purchases.getPurchaserInfo();
-                          Log().createLog("${product.title} failed to purchase. $appUserID $purchaserInfo ${e.message}");
-      
+            ),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                  child: ClipRRect(
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                      child: Theme(
+                        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(width: 2, color: Colors.white30)
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 6),
+                          child: ExpansionTile(
+                            textColor: Colors.black,
+                            iconColor: Colors.black,
+                            collapsedTextColor: Colors.white,
+                            collapsedIconColor: Colors.white,
+                            title: const Text(
+                              "Premium Benefits",
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold
+                              ),
+                            ),
+                            expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                            childrenPadding: const EdgeInsets.symmetric(horizontal: 6),
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: const [
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 8),
+                                    child: Icon(Icons.all_inclusive_rounded, color: Colors.white),
+                                  ),
+                                  SizedBox(
+                                    width: 200,
+                                    child: Text("Unlimited Investments", style: TextStyle(color: Colors.white, fontSize: 16))
+                                  )
+                                ],
+                              ),
+                              const Divider(color: Colors.white),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: const [
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 8),
+                                    child: Icon(Icons.all_inclusive_rounded, color: Colors.white),
+                                  ),
+                                  SizedBox(
+                                    width: 200,
+                                    child: Text("Unlimited Subscriptions", style: TextStyle(color: Colors.white, fontSize: 16))
+                                  )
+                                ],
+                              ),
+                              const Divider(color: Colors.white),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: const [
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 8),
+                                    child: Icon(Icons.all_inclusive_rounded, color: Colors.white),
+                                  ),
+                                  SizedBox(
+                                    width: 200,
+                                    child: Text("Unlimited Transactions", style: TextStyle(color: Colors.white, fontSize: 16))
+                                  )
+                                ],
+                              ),
+                              const Divider(color: Colors.white),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: const [
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 8),
+                                    child: Icon(Icons.all_inclusive_rounded, color: Colors.white),
+                                  ),
+                                  SizedBox(
+                                    width: 200,
+                                    child: Text("Unlimited Credit Cards", style: TextStyle(color: Colors.white, fontSize: 16))
+                                  )
+                                ],
+                              ),
+                              const Divider(color: Colors.white),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: const [
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 8),
+                                    child: Icon(Icons.all_inclusive_rounded, color: Colors.white),
+                                  ),
+                                  SizedBox(
+                                    width: 200,
+                                    child: Text("Unlimited Bank Accounts", style: TextStyle(color: Colors.white, fontSize: 16))
+                                  )
+                                ],
+                              ),
+                              const Divider(color: Colors.white),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: const [
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 8),
+                                    child: Icon(Icons.trending_up_rounded, color: Colors.white),
+                                  ),
+                                  SizedBox(
+                                    width: 200,
+                                    child: Text("Stats for Longer Periods", style: TextStyle(color: Colors.white, fontSize: 16))
+                                  )
+                                ],
+                              ),
+                              const Divider(color: Colors.white),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: const [
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 8),
+                                    child: Icon(Icons.notification_add_rounded, color: Colors.white),
+                                  ),
+                                  SizedBox(
+                                    width: 200,
+                                    child: Text("Subscription Reminder", style: TextStyle(color: Colors.white, fontSize: 16))
+                                  )
+                                ],
+                              ),
+                              const Divider(color: Colors.white),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: const [
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 8),
+                                    child: Icon(Icons.more_horiz_rounded, color: Colors.white),
+                                  ),
+                                  SizedBox(
+                                    width: 200,
+                                    child: Text("More soon...", style: TextStyle(color: Colors.white, fontSize: 16))
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemBuilder: (_, index) {
+                    final package = _packages[index];
+                    final product = package.product;
+              
+                    return GestureDetector(
+                      onTap: () async {
+                        setState(() {
+                          _state = ListState.loading;
+                        });
+        
+                        try {
+                          await Purchases.purchasePackage(package);
+                          Log().createLog("${product.title} ${product.identifier} purchased.");
+        
                           showDialog(
                             context: context,
-                            builder: (_) => ErrorDialog(e.message ?? "Failed to purchase.")
+                            builder: (_) => const SuccessView("purchased. Thank you for becoming a premium member")
                           );
+                        } on PlatformException catch (e) {
+                          if (_state != ListState.disposed) { 
+                            setState(() {
+                              _state = ListState.done;
+                            });
+                          }
+        
+                          var errorCode = PurchasesErrorHelper.getErrorCode(e);
+                          if (errorCode != PurchasesErrorCode.purchaseCancelledError) {
+                            final appUserID = await Purchases.appUserID;
+                            final purchaserInfo = await Purchases.getPurchaserInfo();
+                            Log().createLog("${product.title} failed to purchase. $appUserID $purchaserInfo ${e.message}");
+              
+                            showDialog(
+                              context: context,
+                              builder: (_) => ErrorDialog(e.message ?? "Failed to purchase.")
+                            );
+                          }
                         }
-                      }
-                    },
-                    child: ClipRRect(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: AppColors().bgSecondary,
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(width: 2, color: CupertinoColors.systemBlue)
-                        ),
-                        margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-                        padding: const EdgeInsets.all(6),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                                    child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        product.title.split('(')[0].split('-')[1].trimLeft(),
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.white
+                      },
+                      child: ClipRRect(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: AppColors().bgSecondary,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(width: 2, color: CupertinoColors.systemBlue)
+                          ),
+                          margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                          padding: const EdgeInsets.all(6),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          product.title.split('(')[0].split('-')[1].trimLeft(),
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.white
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                if(product.identifier != "kantan_099_1m")
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: product.identifier == "kantan_749_1y"
-                                    ? AppColors().accentColor
-                                    : AppColors().greenColor,
-                                    borderRadius: const BorderRadius.all(Radius.circular(4)),
-                                  ),
-                                  padding: const EdgeInsets.all(4),
+                                  if(product.identifier != "kantan_099_1m")
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: product.identifier == "kantan_749_1y"
+                                      ? AppColors().accentColor
+                                      : AppColors().greenColor,
+                                      borderRadius: const BorderRadius.all(Radius.circular(4)),
+                                    ),
+                                    padding: const EdgeInsets.all(4),
+                                    child: Text(
+                                      product.identifier == "kantan_749_1y"
+                                      ? "Better Price"
+                                      : "Best Offer",
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
                                   child: Text(
-                                    product.identifier == "kantan_749_1y"
-                                    ? "Better Price"
-                                    : "Best Offer",
+                                    product.priceString + _identifierToString(product.identifier),
                                     style: const TextStyle(
                                       color: Colors.white,
-                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  product.priceString + _identifierToString(product.identifier),
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                  ),
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 8, bottom: 4),
-                              child: Align(
-                                alignment: Alignment.centerRight,
-                                child: Text(
-                                  product.identifier != "kantan_11999_unlimited"
-                                  ? "Cancel anytime"
-                                  : "One-time payment, cannot be canceled",
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                    color: Colors.grey.shade300
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8, bottom: 4),
+                                child: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Text(
+                                    product.identifier != "kantan_11999_unlimited"
+                                    ? "Cancel anytime"
+                                    : "One-time payment, cannot be canceled",
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      color: Colors.grey.shade300
+                                    ),
                                   ),
                                 ),
-                              ),
-                            )
-                          ],
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
-                itemCount: _packages.length,
-              ),
-            ],
+                    );
+                  },
+                  itemCount: _packages.length,
+                ),
+              ],
+            ),
           ),
         );
       case ListState.empty:

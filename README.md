@@ -45,6 +45,8 @@ iOS: [Download Kanma on App Store](https://apps.apple.com/tr/app/kanma-personal-
     <li> Flutter Local Notifications
     <li> Flutter Datetime Picker
     <li> App Tracking Transparency
+    <li> Package Info Plus
+    <li> In App Review
 </ul>
 
 &nbsp;

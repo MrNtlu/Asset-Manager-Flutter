@@ -275,7 +275,7 @@ class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
                   return null;
                 },
                 onSaved: (value) {
-                  if (value != null) {
+                  if (value != null && value.isNotEmpty) {
                     if (widget.isEditing) {
                       widget.updateData!.account = widget.account;
                     } else if (!widget.isEditing) {
@@ -292,7 +292,6 @@ class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
                 textInputAction: TextInputAction.done,
                 validator: (value) {
                   if (value != null && value.isNotEmpty) {
-
                     if (widget.isEditing && widget.account == null) {
                       return "Please don't leave username/email empty.";
                     } else if (!widget.isEditing && !_isAdvancedOptionUsed) {
@@ -303,7 +302,7 @@ class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
                   return null;
                 },
                 onSaved: (value) {
-                  widget.account!.password = value;
+                  widget.account?.password = value;
 
                   if (widget.isEditing) {
                     widget.updateData!.account = widget.account;

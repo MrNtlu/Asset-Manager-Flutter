@@ -25,6 +25,8 @@ import 'package:asset_flutter/static/token.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:in_app_review/in_app_review.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -323,6 +325,7 @@ class _SettingsPageState extends State<SettingsPage> {
         return ErrorView(error ?? "Error occured.", _getUserInfo);
       case DetailState.view:
         return SettingsList(
+          platform: DevicePlatform.iOS,
           sections: [
             SettingsSection(
               title: const Text('Account Info'),
@@ -366,7 +369,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     ? Icons.notifications_active_rounded
                     : Icons.notifications_off_rounded
                   ),
-                  title: const Text('App Notification')
+                  title: const Text('In App Notification'),
                 ),
                 SettingsTile.navigation(
                   leading: const Icon(Icons.monetization_on_rounded),
@@ -509,13 +512,6 @@ class _SettingsPageState extends State<SettingsPage> {
                   },
                 ),
                 SettingsTile.navigation(
-                  leading: const Icon(Icons.feedback_rounded),
-                  title: const Text('Feedback/Suggestion'),
-                  onPressed: (ctx) {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => const FeedbackPage()));
-                  },
-                ),
-                SettingsTile.navigation(
                   leading: const Icon(Icons.logout_rounded),
                   title: const Text('Sign Out'),
                   onPressed: (ctx) {
@@ -533,6 +529,54 @@ class _SettingsPageState extends State<SettingsPage> {
                         Navigator.pop(ctx);
                         _logOut();
                       })
+                    );
+                  },
+                ),
+              ],
+            ),
+            SettingsSection(
+              title: const Text('Other Settings'),
+              tiles: [
+                SettingsTile.navigation(
+                  leading: const Icon(Icons.stars_rounded),
+                  title: const Text('Rate & Review Us'),
+                  onPressed: (ctx) async {
+                    final InAppReview inAppReview = InAppReview.instance;
+                    if (await inAppReview.isAvailable()) {
+                        inAppReview.requestReview();
+                    } else {
+                      inAppReview.openStoreListing(appStoreId: '1629419797');
+                    }
+                  },
+                ),
+                SettingsTile.navigation(
+                  leading: const Icon(Icons.feedback_rounded),
+                  title: const Text('Feedback/Suggestion'),
+                  onPressed: (ctx) {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => const FeedbackPage()));
+                  },
+                ),
+                SettingsTile.navigation(
+                  leading: const Icon(Icons.copyright_rounded),
+                  title: const Text('Licenses'),
+                  onPressed: (ctx) async {
+                    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+                    String appName = packageInfo.appName;
+                    String version = packageInfo.version;
+                    
+                    showDialog(
+                      context: context, 
+                      builder: (_) => AboutDialog(
+                        applicationIcon: Image.asset(
+                          "assets/images/investment.png",
+                          width: 45, 
+                          height: 45,
+                          fit: BoxFit.contain,
+                        ),
+                        applicationName: appName,
+                        applicationVersion: "version $version",
+                      )
                     );
                   },
                 ),

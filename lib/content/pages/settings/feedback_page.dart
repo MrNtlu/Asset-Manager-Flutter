@@ -161,7 +161,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                   ),
                 ),
                 Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   width: double.infinity,
                   child: BaseButton(
                     "Send", 

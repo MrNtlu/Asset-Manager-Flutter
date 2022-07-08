@@ -165,16 +165,18 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
         IconButton(
           icon: const Icon(Icons.edit_rounded),
           tooltip: 'Enter Edit State',
-          onPressed: () {
+          onPressed: _state != EditState.loading
+          ? () {
             if (_detailsView.canEnterEditMode) {
               setState(() {
                 _state = EditState.editing;
               });
             }
-          },
+          }
+          : null,
         )
       ];
-    }
+    } 
   }
 
   Widget _body() {
