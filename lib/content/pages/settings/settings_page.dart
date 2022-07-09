@@ -542,9 +542,13 @@ class _SettingsPageState extends State<SettingsPage> {
                   title: const Text('Rate & Review Us'),
                   onPressed: (ctx) async {
                     final InAppReview inAppReview = InAppReview.instance;
-                    if (await inAppReview.isAvailable()) {
-                        inAppReview.requestReview();
-                    } else {
+                    try {
+                      if (await inAppReview.isAvailable()) {
+                          inAppReview.requestReview();
+                      } else {
+                        inAppReview.openStoreListing(appStoreId: '1629419797');
+                      }
+                    } catch (error) {
                       inAppReview.openStoreListing(appStoreId: '1629419797');
                     }
                   },

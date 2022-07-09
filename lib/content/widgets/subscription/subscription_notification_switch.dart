@@ -73,7 +73,8 @@ class _SubscriptionNotificationSwitchState extends State<SubscriptionNotificatio
           ),
         ),
         if (
-          PurchaseApi().userInfo != null && !(PurchaseApi().userInfo!.isPremium || PurchaseApi().userInfo!.isLifetimePremium) &&
+          PurchaseApi().userInfo != null && 
+          !(PurchaseApi().userInfo!.isPremium || PurchaseApi().userInfo!.isLifetimePremium) &&
           widget.selectedDate == null
         )
         Container(

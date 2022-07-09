@@ -281,131 +281,133 @@ class OffersSheetState extends State<OffersSheet> {
                     ),
                   ),
                 ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemBuilder: (_, index) {
-                    final package = _packages[index];
-                    final product = package.product;
-              
-                    return GestureDetector(
-                      onTap: () async {
-                        setState(() {
-                          _state = ListState.loading;
-                        });
-        
-                        try {
-                          await Purchases.purchasePackage(package);
-                          Log().createLog("${product.title} ${product.identifier} purchased.");
-        
-                          showDialog(
-                            context: context,
-                            builder: (_) => const SuccessView("purchased. Thank you for becoming a premium member")
-                          );
-                        } on PlatformException catch (e) {
-                          if (_state != ListState.disposed) { 
-                            setState(() {
-                              _state = ListState.done;
-                            });
-                          }
-        
-                          var errorCode = PurchasesErrorHelper.getErrorCode(e);
-                          if (errorCode != PurchasesErrorCode.purchaseCancelledError) {
-                            final appUserID = await Purchases.appUserID;
-                            final purchaserInfo = await Purchases.getPurchaserInfo();
-                            Log().createLog("${product.title} failed to purchase. $appUserID $purchaserInfo ${e.message}");
-              
+                Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemBuilder: (_, index) {
+                      final package = _packages[index];
+                      final product = package.product;
+                              
+                      return GestureDetector(
+                        onTap: () async {
+                          setState(() {
+                            _state = ListState.loading;
+                          });
+                        
+                          try {
+                            await Purchases.purchasePackage(package);
+                            Log().createLog("${product.title} ${product.identifier} purchased.");
+                        
                             showDialog(
                               context: context,
-                              builder: (_) => ErrorDialog(e.message ?? "Failed to purchase.")
+                              builder: (_) => const SuccessView("purchased. Thank you for becoming a premium member")
                             );
+                          } on PlatformException catch (e) {
+                            if (_state != ListState.disposed) { 
+                              setState(() {
+                                _state = ListState.done;
+                              });
+                            }
+                        
+                            var errorCode = PurchasesErrorHelper.getErrorCode(e);
+                            if (errorCode != PurchasesErrorCode.purchaseCancelledError) {
+                              final appUserID = await Purchases.appUserID;
+                              final purchaserInfo = await Purchases.getPurchaserInfo();
+                              Log().createLog("${product.title} failed to purchase. $appUserID $purchaserInfo ${e.message}");
+                              
+                              showDialog(
+                                context: context,
+                                builder: (_) => ErrorDialog(e.message ?? "Failed to purchase.")
+                              );
+                            }
                           }
-                        }
-                      },
-                      child: ClipRRect(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: AppColors().bgSecondary,
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(width: 2, color: CupertinoColors.systemBlue)
-                          ),
-                          margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-                          padding: const EdgeInsets.all(6),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          product.title.split('(')[0].split('-')[1].trimLeft(),
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.white
+                        },
+                        child: ClipRRect(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: AppColors().bgSecondary,
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(width: 2, color: CupertinoColors.systemBlue)
+                            ),
+                            margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                            padding: const EdgeInsets.all(6),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                                        child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            product.title.split('(')[0].split('-')[1].trimLeft(),
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.white
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  if(product.identifier != "kantan_099_1m")
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: product.identifier == "kantan_749_1y"
-                                      ? AppColors().accentColor
-                                      : AppColors().greenColor,
-                                      borderRadius: const BorderRadius.all(Radius.circular(4)),
-                                    ),
-                                    padding: const EdgeInsets.all(4),
+                                    if(product.identifier != "kantan_099_1m")
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: product.identifier == "kantan_749_1y"
+                                        ? AppColors().accentColor
+                                        : AppColors().greenColor,
+                                        borderRadius: const BorderRadius.all(Radius.circular(4)),
+                                      ),
+                                      padding: const EdgeInsets.all(4),
+                                      child: Text(
+                                        product.identifier == "kantan_749_1y"
+                                        ? "Better Price"
+                                        : "Best Offer",
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
                                     child: Text(
-                                      product.identifier == "kantan_749_1y"
-                                      ? "Better Price"
-                                      : "Best Offer",
+                                      product.priceString + _identifierToString(product.identifier),
                                       style: const TextStyle(
                                         color: Colors.white,
-                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
                                       ),
                                     ),
-                                  )
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    product.priceString + _identifierToString(product.identifier),
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                    ),
                                   ),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 8, bottom: 4),
-                                child: Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Text(
-                                    product.identifier != "kantan_11999_unlimited"
-                                    ? "Cancel anytime"
-                                    : "One-time payment, cannot be canceled",
-                                    style: TextStyle(
-                                      fontSize: 11,
-                                      color: Colors.grey.shade300
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 8, bottom: 4),
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      product.identifier != "kantan_11999_unlimited"
+                                      ? "Cancel anytime"
+                                      : "One-time payment, cannot be canceled",
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        color: Colors.grey.shade300
+                                      ),
                                     ),
                                   ),
-                                ),
-                              )
-                            ],
+                                )
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  },
-                  itemCount: _packages.length,
+                      );
+                    },
+                    itemCount: _packages.length,
+                  ),
                 ),
               ],
             ),

@@ -170,7 +170,7 @@ class _SubscriptionDetailsViewState extends State<SubscriptionDetailsView> {
             if(widget._data.notificationTime != null)
             Stack(
               children: [
-                SDViewText("Reminder Time", widget._data.notificationTime!.dateToTime()),
+                SDViewText("Reminder Time", widget._data.notificationTime!.toLocal().dateToTime()),
                 const Positioned(
                   bottom: 0,
                   top: 0,

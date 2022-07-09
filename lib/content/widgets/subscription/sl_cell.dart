@@ -45,6 +45,15 @@ class SubscriptionListCell extends StatelessWidget {
                     Alignment.centerRight,
                     18,
                   ),
+                  if(subscription.notificationTime != null)
+                  const Positioned(
+                    top: 2,
+                    right: 0,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 3),
+                      child: Icon(Icons.notifications_active_rounded, size: 10, color: Colors.white),
+                    ),
+                  ),
                   Positioned(
                     bottom: 2,
                     right: 0,
