@@ -111,6 +111,7 @@ flutter:
     - assets/lottie/loading.json
     - assets/lottie/no_item.json
     - assets/lottie/error.json
+    - assets/lottie/rotate.json
     - assets/lottie/error_dialog.json
     - assets/lottie/premium.json
     - assets/lottie/auth.json

@@ -2,6 +2,7 @@ import 'package:asset_flutter/content/widgets/portfolio/stats_lc_linechart.dart'
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class PortfolioFullscreenStatsPage extends StatelessWidget {
@@ -12,6 +13,46 @@ class PortfolioFullscreenStatsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (MediaQuery.of(context).orientation != Orientation.landscape) {
+      Future.delayed(const Duration(seconds: 1), () =>
+        showDialog(
+          context: context, 
+          builder: (_) => Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            backgroundColor: Colors.black87,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Lottie.asset(
+                  "assets/lottie/rotate.json",
+                  frameRate: FrameRate(60),
+                  height: 150,
+                ),
+                const Padding(
+                  padding: EdgeInsets.all(4),
+                  child: Text(
+                    "Landscape mode recommended for better experience.",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context), 
+                  child: const Text("OK")
+                )
+              ],
+            ),
+          ),
+        )
+      );
+    }
+
     return Scaffold(
       body: SafeArea(
         child: Column(
