@@ -302,6 +302,9 @@ class _SettingsPageState extends State<SettingsPage> {
     super.didChangeDependencies();
   }
 
+  // TODO
+  // 1- Default tab position by shared pref
+  // 2- Mail notification option
   @override
   Widget build(BuildContext context) {
     return Scaffold(
