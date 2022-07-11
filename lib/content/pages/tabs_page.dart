@@ -4,6 +4,7 @@ import 'package:asset_flutter/content/pages/settings/settings_page.dart';
 import 'package:asset_flutter/content/pages/subscription/subscription_page.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/purchase_api.dart';
+import 'package:asset_flutter/static/shared_pref.dart';
 import 'package:asset_flutter/static/token.dart';
 import 'package:asset_flutter/utils/fcm.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +41,7 @@ class _TabsPage extends State<TabsPage> {
     SettingsPage()
   ];
 
-  int _selectedPageIndex = 0;
+  int _selectedPageIndex = SharedPref().getDefaultTab();
 
   void _selectPage(int index) {
     setState(() {

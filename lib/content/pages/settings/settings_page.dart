@@ -13,6 +13,7 @@ import 'package:asset_flutter/common/widgets/password_textformfield.dart';
 import 'package:asset_flutter/common/widgets/success_view.dart';
 import 'package:asset_flutter/content/pages/settings/feedback_page.dart';
 import 'package:asset_flutter/content/providers/settings/theme_state.dart';
+import 'package:asset_flutter/content/widgets/settings/default_tab.dart';
 import 'package:asset_flutter/content/widgets/settings/offers_sheet.dart';
 import 'package:asset_flutter/content/models/responses/user.dart';
 import 'package:asset_flutter/content/widgets/settings/theme_switch.dart';
@@ -302,9 +303,6 @@ class _SettingsPageState extends State<SettingsPage> {
     super.didChangeDependencies();
   }
 
-  // TODO
-  // 1- Default tab position by shared pref
-  // 2- Mail notification option
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -540,6 +538,32 @@ class _SettingsPageState extends State<SettingsPage> {
             SettingsSection(
               title: const Text('Other Settings'),
               tiles: [
+                SettingsTile.navigation(
+                  leading: const Icon(Icons.widgets_rounded),
+                  title: const Text('Default Page'),
+                  onPressed: (_) {
+                    showModalBottomSheet(
+                      context: context,
+                      shape: Platform.isIOS || Platform.isMacOS
+                      ? const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(16),
+                          topLeft: Radius.circular(16)
+                        ),
+                      )
+                      : null,
+                      builder: (ctx) => Padding(
+                        padding: MediaQuery.of(context).viewInsets,
+                        child: const SafeArea(
+                          child: SizedBox(
+                            height: 275,
+                            child: DefaultTabListSettings()
+                          )
+                        ),
+                      )
+                    );
+                  },
+                ),
                 SettingsTile.navigation(
                   leading: const Icon(Icons.stars_rounded),
                   title: const Text('Rate & Review Us'),

@@ -60,5 +60,13 @@ class SharedPref {
     sharedPref?.remove("refresh_token");
   }
 
+  void setDefaultTab(int tabPosition) {
+    sharedPref?.setInt("default_tab", tabPosition);
+  }
+
+  int getDefaultTab() {
+    return _sharedPreference.getInt("default_tab") ?? 0;
+  }
+
   SharedPreferences? get sharedPref => _isInit ? _sharedPreference : null;
 }

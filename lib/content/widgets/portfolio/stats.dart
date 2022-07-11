@@ -58,19 +58,19 @@ Widget statsBodyWidget(BuildContext context, bool isDetails) {
 }
 
 List<PieChartSectionData> _emptyChartData() {
-    final list = List<PieChartSectionData>.empty(growable: true);
-    for (var i = 0; i < 4; i++) {
-      list.add(PieChartSectionData(
-        color: ChartAttributes().chartStatsColor[i],
-        value: 1,
-        showTitle: false,
-        radius: 45,
-        titleStyle: const TextStyle(
-          fontWeight: FontWeight.bold, 
-          color: Colors.white, 
-          fontSize: 12
-        ),
-      ));
-    }
-    return list;
+  final list = List<PieChartSectionData>.empty(growable: true);
+  for (var i = 0; i < 4; i++) {
+    list.add(PieChartSectionData(
+      color: ChartAttributes().chartStatsColor[i],
+      value: 1,
+      showTitle: false,
+      radius: 45,
+      titleStyle: const TextStyle(
+        fontWeight: FontWeight.bold, 
+        color: Colors.white, 
+        fontSize: 12
+      ),
+    ));
   }
+  return list;
+}

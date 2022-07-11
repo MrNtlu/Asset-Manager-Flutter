@@ -25,7 +25,7 @@ class SubscriptionImage extends StatelessWidget {
         child: SizedBox.fromSize(
           size: Size.fromRadius(size/2),
           child: Image.network(
-            "https://logo.clearbit.com/$_image",
+            _image,
             width: size,
             height: size,
             fit: BoxFit.contain,

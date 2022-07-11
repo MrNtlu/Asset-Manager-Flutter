@@ -113,7 +113,7 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
   }
 
   @override
-  Widget build(BuildContext context) {    
+  Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
