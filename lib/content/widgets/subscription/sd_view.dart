@@ -237,7 +237,7 @@ class _SubscriptionDetailsViewState extends State<SubscriptionDetailsView> {
                 },
                 child: const Text("Delete Subscription")
               )
-              : OutlinedButton(
+              : TextButton(
                 onPressed: () {
                   showDialog(
                     context: context, 

@@ -68,5 +68,13 @@ class SharedPref {
     return _sharedPreference.getInt("default_tab") ?? 0;
   }
 
+  void setIsIntroductionDeleted(bool isIntroductionDeleted) {
+    sharedPref?.setBool("is_introduction_deleted", isIntroductionDeleted);
+  }
+
+  bool getIsIntroductionDeleted() {
+    return _sharedPreference.getBool("is_introduction_deleted") ?? false;
+  }
+
   SharedPreferences? get sharedPref => _isInit ? _sharedPreference : null;
 }

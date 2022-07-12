@@ -119,8 +119,8 @@ class InvestmentDetailsListCell extends StatelessWidget {
                 );
               }),
             ),
-            backgroundColor: Colors.orange,
-            foregroundColor: Colors.white,
+            backgroundColor: Theme.of(context).colorScheme.bgColor,
+            foregroundColor: Colors.orange,
             icon: Icons.edit_rounded,
             label: 'Edit',
           ),
@@ -132,76 +132,51 @@ class InvestmentDetailsListCell extends StatelessWidget {
                 _deleteAssetLog(ctx);
               })
             ),
-            backgroundColor: Colors.red,
-            foregroundColor: Colors.white,
+            backgroundColor: Theme.of(context).colorScheme.bgColor,
+            foregroundColor: Colors.red,
             icon: Icons.delete_rounded,
             label: 'Delete',
           ),
         ],
       ),
-      child: LayoutBuilder(
-        builder: (layoutContext, constraints) {
-          final slidable = Slidable.of(layoutContext);
-
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-            child: Column(
-              children: [
-                Container(
-                  alignment: Alignment.topRight,
-                  margin: const EdgeInsets.only(bottom: 12, left: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "${_data.type[0].toUpperCase()}${_data.type.substring(1)}",
-                        style: TextStyle(
-                          color: _data.type == "buy" ? AppColors().greenColor : AppColors().redColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        _data.createdAt.dateToDaysAgo(),
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold
-                        ),
-                      ),
-                    ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+        child: Column(
+          children: [
+            Container(
+              alignment: Alignment.topRight,
+              margin: const EdgeInsets.only(bottom: 12, left: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "${_data.type[0].toUpperCase()}${_data.type.substring(1)}",
+                    style: TextStyle(
+                      color: _data.type == "buy" ? AppColors().greenColor : AppColors().redColor,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                InvestmentDetailsLogListCellText(
-                  "Amount",
-                  _data.amount.numToString(),
-                ),
-                InvestmentDetailsLogListCellText(
-                  "Price",
-                  _data.fromAsset.getCurrencyFromString() + ' ' +  _data.price.numToString(),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 10,
-                  alignment: Alignment.centerRight,
-                  child: IconButton(
-                    padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(),
-                    icon: Icon(Icons.swipe_left_rounded, size: 14, color: AppColors().lightBlack),
-                    onPressed: () {
-                      if(slidable != null) {
-                        if(slidable.direction.value == 0){
-                          slidable.openEndActionPane();
-                        }else {
-                          slidable.close();
-                        }
-                      }
-                    },
-                  )
-                )
-              ],
+                  Text(
+                    _data.createdAt.dateToDaysAgo(),
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ); 
-        },
-      ),
+            InvestmentDetailsLogListCellText(
+              "Amount",
+              _data.amount.numToString(),
+            ),
+            InvestmentDetailsLogListCellText(
+              "Price",
+              _data.fromAsset.getCurrencyFromString() + ' ' +  _data.price.numToString(),
+            ),
+          ],
+        ),
+      )
     );
   }
 }

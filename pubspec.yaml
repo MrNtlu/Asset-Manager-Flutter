@@ -115,6 +115,7 @@ flutter:
     - assets/lottie/error_dialog.json
     - assets/lottie/premium.json
     - assets/lottie/auth.json
+    - assets/lottie/swipe.json
     - assets/policies/privacy_policy.md
     - assets/policies/terms_conditions.md
     - assets/images/investment.png

@@ -15,10 +15,13 @@ import 'package:asset_flutter/content/widgets/portfolio/investment_list.dart';
 import 'package:asset_flutter/content/widgets/portfolio/portfolio_stats_header.dart';
 import 'package:asset_flutter/content/widgets/portfolio/section_sort_title.dart';
 import 'package:asset_flutter/content/widgets/portfolio/section_title.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/shared_pref.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 class PortfolioPage extends StatefulWidget {
@@ -185,10 +188,13 @@ class _PortfolioPageState extends State<PortfolioPage> {
                   ? SingleChildScrollView(
                     physics: const NeverScrollableScrollPhysics(),
                     child: Column(
-                      children: const[
-                        SectionTitle("Investments", ""),
-                        InvestmentFilterList(),
-                        NoItemView("Couldn't find investment.")
+                      children: [
+                        const SectionTitle("Investments", ""),
+                        const InvestmentFilterList(),
+                        if(!SharedPref().getIsIntroductionDeleted())
+                        _introductionCell()
+                        else
+                        const NoItemView("Couldn't find investment.")
                       ]),
                   )
                   : SizedBox(
@@ -202,6 +208,8 @@ class _PortfolioPageState extends State<PortfolioPage> {
                           sortType: sortType,
                         ),
                         const InvestmentFilterList(),
+                        if(!SharedPref().getIsIntroductionDeleted())
+                        _introductionCell(),
                         const PortfolioInvestmentList(),
                       ],
                     ),
@@ -274,25 +282,26 @@ class _PortfolioPageState extends State<PortfolioPage> {
                   children: [
                     const PortfolioStatsHeader(),
                     _state == ListState.empty
-                      ? Column(
-                          children: const[
-                            SectionTitle("Investments", ""),
-                            NoItemView("Couldn't find investment.")
-                          ])
-                      : SizedBox(
-                          child: Column(
-                            children: [
-                              SectionSortTitle(
-                                "Investments",
-                                const ["Name", "Amount", "Profit", "Profit(%)"],
-                                const ["Ascending", "Descending"],
-                                sortTitle: sort,
-                                sortType: sortType,
-                              ),
-                              const PortfolioInvestmentList(),
-                            ],
-                          )
-                        ),
+                    ? Column(
+                      children: const[
+                        SectionTitle("Investments", ""),
+                        NoItemView("Couldn't find investment.")
+                      ]
+                    )
+                    : SizedBox(
+                      child: Column(
+                        children: [
+                          SectionSortTitle(
+                            "Investments",
+                            const ["Name", "Amount", "Profit", "Profit(%)"],
+                            const ["Ascending", "Descending"],
+                            sortTitle: sort,
+                            sortType: sortType,
+                          ),
+                          const PortfolioInvestmentList(),
+                        ],
+                      )
+                    ),
                     Align(
                       alignment: Alignment.bottomCenter,
                       child: Row(
@@ -346,4 +355,102 @@ class _PortfolioPageState extends State<PortfolioPage> {
         return const LoadingView("Loading");
     }
   }
+
+  Widget _introductionCell() => Column(
+    children: [
+      Slidable(
+        endActionPane: ActionPane(
+          motion: const StretchMotion(),
+          children: [
+            SlidableAction(
+              onPressed: (slideContext) {
+                setState(() {
+                  SharedPref().setIsIntroductionDeleted(true);
+                });
+                showDialog(
+                  context: context, 
+                  builder: (_) => Dialog(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    backgroundColor: AppColors().lightBlack,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Lottie.asset(
+                          "assets/lottie/swipe.json",
+                          frameRate: FrameRate(60),
+                          height: 150,
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.all(6),
+                          child: Text(
+                            "You can always delete or edit by swiping left.",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text("OK")
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              },
+              backgroundColor: Colors.transparent,
+              foregroundColor: Colors.red,
+              icon: Icons.delete_rounded,
+              label: 'Delete',
+            ),
+          ],
+        ),
+        child: ListTile(
+          title: Row(
+            children: [
+              Container(
+                margin: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                padding: const EdgeInsets.all(0.2),
+                decoration: BoxDecoration(
+                    color: const Color(0x40000000), borderRadius: BorderRadius.circular(24)),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(24),
+                  child: SizedBox.fromSize(
+                    size: const Size.fromRadius(22),
+                    child: Image.asset(
+                      "assets/images/investment.png",
+                      width: 48,
+                      height: 48,
+                      fit: BoxFit.contain,
+                    )
+                  ),
+                ),
+              ),
+              const Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 8),
+                  child: Text(
+                    "Swipe to delete",
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              Icon(
+                Icons.swipe_left_rounded,
+                color: Theme.of(context).colorScheme.bgTextColor,
+              )
+            ],
+          ),
+        ),
+      ),
+      const Divider()
+    ],
+  );
 }

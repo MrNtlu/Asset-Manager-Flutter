@@ -8,6 +8,7 @@ import 'package:asset_flutter/content/pages/wallet/bank_account_details_sheet.da
 import 'package:asset_flutter/content/pages/wallet/bank_create_page.dart';
 import 'package:asset_flutter/content/providers/wallet/bank_account_state.dart';
 import 'package:asset_flutter/content/providers/wallet/bank_accounts.dart';
+import 'package:asset_flutter/static/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
@@ -200,8 +201,8 @@ class _BankAccountPageState extends State<BankAccountPage> {
                                 );
                               }),
                             ),
-                            backgroundColor: Colors.orange,
-                            foregroundColor: Colors.white,
+                            backgroundColor: Theme.of(context).colorScheme.bgColor,
+                            foregroundColor: Colors.orange,
                             icon: Icons.edit_rounded,
                             label: 'Edit',
                           ),
@@ -213,81 +214,57 @@ class _BankAccountPageState extends State<BankAccountPage> {
                                 _deleteBankAccount(_bankAccount.id);
                               })
                             ),
-                            backgroundColor: Colors.red,
-                            foregroundColor: Colors.white,
+                            backgroundColor: Theme.of(context).colorScheme.bgColor,
+                            foregroundColor: Colors.red,
                             icon: Icons.delete_rounded,
                             label: 'Delete',
                           ),
                         ],
                       ),
-                      child: LayoutBuilder(
-                        builder: (layoutContext, contsraints) {
-                          final slidable = Slidable.of(layoutContext);
-
-                          return Stack(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                                child: SizedBox(
-                                  height: 75,
-                                  child: Row(
-                                    children: [
-                                      const Center(
-                                        child: Icon(
-                                          Icons.account_balance_rounded,
-                                          size: 42,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 6,
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 4),
-                                          child: Text(
-                                            _bankAccount.name,
-                                            textAlign: TextAlign.center,
-                                            style: const TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 1,
-                                        child: Text(
-                                          _bankAccount.currency,
-                                          textAlign: TextAlign.right,
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                      child: Stack(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            child: SizedBox(
+                              height: 75,
+                              child: Row(
+                                children: [
+                                  const Center(
+                                    child: Icon(
+                                      Icons.account_balance_rounded,
+                                      size: 42,
+                                    ),
                                   ),
-                                ),
+                                  Expanded(
+                                    flex: 6,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 4),
+                                      child: Text(
+                                        _bankAccount.name,
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      _bankAccount.currency,
+                                      textAlign: TextAlign.right,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Positioned(
-                                bottom: 0,
-                                right: 2,
-                                child: IconButton(
-                                  padding: EdgeInsets.zero,
-                                  constraints: const BoxConstraints(),
-                                  icon: const Icon(Icons.swipe_left_rounded, size: 16),
-                                  onPressed: () {
-                                    if(slidable != null) {
-                                      if(slidable.direction.value == 0){
-                                        slidable.openEndActionPane();
-                                      }else {
-                                        slidable.close();
-                                      }
-                                    }
-                                  },
-                                )
-                              )
-                            ],
-                          );
-                        },
-                      ),
+                            ),
+                          ),
+                        ],
+                      )
                     ),
                   );
                 })
