@@ -23,6 +23,8 @@ class FCM {
     importance: Importance.max,
   );
 
+  FirebaseMessaging get firebaseMessaging => _firebaseMessaging;
+
   init() async {
     await _firebaseMessaging.requestPermission(
       alert: true,

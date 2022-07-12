@@ -5,6 +5,7 @@ import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
 import 'package:asset_flutter/content/pages/subscription/subscription_create_page.dart';
+import 'package:asset_flutter/content/pages/subscription/subscription_details_page.dart';
 import 'package:asset_flutter/content/providers/common/stats_sheet_state.dart';
 import 'package:asset_flutter/content/providers/subscription/cards.dart';
 import 'package:asset_flutter/content/providers/subscription/subscription_state.dart';
@@ -18,8 +19,9 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class SubscriptionPage extends StatefulWidget {
+  final String? notificationId;
 
-  const SubscriptionPage();
+  const SubscriptionPage({this.notificationId});
 
   @override
   State<SubscriptionPage> createState() => _SubscriptionPageState();
@@ -51,6 +53,15 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                 : ListState.done
             );
         });
+
+        if (
+          widget.notificationId != null && 
+          _subscriptionsProvider.items.indexWhere((element) => element.id == widget.notificationId) != -1
+        ) {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: ((context) => SubscriptionDetailsPage(widget.notificationId!, isCardDetails: false)))
+          );
+        }
       }
     });
   }

@@ -38,7 +38,7 @@ class SubscriptionsProvider with ChangeNotifier {
       var subsStatsResponse = response.getSubscriptionStatsResponse();
       _items.addAll(subsStatsResponse.data);
       _stats.addAll(subsStatsResponse.stats);
-
+      
       notifyListeners();
 
       return subsStatsResponse;

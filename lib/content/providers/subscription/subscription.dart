@@ -32,6 +32,13 @@ class Subscription with ChangeNotifier {
   Subscription(this.id, this.name, this.description, this.billDate, this.nextBillDate,
       this.billCycle, this.price, this.currency, this._image, this._color, this.cardID, this.notificationTime, this.account);
 
+  @override
+  // ignore: hash_and_equals
+  bool operator == (Object other) =>
+    other is Subscription &&
+    runtimeType == other.runtimeType &&
+    id == other.id;
+
   String _subscriptionImage(String company) {
     return "https://logo.clearbit.com/$company";
   }

@@ -14,7 +14,5 @@ class Investings {
     name == other.name);
 
   @override
-
-  int get hashCode => hashValues(name, symbol);
-    
+  int get hashCode => hashValues(name, symbol);    
 }
