@@ -136,19 +136,20 @@ class _InvestmentCreatePageState extends State<InvestmentCreatePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          title: const Text("Create"),
-          actions: [
-            if (_state == CreateState.editing)
-            IconButton(
-              icon: const Icon(Icons.save_rounded),
-              tooltip: 'Save Investment',
-              onPressed: () => _createInvestment(context),
-            )
-          ],
-        ),
-        body: SafeArea(child: _body()));
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: const Text("Create"),
+        actions: [
+          if (_state == CreateState.editing)
+          IconButton(
+            icon: const Icon(Icons.save_rounded),
+            tooltip: 'Save Investment',
+            onPressed: () => _createInvestment(context),
+          )
+        ],
+      ),
+      body: SafeArea(child: _body())
+    );
   }
 
   Widget _body() {

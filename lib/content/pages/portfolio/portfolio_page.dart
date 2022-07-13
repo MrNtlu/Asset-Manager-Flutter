@@ -5,6 +5,7 @@ import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
 import 'package:asset_flutter/content/pages/market/markets_page.dart';
+import 'package:asset_flutter/content/pages/portfolio/ic_type_page.dart';
 import 'package:asset_flutter/content/pages/portfolio/investment_create_page.dart';
 import 'package:asset_flutter/content/providers/assets.dart';
 import 'package:asset_flutter/content/providers/portfolio/portfolio_filter.dart';
@@ -222,7 +223,8 @@ class _PortfolioPageState extends State<PortfolioPage> {
                         flex: 11,
                         child: AddElevatedButton("Add Investment", (){
                             Navigator.of(context).push(
-                              MaterialPageRoute(builder: ((context) => const InvestmentCreatePage()))
+                              MaterialPageRoute(builder: ((context) => const InvestmentCreateTypePage()))
+                              // MaterialPageRoute(builder: ((context) => const InvestmentCreatePage()))
                             );
                           },
                         )
