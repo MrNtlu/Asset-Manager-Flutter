@@ -20,7 +20,7 @@ class InvestmentCreateTypePage extends StatelessWidget {
       ),
       body: SafeArea(
         child: Container(
-          margin: const EdgeInsets.fromLTRB(16, 24, 16, 8),
+          margin: const EdgeInsets.fromLTRB(16, 26, 16, 8),
           child: Column(
             children: [
               _investmentCreateDropdowns,

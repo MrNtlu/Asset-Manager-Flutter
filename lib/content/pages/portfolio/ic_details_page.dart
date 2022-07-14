@@ -139,8 +139,8 @@ class _InvestmentCreateDetailsPageState extends State<InvestmentCreateDetailsPag
         title: InvestmentListCellImage(
           image,
           widget._investmentType.toLowerCase(), 
-          size: 20,
-          borderRadius: BorderRadius.circular(22),
+          size: 22,
+          borderRadius: BorderRadius.circular(24),
           margin: const EdgeInsets.only(right: 8),
         ),
       )
@@ -159,7 +159,7 @@ class _InvestmentCreateDetailsPageState extends State<InvestmentCreateDetailsPag
         return const LoadingView("Creating Investment");
       case CreateState.editing:
         return Container(
-          margin: const EdgeInsets.fromLTRB(16, 24, 16, 8),
+          margin: const EdgeInsets.fromLTRB(16, 26, 16, 8),
           child: Form(
             key: _form,
             child: Column(
@@ -208,32 +208,35 @@ class _InvestmentCreateDetailsPageState extends State<InvestmentCreateDetailsPag
                     return null;
                   },
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    isApple
-                    ? CupertinoButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: const Text("Cancel")
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      isApple
+                      ? CupertinoButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text("Cancel")
+                        )
+                      : OutlinedButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text("Cancel")
+                        ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8),
+                        child: isApple
+                        ? CupertinoButton.filled(
+                          padding: const EdgeInsets.all(12),
+                          onPressed: () => _createInvestment(context),
+                          child: const Text("Add Investment", style: TextStyle(color: Colors.white))
+                        )
+                        : ElevatedButton(
+                          onPressed: () => _createInvestment(context),
+                          child: const Text("Add Investment", style: TextStyle(color: Colors.white))
+                        ),
                       )
-                    : OutlinedButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: const Text("Cancel")
-                      ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: isApple
-                      ? CupertinoButton.filled(
-                        padding: const EdgeInsets.all(12),
-                        onPressed: () => _createInvestment(context),
-                        child: const Text("Save", style: TextStyle(color: Colors.white))
-                      )
-                      : ElevatedButton(
-                        onPressed: () => _createInvestment(context),
-                        child: const Text("Save", style: TextStyle(color: Colors.white))
-                      ),
-                    )
-                  ],
+                    ],
+                  ),
                 )
               ],
             ),
