@@ -72,6 +72,7 @@ class _TabsPage extends State<TabsPage> {
       await _firebaseMessaging.init();
       await setupInteractedMessage();
       _firebaseMessaging.setNotifications();
+      isInit = true;
     }
   }
 

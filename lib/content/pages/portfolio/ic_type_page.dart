@@ -11,55 +11,44 @@ class InvestmentCreateTypePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isApple = Platform.isIOS || Platform.isMacOS;
+    final _investmentCreateDropdowns = InvestmentCreateDropdowns();
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text("Select Type"),
+        title: const Text("Create"),
       ),
       body: SafeArea(
         child: Container(
           margin: const EdgeInsets.fromLTRB(16, 24, 16, 8),
           child: Column(
             children: [
-              InvestmentCreateDropdowns(),
+              _investmentCreateDropdowns,
               Padding(
                 padding: const EdgeInsets.only(top: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    isApple
-                    ? CupertinoButton(
-                        onPressed: () {
-                          
-                        },
-                        child: const Text("Cancel")
-                      )
-                    : OutlinedButton(
-                        onPressed: () {    
-                        },
-                        child: const Text("Cancel")
-                      ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: isApple
-                      ? CupertinoButton.filled(
-                        padding: const EdgeInsets.all(12),
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: ((context) => InvestmentCreatePickPage()))
-                          );
-                        },
-                        child: const Text("Continue", style: TextStyle(color: Colors.white))
-                      )
-                      : ElevatedButton(
-                        onPressed: () {
-                          
-                        },
-                        child: const Text("Continue", style: TextStyle(color: Colors.white))
-                      ),
-                    )
-                  ],
+                child: isApple
+                ? CupertinoButton.filled(
+                  padding: const EdgeInsets.all(12),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: ((context) => InvestmentCreatePickPage(
+                        _investmentCreateDropdowns.typeDropdownValue,
+                        _investmentCreateDropdowns.marketDropdownValue,
+                      )))
+                    );
+                  },
+                  child: const Text("Continue", style: TextStyle(color: Colors.white))
+                )
+                : ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: ((context) => InvestmentCreatePickPage(
+                        _investmentCreateDropdowns.typeDropdownValue,
+                        _investmentCreateDropdowns.marketDropdownValue,
+                      )))
+                    );
+                  },
+                  child: const Text("Continue", style: TextStyle(color: Colors.white))
                 ),
               )
             ],
