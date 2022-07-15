@@ -100,7 +100,7 @@ class _SubscriptionCreateImageSheetState extends State<SubscriptionCreateImageSh
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(right: 8),
-                            child: SubscriptionImage(_itemList[index], Colors.black),
+                            child: SubscriptionImage("https://logo.clearbit.com/${_itemList[index]}", Colors.black),
                           ),
                           Text(
                             _itemList[index],

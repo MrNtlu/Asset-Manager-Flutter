@@ -32,7 +32,7 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
   late final Subscription _data;
   late final SubscriptionDetailsEdit _updateView;
   late final SubscriptionDetailsView _detailsView;
-  late final SubscriptionStateProvider _subscriptionStateProvider;
+  late final SubscriptionRefreshProvider _subscriptionStateProvider;
 
   void _setUpdateData(){
     if (_data.billDate.compareTo(_updateView.datePicker.billDate) != 0) {
@@ -104,7 +104,7 @@ class _SubscriptionDetailsPageState extends State<SubscriptionDetailsPage> {
   void didChangeDependencies() {
     if(_state == EditState.init){
       _data = Provider.of<SubscriptionsProvider>(context, listen: false).findById(widget._subscriptionID);
-      _subscriptionStateProvider = Provider.of<SubscriptionStateProvider>(context, listen: false);
+      _subscriptionStateProvider = Provider.of<SubscriptionRefreshProvider>(context, listen: false);
       _updateView = SubscriptionDetailsEdit(_data);
       _detailsView = SubscriptionDetailsView(_data, isCardDetails: widget.isCardDetails);
       _state = EditState.view;

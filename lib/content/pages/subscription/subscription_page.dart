@@ -34,7 +34,8 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   String? _error;
   late final SubscriptionsProvider _subscriptionsProvider;
   late final StatsSheetSelectionStateProvider _statsSheetProvider;
-  late final SubscriptionStateProvider _subscriptionStateProvider;
+  late final SubscriptionRefreshProvider _subscriptionRefreshProvider;
+  late final SubscriptionStateProvider _stateListener;
 
   void _getSubscriptions(){
     setState(() {
@@ -66,9 +67,18 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
     });
   }
 
-  void _subscriptionStateListener() {
-    if (_state != ListState.disposed && _subscriptionStateProvider.shouldRefresh) {
+  void _subscriptionRefreshListener() {
+    if (_state != ListState.disposed && _subscriptionRefreshProvider.shouldRefresh) {
       _getSubscriptions();
+    }
+  }
+
+  void _subscriptionStateListener() {
+    if (_state != ListState.disposed && _stateListener.state != null) {
+      _error = _stateListener.error;
+      setState(() {
+        _state = _stateListener.state!;
+      });
     }
   }
 
@@ -88,8 +98,9 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
 
   @override
   void dispose() {
-    _subscriptionStateProvider.removeListener(_subscriptionStateListener);
+    _subscriptionRefreshProvider.removeListener(_subscriptionRefreshListener);
     _statsSheetProvider.removeListener(_statsSheetListener);
+    _stateListener.removeListener(_subscriptionStateListener);
     _state = ListState.disposed;
     super.dispose();
   }
@@ -99,11 +110,14 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
     if (_state == ListState.init) {
       _subscriptionsProvider = Provider.of<SubscriptionsProvider>(context);
 
-      _subscriptionStateProvider = Provider.of<SubscriptionStateProvider>(context);
-      _subscriptionStateProvider.addListener(_subscriptionStateListener);
+      _subscriptionRefreshProvider = Provider.of<SubscriptionRefreshProvider>(context);
+      _subscriptionRefreshProvider.addListener(_subscriptionRefreshListener);
 
       _statsSheetProvider = Provider.of<StatsSheetSelectionStateProvider>(context);
       _statsSheetProvider.addListener(_statsSheetListener);
+
+      _stateListener = Provider.of<SubscriptionStateProvider>(context);
+      _stateListener.addListener(_subscriptionStateListener);
 
       _state = ListState.loading;
       Provider.of<CardProvider>(context).getCreditCards().whenComplete(() {

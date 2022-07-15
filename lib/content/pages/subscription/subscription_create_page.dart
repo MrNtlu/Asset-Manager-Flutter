@@ -18,7 +18,7 @@ class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
   CreateState _state = CreateState.init;
   late final SubscriptionDetailsEdit _subscriptionDetailsEdit;
   late final SubscriptionsProvider _subscriptionsProvider;
-  late final SubscriptionStateProvider _subscriptionStateProvider;
+  late final SubscriptionRefreshProvider _subscriptionStateProvider;
 
   void _setCreateData(){
     _subscriptionDetailsEdit.createData!.billDate = _subscriptionDetailsEdit.datePicker.billDate;
@@ -94,7 +94,7 @@ class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
   void didChangeDependencies() {
     if (_state == CreateState.init) {
       _subscriptionsProvider = Provider.of<SubscriptionsProvider>(context, listen: false);
-      _subscriptionStateProvider = Provider.of<SubscriptionStateProvider>(context, listen: false);
+      _subscriptionStateProvider = Provider.of<SubscriptionRefreshProvider>(context, listen: false);
       _subscriptionDetailsEdit = SubscriptionDetailsEdit(null);
     }
     _state = CreateState.editing;

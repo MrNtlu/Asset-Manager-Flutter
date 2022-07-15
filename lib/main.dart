@@ -95,6 +95,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => DailyStatsProvider()),
         ChangeNotifierProvider(create: (context) => TransactionTotalStatsProvider()),
         ChangeNotifierProvider(create: (context) => CurrenciesProvider()),
+        ChangeNotifierProvider(create: (context) => SubscriptionRefreshProvider()),
         ChangeNotifierProvider(create: (context) => SubscriptionStateProvider()),
         ChangeNotifierProvider(create: (context) => CardProvider()),
         ChangeNotifierProvider(create: (context) => CardSubscriptionsProvider()),

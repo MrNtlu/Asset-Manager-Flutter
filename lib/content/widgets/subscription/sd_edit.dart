@@ -129,7 +129,7 @@ class _SubscriptionDetailsEditState extends State<SubscriptionDetailsEdit> {
                 SubscriptionImage(
                   widget.isEditing && widget.selectedDomain == null
                   ? widget._data!.image
-                  : widget.selectedDomain!, 
+                  : "https://logo.clearbit.com/${widget.selectedDomain!}", 
                   Colors.black,
                   size: 52,
                 ),

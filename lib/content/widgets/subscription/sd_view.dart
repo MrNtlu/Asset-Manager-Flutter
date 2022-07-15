@@ -49,7 +49,7 @@ class _SubscriptionDetailsViewState extends State<SubscriptionDetailsView> {
     Provider.of<SubscriptionsProvider>(context, listen: false).deleteSubscription(widget._data.id).then((response){
       if (_state != DetailState.disposed) {
         if (response.error == null) {
-          Provider.of<SubscriptionStateProvider>(context, listen: false).setRefresh(true);
+          Provider.of<SubscriptionRefreshProvider>(context, listen: false).setRefresh(true);
           setState(() {
             _state = DetailState.view;
           });
