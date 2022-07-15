@@ -29,7 +29,7 @@ class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
     _subscriptionDetailsEdit.createData!.notificationTime = _subscriptionDetailsEdit.notificationSwitch.selectedDate;
   }
 
-  void _createSubscription(BuildContext context) {
+  void _createSubscription(BuildContext context) {    
     final isValid = _subscriptionDetailsEdit.form.currentState?.validate();
     final isAdvancedValid = _subscriptionDetailsEdit.advancedForm.currentState?.validate();
     if (
@@ -39,6 +39,7 @@ class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
       return;
     }
     if (_subscriptionDetailsEdit.selectedDomain == null) {
+      FocusScope.of(context).unfocus();
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: const Text("Please select subscription image.", style: TextStyle(color: Colors.white)),
@@ -96,8 +97,8 @@ class _SubscriptionCreatePageState extends State<SubscriptionCreatePage> {
       _subscriptionsProvider = Provider.of<SubscriptionsProvider>(context, listen: false);
       _subscriptionStateProvider = Provider.of<SubscriptionRefreshProvider>(context, listen: false);
       _subscriptionDetailsEdit = SubscriptionDetailsEdit(null);
+      _state = CreateState.editing;
     }
-    _state = CreateState.editing;
     super.didChangeDependencies();
   }
 
