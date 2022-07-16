@@ -1,7 +1,5 @@
 import 'package:asset_flutter/common/models/state.dart';
 import 'package:asset_flutter/common/widgets/check_dialog.dart';
-import 'package:asset_flutter/common/widgets/error_dialog.dart';
-import 'package:asset_flutter/common/widgets/success_view.dart';
 import 'package:asset_flutter/content/providers/subscription/subscription.dart';
 import 'package:asset_flutter/content/pages/subscription/subscription_details_page.dart';
 import 'package:asset_flutter/content/providers/subscription/subscription_state.dart';
