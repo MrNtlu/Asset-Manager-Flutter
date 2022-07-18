@@ -69,6 +69,7 @@ class _SubscriptionCreateImageSheetState extends State<SubscriptionCreateImageSh
                           ),
                           maxLines: 1,
                           keyboardType: TextInputType.text,
+                          textInputAction: TextInputAction.done,
                           onFieldSubmitted: searchSubscription,
                         ),
                       ),

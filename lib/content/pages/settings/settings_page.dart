@@ -336,6 +336,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 _userInfoText("Currency", _userInfo!.currency),
                 _userInfoText("Investment Usage", _userInfo!.investingLimit),
                 _userInfoText("Subscription Usage", _userInfo!.subscriptionLimit),
+                _userInfoText("Watchlist Usage", _userInfo!.watchlistLimit),
                 if(!_userInfo!.isPremium)
                 SettingsTile(
                   title: const Text(

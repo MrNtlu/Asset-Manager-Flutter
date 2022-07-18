@@ -1,6 +1,7 @@
 import 'package:asset_flutter/content/models/responses/asset.dart';
 import 'package:asset_flutter/content/models/responses/bank_account.dart';
 import 'package:asset_flutter/content/models/responses/card.dart';
+import 'package:asset_flutter/content/models/responses/favourite_investment.dart';
 import 'package:asset_flutter/content/models/responses/investings.dart';
 import 'package:asset_flutter/content/models/responses/subscription.dart';
 import 'package:asset_flutter/content/models/responses/transaction.dart';
@@ -203,6 +204,19 @@ class _TypeConverter<T> {
         response["name"],
         response["symbol"]
       ) as T;
+    } else if (T == FavouriteInvesting) {
+      return FavouriteInvesting(
+        response["_id"],
+        response["user_id"],
+        FavouriteInvestingID(
+          response["investing_id"]["symbol"],
+          response["investing_id"]["type"],
+          response["investing_id"]["market"],
+        ),
+        response["price"],
+        response["currency"],
+        response["priority"],
+      ) as T;
     } else if (T == Subscription) {
       return Subscription(
         response["_id"], 
@@ -306,6 +320,7 @@ class _TypeConverter<T> {
         response["fcm_token"] ?? "",
         response["investing_limit"],
         response["subscription_limit"],
+        response["watchlist_limit"],
       ) as T;
     } else if (T == Investings) {
       return Investings(

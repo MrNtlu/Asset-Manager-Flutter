@@ -167,7 +167,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
           floatHeaderSlivers: false,
           headerSliverBuilder: ((context, innerBoxIsScrolled) => [
               SliverAppBar(
-                expandedHeight: MediaQuery.of(context).size.height > 600 ? 383 : 363,
+                expandedHeight: 363,
                 floating: true,
                 snap: false,
                 backgroundColor: Theme.of(context).backgroundColor,
@@ -330,9 +330,8 @@ class _PortfolioPageState extends State<PortfolioPage> {
                                 ),
                               )
                               : ElevatedButton(
-                                onPressed: () => showModalBottomSheet(
-                                  context: context, 
-                                  builder: (_) => Container()
+                                onPressed: () => Navigator.of(context).push(
+                                  MaterialPageRoute(builder: (_) => const MarketsPage())
                                 ),
                                 child: const ImageIcon(AssetImage("assets/images/markets.png"), color: Colors.white),
                                 style: ElevatedButton.styleFrom(

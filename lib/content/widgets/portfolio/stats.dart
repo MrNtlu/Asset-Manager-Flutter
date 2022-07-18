@@ -32,29 +32,31 @@ Widget statsBodyWidget(BuildContext context, bool isDetails) {
   final assetStatsProvider = Provider.of<AssetsProvider>(context);
   final assetStats = assetStatsProvider.assetStats;
 
-  return Column(children: [
-    SectionTitle(isDetails ? "Investment Distribution" : "Statistics", isDetails ? "" : "Details>"),
-    Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        PortfolioStatsIndicator(),
-        SizedBox(
-          height: MediaQuery.of(context).size.height > 600 ? 180 : 160,
-          width: MediaQuery.of(context).size.width * 0.485,
-          child: PieChart(
-            PieChartData(
-              borderData: FlBorderData(show: false),
-              sectionsSpace: 0,
-              centerSpaceRadius: 27,
-              sections: assetStats!.currency == ''
-                ? _emptyChartData()
-                : assetStats.convertDataToChart(isDetails: isDetails),
+  return Column(
+    children: [
+      SectionTitle(isDetails ? "Investment Distribution" : "Statistics", isDetails ? "" : "Details>"),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          PortfolioStatsIndicator(),
+          SizedBox(
+            height: MediaQuery.of(context).size.height > 600 ? 180 : 160,
+            width: MediaQuery.of(context).size.width * 0.485,
+            child: PieChart(
+              PieChartData(
+                borderData: FlBorderData(show: false),
+                sectionsSpace: 0,
+                centerSpaceRadius: 27,
+                sections: assetStats!.currency == ''
+                  ? _emptyChartData()
+                  : assetStats.convertDataToChart(isDetails: isDetails),
+              ),
             ),
           ),
-        ),
-      ],
-    ),
-  ]);
+        ],
+      ),
+    ]
+  );
 }
 
 List<PieChartSectionData> _emptyChartData() {

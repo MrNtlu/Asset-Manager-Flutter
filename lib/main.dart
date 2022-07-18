@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
+import 'package:asset_flutter/content/providers/portfolio/watchlist.dart';
 import 'package:asset_flutter/content/providers/settings/theme_state.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/shared_pref.dart';
@@ -87,6 +88,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => SubscriptionsProvider()),
         ChangeNotifierProvider(create: (context) => AssetsProvider()),
+        ChangeNotifierProvider(create: (context) => WatchListProvider()),
         ChangeNotifierProvider(create: (context) => SubscriptionDetailsProvider()),
         ChangeNotifierProvider(create: (context) => AssetProvider()),
         ChangeNotifierProvider(create: (context) => AssetDetailsStateProvider()),

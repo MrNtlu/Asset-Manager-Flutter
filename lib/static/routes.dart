@@ -14,6 +14,7 @@ class APIRoutes {
   late final UserRoutes userRoutes;
   late final InvestingRoutes investingRoutes;
   late final LogRoutes logRoutes;
+  late final FavouriteInvestingRoutes favInvestingRoutes;
 
   APIRoutes._privateConstructor() {
     assetRoutes = AssetRoutes(baseURL: baseURL);
@@ -26,6 +27,7 @@ class APIRoutes {
     userRoutes = UserRoutes(baseURL: baseURL);
     investingRoutes = InvestingRoutes(baseURL: baseURL);
     logRoutes = LogRoutes(baseURL: baseURL);
+    favInvestingRoutes = FavouriteInvestingRoutes(baseURL: baseURL);
   }
 
   static final APIRoutes _instance = APIRoutes._privateConstructor();
@@ -256,5 +258,24 @@ class BankAccountRoutes {
     updateBankAcc = _baseBankAccountURL;
     deleteBankAccByBankAccID = _baseBankAccountURL;
     deleteBankAccsByUserID = _baseBankAccountURL + '/all';
+  }
+}
+
+class FavouriteInvestingRoutes {
+  late String _baseFavInvestingURL;
+
+  late String favouriteInvestings;
+  late String createFavouriteInvesting;
+
+  late String deleteFavouriteInvesting;
+  late String deleteAllFavouriteInvestings;
+  
+  FavouriteInvestingRoutes({baseURL}) {
+    _baseFavInvestingURL = baseURL + '/watchlist';
+
+    favouriteInvestings = _baseFavInvestingURL;
+    createFavouriteInvesting = _baseFavInvestingURL;
+    deleteFavouriteInvesting = _baseFavInvestingURL;
+    deleteAllFavouriteInvestings = _baseFavInvestingURL + '/all';
   }
 }

@@ -10,6 +10,11 @@ class UserInfo {
   String fcmToken;
   final String investingLimit;
   final String subscriptionLimit;
+  final String watchlistLimit;
 
-  UserInfo(this.isPremium, this.isLifetimePremium, this.isOAuth, this.appNotification, this.oAuthType, this.email, this.currency, this.fcmToken, this.investingLimit, this.subscriptionLimit);
+  UserInfo(
+    this.isPremium, this.isLifetimePremium, this.isOAuth, this.appNotification, 
+    this.oAuthType, this.email, this.currency, this.fcmToken, this.investingLimit, 
+    this.subscriptionLimit, this.watchlistLimit
+  );
 }

@@ -1,5 +1,5 @@
 import 'package:asset_flutter/content/widgets/portfolio/portfolio.dart';
-import 'package:asset_flutter/content/widgets/portfolio/stats.dart';
+import 'package:asset_flutter/content/widgets/portfolio/watchlist.dart';
 import 'package:flutter/material.dart';
 
 class PortfolioStatsHeader extends StatelessWidget {
@@ -11,7 +11,8 @@ class PortfolioStatsHeader extends StatelessWidget {
     return Column(
       children: const [
         Portfolio(),
-        PortfolioStats(false),
+        WatchlistHeader()
+        // PortfolioStats(false),
       ],
     );
   }
