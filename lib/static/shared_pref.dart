@@ -76,5 +76,13 @@ class SharedPref {
     return _sharedPreference.getBool("is_introduction_deleted") ?? false;
   }
 
+  void setIsWatchlistHidden(bool isHidden) {
+    sharedPref?.setBool("is_watchlist_hidden", isHidden);
+  }
+
+  bool getIsWatchlistHidden() {
+    return _sharedPreference.getBool("is_watchlist_hidden") ?? false;
+  }
+
   SharedPreferences? get sharedPref => _isInit ? _sharedPreference : null;
 }

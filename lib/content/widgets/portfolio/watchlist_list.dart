@@ -1,8 +1,7 @@
 import 'dart:io';
 import 'package:asset_flutter/content/providers/portfolio/watchlist.dart';
-import 'package:asset_flutter/content/widgets/market/market_dropdowns.dart';
+import 'package:asset_flutter/content/widgets/portfolio/watchlist_add_sheet.dart';
 import 'package:asset_flutter/content/widgets/portfolio/watchlist_cell.dart';
-import 'package:asset_flutter/content/widgets/portfolio/wl_sheet_list.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/purchase_api.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +15,6 @@ class WatchlistList extends StatelessWidget {
     var _data = Provider.of<WatchListProvider>(context).items;
     final isPremium = PurchaseApi().userInfo?.isPremium ?? false;
 
-    //TODO: Add loading
     return ListView.builder(
       scrollDirection: Axis.horizontal,
       itemBuilder: (context, index) {
@@ -42,41 +40,7 @@ class WatchlistList extends StatelessWidget {
                   ),
                 )
                 : null,
-                builder: (_) => SafeArea(
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.7,
-                    decoration: Platform.isIOS || Platform.isMacOS
-                    ? const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(16),
-                        topLeft: Radius.circular(16)
-                      ),
-                    )
-                    : null,
-                    child: Column(
-                      children: [
-                        const MarketDropdowns(),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(4, 2, 4, 8),
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                              prefixIcon: const Icon(Icons.search_rounded),
-                              hintText: "Search",
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide(color: AppColors().bgSecondary)
-                              ),
-                            ),
-                            maxLines: 1,
-                            keyboardType: TextInputType.text,
-                            textInputAction: TextInputAction.done,
-                          ),
-                        ),
-                        const WatchlistSheetList(),
-                      ],
-                    ),
-                  ),
-                ),
+                builder: (_) => const WatchlistAddSheet(),
               );
             },
             child: SizedBox(

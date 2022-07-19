@@ -93,6 +93,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => AssetProvider()),
         ChangeNotifierProvider(create: (context) => AssetDetailsStateProvider()),
         ChangeNotifierProvider(create: (context) => PortfolioRefreshProvider()),
+        ChangeNotifierProvider(create: (context) => PortfolioWatchlistRefreshProvider()),
         ChangeNotifierProvider(create: (context) => PricesProvider()),
         ChangeNotifierProvider(create: (context) => DailyStatsProvider()),
         ChangeNotifierProvider(create: (context) => TransactionTotalStatsProvider()),

@@ -44,4 +44,11 @@ class PricesProvider with ChangeNotifier {
       return BaseListResponse(error: error.toString());
     }
   }
+
+  List<MarketPrices> filterList(String search) {
+    return _items.where((
+      (element) => element.name.toLowerCase().contains(search) || element.name.toLowerCase().startsWith(search) ||
+      element.symbol.toLowerCase().contains(search) || element.symbol.toLowerCase().startsWith(search)
+    )).toList();
+  }
 }

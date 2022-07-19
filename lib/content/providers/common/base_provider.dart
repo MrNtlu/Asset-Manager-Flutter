@@ -80,4 +80,26 @@ class BaseProvider<T> with ChangeNotifier {
       return BaseAPIResponse(error.toString());
     }
   }
+
+  @protected
+  Future<BaseAPIResponse> deleteAllItems({required String url}) async {
+    try {
+      final response = await http.delete(
+        Uri.parse(url),
+        headers: UserToken().getBearerToken()
+      );
+
+      if (response.getBaseResponse().error == null) {
+        while(pitems.isNotEmpty){
+          pitems.removeLast();
+        }
+        pitems.clear;
+        notifyListeners();
+      }
+
+      return response.getBaseResponse();
+    } catch (error) {
+      return BaseAPIResponse(error.toString());
+    }
+  }
 }

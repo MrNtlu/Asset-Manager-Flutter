@@ -35,21 +35,6 @@ class WatchListProvider extends BaseProvider<FavouriteInvesting> {
   Future<BaseAPIResponse> deleteFavInvesting(String id) async 
     =>  deleteItem(id, url: APIRoutes().favInvestingRoutes.deleteFavouriteInvesting, deleteItem: findById(id));
 
-  Future<BaseAPIResponse> deleteAllFavInvestings() async {
-    try {
-      final response = await http.delete(
-        Uri.parse(APIRoutes().favInvestingRoutes.deleteAllFavouriteInvestings),
-        headers: UserToken().getBearerToken()
-      );
-
-      if (response.getBaseResponse().error == null) {
-        pitems.clear;
-        notifyListeners();
-      }
-
-      return response.getBaseResponse();
-    } catch (error) {
-      return BaseAPIResponse(error.toString());
-    }
-  }
+  Future<BaseAPIResponse> deleteAllFavInvestings() async 
+    => deleteAllItems(url: APIRoutes().favInvestingRoutes.deleteAllFavouriteInvestings);
 }

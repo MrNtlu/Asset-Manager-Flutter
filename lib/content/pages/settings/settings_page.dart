@@ -14,6 +14,7 @@ import 'package:asset_flutter/common/widgets/success_view.dart';
 import 'package:asset_flutter/content/pages/settings/feedback_page.dart';
 import 'package:asset_flutter/content/providers/settings/theme_state.dart';
 import 'package:asset_flutter/content/widgets/settings/default_tab.dart';
+import 'package:asset_flutter/content/widgets/settings/hide_watchlist_switch.dart';
 import 'package:asset_flutter/content/widgets/settings/offers_sheet.dart';
 import 'package:asset_flutter/content/models/responses/user.dart';
 import 'package:asset_flutter/content/widgets/settings/theme_switch.dart';
@@ -539,6 +540,7 @@ class _SettingsPageState extends State<SettingsPage> {
             SettingsSection(
               title: const Text('Other Settings'),
               tiles: [
+                const CustomSettingsTile(child: HideWatchlistSwitch()),
                 SettingsTile.navigation(
                   leading: const Icon(Icons.widgets_rounded),
                   title: const Text('Default Page'),

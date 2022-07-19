@@ -167,7 +167,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
           floatHeaderSlivers: false,
           headerSliverBuilder: ((context, innerBoxIsScrolled) => [
               SliverAppBar(
-                expandedHeight: 363,
+                expandedHeight: SharedPref().getIsWatchlistHidden() ? 165 : 363,
                 floating: true,
                 snap: false,
                 backgroundColor: Theme.of(context).backgroundColor,
@@ -224,7 +224,6 @@ class _PortfolioPageState extends State<PortfolioPage> {
                         child: AddElevatedButton("Add Investment", (){
                             Navigator.of(context).push(
                               MaterialPageRoute(builder: ((context) => const InvestmentCreateTypePage()))
-                              // MaterialPageRoute(builder: ((context) => const InvestmentCreatePage()))
                             );
                           },
                         )

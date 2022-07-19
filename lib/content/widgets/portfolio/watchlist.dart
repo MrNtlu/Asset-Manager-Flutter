@@ -1,4 +1,8 @@
 import 'package:asset_flutter/common/models/state.dart';
+import 'package:asset_flutter/common/widgets/error_view.dart';
+import 'package:asset_flutter/common/widgets/loading_view.dart';
+import 'package:asset_flutter/content/pages/portfolio/watchlist_edit_page.dart';
+import 'package:asset_flutter/content/providers/portfolio/portfolio_state.dart';
 import 'package:asset_flutter/content/providers/portfolio/watchlist.dart';
 import 'package:asset_flutter/content/widgets/portfolio/watchlist_list.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +20,7 @@ class _WatchlistHeaderState extends State<WatchlistHeader> {
   String? _error;
 
   late final WatchListProvider _watchlistProvider;
+  late final PortfolioWatchlistRefreshProvider _watchlistRefreshListener;
 
   void _getWatchlist() {
     setState(() {
@@ -38,8 +43,15 @@ class _WatchlistHeaderState extends State<WatchlistHeader> {
     });
   }
 
+  void _watchlistRefreshStateListener() {
+    if (_state != ListState.disposed && _watchlistRefreshListener.shouldRefresh) {
+      _getWatchlist();
+    }
+  }
+
   @override
   void dispose() {
+    _watchlistRefreshListener.removeListener(_watchlistRefreshStateListener);
     _state = ListState.disposed;
     super.dispose();
   }
@@ -50,7 +62,8 @@ class _WatchlistHeaderState extends State<WatchlistHeader> {
       _watchlistProvider = Provider.of<WatchListProvider>(context);
       _getWatchlist();
 
-      _state = ListState.done;
+      _watchlistRefreshListener = Provider.of<PortfolioWatchlistRefreshProvider>(context);
+      _watchlistRefreshListener.addListener(_watchlistRefreshStateListener);
     }
     super.didChangeDependencies();
   }
@@ -87,7 +100,11 @@ class _WatchlistHeaderState extends State<WatchlistHeader> {
                   child: TextButton(
                     child: const Text("Edit"),
                     onPressed: () {
-                      print("Edit");
+                      if (_state == ListState.done || _state == ListState.empty) {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: ((context) => const WatchlistEditPage()))
+                        );
+                      }
                     },
                   ),
                 ),
@@ -99,9 +116,24 @@ class _WatchlistHeaderState extends State<WatchlistHeader> {
           height: 140,
           margin: const EdgeInsets.symmetric(horizontal: 8),
           alignment: Alignment.centerLeft,
-          child: const WatchlistList(),
+          child: _portraitBody(),
         )
       ],
     );
+
+  }
+
+  Widget _portraitBody() {
+    switch (_state) {
+      case ListState.loading:
+        return const LoadingView("Getting Watchlist");
+      case ListState.error:
+        return ErrorView(_error ?? "Unknown error!", _getWatchlist);
+      case ListState.empty:
+      case ListState.done:
+        return const WatchlistList();
+      default:
+        return const LoadingView("Loading");
+    }
   }
 }

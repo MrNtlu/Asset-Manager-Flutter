@@ -1,14 +1,20 @@
+import 'dart:io';
 import 'package:asset_flutter/common/models/state.dart';
+import 'package:asset_flutter/common/widgets/check_dialog.dart';
 import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
+import 'package:asset_flutter/common/widgets/success_view.dart';
+import 'package:asset_flutter/content/models/requests/favourite_investing.dart';
 import 'package:asset_flutter/content/providers/market/market_selection_state.dart';
 import 'package:asset_flutter/content/providers/market/prices.dart';
+import 'package:asset_flutter/content/providers/portfolio/portfolio_state.dart';
+import 'package:asset_flutter/content/providers/portfolio/watchlist.dart';
+import 'package:asset_flutter/content/providers/portfolio/watchlist_search.dart';
 import 'package:asset_flutter/content/widgets/portfolio/il_cell_image.dart';
-import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/images.dart';
 import 'package:asset_flutter/utils/stock_handler.dart';
-import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,10 +28,43 @@ class WatchlistSheetList extends StatefulWidget {
 class _WatchlistSheetListState extends State<WatchlistSheetList> {
   ListState _state = ListState.init;
   String? _error;
-  String _search = '';
+  List<MarketPrices> investingList = [];
 
   late final PricesProvider _pricesProvider;
   late final MarketSelectionStateProvider _marketSelectionProvider;
+  late final WatchlistSearchProvider _searchProvider;
+  late final WatchListProvider _watchListProvider;
+
+  //TODO: Implement priority
+  void _addFavInvesting(
+    String symbol, String type, String market, int priority
+  ) {
+    setState(() {
+      _state = ListState.loading;
+    });
+
+    final PortfolioWatchlistRefreshProvider _watchlistRefreshListener = Provider.of<PortfolioWatchlistRefreshProvider>(context, listen: false);
+
+    _watchListProvider.addfavInvesting(FavouriteInvestingCreate(symbol, type, market, priority)).then((response) {
+      _error = response.error;
+      if (_state != ListState.disposed) {
+        if (response.error != null) {  
+          _error = response.error;
+          setState(() {
+            _state = ListState.error;
+          });
+        } else {
+          _watchlistRefreshListener.setRefresh(true);
+
+          Navigator.pop(context);
+          showDialog(
+            context: context, 
+            builder: (ctx) => const SuccessView("added to watchlist", shouldJustPop: true)
+          );
+        }
+      }
+    });
+  }
 
   void _getMarketPrices({type = "crypto", market = "CoinMarketCap"}) {
     setState(() {
@@ -34,7 +73,7 @@ class _WatchlistSheetListState extends State<WatchlistSheetList> {
 
     _pricesProvider.getMarketPrices(type: type, market: market).then((response) {
       _error = response.error;
-      if (_state != ListState.disposed) {  
+      if (_state != ListState.disposed) { 
         setState(() {
           _state = (response.code != null || response.error != null)
             ? ListState.error
@@ -43,6 +82,9 @@ class _WatchlistSheetListState extends State<WatchlistSheetList> {
                 ? ListState.empty
                 : ListState.done
             );
+          if (_state == ListState.done) {
+            investingList = _pricesProvider.items;
+          }
         });
       }
     });
@@ -54,11 +96,20 @@ class _WatchlistSheetListState extends State<WatchlistSheetList> {
     }
   }
 
+  void _searchFilterListener() {
+    if (_searchProvider.search.isEmpty || _searchProvider.search == "") {
+      investingList = _pricesProvider.items;
+    } else {
+      investingList = _pricesProvider.filterList(_searchProvider.search.toLowerCase());
+    }
+  }
+
   @override
   void dispose() {
     _marketSelectionProvider.type = null;
     _marketSelectionProvider.market = null;
     _marketSelectionProvider.removeListener(_marketSelectionListener);
+    _searchProvider.removeListener(_searchFilterListener);
     _state = ListState.disposed;
     super.dispose();
   }
@@ -71,20 +122,24 @@ class _WatchlistSheetListState extends State<WatchlistSheetList> {
 
       _marketSelectionProvider = Provider.of<MarketSelectionStateProvider>(context);
       _marketSelectionProvider.addListener(_marketSelectionListener);
+
+      _searchProvider = Provider.of<WatchlistSearchProvider>(context);
+      _searchProvider.addListener(_searchFilterListener);
+
+      _watchListProvider = Provider.of<WatchListProvider>(context, listen: false);
     }
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    final _searchTextController = TextEditingController(text: _search);
     return Expanded(child: _portraitBody());
   }
 
   Widget _portraitBody() {
     switch (_state) {
       case ListState.loading:
-        return const LoadingView("Getting Market Prices");
+        return const LoadingView("Loading");
       case ListState.error:
         return ErrorView(_error ?? "Unknown error!", _getMarketPrices);
       case ListState.empty:
@@ -92,11 +147,35 @@ class _WatchlistSheetListState extends State<WatchlistSheetList> {
       case ListState.done:
         return ListView.separated(
           itemBuilder: (ctx, index) {
-            var item = _pricesProvider.items[index];
-        
-            return GestureDetector(
+            var item = investingList[index];
+            
+            return InkWell(
               onTap: () {
-                
+                Platform.isIOS || Platform.isMacOS
+                ? showCupertinoDialog(
+                  context: context, 
+                  builder: (ctx) => AreYouSureDialog("add ${item.name} to watchlist", (){
+                    Navigator.pop(ctx);
+                    _addFavInvesting(
+                      item.symbol, 
+                      _marketSelectionProvider.type ?? "crypto", 
+                      _marketSelectionProvider.market ?? "CoinMarketCap",
+                      1
+                    );
+                  })
+                )
+                : showDialog(
+                  context: context, 
+                  builder: (ctx) => AreYouSureDialog("add ${item.name} to watchlist", (){
+                    Navigator.pop(ctx);
+                    _addFavInvesting(
+                      item.symbol, 
+                      _marketSelectionProvider.type ?? "crypto", 
+                      _marketSelectionProvider.market ?? "CoinMarketCap",
+                      1
+                    );
+                  })
+                );
               },
               child: Column(
                 children: [
@@ -138,15 +217,11 @@ class _WatchlistSheetListState extends State<WatchlistSheetList> {
             );
           }, 
           separatorBuilder: (_, __) => const Divider(thickness: 0.7), 
-          itemCount: _pricesProvider.items.length
+          itemCount: investingList.length
         );
       default:
         return const LoadingView("Loading");
     }
-  }
-
-  void searchInvesting(String search) async {
-    _search = search;
   }
 
   String _getImageFromType(String _type, String _symbol, String _market) {
