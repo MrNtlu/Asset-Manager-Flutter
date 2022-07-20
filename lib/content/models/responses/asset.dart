@@ -59,7 +59,7 @@ class AssetStats {
     this.commodityPercentage
   );
 
-  List<PieChartSectionData> convertDataToChart({isDetails = false}) {
+  List<PieChartSectionData> convertDataToChart() {
     final list = List<PieChartSectionData>.empty(growable: true);
     for (var i = 0; i < 4; i++) {
       var percentageData = ((i == 0)
@@ -73,7 +73,7 @@ class AssetStats {
         color: ChartAttributes().chartStatsColor[i],
         value: percentageData,
         title: percentageData.toStringAsFixed(1),
-        showTitle: isDetails,
+        showTitle: true,
         radius: 47,
         titleStyle: const TextStyle(
           fontWeight: FontWeight.bold, 

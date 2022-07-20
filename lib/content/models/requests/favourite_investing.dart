@@ -18,3 +18,22 @@ class FavouriteInvestingCreate implements JSONConverter {
     "priority": priority
   };
 }
+
+class FavouriteInvestingOrderUpdate {
+  final List<Map<String, Object>> orders;
+
+  const FavouriteInvestingOrderUpdate(this.orders);
+}
+
+class FavouriteInvestingOrder implements JSONConverter {
+  final String id;
+  final int priority;
+
+  const FavouriteInvestingOrder(this.id, this.priority);
+  
+  @override
+  Map<String, Object> convertToJson() => {
+    "id": id,
+    "priority": priority
+  };
+}

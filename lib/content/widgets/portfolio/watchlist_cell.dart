@@ -1,7 +1,7 @@
 import 'package:asset_flutter/content/models/responses/favourite_investment.dart';
 import 'package:asset_flutter/content/widgets/portfolio/il_cell_image.dart';
-import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/images.dart';
+import 'package:asset_flutter/static/shared_pref.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:asset_flutter/utils/stock_handler.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -9,8 +9,9 @@ import 'package:flutter/material.dart';
 
 class WatchlistCell extends StatelessWidget {
   final FavouriteInvesting _data;
+  final int? color;
 
-  const WatchlistCell(this._data, {Key? key}) : super(key: key);
+  const WatchlistCell(this._data, {this.color, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class WatchlistCell extends StatelessWidget {
       height: 140,
       width: 150,
       child: Card(
-        color: AppColors().primaryLightishColor,
+        color: color == null ? Color(SharedPref().getWatchlistColor()) : Color(color!),
         elevation: 4,
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
         child: Padding(
@@ -37,7 +38,7 @@ class WatchlistCell extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
-                    color: Colors.black
+                    color: Colors.white
                   ),
                 ),
               ),

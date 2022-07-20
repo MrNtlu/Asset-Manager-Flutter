@@ -1,4 +1,5 @@
 import 'package:asset_flutter/auth/models/requests/user.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPref {
@@ -22,6 +23,7 @@ class SharedPref {
     return _instance;
   }
 
+  //Dark Theme
   void setTheme(bool isDarkTheme) {
     sharedPref?.setBool("theme", isDarkTheme);
   }
@@ -30,6 +32,7 @@ class SharedPref {
     return _sharedPreference.getBool("theme") ?? false;
   }
 
+  //Login Credentials
   void setLoginCredentials(String email, String password) {
     sharedPref?.setString("email_address", email);
     sharedPref?.setString("password", password);
@@ -48,6 +51,7 @@ class SharedPref {
     sharedPref?.remove("password");
   }
 
+  //OAuth Refresh Token
   void setOAuthLoginCredentials(String token) {
     sharedPref?.setString("refresh_token", token);
   }
@@ -60,6 +64,7 @@ class SharedPref {
     sharedPref?.remove("refresh_token");
   }
 
+  //Default Tab
   void setDefaultTab(int tabPosition) {
     sharedPref?.setInt("default_tab", tabPosition);
   }
@@ -68,6 +73,7 @@ class SharedPref {
     return _sharedPreference.getInt("default_tab") ?? 0;
   }
 
+  //Introduction
   void setIsIntroductionDeleted(bool isIntroductionDeleted) {
     sharedPref?.setBool("is_introduction_deleted", isIntroductionDeleted);
   }
@@ -76,12 +82,22 @@ class SharedPref {
     return _sharedPreference.getBool("is_introduction_deleted") ?? false;
   }
 
+  //Watchlist
   void setIsWatchlistHidden(bool isHidden) {
     sharedPref?.setBool("is_watchlist_hidden", isHidden);
   }
 
   bool getIsWatchlistHidden() {
     return _sharedPreference.getBool("is_watchlist_hidden") ?? false;
+  }
+
+  //Watchlist Color
+  void setWatchlistColor(int _color) {
+    sharedPref?.setInt("watchlist_color", _color);
+  }
+
+  int getWatchlistColor() {
+    return _sharedPreference.getInt("watchlist_color") ?? const Color(0xFF292D32).value;
   }
 
   SharedPreferences? get sharedPref => _isInit ? _sharedPreference : null;

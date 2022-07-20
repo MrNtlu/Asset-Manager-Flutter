@@ -46,7 +46,7 @@ class _WatchlistHeaderState extends State<WatchlistHeader> {
   void _watchlistRefreshStateListener() {
     if (_state != ListState.disposed && _watchlistRefreshListener.shouldRefresh) {
       _getWatchlist();
-    }
+    } 
   }
 
   @override

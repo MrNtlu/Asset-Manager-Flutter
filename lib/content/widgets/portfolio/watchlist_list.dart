@@ -2,9 +2,11 @@ import 'dart:io';
 import 'package:asset_flutter/content/providers/portfolio/watchlist.dart';
 import 'package:asset_flutter/content/widgets/portfolio/watchlist_add_sheet.dart';
 import 'package:asset_flutter/content/widgets/portfolio/watchlist_cell.dart';
+import 'package:asset_flutter/content/widgets/settings/offers_sheet.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/purchase_api.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 class WatchlistList extends StatelessWidget {
@@ -75,36 +77,50 @@ class WatchlistList extends StatelessWidget {
               ),
             ),
           );
-        } else if (!isPremium && _data.length > 5 && index == _data.length) {
-          //TODO: Show can be premoium to increase the limit
-          return SizedBox(
-            width: 100,
-            child: Card(
-              elevation: 0,
-              color: Theme.of(context).colorScheme.bgColor,
-              shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: Icon(
-                      Icons.add_box_rounded,
-                      color: AppColors().primaryLightishColor,
-                      size: 32,
+        } else if (!isPremium && _data.length >= 5 && index == _data.length) {
+          return GestureDetector(
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                enableDrag: false,
+                backgroundColor: AppColors().bgSecondary,
+                builder: (_) => const Padding(
+                  padding: EdgeInsets.only(top: 40),
+                  child: OffersSheet()
+                )
+              );
+            },
+            child: SizedBox(
+              width: 120,
+              child: Card(
+                elevation: 0,
+                color: Theme.of(context).colorScheme.bgColor,
+                shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Lottie.asset(
+                        "assets/lottie/premium.json",
+                        height: 65,
+                        width: 65,
+                        frameRate: FrameRate(60)
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                    child: Text(
-                      "Add Symbol",
-                      maxLines: 2,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: AppColors().primaryLightishColor
-                      )
-                    ),
-                  )
-                ],
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                      child: Text(
+                        "Increase\nlimit",
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: AppColors().primaryLightishColor
+                        )
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           );

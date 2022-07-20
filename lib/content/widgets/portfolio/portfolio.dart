@@ -1,3 +1,4 @@
+import 'package:asset_flutter/content/pages/market/markets_page.dart';
 import 'package:asset_flutter/content/providers/assets.dart';
 import 'package:asset_flutter/content/widgets/portfolio/pl_text.dart';
 import 'package:asset_flutter/static/colors.dart';
@@ -28,14 +29,27 @@ class Portfolio extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Padding(
-                padding: EdgeInsets.only(left: 12, top: 12),
-                child: Text(
-                  "My Portfolio",
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.white70
-                  ),
+              Padding(
+                padding: const EdgeInsets.only(left: 12, top: 12),
+                child: Row(
+                  children: [
+                    const Expanded(
+                      child: Text(
+                        "My Portfolio",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.white70
+                        ),
+                      ),
+                    ),
+                    if(!isDetailed)
+                    GestureDetector(
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => const MarketsPage())
+                      ),
+                      child: const ImageIcon(AssetImage("assets/images/markets.png"), color: Colors.white, size: 20)
+                    )
+                  ],
                 ),
               ),
               Container(

@@ -15,6 +15,19 @@ class WatchListProvider extends BaseProvider<FavouriteInvesting> {
     return pitems.firstWhere((element) => element.id == id);
   }
 
+  void updatePriority() {
+    for (var i = 0; i < pitems.length; i++) {
+      pitems[i].priority = i + 1;
+    }
+    notifyListeners();
+  }
+
+  void updateOrder(List<FavouriteInvesting> newList){
+    pitems.clear();
+    pitems.addAll(newList);
+    notifyListeners();
+  }
+
   Future<BaseListResponse<FavouriteInvesting>> getWatchlist() async 
     => getList(url: APIRoutes().favInvestingRoutes.favouriteInvestings);
 

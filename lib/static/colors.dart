@@ -105,6 +105,27 @@ class CardColors {
   }
 }
 
+class WatchlistColors {
+  List<Color> watchlistColors = [
+    const Color(0xFF292D32),
+    const Color(0xFFF85958),
+    const Color(0xFF7329DD),
+    const Color(0xFF37A0FF),
+    const Color(0xFF3F4BC2),
+    const Color(0xFF237B70),
+    const Color(0xFFFEA802),
+    const Color(0xFF8A8B91),
+  ];
+
+  WatchlistColors._privateConstructor();
+
+  static final WatchlistColors _instance = WatchlistColors._privateConstructor();
+
+  factory WatchlistColors() {
+    return _instance;
+  }
+}
+
 class SubscriptionColors {
   List<Color> subscriptionColors = [
     const Color(0xFF595B62),

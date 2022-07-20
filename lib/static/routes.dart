@@ -266,6 +266,7 @@ class FavouriteInvestingRoutes {
 
   late String favouriteInvestings;
   late String createFavouriteInvesting;
+  late String updateFavouriteInvestingOrder;
 
   late String deleteFavouriteInvesting;
   late String deleteAllFavouriteInvestings;
@@ -275,6 +276,7 @@ class FavouriteInvestingRoutes {
 
     favouriteInvestings = _baseFavInvestingURL;
     createFavouriteInvesting = _baseFavInvestingURL;
+    updateFavouriteInvestingOrder = _baseFavInvestingURL;
     deleteFavouriteInvesting = _baseFavInvestingURL;
     deleteAllFavouriteInvestings = _baseFavInvestingURL + '/all';
   }

@@ -6,7 +6,7 @@ import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
 import 'package:asset_flutter/content/pages/market/markets_page.dart';
 import 'package:asset_flutter/content/pages/portfolio/ic_type_page.dart';
-import 'package:asset_flutter/content/pages/portfolio/investment_create_page.dart';
+import 'package:asset_flutter/content/pages/portfolio/portfolio_stats_page.dart';
 import 'package:asset_flutter/content/providers/assets.dart';
 import 'package:asset_flutter/content/providers/portfolio/portfolio_filter.dart';
 import 'package:asset_flutter/content/providers/portfolio/portfolio_state.dart';
@@ -234,17 +234,17 @@ class _PortfolioPageState extends State<PortfolioPage> {
                           margin: const EdgeInsets.only(right: 8),
                           child: Platform.isIOS || Platform.isMacOS
                           ? CupertinoButton.filled(
-                            child: const ImageIcon(AssetImage("assets/images/markets.png"), color: Colors.white),
+                            child: const Icon(Icons.bar_chart_rounded, color: Colors.white),
                             padding: const EdgeInsets.all(12),
                             onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(builder: (_) => const MarketsPage())
+                              MaterialPageRoute(builder: (_) => const PortfolioStatsPage())
                             ),
                           )
                           : ElevatedButton(
                             onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(builder: (_) => const MarketsPage())
+                              MaterialPageRoute(builder: (_) => const PortfolioStatsPage())
                             ),
-                            child: const ImageIcon(AssetImage("assets/images/markets.png"), color: Colors.white),
+                            child: const Icon(Icons.bar_chart_rounded, color: Colors.white),
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.all(12),
                               shape: RoundedRectangleBorder(
@@ -311,7 +311,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
                             flex: 11,
                             child: AddElevatedButton("Add Investment", (){
                                 Navigator.of(context).push(
-                                  MaterialPageRoute(builder: ((context) => const InvestmentCreatePage()))
+                                  MaterialPageRoute(builder: ((context) => const InvestmentCreateTypePage()))
                                 );
                               },
                             )

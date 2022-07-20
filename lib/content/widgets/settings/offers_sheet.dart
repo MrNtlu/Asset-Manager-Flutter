@@ -251,6 +251,21 @@ class OffersSheetState extends State<OffersSheet> {
                                 children: const [
                                   Padding(
                                     padding: EdgeInsets.only(right: 8),
+                                    child: Icon(Icons.post_add_rounded, color: Colors.white),
+                                  ),
+                                  SizedBox(
+                                    width: 200,
+                                    child: Text("Increased Watchlist Limit", style: TextStyle(color: Colors.white, fontSize: 16))
+                                  )
+                                ],
+                              ),
+                              const Divider(color: Colors.white),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: const [
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 8),
                                     child: Icon(Icons.notification_add_rounded, color: Colors.white),
                                   ),
                                   SizedBox(

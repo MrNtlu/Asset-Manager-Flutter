@@ -35,7 +35,6 @@ class _WatchlistSheetListState extends State<WatchlistSheetList> {
   late final WatchlistSearchProvider _searchProvider;
   late final WatchListProvider _watchListProvider;
 
-  //TODO: Implement priority
   void _addFavInvesting(
     String symbol, String type, String market, int priority
   ) {
