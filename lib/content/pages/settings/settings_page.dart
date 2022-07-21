@@ -317,9 +317,7 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         centerTitle: false,
       ),
-      body: SafeArea(
-        child: _body(),
-      ),
+      body: _body(),
     );
   }
 

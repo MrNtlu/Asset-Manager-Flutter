@@ -322,17 +322,17 @@ class _PortfolioPageState extends State<PortfolioPage> {
                               margin: const EdgeInsets.only(right: 8),
                               child: Platform.isIOS || Platform.isMacOS
                               ? CupertinoButton.filled(
-                                child: const ImageIcon(AssetImage("assets/images/markets.png"), color: Colors.white),
+                                child: const Icon(Icons.bar_chart_rounded, color: Colors.white),
                                 padding: const EdgeInsets.all(12),
                                 onPressed: () => Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (_) => const MarketsPage())
+                                  MaterialPageRoute(builder: (_) => const PortfolioStatsPage())
                                 ),
                               )
                               : ElevatedButton(
                                 onPressed: () => Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (_) => const MarketsPage())
+                                  MaterialPageRoute(builder: (_) => const PortfolioStatsPage())
                                 ),
-                                child: const ImageIcon(AssetImage("assets/images/markets.png"), color: Colors.white),
+                                child: const Icon(Icons.bar_chart_rounded, color: Colors.white),
                                 style: ElevatedButton.styleFrom(
                                   padding: const EdgeInsets.all(12),
                                   shape: RoundedRectangleBorder(

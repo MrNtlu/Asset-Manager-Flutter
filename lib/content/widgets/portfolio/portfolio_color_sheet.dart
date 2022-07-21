@@ -34,90 +34,94 @@ class _PortfolioColorSheetState extends State<PortfolioColorSheet> {
           ),
         )
         : null,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    for (var color in PortfolioColors().portfolioColors)
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _selectedColor = color.value;
-                          });
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                color: (_selectedColor == color.value)
-                                    ? Colors.orangeAccent
-                                    : Colors.transparent),
-                            shape: BoxShape.circle,
-                          ),
-                          child: CircleAvatar(
-                            radius: 12,
-                            backgroundColor: color,
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-              _portfolioBody(1000, 25),
-              _portfolioBody(-1000, 25),
-              Padding(
-                padding: const EdgeInsets.only(top: 18),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Platform.isIOS || Platform.isMacOS
-                    ? CupertinoButton(
-                      child: const Text('Cancel'), 
-                      onPressed: () => Navigator.pop(context)
-                    )
-                    : Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: TextButton(
-                          onPressed: () => Navigator.pop(context), 
-                          child: const Text('Cancel')
-                        ),
-                      ),
-                    ),
-                    Platform.isIOS || Platform.isMacOS
-                    ? CupertinoButton.filled(
-                      child: const Text('Save', style: TextStyle(color: Colors.white)), 
-                      onPressed: () {
-                        SharedPref().setPortfolioColor(_selectedColor);
-                        Navigator.pop(context);
-                      }
-                    )
-                    : Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            SharedPref().setPortfolioColor(_selectedColor);
-                            Navigator.pop(context);
-                          }, 
-                          child: const Text('Save', style: TextStyle(color: Colors.white))
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
+        child: MediaQuery.of(context).orientation == Orientation.portrait
+        ? _body()
+        : SingleChildScrollView(child: _body()),
       ),
     );
   }
+
+  Widget _body() => Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              for (var color in PortfolioColors().portfolioColors)
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _selectedColor = color.value;
+                    });
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color: (_selectedColor == color.value)
+                              ? Colors.orangeAccent
+                              : Colors.transparent),
+                      shape: BoxShape.circle,
+                    ),
+                    child: CircleAvatar(
+                      radius: 12,
+                      backgroundColor: color,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+        _portfolioBody(1000, 25),
+        _portfolioBody(-1000, 25),
+        Padding(
+          padding: const EdgeInsets.only(top: 18),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Platform.isIOS || Platform.isMacOS
+              ? CupertinoButton(
+                child: const Text('Cancel'), 
+                onPressed: () => Navigator.pop(context)
+              )
+              : Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: TextButton(
+                    onPressed: () => Navigator.pop(context), 
+                    child: const Text('Cancel')
+                  ),
+                ),
+              ),
+              Platform.isIOS || Platform.isMacOS
+              ? CupertinoButton.filled(
+                child: const Text('Save', style: TextStyle(color: Colors.white)), 
+                onPressed: () {
+                  SharedPref().setPortfolioColor(_selectedColor);
+                  Navigator.pop(context);
+                }
+              )
+              : Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      SharedPref().setPortfolioColor(_selectedColor);
+                      Navigator.pop(context);
+                    }, 
+                    child: const Text('Save', style: TextStyle(color: Colors.white))
+                  ),
+                ),
+              ),
+            ],
+          ),
+        )
+      ],
+    ),
+  );
 
   Widget _portfolioBody(double pl, double plPercentage) => Padding(
     padding: const EdgeInsets.only(top: 4),
