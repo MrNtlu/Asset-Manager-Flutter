@@ -100,5 +100,14 @@ class SharedPref {
     return _sharedPreference.getInt("watchlist_color") ?? const Color(0xFF292D32).value;
   }
 
+  //Portfolio Color
+  void setPortfolioColor(int _color) {
+    sharedPref?.setInt("portfolio_color", _color);
+  }
+
+  int getPortfolioColor() {
+    return _sharedPreference.getInt("portfolio_color") ?? const Color(0xFF00579B).value;
+  }
+
   SharedPreferences? get sharedPref => _isInit ? _sharedPreference : null;
 }

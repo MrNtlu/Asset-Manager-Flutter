@@ -1,7 +1,7 @@
 import 'package:asset_flutter/content/pages/market/markets_page.dart';
 import 'package:asset_flutter/content/providers/assets.dart';
 import 'package:asset_flutter/content/widgets/portfolio/pl_text.dart';
-import 'package:asset_flutter/static/colors.dart';
+import 'package:asset_flutter/static/shared_pref.dart';
 import 'package:asset_flutter/utils/extensions.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +22,7 @@ class Portfolio extends StatelessWidget {
       padding: const EdgeInsets.only(top: 12, bottom: 8),
       margin: const EdgeInsets.only(left: 8, right: 8),
       child: Card(
-        color: AppColors().primaryColor,
+        color: Color(SharedPref().getPortfolioColor()),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(8, 8, 12, 8),

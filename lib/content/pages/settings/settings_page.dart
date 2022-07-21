@@ -13,6 +13,8 @@ import 'package:asset_flutter/common/widgets/password_textformfield.dart';
 import 'package:asset_flutter/common/widgets/success_view.dart';
 import 'package:asset_flutter/content/pages/settings/feedback_page.dart';
 import 'package:asset_flutter/content/providers/settings/theme_state.dart';
+import 'package:asset_flutter/content/widgets/portfolio/portfolio_color_sheet.dart';
+import 'package:asset_flutter/content/widgets/portfolio/watchlist_color_sheet.dart';
 import 'package:asset_flutter/content/widgets/settings/default_tab.dart';
 import 'package:asset_flutter/content/widgets/settings/hide_watchlist_switch.dart';
 import 'package:asset_flutter/content/widgets/settings/offers_sheet.dart';
@@ -538,9 +540,51 @@ class _SettingsPageState extends State<SettingsPage> {
               ],
             ),
             SettingsSection(
-              title: const Text('Other Settings'),
+              title: const Text('App Settings'),
               tiles: [
                 const CustomSettingsTile(child: HideWatchlistSwitch()),
+                SettingsTile.navigation(
+                  leading: const Icon(Icons.invert_colors_on_rounded),
+                  title: const Text('Portfolio Color'),
+                  onPressed: (_) {
+                    showModalBottomSheet(
+                        context: context, 
+                        isDismissible: true,
+                        isScrollControlled: true,
+                        enableDrag: true,
+                        shape: Platform.isIOS || Platform.isMacOS
+                        ? const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(16),
+                            topLeft: Radius.circular(16)
+                          ),
+                        )
+                        : null,
+                        builder: (_) => const PortfolioColorSheet(),
+                      );
+                  },
+                ),
+                SettingsTile.navigation(
+                  leading: const Icon(Icons.palette_rounded),
+                  title: const Text('Watchlist Color'),
+                  onPressed: (_) {
+                    showModalBottomSheet(
+                        context: context, 
+                        isDismissible: true,
+                        isScrollControlled: false,
+                        enableDrag: true,
+                        shape: Platform.isIOS || Platform.isMacOS
+                        ? const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(16),
+                            topLeft: Radius.circular(16)
+                          ),
+                        )
+                        : null,
+                        builder: (_) => const WatchlistColorSheet(),
+                      );
+                  },
+                ),
                 SettingsTile.navigation(
                   leading: const Icon(Icons.widgets_rounded),
                   title: const Text('Default Page'),
@@ -567,6 +611,11 @@ class _SettingsPageState extends State<SettingsPage> {
                     );
                   },
                 ),
+              ],
+            ),
+            SettingsSection(
+              title: const Text('Other Settings'),
+              tiles: [
                 SettingsTile.navigation(
                   leading: const Icon(Icons.stars_rounded),
                   title: const Text('Rate & Review Us'),
@@ -614,7 +663,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     );
                   },
                 ),
-              ],
+              ]
             ),
             SettingsSection(
               tiles: [

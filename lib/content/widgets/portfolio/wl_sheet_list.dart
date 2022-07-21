@@ -96,6 +96,7 @@ class _WatchlistSheetListState extends State<WatchlistSheetList> {
   }
 
   void _searchFilterListener() {
+    FocusScope.of(context).unfocus();
     if (_searchProvider.search.isEmpty || _searchProvider.search == "") {
       investingList = _pricesProvider.items;
     } else {
@@ -150,6 +151,7 @@ class _WatchlistSheetListState extends State<WatchlistSheetList> {
             
             return InkWell(
               onTap: () {
+                FocusScope.of(context).unfocus();
                 Platform.isIOS || Platform.isMacOS
                 ? showCupertinoDialog(
                   context: context, 

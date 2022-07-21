@@ -17,6 +17,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:awesome_card/awesome_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
@@ -202,7 +203,24 @@ class _SubscriptionDetailsViewState extends State<SubscriptionDetailsView> {
                   children: [
                     _accountText("Username/Email ", widget._data.account!.email),
                     if(widget._data.account!.password != null && widget._data.account!.password!.isNotEmpty)
-                    _accountText("Password ", widget._data.account!.password),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: Row(
+                        children: [
+                          Expanded(child: _accountText("Password ", widget._data.account!.password)),
+                          IconButton(
+                            onPressed: () {
+                              Clipboard.setData(ClipboardData(text: widget._data.account!.password)).then((_) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text("Password copied to clipboard."), duration: Duration(seconds: 1))
+                                );
+                              });
+                            },
+                            icon: const Icon(Icons.copy_rounded, size: 28)
+                          )
+                        ],
+                      ),
+                    ),
                   ],
                   textColor: Theme.of(context).colorScheme.bgTextColor,
                   iconColor: Theme.of(context).colorScheme.bgTextColor,

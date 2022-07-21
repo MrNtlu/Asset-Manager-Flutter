@@ -126,6 +126,29 @@ class WatchlistColors {
   }
 }
 
+class PortfolioColors {
+  List<Color> portfolioColors = [
+    const Color(0xFF292D32),
+    const Color(0xFF00355E),
+    const Color(0xFF00579B),
+    const Color(0xFF3F4BC2),
+    const Color(0xFF9575CD),
+    const Color(0xFF7329DD),
+    const Color(0xFF237B70),
+    const Color(0xFFFDD835),
+    const Color(0xFF37474F),
+    const Color(0xFF8A8B91),
+  ];
+
+  PortfolioColors._privateConstructor();
+
+  static final PortfolioColors _instance = PortfolioColors._privateConstructor();
+
+  factory PortfolioColors() {
+    return _instance;
+  }
+}
+
 class SubscriptionColors {
   List<Color> subscriptionColors = [
     const Color(0xFF595B62),

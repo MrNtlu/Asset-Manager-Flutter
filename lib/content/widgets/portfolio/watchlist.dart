@@ -70,55 +70,58 @@ class _WatchlistHeaderState extends State<WatchlistHeader> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Row(
-          children: [
-            const Expanded(
-              flex: 7,
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  child: Text(
-                    "Watchlist",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            children: [
+              const Expanded(
+                flex: 7,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    child: Text(
+                      "Watchlist",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Expanded(
-              flex: 3,
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                  child: TextButton(
-                    child: const Text("Edit"),
-                    onPressed: () {
-                      if (_state == ListState.done || _state == ListState.empty) {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: ((context) => const WatchlistEditPage()))
-                        );
-                      }
-                    },
+              Expanded(
+                flex: 3,
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                    child: TextButton(
+                      child: Text(_watchlistProvider.items.isNotEmpty ? "Edit" : "Hide"),
+                      onPressed: () {
+                        if (_state == ListState.done || _state == ListState.empty) {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: ((context) => const WatchlistEditPage()))
+                          );
+                        }
+                      },
+                    ),
                   ),
                 ),
-              ),
-            )
-          ],
-        ),
-        Container(
-          height: 140,
-          margin: const EdgeInsets.symmetric(horizontal: 8),
-          alignment: Alignment.centerLeft,
-          child: _portraitBody(),
-        )
-      ],
+              )
+            ],
+          ),
+          Container(
+            height: 140,
+            margin: const EdgeInsets.symmetric(horizontal: 8),
+            alignment: Alignment.centerLeft,
+            child: _portraitBody(),
+          ),
+        ],
+      ),
     );
 
   }

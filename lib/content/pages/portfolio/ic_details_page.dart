@@ -187,7 +187,7 @@ class _InvestmentCreateDetailsPageState extends State<InvestmentCreateDetailsPag
                   },
                 ),
                 CustomTextFormField(
-                  "Buy/Sell Price",
+                  "Buy Price",
                   const TextInputType.numberWithOptions(decimal: true, signed: true),
                   textInputAction: TextInputAction.done,
                   edgeInsets: const EdgeInsets.symmetric(vertical: 8),

@@ -1,30 +1,24 @@
 import 'dart:io';
-import 'package:asset_flutter/content/models/responses/favourite_investment.dart';
-import 'package:asset_flutter/content/providers/portfolio/portfolio_state.dart';
-import 'package:asset_flutter/content/widgets/portfolio/watchlist_cell.dart';
+import 'package:asset_flutter/content/widgets/portfolio/pl_text.dart';
 import 'package:asset_flutter/static/colors.dart';
 import 'package:asset_flutter/static/shared_pref.dart';
+import 'package:asset_flutter/utils/extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-class WatchlistColorSheet extends StatefulWidget {
-  final bool isSettingsPage;
-
-  const WatchlistColorSheet({this.isSettingsPage = false, Key? key}) : super(key: key);
+class PortfolioColorSheet extends StatefulWidget {
+  const PortfolioColorSheet({Key? key}) : super(key: key);
 
   @override
-  State<WatchlistColorSheet> createState() => _WatchlistColorSheetState();
+  State<PortfolioColorSheet> createState() => _PortfolioColorSheetState();
 }
 
-class _WatchlistColorSheetState extends State<WatchlistColorSheet> {
+class _PortfolioColorSheetState extends State<PortfolioColorSheet> {
   late int _selectedColor;
-  late final PortfolioWatchlistRefreshProvider _watchlistRefreshProvider;
 
   @override
   void didChangeDependencies() {
-    _selectedColor = SharedPref().getWatchlistColor();
-    _watchlistRefreshProvider = Provider.of<PortfolioWatchlistRefreshProvider>(context, listen: false);
+    _selectedColor = SharedPref().getPortfolioColor();
     super.didChangeDependencies();
   }
 
@@ -49,7 +43,7 @@ class _WatchlistColorSheetState extends State<WatchlistColorSheet> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    for (var color in WatchlistColors().watchlistColors)
+                    for (var color in PortfolioColors().portfolioColors)
                       GestureDetector(
                         onTap: () {
                           setState(() {
@@ -74,16 +68,8 @@ class _WatchlistColorSheetState extends State<WatchlistColorSheet> {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: WatchlistCell(
-                  FavouriteInvesting(
-                    '', '', const FavouriteInvestingID('BTC', 'crypto', 'CoinMarketCap'), 
-                    40000, 'USD', 1
-                  ),
-                  color: _selectedColor,
-                ),
-              ),
+              _portfolioBody(1000, 25),
+              _portfolioBody(-1000, 25),
               Padding(
                 padding: const EdgeInsets.only(top: 18),
                 child: Row(
@@ -107,10 +93,7 @@ class _WatchlistColorSheetState extends State<WatchlistColorSheet> {
                     ? CupertinoButton.filled(
                       child: const Text('Save', style: TextStyle(color: Colors.white)), 
                       onPressed: () {
-                        SharedPref().setWatchlistColor(_selectedColor);
-                        if (!widget.isSettingsPage) {
-                          _watchlistRefreshProvider.setRefresh(true);
-                        }
+                        SharedPref().setPortfolioColor(_selectedColor);
                         Navigator.pop(context);
                       }
                     )
@@ -119,10 +102,7 @@ class _WatchlistColorSheetState extends State<WatchlistColorSheet> {
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: ElevatedButton(
                           onPressed: () {
-                            SharedPref().setWatchlistColor(_selectedColor);
-                            if (!widget.isSettingsPage) {
-                              _watchlistRefreshProvider.setRefresh(true);
-                            }
+                            SharedPref().setPortfolioColor(_selectedColor);
                             Navigator.pop(context);
                           }, 
                           child: const Text('Save', style: TextStyle(color: Colors.white))
@@ -138,4 +118,58 @@ class _WatchlistColorSheetState extends State<WatchlistColorSheet> {
       ),
     );
   }
+
+  Widget _portfolioBody(double pl, double plPercentage) => Padding(
+    padding: const EdgeInsets.only(top: 4),
+    child: Container(
+      padding: const EdgeInsets.only(top: 4, bottom: 2),
+      margin: const EdgeInsets.only(left: 8, right: 8),
+      child: Card(
+        color: Color(_selectedColor),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(8, 8, 12, 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(left: 12, top: 12),
+                child: Text(
+                  "My Portfolio",
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.white70
+                  ),
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 6, left: 12, bottom: 16),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'USD'.getCurrencyFromString() + " 12000",
+                    softWrap: false,
+                    maxLines: 1,
+                    style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.width > 350 ? 36 : 32,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              PortfolioPLText(
+                pl,
+                plPercentage,
+                null, 
+                fontSize: MediaQuery.of(context).size.width > 350 ? 20 : 16, 
+                iconSize: MediaQuery.of(context).size.width > 350 ? 22 : 18,
+                plPrefix: 'USD'.getCurrencyFromString(),
+              )
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
 }

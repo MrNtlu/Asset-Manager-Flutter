@@ -167,7 +167,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
           floatHeaderSlivers: false,
           headerSliverBuilder: ((context, innerBoxIsScrolled) => [
               SliverAppBar(
-                expandedHeight: SharedPref().getIsWatchlistHidden() ? 165 : 363,
+                expandedHeight: SharedPref().getIsWatchlistHidden() ? 165 : 373,
                 floating: true,
                 snap: false,
                 backgroundColor: Theme.of(context).backgroundColor,
