@@ -4,7 +4,6 @@ import 'package:asset_flutter/common/widgets/add_elevated_button.dart';
 import 'package:asset_flutter/common/widgets/error_view.dart';
 import 'package:asset_flutter/common/widgets/loading_view.dart';
 import 'package:asset_flutter/common/widgets/no_item_holder.dart';
-import 'package:asset_flutter/content/pages/market/markets_page.dart';
 import 'package:asset_flutter/content/pages/portfolio/ic_type_page.dart';
 import 'package:asset_flutter/content/pages/portfolio/portfolio_stats_page.dart';
 import 'package:asset_flutter/content/providers/assets.dart';
@@ -425,7 +424,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
                   child: SizedBox.fromSize(
                     size: const Size.fromRadius(22),
                     child: Image.asset(
-                      "assets/images/investment.png",
+                      "assets/images/ic_launcher.png",
                       width: 48,
                       height: 48,
                       fit: BoxFit.contain,

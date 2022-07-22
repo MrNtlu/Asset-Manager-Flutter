@@ -1,4 +1,4 @@
-![ic_launcher_foreground](https://user-images.githubusercontent.com/25686023/155740270-208e9079-a139-4810-b02c-2977c602919d.png)
+![ic_launcher_foreground](https://user-images.githubusercontent.com/25686023/180413785-167fc0e7-d32f-4be3-849e-4c389a1af9f7.png)
 
 # Kanma - Personal Finance / Asset Manager - Flutter
 

@@ -74,7 +74,7 @@ dev_dependencies:
   flutter_native_splash: ^2.1.6
 
 flutter_native_splash:
-  color: "#00355E"
+  color: "#FFFFFF"
   color_dark: "#000000"
   image: "assets/images/investment.png"
   android: true
@@ -84,7 +84,7 @@ flutter_icons:
   android: true
   ios: true
   image_path: "assets/images/ic_launcher.png"
-  adaptive_icon_background: "#00579B"
+  adaptive_icon_background: "#000000"
   adaptive_icon_foreground: "assets/images/investment.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -119,6 +119,7 @@ flutter:
     - assets/policies/privacy_policy.md
     - assets/policies/terms_conditions.md
     - assets/images/investment.png
+    - assets/images/ic_launcher.png
     - assets/images/gold.png
     - assets/images/markets.png
     - assets/images/auth_bg.jpeg
