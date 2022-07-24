@@ -102,20 +102,11 @@ class FCM {
   }
 
   void backgroundNotification() { // App background state
-    FirebaseMessaging.onMessageOpenedApp.listen((message) async {
-        handleNotificationDate(message.data);
-      },
-    );
+    FirebaseMessaging.onMessageOpenedApp.listen((message) async {});
   }
 
   void terminateNotification() async { // App Closed state
     RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
-    if (initialMessage != null) {
-      handleNotificationDate(initialMessage.data);
-    }
-  }
-
-  void handleNotificationDate(Map<String, dynamic> data) {
-    print("Data received $data");
+    if (initialMessage != null) {}
   }
 }
