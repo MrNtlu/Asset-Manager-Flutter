@@ -229,21 +229,21 @@ class OffersSheetState extends State<OffersSheet> {
                                   )
                                 ],
                               ),
-                              const Divider(color: Colors.white),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: const [
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 8),
-                                    child: Icon(Icons.trending_up_rounded, color: Colors.white),
-                                  ),
-                                  SizedBox(
-                                    width: 200,
-                                    child: Text("Stats for Longer Periods", style: TextStyle(color: Colors.white, fontSize: 16))
-                                  )
-                                ],
-                              ),
+                              // const Divider(color: Colors.white),
+                              // Row(
+                              //   mainAxisAlignment: MainAxisAlignment.start,
+                              //   mainAxisSize: MainAxisSize.min,
+                              //   children: const [
+                              //     Padding(
+                              //       padding: EdgeInsets.only(right: 8),
+                              //       child: Icon(Icons.trending_up_rounded, color: Colors.white),
+                              //     ),
+                              //     SizedBox(
+                              //       width: 200,
+                              //       child: Text("Stats for Longer Periods", style: TextStyle(color: Colors.white, fontSize: 16))
+                              //     )
+                              //   ],
+                              // ),
                               const Divider(color: Colors.white),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -260,35 +260,35 @@ class OffersSheetState extends State<OffersSheet> {
                                 ],
                               ),
                               const Divider(color: Colors.white),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: const [
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 8),
-                                    child: Icon(Icons.notification_add_rounded, color: Colors.white),
-                                  ),
-                                  SizedBox(
-                                    width: 200,
-                                    child: Text("Subscription Reminder", style: TextStyle(color: Colors.white, fontSize: 16))
-                                  )
-                                ],
-                              ),
-                              const Divider(color: Colors.white),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: const [
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 8),
-                                    child: Icon(Icons.more_horiz_rounded, color: Colors.white),
-                                  ),
-                                  SizedBox(
-                                    width: 200,
-                                    child: Text("More soon...", style: TextStyle(color: Colors.white, fontSize: 16))
-                                  )
-                                ],
-                              ),
+                              // Row(
+                              //   mainAxisAlignment: MainAxisAlignment.start,
+                              //   mainAxisSize: MainAxisSize.min,
+                              //   children: const [
+                              //     Padding(
+                              //       padding: EdgeInsets.only(right: 8),
+                              //       child: Icon(Icons.notification_add_rounded, color: Colors.white),
+                              //     ),
+                              //     SizedBox(
+                              //       width: 200,
+                              //       child: Text("Subscription Reminder", style: TextStyle(color: Colors.white, fontSize: 16))
+                              //     )
+                              //   ],
+                              // ),
+                              // const Divider(color: Colors.white),
+                              // Row(
+                              //   mainAxisAlignment: MainAxisAlignment.start,
+                              //   mainAxisSize: MainAxisSize.min,
+                              //   children: const [
+                              //     Padding(
+                              //       padding: EdgeInsets.only(right: 8),
+                              //       child: Icon(Icons.more_horiz_rounded, color: Colors.white),
+                              //     ),
+                              //     SizedBox(
+                              //       width: 200,
+                              //       child: Text("More soon...", style: TextStyle(color: Colors.white, fontSize: 16))
+                              //     )
+                              //   ],
+                              // ),
                             ],
                           ),
                         ),

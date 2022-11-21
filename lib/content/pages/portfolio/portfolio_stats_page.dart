@@ -48,8 +48,8 @@ class PortfolioStatsPage extends StatelessWidget {
                   const Portfolio(isDetailed: true),
                   const PortfolioStats(),
                   const Divider(),
-                  PortfolioStatsLineChart(MediaQuery.of(context).viewPadding.top),
-                  const Divider(),
+                  // PortfolioStatsLineChart(MediaQuery.of(context).viewPadding.top),
+                  // const Divider(),
                   const PortfolioStatsDistributionChart(),
                   const SizedBox(height: 8)
                 ],
